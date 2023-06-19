@@ -7,7 +7,7 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
     }
-
+    // Cần thay thế *= -1 bằng dx để tránh lỗi do frame gây ra 
     _initProperties() {
         this.radiousCollider = 40;
         this.velocity = { x: 0, y: -2 };
@@ -57,7 +57,7 @@ export class Player extends Container {
             return;
         }
 
-        if (this.position.y > this.radiousCollider * 2 ||
+        if (this.position.y >= this.radiousCollider * 2 ||
             this.position.y <= -this.radiousCollider * 2) {
             this.velocity.y *= -1;
         }

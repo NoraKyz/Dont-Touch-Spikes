@@ -1,6 +1,5 @@
 import { Application } from "pixi.js";
 import { Scene } from "./scene/scene";
-import { InputManager } from "./custom/inputManager";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
 
@@ -13,11 +12,13 @@ export class Game {
             resolution: 1,
         });
         document.body.appendChild(this.app.view);
+        
         const viewStyle = this.app.view.style;
         viewStyle.position = "absolute";
         viewStyle.display = "block";
         viewStyle.padding = "0px 0px 0px 0px";
         this.resize(window.innerWidth, window.innerHeight);
+
         AssetsManager._loadAssets().then(() => {
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
@@ -29,6 +30,7 @@ export class Game {
         this.app.view.height = height;
         this.app.resizeTo = this.app.view;
         this.app.resize();
+        this.scene && this.scene.resize();
     }
 
     static _initScene() {
@@ -43,4 +45,8 @@ export class Game {
 
 window.onload = function () {
     Game.init();
+    window.onresize = () => {
+        Game.resize(window.innerWidth, window.innerHeight);
+    }
 }
+

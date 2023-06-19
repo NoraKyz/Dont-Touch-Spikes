@@ -1,6 +1,7 @@
 import { Container} from "pixi.js";
 import { Player } from "../obj/player/player";
 import { Game } from "../game";
+import { InputEvent, InputManager } from "../custom/inputManager";
 
 export const GameState = Object.freeze({
     Playing: "playing",
@@ -12,6 +13,15 @@ export class Scene extends Container {
     constructor() {
         super();
         this._initGameplay();
+        this._initHandleInput();
+    }
+
+    _initHandleInput(){
+        InputManager.emitter.on(InputEvent.MouseDown, () => this._onPointerDown);
+    }
+
+    _onPointerDown(){
+
     }
 
     _initGameplay() {
@@ -33,6 +43,6 @@ export class Scene extends Container {
     }
 
     update(dt) {
-
+        this.player.update(dt);
     }
 }

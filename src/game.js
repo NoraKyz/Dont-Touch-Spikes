@@ -9,7 +9,7 @@ export class Game {
         this.app = new Application({
             width: GameConstant.GAME_WIDTH,
             height: GameConstant.GAME_HEIGHT,
-            backgroundColor: 0x1099bb,
+            backgroundColor: 0xe0ddd5,
             resolution: 1,
         });
         document.body.appendChild(this.app.view);

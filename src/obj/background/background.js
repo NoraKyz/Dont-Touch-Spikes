@@ -10,7 +10,7 @@ export class Background extends Container {
         this._initRetangleBottom();
         this._initPlayGround();
         this._initScoreBg();
-        setInterval(this.changeBgColor(), 1000);
+        //setInterval(this.changeBgColor(), 1000);
     }
 
     _initProperties() {
@@ -21,7 +21,7 @@ export class Background extends Container {
     _initPlayGround() {
         this.playGround = new Graphics();
         this.playGround.beginFill(`0x${this.mainColor.color}`);
-        this.playGround.drawRect(- Game.app.view.width / 2, -Game.app.view.height * 2.5 / 7, Game.app.view.width, Game.app.view.height * 5 / 7);
+        this.playGround.drawRect(- Game.app.view.width / 2, -Game.app.view.height * 3 / 7, Game.app.view.width, Game.app.view.height * 5.5 / 7);
         this.playGround.endFill();
         this.addChild(this.playGround);
     }
@@ -29,7 +29,7 @@ export class Background extends Container {
     _initRetangleTop() {
         this.retangleTop = new Graphics();
         this.retangleTop.beginFill(`0x${this.mainColor.colorDarker}`);
-        this.retangleTop.drawRect(-Game.app.view.width / 2, -Game.app.view.height / 2, Game.app.view.width, Game.app.view.height / 7);
+        this.retangleTop.drawRect(-Game.app.view.width / 2, -Game.app.view.height / 2, Game.app.view.width, Game.app.view.height / 14);
         this.retangleTop.endFill();
         this.addChild(this.retangleTop);
     }
@@ -45,9 +45,9 @@ export class Background extends Container {
     _initScoreBg() {
         // circle
         this.scoreBg = new Graphics();
-        this.scoreBg.circleRadius = 170;
+        this.scoreBg.circleRadius = 200;
         this.scoreBg.beginFill(0xffffff);
-        this.scoreBg.drawCircle(0, 0, this.scoreBg.circleRadius);
+        this.scoreBg.drawCircle(0, -Game.app.view.height / 28, this.scoreBg.circleRadius);
         this.scoreBg.endFill();
         this.addChild(this.scoreBg);
 
@@ -57,10 +57,11 @@ export class Background extends Container {
             fontWeight: 1000,
             fontSize: 50,
             fill: `0x${this.mainColor.color}`,
-            align: 'center',
+            //align: 'center',
             opacity: 0.5,
         });
         this.scoreText.anchor.set(0.5);
+        this.scoreText.y = -Game.app.view.height / 28;
         this.scoreText.scale.set(4.5);
         this.displayScore();
     }

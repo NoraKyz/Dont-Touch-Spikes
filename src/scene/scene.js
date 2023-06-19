@@ -3,6 +3,8 @@ import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
 import { Background } from "../obj/background/background";
+import { MainUI } from "../obj/UI/mainUI";
+import { UIManager } from "../obj/UI/UIManager";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -35,8 +37,14 @@ export class Scene extends Container {
         this.gameplay.y = Game.app.screen.height / 2;
         this.addChild(this.gameplay);
         this._initBackground();
+        this._initUI();
         this._initPlayer();
-        this._initTraps();     
+        //this._initTraps();     
+    }
+
+    _initUI(){
+        this.UI = new UIManager();
+        this.gameplay.addChild(this.UI);
     }
 
     resize() {

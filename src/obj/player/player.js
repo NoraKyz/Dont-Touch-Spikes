@@ -1,5 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
+import { Data } from "../../data";
 
 export class Player extends Container {
     constructor() {
@@ -41,14 +42,16 @@ export class Player extends Container {
         if (this.isPlaying == false) {
             return;
         }
-
+        // cham tuong
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2
         ) {
             this.direction.x = 1;
             this.velocity.y = -4;
+            Data.currentScore++;
         } else if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
             this.direction.x = -1;
             this.velocity.y = -4;
+            Data.currentScore++;
         }
 
         this.velocity.y += this.gravity;

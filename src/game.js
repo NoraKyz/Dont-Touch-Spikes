@@ -19,7 +19,6 @@ export class Game {
         viewStyle.padding = "0px 0px 0px 0px";
         this.resize(window.innerWidth, window.innerHeight);
         AssetsManager._loadAssets().then(() => {
-            InputManager.init(this.app.view);
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
         });

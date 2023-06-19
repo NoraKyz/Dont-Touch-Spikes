@@ -1,5 +1,6 @@
 import { Container} from "pixi.js";
-import { GameConstant } from "../gameConstant";
+import { Player } from "../obj/player/player";
+import { Game } from "../game";
 
 export const GameState = Object.freeze({
     Playing: "playing",
@@ -15,15 +16,16 @@ export class Scene extends Container {
 
     _initGameplay() {
         this.gameplay = new Container();
-        this.gameplay.x = GameConstant.GAME_WIDTH / 2;
-        this.gameplay.y = GameConstant.GAME_HEIGHT / 2;
+        this.gameplay.x = Game.app.screen.width / 2;
+        this.gameplay.y = Game.app.screen.height / 2;
         this.addChild(this.gameplay);
         this._initPlayer();
         this._initTraps();
     }
 
     _initPlayer() {
-
+        this.player = new Player();
+        this.gameplay.addChild(this.player);
     }
 
     _initTraps() {

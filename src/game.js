@@ -10,14 +10,26 @@ export class Game {
             width: GameConstant.GAME_WIDTH,
             height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0x1099bb,
+            resolution: 1,
         });
         document.body.appendChild(this.app.view);
-
+        const viewStyle = this.app.view.style;
+        viewStyle.position = "absolute";
+        viewStyle.display = "block";
+        viewStyle.padding = "0px 0px 0px 0px";
+        this.resize(window.innerWidth, window.innerHeight);
         AssetsManager._loadAssets().then(() => {
             InputManager.init(this.app.view);
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
-        })
+        });
+    }
+
+    static resize(width, height) {
+        this.app.view.width = width;
+        this.app.view.height = height;
+        this.app.resizeTo = this.app.view;
+        this.app.resize();
     }
 
     static _initScene() {

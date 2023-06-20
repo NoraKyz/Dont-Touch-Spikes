@@ -3,7 +3,6 @@ import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
 import { Background } from "../obj/background/background";
-import { MainUI } from "../obj/ui/mainUI";
 
 export const GameState = Object.freeze({
     Ready: "ready",

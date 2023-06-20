@@ -1,12 +1,22 @@
 import { Container, Graphics } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
+<<<<<<< HEAD
 import { Data } from "../../data";
+=======
+import { Collider } from "../physics/collider";
+>>>>>>> c423eab82626f458e1c4bf8db65931f4c04137d7
 
 export class Player extends Container {
     constructor() {
         super();
         this._initSprite();
         this._initProperties();
+        this._initCollider();
+    }
+
+    _initCollider(){
+        this.collider = new Collider(this.radiousCollider);
+        this.addChild(this.collider);
     }
 
     _initProperties() {

@@ -7,11 +7,11 @@ export class Spike extends Container {
     }
 
     _initSprite() {
-        const size = 70; // Kích thước cạnh tam giác
+        this.size = 70; // Kích thước cạnh tam giác
         this.spike = new Graphics();
         this.spike.beginFill(0x787b80);
 
-        const halfSize = size / 2;
+        const halfSize = this.size / 2;
         const x1 = -halfSize;
         const y1 = 0;
         const x2 = halfSize;

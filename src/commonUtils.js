@@ -16,7 +16,7 @@ export class CommonUtils {
     static randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    
+
     static AABBCheck(x1, y1, w1, h1, x2, y2, w2, h2) {
         return ((x1 < x2 + w2) && (x1 + w1 > x2) && (y1 < y2 + h2) && (y1 + h1 > y2));
     }
@@ -41,5 +41,23 @@ export class CommonUtils {
 
         let cornerDistance = Math.pow(dx - w2 / 2, 2) + Math.pow(dy - h2 / 2, 2);
         return cornerDistance <= Math.pow(r1, 2);
+    }
+
+    static randomColorBackground() {
+        const letters = '0123456789ABCDEF';
+        let color = '';
+        let colorDarker = '';
+        for (let i = 0; i < 6; i++) {
+            if (i % 2 == 0) {
+                let indexColor = 13 + Math.floor(Math.random() * 3);
+                color += letters[indexColor];
+                colorDarker += letters[indexColor - 2];
+            } else {
+                let indexColor =  Math.floor(Math.random() * 3);
+                color += letters[indexColor];
+                colorDarker += letters[0];
+            }
+        }
+        return { color: color, colorDarker: colorDarker };
     }
 }

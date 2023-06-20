@@ -1,8 +1,8 @@
 import { Container } from "pixi.js";
 import { Player } from "../obj/player/player";
 import { Game } from "../game";
-import { Spike } from "../obj/trap/spike";
 import { SpikesManager } from "../obj/trap/spikesManager";
+import { Background } from "../obj/background/background";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -34,8 +34,9 @@ export class Scene extends Container {
         this.gameplay.x = Game.app.screen.width / 2;
         this.gameplay.y = Game.app.screen.height / 2;
         this.addChild(this.gameplay);
+        this._initBackground();
         this._initPlayer();
-        this._initTraps();
+        this._initTraps();     
     }
 
     resize() {
@@ -51,6 +52,11 @@ export class Scene extends Container {
     _initTraps() {
         this.traps = new SpikesManager();
         this.gameplay.addChild(this.traps);
+    }
+
+    _initBackground(){
+        this.background = new Background();
+        this.gameplay.addChild(this.background);
     }
 
     update(dt) {

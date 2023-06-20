@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
 import { Spike } from "./spike";
+import { Game } from "../../game";
 
 export class SpikesManager extends Container {
     constructor() {
@@ -11,8 +12,13 @@ export class SpikesManager extends Container {
     }
 
     _initSpikes() {
-        this.spikesHorizontal.push(this._spawnSpikeLine(-280, 420, 7, 0));
-        this.spikesHorizontal.push(this._spawnSpikeLine(280, -520, 7, Math.PI));
+        let startX_Top = - Game.app.view.height / 2 + Game.app.view.height / 14;
+        let startX_Bottom = Game.app.view.height * 2.5 / 7;
+
+        this.spikesHorizontal.push(this._spawnSpikeLine(-280, startX_Bottom, 7, 0));
+        this.spikesHorizontal.push(this._spawnSpikeLine(280, startX_Top, 7, Math.PI));
+        this.spikeLeft.push(this._spawnSpikeLine(- Game.app.view.width / 2, startX_Top + 80, 10, Math.PI / 2));
+        this.spikeRight.push(this._spawnSpikeLine(Game.app.view.width / 2,  startX_Bottom - 90, 10, -Math.PI / 2));
     }
 
     _spawnSpikeLine(startX, startY, numbers, rotation) {

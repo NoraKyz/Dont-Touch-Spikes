@@ -3,7 +3,6 @@ import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
 import { Background } from "../obj/background/background";
-import { MainUI } from "../obj/ui/mainUI";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -21,7 +20,9 @@ export class Scene extends Container {
     }
 
     _initInputHandle() {
-        document.addEventListener("pointerdown", () => this._onPointerDown());
+        document.addEventListener("pointerdown", () => {
+            this._onPointerDown();
+        });
     }
 
     _onPointerDown() {
@@ -38,7 +39,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();  
-        this._initUI();
+        //this._initUI();
     }
 
     resize() {
@@ -61,13 +62,9 @@ export class Scene extends Container {
         this.gameplay.addChild(this.background);
     }
 
-    _initUI(){
-        this.mainUI = new MainUI();
-        this.gameplay.addChild(this.mainUI);
-    }
-
     update(dt) {
         this.player.update(dt);
+        this.background.update();
     }
 
     _onLose() {

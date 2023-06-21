@@ -7,7 +7,6 @@ export class TitleUI extends Container{
     this._initGameName();
     this._initGameInfor();
   }
-
   _initGameName(){
     const style = {
       fontFamily: 'Arial',
@@ -42,14 +41,12 @@ export class TitleUI extends Container{
     this.gameInforBottom.anchor.set(0.5);
     this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180);
   }
-  
   displayTitleUI(){
     this.addChild(this.gameNameTop);
     this.addChild(this.gameNameBottom);
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);
   }
-
   hideTitleUI(){
     this.removeChild(this.gameNameTop);
     this.removeChild(this.gameNameBottom);

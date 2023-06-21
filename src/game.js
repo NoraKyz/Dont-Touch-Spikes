@@ -2,6 +2,7 @@ import { Application } from "pixi.js";
 import { Scene } from "./scene/scene";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
+import { Data } from "./data";
 
 export class Game {
     static init() {
@@ -28,6 +29,7 @@ export class Game {
     static resize(width, height) {
         this.app.view.width = width;
         this.app.view.height = height;
+
         this.app.resizeTo = this.app.view;
         this.app.resize();
         this.scene && this.scene.resize();
@@ -37,13 +39,13 @@ export class Game {
         this.scene = new Scene();
         this.app.stage.addChild(this.scene);
     }
-
     static update(dt) {
         this.scene.update(dt);
     }
 }
 
 window.onload = function () {
+    Data.init();
     Game.init();
     window.onresize = () => {
         Game.resize(window.innerWidth, window.innerHeight);

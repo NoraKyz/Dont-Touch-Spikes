@@ -1,6 +1,7 @@
 import { Container, Graphics, Sprite, Text, Texture } from "pixi.js";
 import { Game } from "../../game";
 import { CommonUtils } from "../../commonUtils.js";
+import { Data } from "../../data";
 
 export class Background extends Container {
     constructor() {
@@ -10,12 +11,12 @@ export class Background extends Container {
         this._initRetangleBottom();
         this._initPlayGround();
         this._initScoreBg();
-        setInterval(this.changeBgColor(), 1000);
+
+        this.ok = 0;
     }
 
     _initProperties() {
         this.mainColor = { color: 'ebebeb', colorDarker: '808080' };
-        this.score = 7;
     }
 
     _initPlayGround() {
@@ -52,12 +53,11 @@ export class Background extends Container {
         this.addChild(this.scoreBg);
 
         // score
-        this.scoreText = new Text(`0${this.score}`, {
+        this.scoreText = new Text(`${Data.currentScore}`, {
             fontFamily: 'Montserrat',
             fontWeight: 1000,
             fontSize: 50,
             fill: `0x${this.mainColor.color}`,
-            //align: 'center',
             opacity: 0.5,
         });
         this.scoreText.anchor.set(0.5);
@@ -81,8 +81,13 @@ export class Background extends Container {
     hideScore(){
         this.removeChild(this.scoreText);
     }
+    update() {
+        if(Data.currentScore < 10) this.scoreText.text = `0${Data.currentScore}`;
+        else this.scoreText.text = `${Data.currentScore}`;
 
-    update(dt) {
-
+        if(Data.currentScore > 0 && Data.currentScore % 5 == 0) {
+            if(!this.ok) this.changeBgColor();
+            this.ok = 1;
+        } else this.ok = 0;
     }
 }

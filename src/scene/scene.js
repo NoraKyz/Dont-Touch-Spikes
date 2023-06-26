@@ -32,7 +32,7 @@ export class Scene extends Container {
     }
 
     _onCollision(obj1, obj2) {
-        if (obj1 === this.player && obj2 instanceof Spike) { 
+        if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
             this.player.onCollision(obj2);
         }
@@ -51,6 +51,7 @@ export class Scene extends Container {
 
     _onLose() {
         this.gameState = GameState.Lose;
+        setTimeout(() => this._initGameOver(), 600);
     }
 
     _initInputHandle() {
@@ -101,7 +102,7 @@ export class Scene extends Container {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
-    _displayGameOver(){
+    _initGameOver(){
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
     }

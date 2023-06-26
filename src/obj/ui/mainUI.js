@@ -7,10 +7,13 @@ export class MainUI extends Container{
     super();
     this._initGameTutol();
     this._initTitleUI();
+    this._displayMainUI();
   }
   _initTitleUI(){
     this.titleUI = new TitleUI();
     this.addChild(this.titleUI);
+    this.titleUI.displayGameName();
+    this.titleUI.displayGameInfor();
   }
   _initGameTutol(){
     const style = {
@@ -28,8 +31,7 @@ export class MainUI extends Container{
     this.gameTutolBottom.anchor.set(0.5);
     this.gameTutolBottom.position.set(0, -160);
   }
-  displayMainUI(){
-    this.titleUI.displayTitleUI();
+  _displayMainUI(){
     this.addChild(this.gameTutolTop);
     this.addChild(this.gameTutolBottom);
   }

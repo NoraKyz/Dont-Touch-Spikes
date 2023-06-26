@@ -20,8 +20,6 @@ export class SpikesManager extends Container {
         this.poolSpikes = [];
         this._initSpikes();
         this._initColliders();
-        
-        this._moveSpikes();
     }
 
     _randomSpike(){
@@ -49,7 +47,6 @@ export class SpikesManager extends Container {
             if(this.leftIndexSpikes.length > 0 && this.spikeLeft[this.leftIndexSpikes[0]].x >= 0){
                 this.state = 1;
                 this.rightIndexSpikes = this._randomSpike();
-                //break;
             }
         }
         if(this.state == 1){
@@ -66,13 +63,12 @@ export class SpikesManager extends Container {
             if(this.leftIndexSpikes.length > 0 && this.spikeLeft[this.leftIndexSpikes[0]].x <= -this.distance){
                 this.state = 0;
                 this.leftIndexSpikes = this._randomSpike();
-                //break;
             }
         }
     }
 
     update(){
-        this._moveSpikes();
+        //this._moveSpikes();
     }
 
     _initSpikes() {

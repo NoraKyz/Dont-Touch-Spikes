@@ -7,6 +7,7 @@ import { MainUI } from "../obj/ui/mainUI";
 import { Spike } from "../obj/trap/spike";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { Candy } from "../obj/items/candy";
+import { GameOverUI } from "../obj/ui/gameOverUI";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -51,18 +52,13 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
-        this._initUI();
-        this._initItem();
+        //this._initUI();
+        //this._displayGameOver();
     }
 
     resize() {
         this.gameplay.x = Game.app.screen.width / 2;
         this.gameplay.y = Game.app.screen.height / 2;
-    }
-
-    _initItem(){
-        this.item = new Candy();
-        this.gameplay.addChild(this.item);
     }
 
     _initPlayer() {
@@ -83,14 +79,16 @@ export class Scene extends Container {
     _initUI() {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
-        //this.mainUI.displayMainUI();
+    }
+    _displayGameOver(){
+        this.gameOverUI = new GameOverUI();
+        this.gameplay.addChild(this.gameOverUI);
     }
 
     update(dt) {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
         this.traps.update();
-        this.item.update();
     }
 
     _onLose() {

@@ -1,6 +1,9 @@
 import * as PIXI from "pixi.js";
+<<<<<<< HEAD
 import { Game} from "../../game";
 import {createUBOElements, Sprite} from "pixi.js";
+=======
+>>>>>>> d15ef8e (done mainUI + gameOverUI)
 import { TitleUI } from "./titleUI";
 
 export class GameOverUI extends PIXI.Container {

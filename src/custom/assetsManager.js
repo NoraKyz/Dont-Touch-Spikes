@@ -10,6 +10,11 @@ export class AssetsManager {
         //     "Track_1_A": "./assets/images/Tank/PNG/Tracks/Track_1_A.png",
         //     "Track_1_B": "./assets/images/Tank/PNG/Tracks/Track_1_B.png",
         // })
+        this._addBundle(
+            "item", {
+                "candy": "../assets/images/keo.png",
+            }
+        )
 
         return Assets.loadBundle(this.keys);
     }

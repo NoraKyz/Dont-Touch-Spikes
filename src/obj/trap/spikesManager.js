@@ -9,7 +9,7 @@ export class SpikesManager extends Container {
         super();
         this.state = 0;
         this.distance = 70 * Math.sqrt(3) / 2;
-        this.velocity = this.distance / 45;
+        this.velocity = this.distance / 30;
         this.minSpikes = 1;
         this.maxSpikes = 3;
         this.leftIndexSpikes = [4, 5];
@@ -38,13 +38,11 @@ export class SpikesManager extends Container {
         if(this.state == 0){
             for(let i = 0; i < this.spikeRight.length; i++){
                 if(this.rightIndexSpikes.includes(i)){
-                    //console.log(this.spikeRight[i].x);
-                    this.spikeRight[i].x -= this.velocity;
+                    this.spikeRight[i].x += this.velocity;
                 } 
             }
             for(let i = 0; i < this.spikeLeft.length; i++){
                 if(this.leftIndexSpikes.includes(i)){
-                    //console.log(this.spikeLeft[i].x);
                     this.spikeLeft[i].x +=  this.velocity;
                     if(this.spikeLeft[i].x >= 0){
                         this.state = 1;
@@ -53,17 +51,15 @@ export class SpikesManager extends Container {
                     }
                 }
             }
-            //console.log('end1');
-        } else {
+        }
+        if(this.state == 1){
             for(let i = 0; i < this.spikeRight.length; i++){
-                if(this.rightIndexSpikes.includes(i)){
-                    console.log(this.spikeRight[i].x);
-                    this.spikeRight[i].x += this.velocity;
+                if(this.rightIndexSpikes.includes(i)){ 
+                    this.spikeRight[i].x -= this.velocity;
                 } 
             }
             for(let i = 0; i < this.spikeLeft.length; i++){
                 if(this.leftIndexSpikes.includes(i)){
-                    //console.log(this.spikeLeft[i].x);
                     this.spikeLeft[i].x -=  this.velocity;  
                     if(this.spikeLeft[i].x <= -this.distance){
                         this.state = 0;
@@ -72,7 +68,6 @@ export class SpikesManager extends Container {
                     }
                 }
             }
-            //console.log('end2');
         }
     }
 
@@ -93,7 +88,7 @@ export class SpikesManager extends Container {
             spike.x -= this.distance;
         })
         this.spikeRight.forEach(spike => {
-            spike.x += this.distance
+            spike.x += this.distance;
         })
     }
 

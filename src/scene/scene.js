@@ -83,6 +83,7 @@ export class Scene extends Container {
     _initUI() {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
+        //this.mainUI.displayMainUI();
     }
 
     update(dt) {

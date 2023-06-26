@@ -1,12 +1,18 @@
 import { Container, Text } from "pixi.js";
 import { Game } from "../../game";
+import { TitleUI } from "./titleUI";
 
 export class MainUI extends Container{
   constructor(){
     super();
-    this._initGameStart();
+    this._initGameTutol();
+    this._initTitleUI();
   }
-  _initGameStart(){
+  _initTitleUI(){
+    this.titleUI = new TitleUI();
+    this.addChild(this.titleUI);
+  }
+  _initGameTutol(){
     const style = {
       fontFamily: 'Arial',
       fontWeight: 700,
@@ -14,20 +20,22 @@ export class MainUI extends Container{
       fill: '0x909090',
       align: 'center',
     }
-    this.gameStartTop = new Text("TAP", style);
-    this.gameStartTop.anchor.set(0.5);
-    this.gameStartTop.position.set(0, -200);
+    this.gameTutolTop = new Text("TAP", style);
+    this.gameTutolTop.anchor.set(0.5);
+    this.gameTutolTop.position.set(0, -200);
     
-    this.gameStartBottom = new Text("TO JUMP", style);
-    this.gameStartBottom.anchor.set(0.5);
-    this.gameStartBottom.position.set(0, -160);
+    this.gameTutolBottom = new Text("TO JUMP", style);
+    this.gameTutolBottom.anchor.set(0.5);
+    this.gameTutolBottom.position.set(0, -160);
   }
-  displayGameStart(){
-    this.addChild(this.gameStartTop);
-    this.addChild(this.gameStartBottom);
+  displayMainUI(){
+    this.titleUI.displayTitleUI();
+    this.addChild(this.gameTutolTop);
+    this.addChild(this.gameTutolBottom);
   }
-  hideGameStart(){
-    this.removeChild(this.gameStartTop);
-    this.removeChild(this.gameStartBottom);
+  hideMainUI(){
+    this.titleUI.hideTitleUI();
+    this.removeChild(this.gameTutolTop);
+    this.removeChild(this.gameTutolBottom);
   }
 }

@@ -3,7 +3,7 @@ import { TitleUI } from "./titleUI";
 import {Graphics} from "pixi.js";
 import {Data} from "../../data";
 
-export const BUTTON = Object.freeze({
+const BUTTON = Object.freeze({
     x: -280,
     y: -45,
     width: 560,
@@ -14,9 +14,10 @@ export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
         this.bigTextStyle = new PIXI.TextStyle({
-            fontFamily: "Trebuchet MS",
+            fontFamily: "Calibri",
             fontSize: 65,
             fill: ['#ffffff'],
+            align: "center",
         });
         this._initPointButton();
         this._initReplayButton();
@@ -28,7 +29,21 @@ export class GameOverUI extends PIXI.Container {
     }
 
     _initPointButton(){
+
         this.pointsButtonBar = new PIXI.Container();
+        this.pointText = new PIXI.TextStyle({
+            fontFamily: "Calibri",
+            fontSize: 45,
+            fill: ['#ffffff'],
+            align: "center",
+        });
+        this.pointNum = new PIXI.TextStyle({
+            fontFamily: "Calibri",
+            fontSize: 115,
+            fill: ['#ffffff'],
+            align: "center",
+            fontWeight: "bold",
+        });
 
         this.pointsButton = new Graphics();
         this.pointsButton.beginFill(0xff2727);
@@ -37,8 +52,14 @@ export class GameOverUI extends PIXI.Container {
         this.pointsButton.zIndex = 1;
         this.pointsButtonBar.addChild(this.pointsButton);
 
-        this.pointsButtonText = new PIXI.Text("POINTS", this.bigTextStyle);
-        this.pointsButtonText.position.set(BUTTON.x + 278, BUTTON.y + 120);
+        this.pointsButtonNum = new PIXI.Text(Data.currentScore, this.pointNum);
+        this.pointsButtonNum.position.set(BUTTON.x + 278, BUTTON.y + 61);
+        this.pointsButtonNum.anchor.set(0.5);
+        this.pointsButtonNum.zIndex = 2;
+        this.pointsButtonBar.addChild(this.pointsButtonNum);
+
+        this.pointsButtonText = new PIXI.Text("POINTS", this.pointText);
+        this.pointsButtonText.position.set(BUTTON.x + 278, BUTTON.y + 136);
         this.pointsButtonText.anchor.set(0.5);
         this.pointsButtonText.zIndex = 2;
         this.pointsButtonBar.addChild(this.pointsButtonText);
@@ -54,14 +75,14 @@ export class GameOverUI extends PIXI.Container {
     _decoratePointButton() {
         this.buttonDecorationLeft = new Graphics();
         this.buttonDecorationLeft.beginFill(0xd11515);
-        this.buttonDecorationLeft.drawRoundedRect(BUTTON.x+25, BUTTON.y+25, 125,125, BUTTON.radius);
+        this.buttonDecorationLeft.drawRoundedRect(BUTTON.x+25, BUTTON.y+25, 130,130, BUTTON.radius);
         this.buttonDecorationLeft.endFill();
         this.buttonDecorationLeft.zIndex = 2;
         this.pointsButtonBar.addChild(this.buttonDecorationLeft);
 
         this.buttonDecorationRight = new Graphics();
         this.buttonDecorationRight.beginFill(0xd11515);
-        this.buttonDecorationRight.drawRoundedRect(BUTTON.x+410, BUTTON.y+25, 125,125, BUTTON.radius);
+        this.buttonDecorationRight.drawRoundedRect(BUTTON.x+405, BUTTON.y+25, 130,130, BUTTON.radius);
         this.buttonDecorationRight.endFill();
         this.buttonDecorationRight.zIndex = 2;
         this.pointsButtonBar.addChild(this.buttonDecorationRight);

@@ -4,6 +4,8 @@ import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { GameManager } from "../../custom/gameManager";
+import * as TWEEN from '@tweenjs/tween.js'
+
 
 export class Player extends Container {
     constructor() {
@@ -93,6 +95,7 @@ export class Player extends Container {
             this.velocity.y = -4;
             if (this.isDie) {
                 this.velocity.y = 2;
+                this._isDead();
             }
         }
     }
@@ -109,6 +112,7 @@ export class Player extends Container {
             this.position.y = bottomLimit - this.radiousCollider;
             if (this.isDie) {
                 this.velocity.y = - this.jumpForce * 1.5;
+                this._isDead();
             }
         }
     }
@@ -127,8 +131,18 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
     }
 
+    _isDead() {
+        this.fadeTween = new TWEEN.Tween(this.bird)
+        .to({ alpha: 0 }, 2000)
+            .onComplete(() => {
+                this.removeChild(this.bird);
+            });
+        this.fadeTween.start();
+    }
+
     update(dt) {
         this._move(dt);
         this._moveInMenu(dt);
+        TWEEN.update();
     }
 }

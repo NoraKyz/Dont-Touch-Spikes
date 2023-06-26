@@ -99,7 +99,7 @@ export class SpikesManager extends Container {
     }
 
     _initColliders() {
-        let colliderRadious = 70 * Math.sqrt(3) / 3
+        let colliderRadious = 70 * Math.sqrt(3) / 3;
         this.poolSpikes.forEach(spike => {
             let collider = new Collider(colliderRadious);
             spike.collider = collider;

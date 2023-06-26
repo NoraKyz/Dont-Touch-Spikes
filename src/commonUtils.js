@@ -23,7 +23,7 @@ export class CommonUtils {
 
     static circleCollision(x1, y1, r1, x2, y2, r2) {
         const len = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-        return (r1 + r2 <= len);
+        return (r1 + r2 >= len);
     }
 
     // Chưa test

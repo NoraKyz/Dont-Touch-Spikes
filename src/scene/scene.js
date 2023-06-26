@@ -19,15 +19,14 @@ export class Scene extends Container {
         super();
         this._initGameplay();
         this._initInputHandle();
-        this.gameState = GameState.Ready;
-
+        this.gameState = GameState.Ready;  
         this.colliderDetector = ColliderDetector.instance;
-        this.colliderDetector.on("collision", this._onCollision.bind(this));
+        this.colliderDetector.on("collision", this._onCollision.bind(this));     
     }
 
     _onCollision(obj1, obj2) {
-        if (obj1 === this.player && obj2 instanceof Spike) {
-            this._onLose();
+        if (obj1 === this.player && obj2 instanceof Spike) { 
+            //this._onLose();
         }
     }
 

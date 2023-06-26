@@ -2,15 +2,15 @@ import { Graphics } from "pixi.js";
 import { Game } from "../../game";
 
 export class Collider extends Graphics {
-    constructor(radious) {
+    constructor(radius) {
         super();
-        this.radious = radious;
+        this.radius = radius;
         this._initCollider();
     }
 
-    _initCollider(radious) {
+    _initCollider() {
         this.beginFill(0x000000, 0)
-        this.drawCircle(0, 0, this.radious);
+        this.drawCircle(0, 0, this.radius);
         this.endFill();
     }
 }

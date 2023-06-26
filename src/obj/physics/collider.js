@@ -1,4 +1,5 @@
 import { Graphics } from "pixi.js";
+import { Game } from "../../game";
 
 export class Collider extends Graphics {
     constructor(radious) {

@@ -10,7 +10,7 @@ export class SpikesManager extends Container {
         this.state = 0;
         this.distance = 70 * Math.sqrt(3) / 2;
         this.velocity = this.distance / 30;
-        this.minSpikes = 1;
+        this.minSpikes = 2;
         this.maxSpikes = 7;
         this.leftIndexSpikes = [4, 5];
         this.rightIndexSpikes = [];
@@ -28,7 +28,7 @@ export class SpikesManager extends Container {
         const arrayIndex = [];
         let randomQuantitySpikes = CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
         for(let i = 1; i <= randomQuantitySpikes; i++) {
-            let newSpike = CommonUtils.randomInt(1, 10);
+            let newSpike = CommonUtils.randomInt(2, 9);
             if(!arrayIndex.includes(newSpike)) arrayIndex.push(newSpike);
         }
         return arrayIndex;
@@ -44,12 +44,12 @@ export class SpikesManager extends Container {
             for(let i = 0; i < this.spikeLeft.length; i++){
                 if(this.leftIndexSpikes.includes(i)){
                     this.spikeLeft[i].x +=  this.velocity;
-                    if(this.spikeLeft[i].x >= 0){
-                        this.state = 1;
-                        this.rightIndexSpikes = this._randomSpike();
-                        break;
-                    }
                 }
+            }
+            if(this.leftIndexSpikes.length > 0 && this.spikeLeft[this.leftIndexSpikes[0]].x >= 0){
+                this.state = 1;
+                this.rightIndexSpikes = this._randomSpike();
+                //break;
             }
         }
         if(this.state == 1){
@@ -61,12 +61,12 @@ export class SpikesManager extends Container {
             for(let i = 0; i < this.spikeLeft.length; i++){
                 if(this.leftIndexSpikes.includes(i)){
                     this.spikeLeft[i].x -=  this.velocity;  
-                    if(this.spikeLeft[i].x <= -this.distance){
-                        this.state = 0;
-                        this.leftIndexSpikes = this._randomSpike();
-                        break;
-                    }
                 }
+            }
+            if(this.leftIndexSpikes.length > 0 && this.spikeLeft[this.leftIndexSpikes[0]].x <= -this.distance){
+                this.state = 0;
+                this.leftIndexSpikes = this._randomSpike();
+                //break;
             }
         }
     }

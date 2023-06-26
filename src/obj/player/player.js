@@ -53,6 +53,7 @@ export class Player extends Container {
         ) {
             this.direction.x = 1;
             this.velocity.y = -4;
+            this.emit("touch");
         } else if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
             this.direction.x = -1;
             this.velocity.y = -4;

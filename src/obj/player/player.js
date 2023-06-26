@@ -1,6 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Collider } from "../physics/collider";
+import { Game } from "../../game";
 
 export class Player extends Container {
     constructor() {
@@ -17,7 +18,7 @@ export class Player extends Container {
 
     _initProperties() {
         this.radiousCollider = 40;
-        this.velocity = { x: 0, y: -2 };
+        this.velocity = { x: 0, y: -0.5 };
         this.isPlaying = false;
         this.gravity = 0.5;
         this.jumpForce = 12;
@@ -28,7 +29,7 @@ export class Player extends Container {
         this.bird = new Graphics();
         this.bird.lineStyle(0);
         this.bird.beginFill(0xd19a52, 1);
-        this.bird.drawCircle(0, 0, 40);
+        this.bird.drawCircle(0, -Game.app.view.width/14, 40);
         this.bird.endFill();
         this.addChild(this.bird);
     }
@@ -70,9 +71,9 @@ export class Player extends Container {
             return;
         }
 
-        if (this.position.y >= this.radiousCollider * 2) {
+        if (this.position.y >= this.radiousCollider/4) {
             this.direction.y = 1;
-        } else if (this.position.y <= -this.radiousCollider * 2) {
+        } else if (this.position.y <= -this.radiousCollider/4) {
             this.direction.y = -1;
         }
 

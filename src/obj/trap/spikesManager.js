@@ -11,7 +11,7 @@ export class SpikesManager extends Container {
         this.distance = 70 * Math.sqrt(3) / 2;
         this.velocity = this.distance / 30;
         this.minSpikes = 1;
-        this.maxSpikes = 3;
+        this.maxSpikes = 7;
         this.leftIndexSpikes = [4, 5];
         this.rightIndexSpikes = [];
 

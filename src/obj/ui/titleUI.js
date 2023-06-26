@@ -63,6 +63,7 @@ export class TitleUI extends Container{
   displayGameName(){
     this.addChild(this.gameNameTop);
     this.addChild(this.gameNameBottom);
+<<<<<<< HEAD
   }
   hideGameName(){
     this.removeChild(this.gameNameTop);
@@ -70,6 +71,8 @@ export class TitleUI extends Container{
   }
 
   displayGameInfor(){
+=======
+>>>>>>> a46f6f4 (add candy at mainUI + fixbug)
     this.addChild(this.itemImage);
     this.addChild(this.itemQuantity);
     this.addChild(this.gameInforTop);

@@ -19,15 +19,33 @@ export class Scene extends Container {
         super();
         this._initGameplay();
         this._initInputHandle();
+        this._initColliderDetector();
+        this._initGameManager();
         this.gameState = GameState.Ready;  
+    }
+
+    _initColliderDetector(){
         this.colliderDetector = ColliderDetector.instance;
-        this.colliderDetector.on("collision", this._onCollision.bind(this));     
+        this.colliderDetector.on("collision", this._onCollision.bind(this));
     }
 
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) { 
-            //this._onLose();
+            this._onLose();
+            this.player.onCollision(obj2);
         }
+
+        if(obj1 === this.player && obj2 instanceof Spike) {
+            
+        }
+    }
+
+    _initGameManager() {
+
+    }
+
+    _onLose() {
+        this.gameState = GameState.Lose;
     }
 
     _initInputHandle() {
@@ -82,9 +100,5 @@ export class Scene extends Container {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
         this.traps.update();
-    }
-
-    _onLose() {
-        this.gameState = GameState.Lose;
     }
 }

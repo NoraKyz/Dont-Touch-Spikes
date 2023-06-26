@@ -50,6 +50,12 @@ export class Scene extends Container {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
         this.gameManager.on("lose", this._onLose.bind(this));
+        this.gameManager.on("replay", this._reloadScene.bind(this));
+    }
+
+    _reloadScene() {
+        Data.currentScore = 0;
+        Game._reloadScene();
     }
 
     _onNextLevel(direction) {

@@ -6,6 +6,7 @@ import { Background } from "../obj/background/background";
 import { MainUI } from "../obj/ui/mainUI";
 import { Spike } from "../obj/trap/spike";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
+import {GameManager} from "../custom/gameManager"
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -41,7 +42,10 @@ export class Scene extends Container {
     }
 
     _initGameManager() {
-
+        //this.gameManager = GameManager.instance;
+        // this.gameManager.on("nextLevel", this.gameManager._nextLevel);
+        // this.gameManager.on("initSpikes", this.gameManager._initSpikes());
+        // this.gameManager.on("eatCandy", this.gameManager._countCoin());
     }
 
     _onLose() {

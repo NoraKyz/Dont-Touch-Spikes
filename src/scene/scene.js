@@ -6,15 +6,7 @@ import { Background } from "../obj/background/background";
 import { MainUI } from "../obj/ui/mainUI";
 import { Spike } from "../obj/trap/spike";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
-import { Candy } from "../obj/items/candy";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { GameOverUI } from "../obj/ui/gameOverUI";
-=======
->>>>>>> e817e6b (add candy)
-=======
-import { GameOverUI } from "../obj/ui/gameOverUI";
->>>>>>> d15ef8e (done mainUI + gameOverUI)
 
 export const GameState = Object.freeze({
     Ready: "ready",

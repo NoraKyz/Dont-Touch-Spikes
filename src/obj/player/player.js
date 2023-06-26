@@ -48,23 +48,31 @@ export class Player extends Container {
         if (this.isPlaying == false) {
             return;
         }
-        // cham tuong
+        // xử lý chạm left or right
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2
         ) {
             this.direction.x = 1;
-            if (this.velocity.y <= 0) {
-                this.velocity.y = -12
+            if (this.velocity.y <= -this.jumpForce * 0.7) {
+                this.velocity.y = -this.jumpForce;
             } else {
                 this.velocity.y = -4;
             }
         } else if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
             this.direction.x = -1;
-            if (this.velocity.y <= 0) {
-                this.velocity.y = -12
+            if (this.velocity.y <= -this.jumpForce * 0.7) {
+                this.velocity.y = -this.jumpForce;
             } else {
                 this.velocity.y = -4;
             }
         }
+
+        // xử lý chạm top vs bottom
+        // if (this.position.y - this.radiousCollider <= - GameConstant.GAME_HEIGHT / 2
+        // ) {
+        //     this.position.y = - GameConstant.GAME_HEIGHT / 2 + this.radiousCollider;
+        // } else if (this.position.y + this.radiousCollider >= GameConstant.GAME_HEIGHT / 2) {
+        //     this.position.y = GameConstant.GAME_HEIGHT / 2 - this.radiousCollider;
+        // }
 
         this.velocity.y += this.gravity;
 

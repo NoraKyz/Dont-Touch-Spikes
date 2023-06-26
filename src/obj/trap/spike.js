@@ -18,7 +18,7 @@ export class Spike extends Container {
         const x2 = halfSize;
         const y2 = 0;
         const x3 = 0;
-        const y3 = -halfSize * Math.sqrt(3);
+        const y3 = -halfSize * Math.sqrt(1.5);
 
         this.spike.moveTo(x1, y1);
         this.spike.lineTo(x2, y2);

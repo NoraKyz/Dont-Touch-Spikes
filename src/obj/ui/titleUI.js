@@ -59,17 +59,25 @@ export class TitleUI extends Container{
     this.gameInforBottom.anchor.set(0.5);
     this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180);
   }
-  displayTitleUI(){
+
+  displayGameName(){
     this.addChild(this.gameNameTop);
     this.addChild(this.gameNameBottom);
+  }
+  hideGameName(){
+    this.removeChild(this.gameNameTop);
+    this.removeChild(this.gameNameBottom);
+  }
+
+  displayGameInfor(){
     this.addChild(this.itemImage);
     this.addChild(this.itemQuantity);
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);
   }
   hideTitleUI(){
-    this.removeChild(this.gameNameTop);
-    this.removeChild(this.gameNameBottom);
+    this.removeChild(this.itemImage);
+    this.removeChild(this.itemQuantity);
     this.removeChild(this.gameInforTop);
     this.removeChild(this.gameInforBottom);
   }

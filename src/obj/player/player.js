@@ -10,7 +10,7 @@ export class Player extends Container {
         this._initCollider();
     }
 
-    _initCollider(){
+    _initCollider() {
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);
     }
@@ -52,10 +52,18 @@ export class Player extends Container {
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2
         ) {
             this.direction.x = 1;
-            this.velocity.y = -4;
+            if (this.velocity.y <= 0) {
+                this.velocity.y = -12
+            } else {
+                this.velocity.y = -4;
+            }
         } else if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
             this.direction.x = -1;
-            this.velocity.y = -4;
+            if (this.velocity.y <= 0) {
+                this.velocity.y = -12
+            } else {
+                this.velocity.y = -4;
+            }
         }
 
         this.velocity.y += this.gravity;

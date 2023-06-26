@@ -4,6 +4,8 @@ import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
 import { Background } from "../obj/background/background";
 import { MainUI } from "../obj/ui/mainUI";
+import { Spike } from "../obj/trap/spike";
+import { ColliderDetector } from "../obj/physics/colliderDetector";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -18,6 +20,15 @@ export class Scene extends Container {
         this._initGameplay();
         this._initInputHandle();
         this.gameState = GameState.Ready;
+
+        this.colliderDetector = ColliderDetector.instance;
+        this.colliderDetector.on("collision", this._onCollision.bind(this));
+    }
+
+    _onCollision(obj1, obj2) {
+        if (obj1 === this.player && obj2 instanceof Spike) {
+            this._onLose();
+        }
     }
 
     _initInputHandle() {
@@ -37,7 +48,7 @@ export class Scene extends Container {
         this.addChild(this.gameplay);
         this._initBackground();
         this._initPlayer();
-        this._initTraps();  
+        this._initTraps();
         this._initUI();
     }
 
@@ -56,18 +67,19 @@ export class Scene extends Container {
         this.gameplay.addChild(this.traps);
     }
 
-    _initBackground(){
+    _initBackground() {
         this.background = new Background();
         this.gameplay.addChild(this.background);
     }
 
-    _initUI(){
+    _initUI() {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
 
     update(dt) {
         this.player.update(dt);
+        this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
     }
 
     _onLose() {

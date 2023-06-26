@@ -4,6 +4,7 @@ export class Spike extends Container {
     constructor() {
         super();
         this._initSprite();
+        this.collider = null;
     }
 
     _initSprite() {

@@ -5,11 +5,9 @@ import { Game } from "../../game";
 export class Candy extends Sprite{
   constructor(){
     super(Texture.from('../assets/images/keo.png'));
-    // this.sprite = this.texture('../assets/images/keo.png');
-    //this.sprite = ;
     this.width = 90;
     this.height = 90;
-    this.speed = 0.3;
+    this.speed = 0.25;
     this.randomPosition();
     this.distance = 5;
     this.highestPos = this.y - this.distance;
@@ -28,7 +26,7 @@ export class Candy extends Sprite{
 
     let randomY = Math.floor(Math.random() * 2);
     if(randomY) candyPosition.y = -Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 4));
-    else candyPosition.y = Game.app.view.height / 14 * (2 + Math.floor(Math.random()));
+    else candyPosition.y = Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 2));
     this.x = candyPosition.x;
     this.y = candyPosition.y;
   }

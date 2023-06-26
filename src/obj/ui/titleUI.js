@@ -1,4 +1,4 @@
-import { Container, Text } from "pixi.js";
+import { Container, Sprite, Text } from "pixi.js";
 import { Game } from "../../game";
 
 export class TitleUI extends Container{
@@ -6,6 +6,24 @@ export class TitleUI extends Container{
     super();
     this._initGameName();
     this._initGameInfor();
+    this._initItemQuantity();
+  }
+  _initItemQuantity(){
+    const style = {
+      fontFamily: 'Arial',
+      fontWeight: 600,
+      fontSize: 60,
+      fill: '0xf50c0c',
+      
+    }
+    this.itemImage = Sprite.from('../assets/images/keo.png');
+    this.itemImage.width = 90;
+    this.itemImage.height = 90;
+    this.itemQuantity = new Text(`36`, style);
+    this.itemImage.anchor.set(0.5);
+
+    this.itemImage.position.set(-35, Game.app.view.height / 7 + 60);
+    this.itemQuantity.position.set(10, Game.app.view.height / 7 + 35);
   }
   _initGameName(){
     const style = {
@@ -44,6 +62,8 @@ export class TitleUI extends Container{
   displayTitleUI(){
     this.addChild(this.gameNameTop);
     this.addChild(this.gameNameBottom);
+    this.addChild(this.itemImage);
+    this.addChild(this.itemQuantity);
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);
   }

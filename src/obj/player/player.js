@@ -48,7 +48,7 @@ export class Player extends Container {
         if (this.isPlaying == false) {
             return;
         }
-
+        // cham tuong
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2
         ) {
             this.direction.x = 1;

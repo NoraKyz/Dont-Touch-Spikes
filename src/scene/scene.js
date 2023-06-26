@@ -32,7 +32,9 @@ export class Scene extends Container {
     }
 
     _initInputHandle() {
-        document.addEventListener("pointerdown", () => this._onPointerDown());
+        document.addEventListener("pointerdown", () => {
+            this._onPointerDown();
+        });
     }
 
     _onPointerDown() {

@@ -39,6 +39,11 @@ export class Scene extends Container {
             this._onLose();
             this.player.onCollision(obj2);
         }
+
+        if (obj1 === this.player && obj2 instanceof Candy) {
+            // TODO: Thêm hàm tăng điểm và random lại vị trí của candy
+            // Note: Hàm này có thể gọi nhiều lần, hãy làm sao để cho candy chỉ ăn 1 lần tại 1 vị trí
+        }
     }
 
     _initGameManager() {
@@ -132,6 +137,7 @@ export class Scene extends Container {
     update(dt) {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
+        this.colliderDetector.checkCollider(this.player, this.candy);
         this.traps.update();
         this.candy.update();
     }

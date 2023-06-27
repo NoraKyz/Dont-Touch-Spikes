@@ -57,6 +57,8 @@ export class Scene extends Container {
 
     _onLose() {
         this.gameState = GameState.Lose;
+        this._displayGameOver();
+        this.gameOverUI.titleUI.updateTitleUI();
     }
 
     _initInputHandle() {
@@ -79,7 +81,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
-        this._initUI();
+        //this._initUI();
         //this._displayGameOver();
     }
 
@@ -108,9 +110,6 @@ export class Scene extends Container {
         this.gameplay.addChild(this.mainUI);
     }
 
-    _displayGameOver() {
-        this.gameplay.addChild(this.gameOverUI);
-    }
     _displayGameOver(){
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);

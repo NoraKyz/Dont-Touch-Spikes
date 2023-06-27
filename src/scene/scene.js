@@ -54,8 +54,11 @@ export class Scene extends Container {
         this.gameManager.on("lose", this._onLose.bind(this));  
     }
 
-    _onNextLevel() {
-
+    _onNextLevel(direction) {
+        if(this.gameState == GameState.Lose) return;
+        this.background.updateBackground(++Data.currentScore); 
+        this.traps._moveSpikes(direction); 
+        if(Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
     _onLose() {
@@ -83,7 +86,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
-        //this._initUI();
+        this._initUI();
         //this._displayGameOver();
     }
 
@@ -109,7 +112,6 @@ export class Scene extends Container {
 
     _initUI() {
         this.mainUI = new MainUI();
-        this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.mainUI);
     }
 

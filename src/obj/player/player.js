@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import {AnimatedSprite, Assets, Container, Graphics, Sprite} from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
@@ -31,12 +31,17 @@ export class Player extends Container {
     }
 
     _initSprite() {
-        this.bird = new Graphics();
-        this.bird.lineStyle(0);
-        this.bird.beginFill(0xd19a52, 1);
-        this.bird.drawCircle(0, 0, 40);
-        this.bird.endFill();
+        this.animateTextures = [Sprite.from(Assets.get("bird1")).texture, Sprite.from(Assets.get("bird2")).texture];
+        this.bird = new AnimatedSprite(this.animateTextures);
+        this.bird.anchor.set(0.5);
+        this.bird.scale.set(0.5);
+        this.bird.animationSpeed = 0.018;
+        this.bird.play();
         this.addChild(this.bird);
+    }
+
+    _changeDirection() {
+        this.bird.scale.x *= -1;
     }
 
     onPointerDown() {
@@ -77,11 +82,13 @@ export class Player extends Container {
     _limitHozMovement() {
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
             this.direction.x = 1;
+            this._changeDirection();
             this._touchWall();
         }
 
         if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
             this.direction.x = -1;
+            this._changeDirection();
             this._touchWall();
         }
     }

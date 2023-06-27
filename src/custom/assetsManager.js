@@ -15,6 +15,12 @@ export class AssetsManager {
                 "candy": "../assets/images/keo.png",
             }
         )
+        this._addBundle(
+            "bird", {
+                "bird1": "./assets/images/Bird1.png",
+                "bird2": "./assets/images/Bird2.png",
+            }
+        )
 
         return Assets.loadBundle(this.keys);
     }

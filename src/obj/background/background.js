@@ -52,7 +52,7 @@ export class Background extends Container {
         this.addChild(this.scoreBg);
 
         // score
-        this.scoreText = new Text(`${Data.currentScore}`, {
+        this.scoreText = new Text(`0${Data.currentScore}`, {
             fontFamily: 'Montserrat',
             fontWeight: 1000,
             fontSize: 50,
@@ -63,6 +63,16 @@ export class Background extends Container {
         this.scoreText.y = -Game.app.view.height / 28;
         this.scoreText.scale.set(4.5);
         this.displayScore();
+    }
+
+    updateBackground(newScore){
+        if(newScore < 10) this.scoreText.text = `0${newScore}`;
+        else this.scoreText.text = `${newScore}`;
+
+        if(newScore > 0 && newScore % 5 == 0) {
+            if(!this.ok) this.changeBgColor();
+            this.ok = 1;
+        } else this.ok = 0;
     }
 
     changeBgColor() {
@@ -79,14 +89,5 @@ export class Background extends Container {
 
     hideScore(){
         this.removeChild(this.scoreText);
-    }
-    update() {
-        if(Data.currentScore < 10) this.scoreText.text = `0${Data.currentScore}`;
-        else this.scoreText.text = `${Data.currentScore}`;
-
-        if(Data.currentScore > 0 && Data.currentScore % 5 == 0) {
-            if(!this.ok) this.changeBgColor();
-            this.ok = 1;
-        } else this.ok = 0;
     }
 }

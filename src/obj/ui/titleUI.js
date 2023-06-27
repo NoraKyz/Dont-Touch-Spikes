@@ -1,5 +1,6 @@
 import { Container, Sprite, Text } from "pixi.js";
 import { Game } from "../../game";
+import { Data } from "../../data";
 
 export class TitleUI extends Container {
   constructor() {
@@ -17,14 +18,15 @@ export class TitleUI extends Container {
 
     }
     this.itemImage = Sprite.from('../assets/images/keo.png');
-    this.itemImage.width = 90;
-    this.itemImage.height = 90;
-    this.itemQuantity = new Text(`36`, style);
+    this.itemQuantity = new Text(`${Data.itemQuantity}`, style);
+    this.itemImage.scale.set(0.11);
     this.itemImage.anchor.set(0.5);
+    this.itemQuantity.anchor.set(0.5);
 
     this.itemImage.position.set(-35, Game.app.view.height / 7 + 60);
-    this.itemQuantity.position.set(10, Game.app.view.height / 7 + 35);
+    this.itemQuantity.position.set(40, Game.app.view.height / 7 + 65);
   }
+  
   _initGameName() {
     const style = {
       fontFamily: 'Arial',
@@ -42,8 +44,6 @@ export class TitleUI extends Container {
     this.gameNameBottom.position.set(0, -Game.app.view.height * 3 / 7 + 170);
   }
   _initGameInfor() {
-    this.bestScore = 20;
-    this.gamesPlayed = 31;
     const style = {
       fontFamily: 'Arial',
       fontWeight: 600,
@@ -51,13 +51,29 @@ export class TitleUI extends Container {
       fill: '0x808080',
       align: 'center',
     }
-    this.gameInforTop = new Text(`BEST SCORE : ${this.bestScore}`, style);
+    this.gameInforTop = new Text(`BEST SCORE : ${Data.bestScore}`, style);
     this.gameInforTop.anchor.set(0.5);
     this.gameInforTop.position.set(0, Game.app.view.height / 7 + 130);
 
-    this.gameInforBottom = new Text(`GAMES PLAYED : ${this.gamesPlayed}`, style);
+    this.gameInforBottom = new Text(`GAMES PLAYED : ${Data.gamesPlayed}`, style);
     this.gameInforBottom.anchor.set(0.5);
     this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180);
+  }
+
+  _updateItemQuantity(quantity){
+    this.itemQuantity.text = `${Data.itemQuantity}`;
+  }
+  _updateBestScore(){
+    if(Data.currentScore > Data.bestScore) Data.bestScore = Data.currentScore;
+    this.gameInforTop.text = `BEST SCORE : ${Data.bestScore}`;
+    Data.currentScore = 0;
+  }
+  _updateGamePlayed(){
+    this.gameInforBottom.text = `GAMES PLAYED : ${++Data.gamesPlayed}`;
+  }
+  updateTitleUI(){
+    this._updateBestScore();
+    this._updateGamePlayed();
   }
 
   displayGameName() {

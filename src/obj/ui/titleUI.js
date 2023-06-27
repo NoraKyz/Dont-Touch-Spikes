@@ -1,4 +1,4 @@
-import { Container, Sprite, Text } from "pixi.js";
+import { Assets, Container, Sprite, Text } from "pixi.js";
 import { Game } from "../../game";
 import { Data } from "../../data";
 
@@ -17,9 +17,8 @@ export class TitleUI extends Container {
       fill: '0xf50c0c',
 
     }
-    this.itemImage = Sprite.from('../assets/images/keo.png');
+    this.itemImage = Sprite.from(Assets.get("candy"));
     this.itemQuantity = new Text(`${Data.itemQuantity}`, style);
-    this.itemImage.scale.set(0.11);
     this.itemImage.anchor.set(0.5);
     this.itemQuantity.anchor.set(0.5);
 

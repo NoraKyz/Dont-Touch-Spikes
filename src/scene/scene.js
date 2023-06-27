@@ -9,6 +9,7 @@ import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
+import { Candy } from "../obj/items/candy";
 
 
 export const GameState = Object.freeze({
@@ -24,7 +25,7 @@ export class Scene extends Container {
         this._initGameplay();
         this._initInputHandle();
         this._initColliderDetector();
-        this._initGameManager();
+        this._initGameManager();    
         this.gameState = GameState.Ready;
     }
 
@@ -35,7 +36,6 @@ export class Scene extends Container {
 
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
-
             this._onLose();
             this.player.onCollision(obj2);
         }
@@ -48,7 +48,9 @@ export class Scene extends Container {
     }
 
     _onNextLevel(direction) {
-        if(this.gameState == GameState.Lose) return;
+        if(this.gameState == GameState.Lose) {
+            return;
+        }
         this.background.updateBackground(++Data.currentScore); 
         this.traps._moveSpikes(direction); 
         if(Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
@@ -83,6 +85,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
+        this._initCandy();
         this._initUI();
     }
 
@@ -99,6 +102,11 @@ export class Scene extends Container {
     _initTraps() {
         this.traps = new SpikesManager();
         this.gameplay.addChild(this.traps);
+    }
+
+    _initCandy(){
+        this.candy = new Candy();
+        this.gameplay.addChild(this.candy);
     }
 
     _initBackground() {
@@ -125,5 +133,6 @@ export class Scene extends Container {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
         this.traps.update();
+        this.candy.update();
     }
 }

@@ -11,7 +11,6 @@ export class Background extends Container {
         this._initRetangleBottom();
         this._initPlayGround();
         this._initScoreBg();
-
         this.ok = 0;
     }
 

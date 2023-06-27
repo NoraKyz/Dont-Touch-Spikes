@@ -45,7 +45,7 @@ export class Scene extends Container {
     _initGameManager() {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
-        this.gameManager.on("lose", this._onLose.bind(this));  
+        this.gameManager.on("lose", this._onLose.bind(this));
     }
 
     _onNextLevel() {
@@ -54,6 +54,7 @@ export class Scene extends Container {
 
     _onLose() {
         this.gameState = GameState.Lose;
+        setTimeout(() => this._initGameOver(), 600);
     }
 
     _initInputHandle() {
@@ -109,7 +110,8 @@ export class Scene extends Container {
     _displayGameOver() {
         this.gameplay.addChild(this.gameOverUI);
     }
-    _displayGameOver(){
+
+    _initGameOver(){
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
     }

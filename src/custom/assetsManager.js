@@ -6,9 +6,22 @@ export class AssetsManager {
         this.keys = []
 
         this._addBundle(
+
             "sound", {
             "flySound": "./assets/sound/fly.mp3"
         })
+        this._addBundle(
+            "item", {
+                "candy": "../assets/images/keo.png",
+            }
+        )
+        this._addBundle(
+            "bird", {
+                "bird1": "./assets/images/Bird1.png",
+                "bird2": "./assets/images/Bird2.png",
+            }
+        )
+
 
         return Assets.loadBundle(this.keys);
     }

@@ -35,6 +35,7 @@ export class Scene extends Container {
 
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
+
             this._onLose();
             this.player.onCollision(obj2);
         }
@@ -43,7 +44,7 @@ export class Scene extends Container {
     _initGameManager() {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
-        this.gameManager.on("lose", this._onLose.bind(this));  
+        this.gameManager.on("lose", this._onLose.bind(this));
     }
 
     _onNextLevel(direction) {
@@ -55,6 +56,10 @@ export class Scene extends Container {
 
     _onLose() {
         this.gameState = GameState.Lose;
+
+        this.player.isDie = true;
+        setTimeout(() => this._initGameOver(), 1000);
+
     }
 
     _initInputHandle() {
@@ -106,10 +111,12 @@ export class Scene extends Container {
         this.gameplay.addChild(this.mainUI);
     }
 
+
     _displayGameOver() {
         this.gameplay.addChild(this.gameOverUI);
     }
-    _displayGameOver(){
+
+    _initGameOver(){
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
     }

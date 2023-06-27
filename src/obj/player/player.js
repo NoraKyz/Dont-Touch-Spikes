@@ -15,6 +15,7 @@ export class Player extends Container {
         this._initCollider();
         this.gameManager = GameManager.instance;
     }
+    
     _initCollider() {
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);

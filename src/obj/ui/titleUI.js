@@ -96,4 +96,6 @@ export class TitleUI extends Container {
     this.removeChild(this.gameInforTop);
     this.removeChild(this.gameInforBottom);
   }
+
+  // TODO: Không sử dụng removeChild trong UI, chỉ dùng visible
 }

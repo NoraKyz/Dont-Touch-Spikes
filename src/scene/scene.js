@@ -25,7 +25,7 @@ export class Scene extends Container {
         this._initGameplay();
         this._initInputHandle();
         this._initColliderDetector();
-        this._initGameManager();    
+        this._initGameManager();
         this.gameState = GameState.Ready;
     }
 
@@ -53,20 +53,20 @@ export class Scene extends Container {
     }
 
     _onNextLevel(direction) {
-        if(this.gameState == GameState.Lose) {
+        if (this.gameState == GameState.Lose) {
             return;
         }
-        this.background.updateBackground(++Data.currentScore); 
-        this.traps._moveSpikes(direction); 
-        if(Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
+        
+        this.background.updateBackground(++Data.currentScore);
+        this.gameManager.updateLevel();
+        this.traps._moveSpikes(direction);
+        if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
     _onLose() {
         this.gameState = GameState.Lose;
-
         this.player.isDie = true;
         setTimeout(() => this._initGameOver(), 1000);
-
     }
 
     _initInputHandle() {
@@ -109,7 +109,7 @@ export class Scene extends Container {
         this.gameplay.addChild(this.traps);
     }
 
-    _initCandy(){
+    _initCandy() {
         this.candy = new Candy();
         this.gameplay.addChild(this.candy);
     }
@@ -124,12 +124,8 @@ export class Scene extends Container {
         this.gameplay.addChild(this.mainUI);
     }
 
-
-    _displayGameOver() {
-        this.gameplay.addChild(this.gameOverUI);
-    }
-
-    _initGameOver(){
+    // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
+    _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
     }

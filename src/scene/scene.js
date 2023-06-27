@@ -8,7 +8,8 @@ import { Spike } from "../obj/trap/spike";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
-import { Data } from "../data";
+import { SoundManager } from "../custom/soundManager";
+
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -24,7 +25,12 @@ export class Scene extends Container {
         this._initInputHandle();
         this._initColliderDetector();
         this._initGameManager();
+        this._initSoundManager();
         this.gameState = GameState.Ready;
+    }
+
+    _initSoundManager(){
+        this.soundManager = SoundManager.instance;
     }
 
     _initColliderDetector() {
@@ -49,7 +55,7 @@ export class Scene extends Container {
     }
 
     _onNextLevel() {
-        Data.currentScore++;
+
     }
 
     _onLose() {
@@ -65,6 +71,7 @@ export class Scene extends Container {
     _onPointerDown() {
         if (this.gameState == GameState.Ready) {
             this.player.onPointerDown();
+            this.soundManager.play("numkey");
         }
     }
 

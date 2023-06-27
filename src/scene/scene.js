@@ -48,8 +48,10 @@ export class Scene extends Container {
         this.gameManager.on("lose", this._onLose.bind(this));  
     }
 
-    _onNextLevel() {
-        //this.background.updateBackground(++Data.currentScore);       
+    _onNextLevel(direction) {
+        this.background.updateBackground(++Data.currentScore); 
+        this.traps._moveSpikes(direction); 
+        if(Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
     _onLose() {
@@ -116,7 +118,7 @@ export class Scene extends Container {
 
     update(dt) {
         this.player.update(dt);
-        this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
-        //this.traps.update();
+        //this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
+        this.traps.update();
     }
 }

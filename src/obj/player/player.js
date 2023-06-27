@@ -72,20 +72,26 @@ export class Player extends Container {
     }
 
     // xử lý chạm left or right
+    
     _limitHozMovement() {
+        let direction = 1;
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
+            // 1 direction
+            this.gameManager.emit("nextLevel", direction);
             this.direction.x = 1;
             this._touchWall();
         }
 
         if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
+            direction = 0;
+            this.gameManager.emit("nextLevel", direction);
             this.direction.x = -1;
             this._touchWall();
         }
     }
 
     _touchWall() {
-        this.gameManager.emit("nextLevel");
+        
 
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce;

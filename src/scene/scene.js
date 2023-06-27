@@ -49,6 +49,7 @@ export class Scene extends Container {
     }
 
     _onNextLevel(direction) {
+        if(this.gameState == GameState.Lose) return;
         this.background.updateBackground(++Data.currentScore); 
         this.traps._moveSpikes(direction); 
         if(Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);

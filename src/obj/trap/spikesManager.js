@@ -12,7 +12,7 @@ export class SpikesManager extends Container {
         this.distance = 70 * Math.sqrt(3) / 2;
         this.velocity = this.distance / 30;
         this.minSpikes = 2;
-        this.maxSpikes = 7;
+        this.maxSpikes = 5;
         this.leftIndexSpikes = [4, 5];
         this.rightIndexSpikes = [];
 
@@ -36,33 +36,33 @@ export class SpikesManager extends Container {
     _moveSpikes(state){
         this.state = state;
         if(this.state == 0){
-            for(let i = 0; i < this.spikeRight.length; i++){
-                if(this.rightIndexSpikes.includes(i)){
-                    const target = {x: this.distance, y: this.spikeRight[i].y};
-                    this._movebyTween(this.spikeRight[i], target);
+            this.spikeRight.forEach((spike, index) => {
+                if(this.rightIndexSpikes.includes(index)){
+                    const target = {x: this.distance, y: spike.y};
+                    this._movebyTween(spike, target);
                 } 
-            }
-            for(let i = 0; i < this.spikeLeft.length; i++){
-                if(this.leftIndexSpikes.includes(i)){
-                    const target = {x: 0, y: this.spikeLeft[i].y};
-                    this._movebyTween(this.spikeLeft[i], target);
-                }
-            }
+            })
+            this.spikeLeft.forEach((spike, index) => {
+                if(this.leftIndexSpikes.includes(index)){
+                    const target = {x: 0, y: spike.y};
+                    this._movebyTween(spike, target);
+                } 
+            })
             this.rightIndexSpikes = this._randomSpike();
         }
         if(this.state == 1){
-            for(let i = 0; i < this.spikeRight.length; i++){
-                if(this.rightIndexSpikes.includes(i)){ 
-                    const target = {x: 0, y: this.spikeRight[i].y};
-                    this._movebyTween(this.spikeRight[i], target);
+            this.spikeRight.forEach((spike, index) => {
+                if(this.rightIndexSpikes.includes(index)){
+                    const target = {x: 0, y: spike.y};
+                    this._movebyTween(spike, target);
                 } 
-            }
-            for(let i = 0; i < this.spikeLeft.length; i++){
-                if(this.leftIndexSpikes.includes(i)){ 
-                    const target = {x: -this.distance, y: this.spikeLeft[i].y};
-                    this._movebyTween(this.spikeLeft[i], target);
-                }
-            }
+            })
+            this.spikeLeft.forEach((spike, index) => {
+                if(this.leftIndexSpikes.includes(index)){
+                    const target = {x: -this.distance, y: spike.y};
+                    this._movebyTween(spike, target);
+                } 
+            })
             this.leftIndexSpikes = this._randomSpike();
         }
     }

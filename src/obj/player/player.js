@@ -77,6 +77,7 @@ export class Player extends Container {
         let direction = 1;
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
             // 1 direction
+            direction = 1;
             this.gameManager.emit("nextLevel", direction);
             this.direction.x = 1;
             this._touchWall();

@@ -18,7 +18,7 @@ export class MainUI extends Container{
   _initGameTutol(){
     const style = {
       fontFamily: 'Arial',
-      fontWeight: 700,
+      fontWeight: 600,
       fontSize: 40,
       fill: '0x909090',
       align: 'center',

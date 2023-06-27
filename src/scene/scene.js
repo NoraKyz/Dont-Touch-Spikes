@@ -78,7 +78,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
-        //this._initUI();
+        this._initUI();
         //this._displayGameOver();
     }
 

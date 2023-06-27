@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, Assets } from "pixi.js";
 import { Scene } from "./scene/scene";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";

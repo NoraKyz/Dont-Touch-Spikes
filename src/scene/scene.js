@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Assets, Container } from "pixi.js";
 import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
@@ -9,6 +9,7 @@ import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
+
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -38,9 +39,6 @@ export class Scene extends Container {
             this._onLose();
             this.player.onCollision(obj2);
         }
-        // if(obj1 === this.player && obj2 instanceof Spike) {
-
-        // }
     }
 
     _initGameManager() {
@@ -73,6 +71,7 @@ export class Scene extends Container {
     _onPointerDown() {
         if (this.gameState == GameState.Ready) {
             this.player.onPointerDown();
+            Assets.get("flySound").play();
         }
     }
 
@@ -84,8 +83,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
-        //this._initUI();
-        //this._displayGameOver();
+        this._initUI();
     }
 
     resize() {

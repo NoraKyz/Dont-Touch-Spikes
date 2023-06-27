@@ -109,6 +109,10 @@ export class Scene extends Container {
     _displayGameOver() {
         this.gameplay.addChild(this.gameOverUI);
     }
+    _displayGameOver(){
+        this.gameOverUI = new GameOverUI();
+        this.gameplay.addChild(this.gameOverUI);
+    }
 
     update(dt) {
         this.player.update(dt);

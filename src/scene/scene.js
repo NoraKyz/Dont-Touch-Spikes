@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Assets, Container } from "pixi.js";
 import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
@@ -8,7 +8,7 @@ import { Spike } from "../obj/trap/spike";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
-import { SoundManager } from "../custom/soundManager";
+import { Data } from "../data";
 
 
 export const GameState = Object.freeze({
@@ -25,12 +25,7 @@ export class Scene extends Container {
         this._initInputHandle();
         this._initColliderDetector();
         this._initGameManager();
-        this._initSoundManager();
         this.gameState = GameState.Ready;
-    }
-
-    _initSoundManager(){
-        this.soundManager = SoundManager.instance;
     }
 
     _initColliderDetector() {
@@ -74,7 +69,7 @@ export class Scene extends Container {
     _onPointerDown() {
         if (this.gameState == GameState.Ready) {
             this.player.onPointerDown();
-            this.soundManager.play("numkey");
+            console.log(Assets.get("fly"));
         }
     }
 

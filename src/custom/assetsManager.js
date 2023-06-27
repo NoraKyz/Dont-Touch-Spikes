@@ -1,3 +1,4 @@
+import { sound } from "@pixi/sound";
 import { Assets } from "pixi.js";
 
 export class AssetsManager {
@@ -5,8 +6,8 @@ export class AssetsManager {
         this.keys = []
 
         this._addBundle(
-            "soundGameplay", {
-            "fly": "./assets/sound/fly.mp3",
+            "sound", {
+            "flySound": "./assets/sound/fly.mp3"
         })
 
         return Assets.loadBundle(this.keys);

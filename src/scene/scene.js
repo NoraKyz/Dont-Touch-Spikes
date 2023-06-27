@@ -38,9 +38,6 @@ export class Scene extends Container {
             this._onLose();
             this.player.onCollision(obj2);
         }
-        // if(obj1 === this.player && obj2 instanceof Spike) {
-
-        // }
     }
 
     _initGameManager() {
@@ -69,7 +66,7 @@ export class Scene extends Container {
     _onPointerDown() {
         if (this.gameState == GameState.Ready) {
             this.player.onPointerDown();
-            console.log(Assets.get("fly"));
+            Assets.get("flySound").play();
         }
     }
 
@@ -82,7 +79,6 @@ export class Scene extends Container {
         this._initPlayer();
         this._initTraps();
         this._initUI();
-        //this._displayGameOver();
     }
 
     resize() {
@@ -121,6 +117,6 @@ export class Scene extends Container {
     update(dt) {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
-        //this.traps.update();
+        this.traps.update();
     }
 }

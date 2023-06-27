@@ -3,6 +3,7 @@ import { GameConstant } from "../../gameConstant";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
+import { GameManager } from "../../custom/gameManager";
 
 export class Player extends Container {
     constructor() {
@@ -10,6 +11,7 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
         this._initCollider();
+        this.gameManager = GameManager.instance;
     }
 
     _initCollider() {
@@ -58,28 +60,8 @@ export class Player extends Container {
         if (this.isPlaying == false) {
             return;
         }
-        // xử lý chạm left or right
-        if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
-            this.direction.x = 1;
-            if (this.velocity.y <= -this.jumpForce * 0.7) {
-                this.velocity.y = -this.jumpForce;
-            } else {
-                this.velocity.y = -4;
-                if (this.isDie) {
-                    this.velocity.y = 2;
-                }
-            }
-        } else if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
-            this.direction.x = -1;
-            if (this.velocity.y <= -this.jumpForce * 0.7) {
-                this.velocity.y = -this.jumpForce;
-            } else {
-                this.velocity.y = -4;
-                if (this.isDie) {
-                    this.velocity.y = 2;
-                }
-            }
-        }
+
+        this._limitHozMovement();
 
         // di chuyển bằng thay đổi pos
         this.velocity.y += this.gravity;
@@ -87,7 +69,37 @@ export class Player extends Container {
         this.position.x += this.velocity.x * this.direction.x * dt;
         this.position.y += this.velocity.y * this.direction.y * dt;
 
-        //xử lý chạm top vs bottom
+        this._limitVerMovement();
+    }
+
+    // xử lý chạm left or right
+    _limitHozMovement() {
+        if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
+            this.direction.x = 1;
+            this._touchWall();
+        }
+
+        if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
+            this.direction.x = -1;
+            this._touchWall();
+        }
+    }
+
+    _touchWall() {
+        this.gameManager.emit("nextLevel");
+
+        if (this.velocity.y <= -this.jumpForce * 0.7) {
+            this.velocity.y = -this.jumpForce;
+        } else {
+            this.velocity.y = -4;
+            if (this.isDie) {
+                this.velocity.y = 2;
+            }
+        }
+    }
+
+    //xử lý chạm top vs bottom
+    _limitVerMovement() {
         const topLimit = - Game.app.view.height / 2 + Game.app.view.height / 14;
         const bottomLimit = Game.app.view.height * 2.5 / 7;
 

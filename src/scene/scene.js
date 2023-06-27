@@ -126,6 +126,6 @@ export class Scene extends Container {
     update(dt) {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
-        this.traps.update();
+        //this.traps.update();
     }
 }

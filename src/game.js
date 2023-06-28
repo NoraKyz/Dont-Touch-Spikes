@@ -39,6 +39,15 @@ export class Game {
         this.scene = new Scene();
         this.app.stage.addChild(this.scene);
     }
+
+    static _reloadScene() {
+        if(this.scene) {
+            this.scene.destroy();
+            this.app.stage.removeChild(this.scene);
+            this.scene = null;
+        }
+        this._initScene();
+    }
     static update(dt) {
         this.scene.update(dt);
     }

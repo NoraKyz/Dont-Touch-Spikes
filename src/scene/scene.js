@@ -41,8 +41,8 @@ export class Scene extends Container {
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            // TODO: Thêm hàm tăng điểm và random lại vị trí của candy
-            // Note: Hàm này có thể gọi nhiều lần, hãy làm sao để cho candy chỉ ăn 1 lần tại 1 vị trí
+            this.candy.randomPosition();
+            this.candy.updateCandyQuantity(this.candy.eaten);
         }
     }
 
@@ -50,16 +50,22 @@ export class Scene extends Container {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
         this.gameManager.on("lose", this._onLose.bind(this));
+        this.gameManager.on("replay", this._reloadScene.bind(this));
+    }
+
+    _reloadScene() {
+        Data.currentScore = 0;
+        Game._reloadScene();
     }
 
     _onNextLevel(direction) {
         if (this.gameState == GameState.Lose) {
             return;
         }
-        
+
         this.background.updateBackground(++Data.currentScore);
-        this.gameManager.updateLevel();
-        this.traps._moveSpikes(direction);
+        let limitSpike = this.gameManager.updateLevel();
+        this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
@@ -117,7 +123,7 @@ export class Scene extends Container {
 
     _initCandy() {
         this.candy = new Candy();
-        this.gameplay.addChild(this.candy);
+        //this.gameplay.addChild(this.candy);
     }
 
     _initBackground() {
@@ -132,10 +138,11 @@ export class Scene extends Container {
 
 
     // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
-    _initGameOver() {    
+
+    _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
-        this.gameOverUI.titleUI.updateTitleUI();
+        this.gameOverUI.gameInfor.updateGameInfor();
     }
 
     update(dt) {

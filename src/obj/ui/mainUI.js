@@ -18,7 +18,7 @@ export class MainUI extends Container{
   _initGameTutol(){
     const style = {
       fontFamily: 'Arial',
-      fontWeight: 700,
+      fontWeight: 600,
       fontSize: 40,
       fill: '0x909090',
       align: 'center',
@@ -31,13 +31,18 @@ export class MainUI extends Container{
     this.gameTutolBottom.anchor.set(0.5);
     this.gameTutolBottom.position.set(0, -160);
   }
+
   _displayMainUI(){
     this.addChild(this.gameTutolTop);
     this.addChild(this.gameTutolBottom);
   }
+  
   hideMainUI(){
-    this.titleUI.hideTitleUI();
+    this.titleUI.hideGameInfor();
+    this.titleUI.hideGameName();
     this.removeChild(this.gameTutolTop);
     this.removeChild(this.gameTutolBottom);
   }
+
+  // TODO: Không sử dụng removeChild trong UI, chỉ dùng visible
 }

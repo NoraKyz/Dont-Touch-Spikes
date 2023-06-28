@@ -1,20 +1,21 @@
+import { sound } from "@pixi/sound";
 import { Assets } from "pixi.js";
 
 export class AssetsManager {
     static _loadAssets() {
-        this.keys = [];
-        
-        // Ví dụ cách sử dụng
-        // this._addBundle(
-        //     "player_tank", {
-        //     "Track_1_A": "./assets/images/Tank/PNG/Tracks/Track_1_A.png",
-        //     "Track_1_B": "./assets/images/Tank/PNG/Tracks/Track_1_B.png",
-        // })
+        this.keys = []
+
+        this._addBundle(
+            "sound", {
+            "flySound": "./assets/sound/fly.mp3"
+        })
+
         this._addBundle(
             "item", {
-                "candy": "../assets/images/keo.png",
+                "candy": "./assets/images/candy.png",
             }
         )
+        
         this._addBundle(
             "bird", {
                 "bird1": "./assets/images/Bird1.png",

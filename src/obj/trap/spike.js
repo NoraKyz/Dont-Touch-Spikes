@@ -10,7 +10,7 @@ export class Spike extends Container {
     _initSprite() {
         this.size = 70; // Kích thước cạnh tam giác
         this.spike = new Graphics();
-        this.spike.beginFill(0x787b80);
+        this.spike.beginFill(0x808080);
 
         const halfSize = this.size / 2;
         const x1 = -halfSize;
@@ -28,5 +28,9 @@ export class Spike extends Container {
         this.spike.endFill();
 
         this.addChild(this.spike);
+    }
+
+    changeColor(color){
+        this.spike.tint = color;
     }
 }

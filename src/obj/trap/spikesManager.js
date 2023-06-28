@@ -3,6 +3,7 @@ import { Spike } from "./spike";
 import { Game } from "../../game";
 import { Collider } from "../physics/collider";
 import { CommonUtils } from "../../commonUtils";
+import * as TWEEN from '@tweenjs/tween.js'  
 
 export class SpikesManager extends Container {
     constructor() {
@@ -11,7 +12,7 @@ export class SpikesManager extends Container {
         this.distance = 70 * Math.sqrt(3) / 2;
         this.velocity = this.distance / 30;
         this.minSpikes = 2;
-        this.maxSpikes = 7;
+        this.maxSpikes = 5;
         this.leftIndexSpikes = [4, 5];
         this.rightIndexSpikes = [];
 
@@ -32,43 +33,47 @@ export class SpikesManager extends Container {
         return arrayIndex;
     }
 
-    _moveSpikes(){
+    _moveSpikes(state){
+        this.state = state;
         if(this.state == 0){
-            for(let i = 0; i < this.spikeRight.length; i++){
-                if(this.rightIndexSpikes.includes(i)){
-                    this.spikeRight[i].x += this.velocity;
+            this.spikeRight.forEach((spike, index) => {
+                if(this.rightIndexSpikes.includes(index)){
+                    const target = {x: this.distance, y: spike.y};
+                    this._movebyTween(spike, target);
                 } 
-            }
-            for(let i = 0; i < this.spikeLeft.length; i++){
-                if(this.leftIndexSpikes.includes(i)){
-                    this.spikeLeft[i].x +=  this.velocity;
-                }
-            }
-            if(this.leftIndexSpikes.length > 0 && this.spikeLeft[this.leftIndexSpikes[0]].x >= 0){
-                this.state = 1;
-                this.rightIndexSpikes = this._randomSpike();
-            }
+            })
+            this.spikeLeft.forEach((spike, index) => {
+                if(this.leftIndexSpikes.includes(index)){
+                    const target = {x: 0, y: spike.y};
+                    this._movebyTween(spike, target);
+                } 
+            })
+            this.rightIndexSpikes = this._randomSpike();
         }
         if(this.state == 1){
-            for(let i = 0; i < this.spikeRight.length; i++){
-                if(this.rightIndexSpikes.includes(i)){ 
-                    this.spikeRight[i].x -= this.velocity;
+            this.spikeRight.forEach((spike, index) => {
+                if(this.rightIndexSpikes.includes(index)){
+                    const target = {x: 0, y: spike.y};
+                    this._movebyTween(spike, target);
                 } 
-            }
-            for(let i = 0; i < this.spikeLeft.length; i++){
-                if(this.leftIndexSpikes.includes(i)){
-                    this.spikeLeft[i].x -=  this.velocity;  
-                }
-            }
-            if(this.leftIndexSpikes.length > 0 && this.spikeLeft[this.leftIndexSpikes[0]].x <= -this.distance){
-                this.state = 0;
-                this.leftIndexSpikes = this._randomSpike();
-            }
+            })
+            this.spikeLeft.forEach((spike, index) => {
+                if(this.leftIndexSpikes.includes(index)){
+                    const target = {x: -this.distance, y: spike.y};
+                    this._movebyTween(spike, target);
+                } 
+            })
+            this.leftIndexSpikes = this._randomSpike();
         }
     }
-
+    
+    _movebyTween(spike, position) {
+        this.tween = new TWEEN.Tween(spike)
+        .to({x: position.x, y: position.y}, 500);
+        this.tween.start();
+    }
     update(){
-        //this._moveSpikes();
+        TWEEN.update();
     }
 
     _initSpikes() {
@@ -95,7 +100,7 @@ export class SpikesManager extends Container {
     }
 
     _initColliders() {
-        let colliderRadious = 70 * Math.sqrt(3) / 3;
+        let colliderRadious = 30;
         this.poolSpikes.forEach(spike => {
             let collider = new Collider(colliderRadious);
             spike.collider = collider;
@@ -111,7 +116,6 @@ export class SpikesManager extends Container {
  
         for (let i = 0; i < numbers; i++) {
             let spike = new Spike();
- 
             if (dir === 1) {
                 spike.x = i * spikeSpacing;
                 spike.y = 0;
@@ -119,22 +123,20 @@ export class SpikesManager extends Container {
                 spike.x = 0;
                 spike.y = i * spikeSpacing;
             }
- 
             spike.rotation = rotation;
- 
             spikeLine.addChild(spike);
             spikes.push(spike);
         }
- 
         spikeLine.x = startX;
         spikeLine.y = startY;
- 
         this.addChild(spikeLine);
- 
         this._addPoolSpike(spikes);
- 
         return spikes;
     }
  
-    
+    changeColor(color){
+        this.poolSpikes.forEach(spike => {
+            spike.changeColor(color);
+        })
+    }
 }

@@ -5,4 +5,8 @@ export class Data {
     this.gamesPlayed = 0;
     this.itemQuantity = 0;
   }
+
+  static resetScore(){
+    this.currentScore = 0;
+  }
 }

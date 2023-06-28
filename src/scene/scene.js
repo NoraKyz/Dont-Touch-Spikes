@@ -53,12 +53,16 @@ export class Scene extends Container {
         this.gameManager.on("lose", this._onLose.bind(this));
         this.gameManager.on("replay", this._reloadScene.bind(this));
     }
-    
-    _reloadScene() {
-        Data.currentScore = 0;
+
+    _reloadScene() {        
+        Data.resetScore();
+        this.player.onReset();
+        this.traps.onReset();
         this.background.onReset();
         this.mainUI.onReset();
         this.gameOverUI.onReset();
+        this.gameState = GameState.Ready;
+   
     }
 
     _onNextLevel(direction) {
@@ -100,8 +104,7 @@ export class Scene extends Container {
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
             Assets.get("flySound").play();
-        }
-        
+        }      
     }
 
     _initGameplay() {
@@ -154,6 +157,7 @@ export class Scene extends Container {
 
 
     // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
+
     _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);

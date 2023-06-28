@@ -1,10 +1,12 @@
-import {AnimatedSprite, Assets, Container, Graphics, Sprite} from "pixi.js";
+import { AnimatedSprite, Assets, Container, Sprite, Texture } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { GameManager } from "../../custom/gameManager";
 import * as TWEEN from '@tweenjs/tween.js'
+import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
+import config from "../../../assets/aim/emitter.json"
 
 
 export class Player extends Container {
@@ -13,9 +15,10 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
         this._initCollider();
+        this._initEffect();
         this.gameManager = GameManager.instance;
     }
-    
+
     _initCollider() {
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);
@@ -39,6 +42,28 @@ export class Player extends Container {
         this.bird.animationSpeed = 0.018;
         this.bird.play();
         this.addChild(this.bird);
+    }
+
+    _initEffect() {
+        this._despawnEffect();
+    }
+
+    _despawnEffect() {
+        this.fadeTween = new TWEEN.Tween(this.bird)
+            .to({ alpha: 0 }, 2000)
+            .onComplete(() => {
+                this.bird.visible = false;
+            })
+            .onStop(() => {
+                this.bird.alpha = 1;
+            });
+    }
+
+    _flyEffect() {
+        let texture = Texture.from("circle");
+        this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
+        this.emitter.emit = true;
+        this.emitter.playOnce();
     }
 
     _changeDirection() {
@@ -80,7 +105,7 @@ export class Player extends Container {
     }
 
     // xử lý chạm left or right
-    
+
     _limitHozMovement() {
         let direction = 1;
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
@@ -118,9 +143,12 @@ export class Player extends Container {
         const topLimit = - Game.app.view.height / 2 + Game.app.view.height / 14;
         const bottomLimit = Game.app.view.height * 2.5 / 7;
 
-        if (this.position.y - this.radiousCollider <= topLimit
-        ) {
+        if (this.position.y - this.radiousCollider <= topLimit) {
             this.position.y = topLimit + this.radiousCollider;
+            if (this.isDie) {
+                this.velocity.y = - this.jumpForce * 1.5;
+                this._isDead();
+            }
         } else if (this.position.y + this.radiousCollider >= bottomLimit) {
             this.position.y = bottomLimit - this.radiousCollider;
             if (this.isDie) {
@@ -145,17 +173,25 @@ export class Player extends Container {
     }
 
     _isDead() {
-        this.fadeTween = new TWEEN.Tween(this.bird)
-        .to({ alpha: 0 }, 2000)
-        .onComplete(() => {
-                this.removeChild(this.bird);
-            });
-        this.fadeTween.start();
+        if (!this.fadeTween.isPlaying()) {
+            this.fadeTween.start();
+        }
+    }
+
+    onReset() {
+        this.isDie = false;
+        this.isPlaying = false;
+        this.velocity = { x: 0, y: -1.5 };
+        this.direction = { x: 1, y: 1 };
+        this.position = { x: 0, y: 0 };
+        this.fadeTween.stop();
+        this.bird.visible = true;
     }
 
     update(dt) {
         this._move(dt);
         this._moveInMenu(dt);
         TWEEN.update();
+        //this.emitter.update(dt);
     }
 }

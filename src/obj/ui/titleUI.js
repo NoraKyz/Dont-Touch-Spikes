@@ -65,7 +65,7 @@ export class TitleUI extends Container {
   _updateBestScore(){
     if(Data.currentScore > Data.bestScore) Data.bestScore = Data.currentScore;
     this.gameInforTop.text = `BEST SCORE : ${Data.bestScore}`;
-    Data.currentScore = 0;
+    //Data.currentScore = 0;
   }
   _updateGamePlayed(){
     this.gameInforBottom.text = `GAMES PLAYED : ${++Data.gamesPlayed}`;
@@ -79,23 +79,25 @@ export class TitleUI extends Container {
     this.addChild(this.gameNameTop);
     this.addChild(this.gameNameBottom);
   }
-  hideGameName() {
-    this.removeChild(this.gameNameTop);
-    this.removeChild(this.gameNameBottom);
-  }
-
   displayGameInfor() {
     this.addChild(this.itemImage);
     this.addChild(this.itemQuantity);
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);
   }
-  hideTitleUI() {
+  
+  hideGameName() {
+    this.removeChild(this.gameNameTop);
+    this.removeChild(this.gameNameBottom);
+  }
+  hideGameInfor() {
     this.removeChild(this.itemImage);
     this.removeChild(this.itemQuantity);
     this.removeChild(this.gameInforTop);
     this.removeChild(this.gameInforBottom);
   }
 
+
   // TODO: Không sử dụng removeChild trong UI, chỉ dùng visible
+
 }

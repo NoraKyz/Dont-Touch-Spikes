@@ -38,7 +38,8 @@ export class MainUI extends Container{
   }
   
   hideMainUI(){
-    this.titleUI.hideTitleUI();
+    this.titleUI.hideGameInfor();
+    this.titleUI.hideGameName();
     this.removeChild(this.gameTutolTop);
     this.removeChild(this.gameTutolBottom);
   }

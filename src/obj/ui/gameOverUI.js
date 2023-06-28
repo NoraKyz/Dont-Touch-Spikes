@@ -143,4 +143,5 @@ export class GameOverUI extends PIXI.Container {
     hide() {
         this.visible = false;
     }
+
 }

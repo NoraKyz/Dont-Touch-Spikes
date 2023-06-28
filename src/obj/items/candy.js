@@ -30,6 +30,7 @@ export class Candy extends Sprite{
     this.x = candyPosition.x;
     this.y = candyPosition.y;
   }
+  
   update(){
     this._candyMove();
   }

@@ -60,13 +60,12 @@ export class TitleUI extends Container {
     this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180);
   }
 
-  _updateItemQuantity(quantity){
+  _updateItemQuantity(){
     this.itemQuantity.text = `${Data.itemQuantity}`;
   }
   _updateBestScore(){
     if(Data.currentScore > Data.bestScore) Data.bestScore = Data.currentScore;
     this.gameInforTop.text = `BEST SCORE : ${Data.bestScore}`;
-    //Data.currentScore = 0;
   }
   _updateGamePlayed(){
     this.gameInforBottom.text = `GAMES PLAYED : ${++Data.gamesPlayed}`;
@@ -74,6 +73,7 @@ export class TitleUI extends Container {
   updateTitleUI(){
     this._updateBestScore();
     this._updateGamePlayed();
+    this._updateItemQuantity();
   }
 
   displayGameName() {

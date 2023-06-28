@@ -41,6 +41,8 @@ export class Scene extends Container {
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
+            this.candy.updateCandyQuantity();
+            this.candy.randomPosition();
             // TODO: Thêm hàm tăng điểm và random lại vị trí của candy
             // Note: Hàm này có thể gọi nhiều lần, hãy làm sao để cho candy chỉ ăn 1 lần tại 1 vị trí
         }
@@ -56,10 +58,10 @@ export class Scene extends Container {
         if (this.gameState == GameState.Lose) {
             return;
         }
-        
+
         this.background.updateBackground(++Data.currentScore);
-        this.gameManager.updateLevel();
-        this.traps._moveSpikes(direction);
+        let limitSpike = this.gameManager.updateLevel();
+        this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 

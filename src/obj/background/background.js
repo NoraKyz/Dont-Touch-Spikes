@@ -11,7 +11,6 @@ export class Background extends Container {
         this._initRetangleBottom();
         this._initPlayGround();
         this._initScoreBg();
-        this.ok = 0;
     }
 
     _initProperties() {
@@ -62,17 +61,13 @@ export class Background extends Container {
         this.scoreText.anchor.set(0.5);
         this.scoreText.y = -Game.app.view.height / 28;
         this.scoreText.scale.set(4.5);
-        this.displayScore();
     }
 
     updateBackground(newScore){
         if(newScore < 10) this.scoreText.text = `0${newScore}`;
         else this.scoreText.text = `${newScore}`;
 
-        if(newScore > 0 && newScore % 5 == 0) {
-            if(!this.ok) this.changeBgColor();
-            this.ok = 1;
-        } else this.ok = 0;
+        if(newScore > 0 && newScore % 5 == 0) this.changeBgColor(); 
     }
     _newMainColor(){
         this.mainColor = CommonUtils.randomColorBackground()
@@ -91,6 +86,8 @@ export class Background extends Container {
     onReset(){
         this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
         this._resetBgColor();
+        this.scoreText.tint = 'ebebeb';
+        this.scoreText.text = `0${Data.currentScore}`;
     }
 
     displayScore() {

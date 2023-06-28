@@ -24,21 +24,6 @@ export class Candy extends Container {
         this.addChild(this.candy);
     }
 
-    updateCandyQuantity(eaten){
-        if (!eaten) {
-            eaten = true;
-            Data.itemQuantity++;
-        }
-    }
-
-    displayCandy() {
-        this.addChild(this.candy);
-    }
-
-    hideCandy() {
-        this.removeChild(this.candy);
-    }
-
     _initCollider() {
         const colliderRadious = 18;
         this.collider = new Collider(colliderRadious);
@@ -51,19 +36,21 @@ export class Candy extends Container {
         this.y -= this.speed;
     }
 
-    randomPosition() {
+    randomPosition(direction) {
         const candyPosition = { x: 0, y: 0 };
-        let randomX = Math.floor(Math.random() * 2);
-        if (randomX) candyPosition.x = -Game.app.view.width * 4 / 14;
+        if(direction === 1) candyPosition.x = -Game.app.view.width * 4 / 14;
         else candyPosition.x = Game.app.view.width * 4 / 14;
-
+    
         let randomY = Math.floor(Math.random() * 2);
         if (randomY) candyPosition.y = -Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 3));
         else candyPosition.y = Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 2));
+
         this.x = candyPosition.x;
         this.y = candyPosition.y;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
+
+        this._hideCandy();
     }
 
     _initEffect(){
@@ -78,14 +65,23 @@ export class Candy extends Container {
             this.visible = false;
         });
     }
-
     onSpawn() {
         this.alpha = 0;
         this.spawnEffect.start();
     }
-
+    
     onDead() {
         this.deSpawnEffect.start();
+    }
+    
+    updateCandyQuantity(){
+        Data.itemQuantity++;
+    }
+    _hideCandy(){
+        this.visible = false;
+    }
+    displayCandy(){
+        this.visible = true;
     }
 
     update() {

@@ -45,8 +45,8 @@ export class Scene extends Container {
         if (obj1 === this.player && obj2 instanceof Candy) {
             if(this.gameState != GameState.Lose){
                 Assets.get("eatSound").play();
-                this.candy.randomPosition();
-                this.candy.updateCandyQuantity(this.candy.eaten);
+                this.candy.randomPosition(this.player.direction.x);
+                this.candy.updateCandyQuantity();
             }      
         }
     }
@@ -72,11 +72,11 @@ export class Scene extends Container {
         if (this.gameState == GameState.Lose) {
             return;
         }
-
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
+        if(this.candy.visible == false) this.candy.displayCandy();
     }
 
     _onLose() {
@@ -87,6 +87,7 @@ export class Scene extends Container {
             this._initGameOver();
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
+            this.background.hideScore();
         }, 1000);
         this.gameInfor.updateGameInfor();
         this.candy.onDead();
@@ -104,6 +105,7 @@ export class Scene extends Container {
                 this.mainUI.hideMainUI();
                 this.gameInfor.hideGameInfor();
                 this.candy.onSpawn();
+                this.background.displayScore();
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;

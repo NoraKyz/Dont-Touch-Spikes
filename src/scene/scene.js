@@ -27,6 +27,7 @@ export class Scene extends Container {
         this._initInputHandle();
         this._initColliderDetector();
         this._initGameManager();
+        this._initGameOver();
         this.gameState = GameState.Ready;
     }
 
@@ -104,7 +105,7 @@ export class Scene extends Container {
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
             Assets.get("flySound").play();
-        }      
+
     }
 
     _initGameplay() {
@@ -161,6 +162,7 @@ export class Scene extends Container {
     _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
+        this.gameOverUI.hide();
     }
 
     update(dt) {

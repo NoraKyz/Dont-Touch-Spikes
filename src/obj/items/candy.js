@@ -22,8 +22,12 @@ export class Candy extends Container {
         this.addChild(this.candy);
     }
 
-    updateCandyQuantity(){
-        Data.itemQuantity++;
+    updateCandyQuantity(eaten){
+        if (!eaten) {
+            eaten = true;
+            console.log(123);
+            Data.itemQuantity++;
+        }
     }
 
     displayCandy() {
@@ -49,7 +53,7 @@ export class Candy extends Container {
     randomPosition() {
         const candyPosition = { x: 0, y: 0 };
         let randomX = Math.floor(Math.random() * 2);
-        if (randomX) candyPosition.x = -Game.app.view.width * 5.5 / 14;
+        if (randomX) candyPosition.x = -Game.app.view.width * 4 / 14;
         else candyPosition.x = Game.app.view.width * 4 / 14;
 
         let randomY = Math.floor(Math.random() * 2);
@@ -57,9 +61,12 @@ export class Candy extends Container {
         else candyPosition.y = Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 2));
         this.x = candyPosition.x;
         this.y = candyPosition.y;
+        this.highestPos = this.y - this.distance;
+        this.lowestPos = this.y + this.distance;
     }
 
     update() {
+        //console.log(123);
         this._candyMove();
     }
 }

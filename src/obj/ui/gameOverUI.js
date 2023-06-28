@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
-import { TitleUI } from "./titleUI";
 import {Graphics} from "pixi.js";
 import {Data} from "../../data";
+import { GameInfor } from "./gameInfor";
 
 const BUTTON = Object.freeze({
     x: -280,
@@ -131,16 +131,15 @@ export class GameOverUI extends PIXI.Container {
     }
 
     _initTitleUI(){
-        this.titleUI = new TitleUI();
-        this.addChild(this.titleUI);
-        this.titleUI.displayGameInfor();
+        this.gameInfor = new GameInfor();
+        this.addChild(this.gameInfor);
     }
 
-    show() {
+    showGameOverUI() {
         this.visible = true;
     }
 
-    hide() {
+    hideGameOverUI() {
         this.visible = false;
     }
 

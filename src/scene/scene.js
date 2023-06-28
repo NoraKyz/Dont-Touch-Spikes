@@ -45,7 +45,7 @@ export class Scene extends Container {
         if (obj1 === this.player && obj2 instanceof Candy) {
             if(this.gameState != GameState.Lose){
                 Assets.get("eatSound").play();
-                this.candy.randomPosition();
+                this.candy.randomPosition(this.player.direction.x);
                 this.candy.updateCandyQuantity(this.candy.eaten);
             }      
         }
@@ -69,6 +69,7 @@ export class Scene extends Container {
     }
 
     _onNextLevel(direction) {
+        this.direction = direction; // random candy
         if (this.gameState == GameState.Lose) {
             return;
         }

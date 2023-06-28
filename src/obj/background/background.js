@@ -91,6 +91,8 @@ export class Background extends Container {
     onReset(){
         this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
         this._resetBgColor();
+        this.scoreText.tint = 'ebebeb';
+        this.scoreText.text = `0${Data.currentScore}`;
     }
 
     displayScore() {

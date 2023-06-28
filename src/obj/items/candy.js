@@ -51,10 +51,21 @@ export class Candy extends Container {
         this.y -= this.speed;
     }
 
-    randomPosition() {
+    randomPosition(direction) {
         const candyPosition = { x: 0, y: 0 };
-        let randomX = Math.floor(Math.random() * 2);
-        if (randomX) candyPosition.x = -Game.app.view.width * 4 / 14;
+
+
+        //console.log(this.position);
+        //console.log(direction, this.x);
+        if ((direction && this.x < 0) || 
+            (!direction && this.x > 0)) {
+                console.log(123);
+                this._hideCandy();
+                return;
+            }
+        //if(!this.visible) 
+        this._displayCandy();
+        if(direction)candyPosition.x = -Game.app.view.width * 4 / 14;
         else candyPosition.x = Game.app.view.width * 4 / 14;
 
         let randomY = Math.floor(Math.random() * 2);
@@ -77,6 +88,12 @@ export class Candy extends Container {
         .onComplete(() => {
             this.visible = false;
         });
+    }
+    _hideCandy(){
+        this.visible = false;
+    }
+    _displayCandy(){
+        this.visible = true;
     }
 
     onSpawn() {

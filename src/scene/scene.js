@@ -55,11 +55,11 @@ export class Scene extends Container {
     }
 
     _onLose() {
+        if(this.gameState == GameState.Lose) return;
         this.gameState = GameState.Lose;
 
         this.player.isDie = true;
         setTimeout(() => this._initGameOver(), 1000);
-
     }
 
     _initInputHandle() {
@@ -69,10 +69,16 @@ export class Scene extends Container {
     }
 
     _onPointerDown() {
-        if (this.gameState == GameState.Ready) {
+        if (this.gameState != GameState.Lose) {
+            if(this.gameState == GameState.Ready) {
+                console.log('ready');
+                this.mainUI.hideMainUI();
+            }
             this.player.onPointerDown();
+            this.gameState = GameState.Playing;
             Assets.get("flySound").play();
         }
+        
     }
 
     _initGameplay() {
@@ -111,14 +117,10 @@ export class Scene extends Container {
         this.gameplay.addChild(this.mainUI);
     }
 
-
-    _displayGameOver() {
-        this.gameplay.addChild(this.gameOverUI);
-    }
-
     _initGameOver(){
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
+        this.gameOverUI.titleUI.updateTitleUI();
     }
 
     update(dt) {

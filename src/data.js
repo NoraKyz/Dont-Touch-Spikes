@@ -1,9 +1,9 @@
 export class Data {
   static init() {
     this.currentScore = 0;
-    this.bestScore = 3;
+    this.bestScore = 0;
     this.gamesPlayed = 0;
-    this.itemQuantity = 19;
+    this.itemQuantity = 10;
   }
 
   static setCurrentScore() {

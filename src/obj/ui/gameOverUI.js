@@ -133,11 +133,11 @@ export class GameOverUI extends PIXI.Container {
         this.titleUI.displayGameInfor();
     }
 
-    _show() {
-        this.visible = true;
-    }
+    // _show() {
+    //     this.visible = true;
+    // }
 
-    _hide() {
-        this.visible = false;
-    }
+    // _hide() {
+    //     this.visible = false;
+    // }
 }

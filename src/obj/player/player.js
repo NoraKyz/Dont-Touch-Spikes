@@ -15,7 +15,7 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
         this._initCollider();
-        //this._initEffect();
+        this._initEffect();
         this.gameManager = GameManager.instance;
     }
 
@@ -45,6 +45,21 @@ export class Player extends Container {
     }
 
     _initEffect() {
+        this._despawnEffect();
+    }
+
+    _despawnEffect() {
+        this.fadeTween = new TWEEN.Tween(this.bird)
+            .to({ alpha: 0 }, 2000)
+            .onComplete(() => {
+                this.bird.visible = false;
+            })
+            .onStop(() => {
+                this.bird.alpha = 1;
+            });
+    }
+
+    _flyEffect() {
         let texture = Texture.from("circle");
         this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
         this.emitter.emit = true;
@@ -128,13 +143,16 @@ export class Player extends Container {
         const topLimit = - Game.app.view.height / 2 + Game.app.view.height / 14;
         const bottomLimit = Game.app.view.height * 2.5 / 7;
 
-        if (this.position.y - this.radiousCollider <= topLimit
-        ) {
+        if (this.position.y - this.radiousCollider <= topLimit) {
             this.position.y = topLimit + this.radiousCollider;
+            if (this.isDie) {
+                this.velocity.y = - this.jumpForce * 1.5;
+                this._isDead();
+            }
         } else if (this.position.y + this.radiousCollider >= bottomLimit) {
             this.position.y = bottomLimit - this.radiousCollider;
             if (this.isDie) {
-                this.velocity.y = - this.jumpForce * 1.5;
+                this.velocity.y = - this.jumpForce;
                 this._isDead();
             }
         }
@@ -155,12 +173,20 @@ export class Player extends Container {
     }
 
     _isDead() {
-        this.fadeTween = new TWEEN.Tween(this.bird)
-            .to({ alpha: 0 }, 2000)
-            .onComplete(() => {
-                this.removeChild(this.bird);
-            });
-        this.fadeTween.start();
+        if (!this.fadeTween.isPlaying()) {
+            this.fadeTween.start();
+        }
+    }
+
+    onReset() {
+        this.bird.visible = true;
+        this.isDie = false;
+        this.isPlaying = false;
+        this.velocity = { x: 0, y: -1.5 };
+        this.direction = { x: 1, y: 1 };
+        this.position = { x: 0, y: 0 };
+        this.bird.scale.set(0.5);
+        this.fadeTween.stop();      
     }
 
     update(dt) {

@@ -7,7 +7,8 @@ export class AssetsManager {
 
         this._addBundle(
             "sound", {
-            "flySound": "./assets/sound/fly.mp3"
+                "flySound": "./assets/sound/bird.mp3",
+                "eatSound": "./assets/sound/eating.mp3",
         })
 
         this._addBundle(
@@ -23,7 +24,13 @@ export class AssetsManager {
                 "bird2": "./assets/images/Bird2.png",
             }
         )
-
+        
+        // this._addBundle(
+        //     "UI", {
+        //         "trophy": "./assets/images/trophy-20.png",
+        //         "leaderboard": "./assets/images/leaderboard_FILL1_wght400_GRADO_opsz48.png",
+        //     }
+        // )
         return Assets.loadBundle(this.keys);
     }
 

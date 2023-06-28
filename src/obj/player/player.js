@@ -1,10 +1,12 @@
-import {AnimatedSprite, Assets, Container, Graphics, Sprite} from "pixi.js";
+import { AnimatedSprite, Assets, Container, Sprite, Texture } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { GameManager } from "../../custom/gameManager";
 import * as TWEEN from '@tweenjs/tween.js'
+import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
+import config from "../../../assets/aim/emitter.json"
 
 
 export class Player extends Container {
@@ -13,9 +15,10 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
         this._initCollider();
+        //this._initEffect();
         this.gameManager = GameManager.instance;
     }
-    
+
     _initCollider() {
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);
@@ -39,6 +42,13 @@ export class Player extends Container {
         this.bird.animationSpeed = 0.018;
         this.bird.play();
         this.addChild(this.bird);
+    }
+
+    _initEffect() {
+        let texture = Texture.from("circle");
+        this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
+        this.emitter.emit = true;
+        this.emitter.playOnce();
     }
 
     _changeDirection() {
@@ -80,7 +90,7 @@ export class Player extends Container {
     }
 
     // xử lý chạm left or right
-    
+
     _limitHozMovement() {
         let direction = 1;
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
@@ -146,7 +156,7 @@ export class Player extends Container {
 
     _isDead() {
         this.fadeTween = new TWEEN.Tween(this.bird)
-        .to({ alpha: 0 }, 2000)
+            .to({ alpha: 0 }, 2000)
             .onComplete(() => {
                 this.removeChild(this.bird);
             });
@@ -157,5 +167,6 @@ export class Player extends Container {
         this._move(dt);
         this._moveInMenu(dt);
         TWEEN.update();
+        //this.emitter.update(dt);
     }
 }

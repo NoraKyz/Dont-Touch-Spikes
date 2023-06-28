@@ -138,6 +138,7 @@ export class Scene extends Container {
 
 
     // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
+
     _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);

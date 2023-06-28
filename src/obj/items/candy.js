@@ -16,7 +16,7 @@ export class Candy extends Container {
 
     _initSprite() {
         this.candy = Sprite.from(Assets.get("candy"));
-        this.scale.set(1.3);
+        this.scale.set(1.2);
         this.candy.anchor.set(0.5);
         // test
         this.addChild(this.candy);

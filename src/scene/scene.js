@@ -79,7 +79,6 @@ export class Scene extends Container {
     _onPointerDown() {
         if (this.gameState != GameState.Lose) {
             if(this.gameState == GameState.Ready) {
-                console.log('ready');
                 this.mainUI.hideMainUI();
             }
             this.player.onPointerDown();

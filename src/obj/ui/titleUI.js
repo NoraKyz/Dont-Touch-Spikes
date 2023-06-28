@@ -20,9 +20,10 @@ export class TitleUI extends Container {
     this.itemImage = Sprite.from(Assets.get("candy"));
     this.itemQuantity = new Text(`${Data.itemQuantity}`, style);
     this.itemImage.anchor.set(0.5);
+    this.itemImage.scale.set(1.2);
     this.itemQuantity.anchor.set(0.5);
 
-    this.itemImage.position.set(-35, Game.app.view.height / 7 + 60);
+    this.itemImage.position.set(-40, Game.app.view.height / 7 + 65);
     this.itemQuantity.position.set(40, Game.app.view.height / 7 + 65);
   }
   

@@ -68,7 +68,6 @@ export class GameOverUI extends PIXI.Container {
         this._decoratePointButton();
 
         this.pointsButtonBar.cursor = "pointer";
-        this.pointsButtonBar.on("pointerdown", () => {});
         this.pointsButtonBar.position.set(0, -220);
 
         this.addChild(this.pointsButtonBar);
@@ -105,10 +104,15 @@ export class GameOverUI extends PIXI.Container {
         this.replayButtonText.zIndex = 2;
         this.replayButtonBar.addChild(this.replayButtonText);
 
+        this.replayButtonBar.interactive = true;
         this.replayButtonBar.cursor = "pointer";
-        this.replayButtonBar.on("pointerdown", () => {});
+        this.replayButtonBar.on("pointerdown", () => this._clickedReplayButton());
         this.replayButtonBar.position.set(0, -30);
         this.addChild(this.replayButtonBar);
+    }
+
+    _clickedReplayButton() {
+        this.gameManager.emit("replay");
     }
 
     _initShareButton(){

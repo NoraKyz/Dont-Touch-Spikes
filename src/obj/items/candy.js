@@ -2,12 +2,14 @@ import { Assets, Container, Sprite } from "pixi.js";
 import { Game } from "../../game";
 import { Collider } from "../physics/collider";
 import { Data } from "../../data";
+import * as TWEEN from '@tweenjs/tween.js'
 
 export class Candy extends Container {
     constructor() {
         super();
         this._initSprite();
         this._initCollider();
+        this._initEffect();
         this.randomPosition();
         this.speed = 1;
         this.distance = 20;
@@ -62,6 +64,28 @@ export class Candy extends Container {
         this.y = candyPosition.y;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
+    }
+
+    _initEffect(){
+        this.spawnEffect = new TWEEN.Tween(this)
+        .to({ alpha: 1 }, 2000)
+        .onStart(() => {
+            this.visible = true;
+        });
+        this.deSpawnEffect = new TWEEN.Tween(this)
+        .to({ alpha: 0 }, 2000)
+        .onComplete(() => {
+            this.visible = false;
+        });
+    }
+
+    onSpawn() {
+        this.alpha = 0;
+        this.spawnEffect.start();
+    }
+
+    onDead() {
+        this.deSpawnEffect.start();
     }
 
     update() {

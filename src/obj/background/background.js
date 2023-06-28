@@ -69,7 +69,7 @@ export class Background extends Container {
         if(newScore < 10) this.scoreText.text = `0${newScore}`;
         else this.scoreText.text = `${newScore}`;
 
-        if(newScore > 0 && newScore % 3 == 0) {
+        if(newScore > 0 && newScore % 5 == 0) {
             if(!this.ok) this.changeBgColor();
             this.ok = 1;
         } else this.ok = 0;

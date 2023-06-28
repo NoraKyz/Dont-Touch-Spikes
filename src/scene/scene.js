@@ -69,7 +69,7 @@ export class Scene extends Container {
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
-        if (Data.currentScore >= 3) this.traps.changeColor(this.background.mainColor.colorDarker);
+        if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
     _onLose() {
@@ -81,6 +81,7 @@ export class Scene extends Container {
             this.gameInfor.displayGameInfor();
         }, 1000);
         this.gameInfor.updateGameInfor();
+        this.candy.onDead();
     }
 
     _initInputHandle() {
@@ -93,8 +94,8 @@ export class Scene extends Container {
         if (this.gameState != GameState.Lose) {
             if(this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
-                this.gameplay.addChild(this.candy);
                 this.gameInfor.hideGameInfor();
+                this.candy.onSpawn();
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
@@ -133,6 +134,8 @@ export class Scene extends Container {
 
     _initCandy() {
         this.candy = new Candy();
+        this.gameplay.addChild(this.candy);
+        this.candy.visible = false;
     }
 
     _initBackground() {

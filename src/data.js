@@ -3,18 +3,10 @@ export class Data {
     this.currentScore = 0;
     this.bestScore = 0;
     this.gamesPlayed = 0;
-    this.itemQuantity = 10;
+    this.itemQuantity = 0;
   }
 
-  static setCurrentScore() {
+  static resetScore(){
     this.currentScore = 0;
-  }
-
-  static setGamesPlayed() {
-    this.gamesPlayed += 1;
-  }
-
-  static setBestScore() {
-    if (this.currentScore > this.bestScore) this.bestScore = this.currentScore;
   }
 }

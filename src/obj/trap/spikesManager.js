@@ -23,7 +23,9 @@ export class SpikesManager extends Container {
         this._initColliders();
     }
 
-    _randomSpike(){
+    _randomSpike(limitSpike){
+        this.minSpikes = limitSpike.minSpikes;
+        this.maxSpikes = limitSpike.maxSpikes;
         const arrayIndex = [];
         let randomQuantitySpikes = CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
         for(let i = 1; i <= randomQuantitySpikes; i++) {
@@ -33,7 +35,7 @@ export class SpikesManager extends Container {
         return arrayIndex;
     }
 
-    _moveSpikes(state){
+    moveSpikes(state, limitSpike){
         this.state = state;
         if(this.state == 0){
             this.spikeRight.forEach((spike, index) => {
@@ -48,7 +50,7 @@ export class SpikesManager extends Container {
                     this._movebyTween(spike, target);
                 } 
             })
-            this.rightIndexSpikes = this._randomSpike();
+            this.rightIndexSpikes = this._randomSpike(limitSpike);
         }
         if(this.state == 1){
             this.spikeRight.forEach((spike, index) => {
@@ -63,15 +65,16 @@ export class SpikesManager extends Container {
                     this._movebyTween(spike, target);
                 } 
             })
-            this.leftIndexSpikes = this._randomSpike();
+            this.leftIndexSpikes = this._randomSpike(limitSpike);
         }
     }
-    
+     
     _movebyTween(spike, position) {
         this.tween = new TWEEN.Tween(spike)
         .to({x: position.x, y: position.y}, 500);
         this.tween.start();
     }
+
     update(){
         TWEEN.update();
     }
@@ -137,6 +140,18 @@ export class SpikesManager extends Container {
     changeColor(color){
         this.poolSpikes.forEach(spike => {
             spike.changeColor(color);
+        })
+    }
+
+    onReset(){
+        this.changeColor("FFFFFF");
+
+        this.spikeRight.forEach(spike => {
+            spike.position.x = this.distance;
+        })
+
+        this.spikeLeft.forEach(spike => {
+            spike.position.x = -this.distance;
         })
     }
 }

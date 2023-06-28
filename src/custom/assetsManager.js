@@ -14,6 +14,7 @@ export class AssetsManager {
         this._addBundle(
             "item", {
                 "candy": "./assets/images/candy.png",
+                "circle": "./assets/images/HardCircle.png",
             }
         )
         

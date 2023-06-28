@@ -74,13 +74,23 @@ export class Background extends Container {
             this.ok = 1;
         } else this.ok = 0;
     }
+    _newMainColor(){
+        this.mainColor = CommonUtils.randomColorBackground()
+    }
 
-    changeBgColor() {
-        this.mainColor = CommonUtils.randomColorBackground();
+    _resetBgColor() {
         this.scoreText.style.fill = this.mainColor.color;
         this.playGround.tint = this.mainColor.color;
         this.retangleTop.tint = this.mainColor.colorDarker;
         this.retangleBottom.tint = this.mainColor.colorDarker;
+    }
+    changeBgColor(){
+        this._newMainColor();
+        this._resetBgColor();
+    }
+    onReset(){
+        this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
+        this._resetBgColor();
     }
 
     displayScore() {

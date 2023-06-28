@@ -10,6 +10,7 @@ import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
 import { Candy } from "../obj/items/candy";
+import { GameInfor } from "../obj/ui/gameInfor";
 
 
 export const GameState = Object.freeze({
@@ -42,11 +43,11 @@ export class Scene extends Container {
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            // TODO: Thêm hàm tăng điểm và random lại vị trí của candy
-            // Note: Hàm này có thể gọi nhiều lần, hãy làm sao để cho candy chỉ ăn 1 lần tại 1 vị trí
+            this.candy.randomPosition();
+            this.candy.updateCandyQuantity(this.candy.eaten);
         }
     }
-
+    
     _initGameManager() {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
@@ -54,19 +55,25 @@ export class Scene extends Container {
         this.gameManager.on("replay", this._reloadScene.bind(this));
     }
 
-    _reloadScene() {
-        Data.currentScore = 0;
-        Game._reloadScene();
+    _reloadScene() {        
+        Data.resetScore();
+        this.player.onReset();
+        this.traps.onReset();
+        this.background.onReset();
+        this.mainUI.onReset();
+        this.gameOverUI.onReset();
+        this.gameState = GameState.Ready;
+   
     }
 
     _onNextLevel(direction) {
         if (this.gameState == GameState.Lose) {
             return;
         }
-        
+
         this.background.updateBackground(++Data.currentScore);
-        this.gameManager.updateLevel();
-        this.traps._moveSpikes(direction);
+        let limitSpike = this.gameManager.updateLevel();
+        this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
@@ -74,7 +81,12 @@ export class Scene extends Container {
         if(this.gameState == GameState.Lose) return;
         this.gameState = GameState.Lose;
         this.player.isDie = true;
-        setTimeout(() => this._initGameOver(), 1000);
+        setTimeout(() => {
+            this._initGameOver();
+            this.gameInfor.displayGameInfor();
+        }, 1000);
+        this.gameInfor.updateGameInfor();
+        this.candy.onDead();
     }
 
     _initInputHandle() {
@@ -87,11 +99,13 @@ export class Scene extends Container {
         if (this.gameState != GameState.Lose) {
             if(this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
+                this.gameInfor.hideGameInfor();
+                this.candy.onSpawn();
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
             Assets.get("flySound").play();
-        }
+
     }
 
     _initGameplay() {
@@ -104,6 +118,7 @@ export class Scene extends Container {
         this._initTraps();
         this._initCandy();
         this._initUI();
+        this._initGameInfor();
     }
 
     resize() {
@@ -124,6 +139,7 @@ export class Scene extends Container {
     _initCandy() {
         this.candy = new Candy();
         this.gameplay.addChild(this.candy);
+        this.candy.visible = false;
     }
 
     _initBackground() {
@@ -135,13 +151,17 @@ export class Scene extends Container {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
+    _initGameInfor(){
+        this.gameInfor = new GameInfor();
+        this.gameplay.addChild(this.gameInfor);
+    }
 
 
     // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
+
     _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
-        this.gameOverUI.titleUI.updateTitleUI();
         this.gameOverUI.hide();
     }
 

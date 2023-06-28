@@ -1,19 +1,17 @@
 import { Container, Text } from "pixi.js";
-import { Game } from "../../game";
-import { TitleUI } from "./titleUI";
+import { GameName } from "./gameName";
+import { GameInfor } from "./gameInfor";
 
 export class MainUI extends Container{
   constructor(){
     super();
     this._initGameTutol();
     this._initTitleUI();
-    this._displayMainUI();
+    this._showMainUI();
   }
   _initTitleUI(){
-    this.titleUI = new TitleUI();
-    this.addChild(this.titleUI);
-    this.titleUI.displayGameName();
-    this.titleUI.displayGameInfor();
+    this.gameName = new GameName();
+    this.addChild(this.gameName);
   }
   _initGameTutol(){
     const style = {
@@ -30,19 +28,18 @@ export class MainUI extends Container{
     this.gameTutolBottom = new Text("TO JUMP", style);
     this.gameTutolBottom.anchor.set(0.5);
     this.gameTutolBottom.position.set(0, -160);
-  }
-
-  _displayMainUI(){
     this.addChild(this.gameTutolTop);
     this.addChild(this.gameTutolBottom);
   }
-  
-  hideMainUI(){
-    this.titleUI.hideGameInfor();
-    this.titleUI.hideGameName();
-    this.removeChild(this.gameTutolTop);
-    this.removeChild(this.gameTutolBottom);
+  onReset(){
+    this._showMainUI();
   }
 
-  // TODO: Không sử dụng removeChild trong UI, chỉ dùng visible
+  _showMainUI(){
+    this.visible = true;
+  }
+  
+  hideMainUI(){
+    this.visible = false
+  }
 }

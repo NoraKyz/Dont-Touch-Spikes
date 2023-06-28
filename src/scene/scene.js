@@ -43,11 +43,14 @@ export class Scene extends Container {
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            this.candy.randomPosition();
-            this.candy.updateCandyQuantity(this.candy.eaten);
+            if(this.gameState != GameState.Lose){
+                Assets.get("eatSound").play();
+                this.candy.randomPosition();
+                this.candy.updateCandyQuantity(this.candy.eaten);
+            }      
         }
     }
-    
+
     _initGameManager() {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
@@ -55,7 +58,7 @@ export class Scene extends Container {
         this.gameManager.on("replay", this._reloadScene.bind(this));
     }
 
-    _reloadScene() {        
+    _reloadScene() {
         Data.resetScore();
         this.player.onReset();
         this.traps.onReset();
@@ -63,7 +66,6 @@ export class Scene extends Container {
         this.mainUI.onReset();
         this.gameOverUI.onReset();
         this.gameState = GameState.Ready;
-   
     }
 
     _onNextLevel(direction) {
@@ -78,11 +80,12 @@ export class Scene extends Container {
     }
 
     _onLose() {
-        if(this.gameState == GameState.Lose) return;
+        if (this.gameState == GameState.Lose) return;
         this.gameState = GameState.Lose;
         this.player.isDie = true;
         setTimeout(() => {
             this._initGameOver();
+            this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
         }, 1000);
         this.gameInfor.updateGameInfor();
@@ -97,7 +100,7 @@ export class Scene extends Container {
 
     _onPointerDown() {
         if (this.gameState != GameState.Lose) {
-            if(this.gameState == GameState.Ready) {
+            if (this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
                 this.gameInfor.hideGameInfor();
                 this.candy.onSpawn();
@@ -106,8 +109,8 @@ export class Scene extends Container {
             this.gameState = GameState.Playing;
             Assets.get("flySound").play();
 
+        }
     }
-
     _initGameplay() {
         this.gameplay = new Container();
         this.gameplay.x = Game.app.screen.width / 2;
@@ -151,7 +154,7 @@ export class Scene extends Container {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
-    _initGameInfor(){
+    _initGameInfor() {
         this.gameInfor = new GameInfor();
         this.gameplay.addChild(this.gameInfor);
     }
@@ -162,7 +165,7 @@ export class Scene extends Container {
     _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
-        this.gameOverUI.hide();
+        this.gameOverUI.hideGameOverUI();
     }
 
     update(dt) {

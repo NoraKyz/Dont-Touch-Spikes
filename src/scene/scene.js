@@ -53,9 +53,12 @@ export class Scene extends Container {
         this.gameManager.on("replay", this._reloadScene.bind(this));
     }
 
-    _reloadScene() {
-        Data.currentScore = 0;
-        Game._reloadScene();
+    _reloadScene() {        
+        Data.resetScore();
+        this.player.onReset();
+        this.traps.onReset();
+        this.gameOverUI.visible = false;
+        this.gameState = GameState.Ready;
     }
 
     _onNextLevel(direction) {
@@ -90,8 +93,7 @@ export class Scene extends Container {
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
             Assets.get("flySound").play();
-        }
-        
+        }      
     }
 
     _initGameplay() {

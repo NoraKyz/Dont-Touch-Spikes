@@ -15,8 +15,7 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
         this._initCollider();
-        this._initTween();
-        //this._initEffect();
+        this._initEffect();
         this.gameManager = GameManager.instance;
     }
 
@@ -46,13 +45,10 @@ export class Player extends Container {
     }
 
     _initEffect() {
-        let texture = Texture.from("circle");
-        this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
-        this.emitter.emit = true;
-        this.emitter.playOnce();
+        this._despawnEffect();
     }
 
-    _initTween() {
+    _despawnEffect() {
         this.fadeTween = new TWEEN.Tween(this.bird)
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
@@ -60,7 +56,14 @@ export class Player extends Container {
             })
             .onStop(() => {
                 this.bird.alpha = 1;
-            })
+            });
+    }
+
+    _flyEffect() {
+        let texture = Texture.from("circle");
+        this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
+        this.emitter.emit = true;
+        this.emitter.playOnce();
     }
 
     _changeDirection() {
@@ -172,12 +175,12 @@ export class Player extends Container {
     _isDead() {
         if (!this.fadeTween.isPlaying()) {
             this.fadeTween.start();
-        }    
+        }
     }
 
-    onReset() {  
-        this.isDie = false;    
-        this.isPlaying = false;      
+    onReset() {
+        this.isDie = false;
+        this.isPlaying = false;
         this.velocity = { x: 0, y: -1.5 };
         this.direction = { x: 1, y: 1 };
         this.position = { x: 0, y: 0 };

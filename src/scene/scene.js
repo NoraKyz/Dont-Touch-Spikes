@@ -26,6 +26,7 @@ export class Scene extends Container {
         this._initInputHandle();
         this._initColliderDetector();
         this._initGameManager();
+        this._initGameOver();
         this.gameState = GameState.Ready;
     }
 
@@ -91,7 +92,6 @@ export class Scene extends Container {
             this.gameState = GameState.Playing;
             Assets.get("flySound").play();
         }
-        
     }
 
     _initGameplay() {
@@ -139,10 +139,10 @@ export class Scene extends Container {
 
     // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
     _initGameOver() {
-      
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
         this.gameOverUI.titleUI.updateTitleUI();
+        this.gameOverUI.hide();
     }
 
     update(dt) {

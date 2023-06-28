@@ -16,13 +16,26 @@ export class ColliderDetector extends EventEmitter {
         super();
     }
 
-    checkCollider(obj1, groups) {
-        groups.forEach(child => {
-            if (this.isCollide(obj1.collider, child.collider)) {
-                this.emit("collision", obj1, child);
+    checkCollider(obj1, obj2) {
+        if (Array.isArray(obj2)) {
+            obj2.forEach(child => {
+                if (this.isCollide(obj1.collider, child.collider)) {
+                    this.emit("collision", obj1, child);
+                }
+            });
+        } else {
+            if (this.isCollide(obj1.collider, obj2.collider)) {
+                this.emit("collision", obj1, obj2);
             }
+        }
+    }
+    
+    checkGroupCollisions(groups1, groups2) {
+        groups1.forEach(obj1 => {
+            this.checkCollider(obj1, groups2);
         });
     }
+    
 
     isCollide(collider1, collider2) {
         const pos1 = collider1.getGlobalPosition();

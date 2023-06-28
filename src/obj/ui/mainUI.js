@@ -31,14 +31,18 @@ export class MainUI extends Container{
     this.gameTutolBottom.anchor.set(0.5);
     this.gameTutolBottom.position.set(0, -160);
   }
+
   _displayMainUI(){
     this.addChild(this.gameTutolTop);
     this.addChild(this.gameTutolBottom);
   }
+  
   hideMainUI(){
     this.titleUI.hideGameInfor();
     this.titleUI.hideGameName();
     this.removeChild(this.gameTutolTop);
     this.removeChild(this.gameTutolBottom);
   }
+
+  // TODO: Không sử dụng removeChild trong UI, chỉ dùng visible
 }

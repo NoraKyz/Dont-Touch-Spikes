@@ -15,6 +15,7 @@ export class Player extends Container {
         this._initCollider();
         this.gameManager = GameManager.instance;
     }
+    
     _initCollider() {
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);
@@ -31,7 +32,7 @@ export class Player extends Container {
     }
 
     _initSprite() {
-        this.animateTextures = [Sprite.from(Assets.get("bird1")).texture, Sprite.from(Assets.get("bird2")).texture];
+        this.animateTextures = [Sprite.from(Assets.get("bird2")).texture, Sprite.from(Assets.get("bird1")).texture];
         this.bird = new AnimatedSprite(this.animateTextures);
         this.bird.anchor.set(0.5);
         this.bird.scale.set(0.5);
@@ -101,8 +102,6 @@ export class Player extends Container {
     }
 
     _touchWall() {
-        
-
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce;
         } else {

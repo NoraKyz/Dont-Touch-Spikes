@@ -9,6 +9,7 @@ import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
+import { Candy } from "../obj/items/candy";
 
 
 export const GameState = Object.freeze({
@@ -35,9 +36,13 @@ export class Scene extends Container {
 
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
-
             this._onLose();
             this.player.onCollision(obj2);
+        }
+
+        if (obj1 === this.player && obj2 instanceof Candy) {
+            // TODO: Thêm hàm tăng điểm và random lại vị trí của candy
+            // Note: Hàm này có thể gọi nhiều lần, hãy làm sao để cho candy chỉ ăn 1 lần tại 1 vị trí
         }
     }
 
@@ -48,16 +53,19 @@ export class Scene extends Container {
     }
 
     _onNextLevel(direction) {
-        if(this.gameState == GameState.Lose) return;
-        this.background.updateBackground(++Data.currentScore); 
-        this.traps._moveSpikes(direction); 
-        if(Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
+        if (this.gameState == GameState.Lose) {
+            return;
+        }
+        
+        this.background.updateBackground(++Data.currentScore);
+        this.gameManager.updateLevel();
+        this.traps._moveSpikes(direction);
+        if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
     }
 
     _onLose() {
         if(this.gameState == GameState.Lose) return;
         this.gameState = GameState.Lose;
-
         this.player.isDie = true;
         setTimeout(() => this._initGameOver(), 1000);
     }
@@ -89,6 +97,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
+        this._initCandy();
         this._initUI();
     }
 
@@ -107,6 +116,11 @@ export class Scene extends Container {
         this.gameplay.addChild(this.traps);
     }
 
+    _initCandy() {
+        this.candy = new Candy();
+        this.gameplay.addChild(this.candy);
+    }
+
     _initBackground() {
         this.background = new Background();
         this.gameplay.addChild(this.background);
@@ -117,7 +131,10 @@ export class Scene extends Container {
         this.gameplay.addChild(this.mainUI);
     }
 
-    _initGameOver(){
+
+    // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
+    _initGameOver() {
+      
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
         this.gameOverUI.titleUI.updateTitleUI();
@@ -126,6 +143,8 @@ export class Scene extends Container {
     update(dt) {
         this.player.update(dt);
         this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
+        this.colliderDetector.checkCollider(this.player, this.candy);
         this.traps.update();
+        this.candy.update();
     }
 }

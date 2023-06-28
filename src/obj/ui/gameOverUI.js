@@ -87,6 +87,7 @@ export class GameOverUI extends PIXI.Container {
         this.buttonDecorationRight.zIndex = 2;
         this.pointsButtonBar.addChild(this.buttonDecorationRight);
     }
+    
     _initReplayButton(){
         this.replayButtonBar = new PIXI.Container();
 
@@ -107,6 +108,7 @@ export class GameOverUI extends PIXI.Container {
         this.replayButtonBar.position.set(0, -30);
         this.addChild(this.replayButtonBar);
     }
+
     _initShareButton(){
         this.shareButtonBar = new PIXI.Container();
         //hình dáng button
@@ -127,17 +129,19 @@ export class GameOverUI extends PIXI.Container {
         this.shareButtonBar.position.set(0, 70);
         this.addChild(this.shareButtonBar);
     }
+
     _initTitleUI(){
         this.titleUI = new TitleUI();
         this.addChild(this.titleUI);
         this.titleUI.displayGameInfor();
     }
 
-    // _show() {
-    //     this.visible = true;
-    // }
+    show() {
+        this.visible = true;
+    }
 
-    // _hide() {
-    //     this.visible = false;
-    // }
+    hide() {
+        this.visible = false;
+    }
+
 }

@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { TitleUI } from "./titleUI";
 import {Graphics} from "pixi.js";
 import {Data} from "../../data";
+import {GameManager} from "../../custom/gameManager";
 
 const BUTTON = Object.freeze({
     x: -280,
@@ -26,6 +27,7 @@ export class GameOverUI extends PIXI.Container {
         this.sortChildren();
         this.zIndex = 1;
         this._initTitleUI();
+        this.gameManager = GameManager.instance;
     }
 
     _initPointButton(){

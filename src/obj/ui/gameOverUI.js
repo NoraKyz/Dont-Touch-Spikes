@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import {Graphics} from "pixi.js";
 import {Data} from "../../data";
 import { GameInfor } from "./gameInfor";
+import {GameManager} from "../../custom/gameManager";
 
 const BUTTON = Object.freeze({
     x: -280,
@@ -26,6 +27,7 @@ export class GameOverUI extends PIXI.Container {
         this.sortChildren();
         this.zIndex = 1;
         this._initTitleUI();
+        this.gameManager = GameManager.instance;
     }
 
     _initPointButton(){
@@ -66,7 +68,6 @@ export class GameOverUI extends PIXI.Container {
         this._decoratePointButton();
 
         this.pointsButtonBar.cursor = "pointer";
-        this.pointsButtonBar.on("pointerdown", () => {});
         this.pointsButtonBar.position.set(0, -220);
 
         this.addChild(this.pointsButtonBar);
@@ -103,10 +104,15 @@ export class GameOverUI extends PIXI.Container {
         this.replayButtonText.zIndex = 2;
         this.replayButtonBar.addChild(this.replayButtonText);
 
+        this.replayButtonBar.interactive = true;
         this.replayButtonBar.cursor = "pointer";
-        this.replayButtonBar.on("pointerdown", () => {});
+        this.replayButtonBar.on("pointerdown", () => this._clickedReplayButton());
         this.replayButtonBar.position.set(0, -30);
         this.addChild(this.replayButtonBar);
+    }
+
+    _clickedReplayButton() {
+        this.gameManager.emit("replay");
     }
 
     _initShareButton(){

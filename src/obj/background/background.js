@@ -69,18 +69,28 @@ export class Background extends Container {
         if(newScore < 10) this.scoreText.text = `0${newScore}`;
         else this.scoreText.text = `${newScore}`;
 
-        if(newScore > 0 && newScore % 5 == 0) {
+        if(newScore > 0 && newScore % 3 == 0) {
             if(!this.ok) this.changeBgColor();
             this.ok = 1;
         } else this.ok = 0;
     }
+    _newMainColor(){
+        this.mainColor = CommonUtils.randomColorBackground()
+    }
 
-    changeBgColor() {
-        this.mainColor = CommonUtils.randomColorBackground();
+    _resetBgColor() {
         this.scoreText.style.fill = this.mainColor.color;
         this.playGround.tint = this.mainColor.color;
         this.retangleTop.tint = this.mainColor.colorDarker;
         this.retangleBottom.tint = this.mainColor.colorDarker;
+    }
+    changeBgColor(){
+        this._newMainColor();
+        this._resetBgColor();
+    }
+    onReset(){
+        this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
+        this._resetBgColor();
     }
 
     displayScore() {

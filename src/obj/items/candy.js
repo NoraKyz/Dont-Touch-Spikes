@@ -25,7 +25,6 @@ export class Candy extends Container {
     updateCandyQuantity(eaten){
         if (!eaten) {
             eaten = true;
-            console.log(123);
             Data.itemQuantity++;
         }
     }
@@ -66,7 +65,6 @@ export class Candy extends Container {
     }
 
     update() {
-        //console.log(123);
         this._candyMove();
     }
 }

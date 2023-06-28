@@ -7,7 +7,7 @@ export class GameInfor extends Container {
     super();
     this._initGameInfor();
     this._initItemQuantity();
-    this._displayGameInfor();
+    this.displayGameInfor();
   }
   _initItemQuantity() {
     const style = {
@@ -24,6 +24,9 @@ export class GameInfor extends Container {
 
     this.itemImage.position.set(-40, Game.app.view.height / 7 + 65);
     this.itemQuantity.position.set(40, Game.app.view.height / 7 + 65);
+
+    this.addChild(this.itemImage);
+    this.addChild(this.itemQuantity);
   }
   
   _initGameInfor() {
@@ -41,6 +44,9 @@ export class GameInfor extends Container {
     this.gameInforBottom = new Text(`GAMES PLAYED : ${Data.gamesPlayed}`, style);
     this.gameInforBottom.anchor.set(0.5);
     this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180);
+
+    this.addChild(this.gameInforTop);
+    this.addChild(this.gameInforBottom);
   }
 
   _updateItemQuantity(){
@@ -59,11 +65,8 @@ export class GameInfor extends Container {
     this._updateItemQuantity();
   }
 
-  _displayGameInfor() {
-    this.addChild(this.itemImage);
-    this.addChild(this.itemQuantity);
-    this.addChild(this.gameInforTop);
-    this.addChild(this.gameInforBottom);
+  displayGameInfor() {
+    this.visible = true;
   }
   hideGameInfor() {
     this.visible = false;

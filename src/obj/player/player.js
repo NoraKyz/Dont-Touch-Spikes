@@ -124,7 +124,7 @@ export class Player extends Container {
         } else if (this.position.y + this.radiousCollider >= bottomLimit) {
             this.position.y = bottomLimit - this.radiousCollider;
             if (this.isDie) {
-                this.velocity.y = - this.jumpForce * 1.5;
+                this.velocity.y = - this.jumpForce;
                 this._isDead();
             }
         }
@@ -147,7 +147,7 @@ export class Player extends Container {
     _isDead() {
         this.fadeTween = new TWEEN.Tween(this.bird)
         .to({ alpha: 0 }, 2000)
-            .onComplete(() => {
+        .onComplete(() => {
                 this.removeChild(this.bird);
             });
         this.fadeTween.start();

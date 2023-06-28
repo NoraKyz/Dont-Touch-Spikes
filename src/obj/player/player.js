@@ -179,13 +179,14 @@ export class Player extends Container {
     }
 
     onReset() {
+        this.bird.visible = true;
         this.isDie = false;
         this.isPlaying = false;
         this.velocity = { x: 0, y: -1.5 };
         this.direction = { x: 1, y: 1 };
         this.position = { x: 0, y: 0 };
-        this.fadeTween.stop();
-        this.bird.visible = true;
+        this.bird.scale.set(0.5);
+        this.fadeTween.stop();      
     }
 
     update(dt) {

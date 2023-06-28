@@ -9,7 +9,7 @@ const BUTTON = Object.freeze({
     y: -45,
     width: 560,
     height: 90,
-    radius: 16, // for rounded rectangle
+    radius: 16,
 });
 export class GameOverUI extends PIXI.Container {
     constructor() {
@@ -26,7 +26,6 @@ export class GameOverUI extends PIXI.Container {
 
         this.sortChildren();
         this.zIndex = 1;
-        this._initTitleUI();
         this.gameManager = GameManager.instance;
     }
 
@@ -104,7 +103,7 @@ export class GameOverUI extends PIXI.Container {
         this.replayButtonText.zIndex = 2;
         this.replayButtonBar.addChild(this.replayButtonText);
 
-        this.replayButtonBar.interactive = true;
+        this.replayButtonBar.eventMode = 'static';
         this.replayButtonBar.cursor = "pointer";
         this.replayButtonBar.on("pointerdown", () => this._clickedReplayButton());
         this.replayButtonBar.position.set(0, -30);
@@ -117,7 +116,6 @@ export class GameOverUI extends PIXI.Container {
 
     _initShareButton(){
         this.shareButtonBar = new PIXI.Container();
-        //hình dáng button
         this.shareButton = new Graphics();
         this.shareButton.beginFill(0xff2727);
         this.shareButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width,BUTTON.height, BUTTON.radius);
@@ -135,10 +133,8 @@ export class GameOverUI extends PIXI.Container {
         this.shareButtonBar.position.set(0, 70);
         this.addChild(this.shareButtonBar);
     }
-
-    _initTitleUI(){
-        this.gameInfor = new GameInfor();
-        this.addChild(this.gameInfor);
+    onReset(){
+        this.hideGameOverUI();
     }
 
     showGameOverUI() {

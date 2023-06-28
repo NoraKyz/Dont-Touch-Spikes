@@ -10,6 +10,7 @@ import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
 import { Candy } from "../obj/items/candy";
+import { GameInfor } from "../obj/ui/gameInfor";
 
 
 export const GameState = Object.freeze({
@@ -45,7 +46,7 @@ export class Scene extends Container {
             this.candy.updateCandyQuantity(this.candy.eaten);
         }
     }
-
+    
     _initGameManager() {
         this.gameManager = GameManager.instance;
         this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
@@ -57,8 +58,11 @@ export class Scene extends Container {
         Data.resetScore();
         this.player.onReset();
         this.traps.onReset();
-        this.gameOverUI.visible = false;
+        this.background.onReset();
+        this.mainUI.onReset();
+        this.gameOverUI.onReset();
         this.gameState = GameState.Ready;
+   
     }
 
     _onNextLevel(direction) {
@@ -76,7 +80,12 @@ export class Scene extends Container {
         if(this.gameState == GameState.Lose) return;
         this.gameState = GameState.Lose;
         this.player.isDie = true;
-        setTimeout(() => this._initGameOver(), 1000);
+        setTimeout(() => {
+            this._initGameOver();
+            this.gameInfor.displayGameInfor();
+        }, 1000);
+        this.gameInfor.updateGameInfor();
+        this.candy.onDead();
     }
 
     _initInputHandle() {
@@ -89,6 +98,8 @@ export class Scene extends Container {
         if (this.gameState != GameState.Lose) {
             if(this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
+                this.gameInfor.hideGameInfor();
+                this.candy.onSpawn();
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
@@ -106,6 +117,7 @@ export class Scene extends Container {
         this._initTraps();
         this._initCandy();
         this._initUI();
+        this._initGameInfor();
     }
 
     resize() {
@@ -125,7 +137,8 @@ export class Scene extends Container {
 
     _initCandy() {
         this.candy = new Candy();
-        //this.gameplay.addChild(this.candy);
+        this.gameplay.addChild(this.candy);
+        this.candy.visible = false;
     }
 
     _initBackground() {
@@ -137,6 +150,10 @@ export class Scene extends Container {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
+    _initGameInfor(){
+        this.gameInfor = new GameInfor();
+        this.gameplay.addChild(this.gameInfor);
+    }
 
 
     // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
@@ -144,7 +161,6 @@ export class Scene extends Container {
     _initGameOver() {
         this.gameOverUI = new GameOverUI();
         this.gameplay.addChild(this.gameOverUI);
-        this.gameOverUI.gameInfor.updateGameInfor();
     }
 
     update(dt) {

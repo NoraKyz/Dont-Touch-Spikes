@@ -152,7 +152,7 @@ export class Player extends Container {
         } else if (this.position.y + this.radiousCollider >= bottomLimit) {
             this.position.y = bottomLimit - this.radiousCollider;
             if (this.isDie) {
-                this.velocity.y = - this.jumpForce * 1.5;
+                this.velocity.y = - this.jumpForce;
                 this._isDead();
             }
         }

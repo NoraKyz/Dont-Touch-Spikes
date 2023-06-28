@@ -68,12 +68,13 @@ export class SpikesManager extends Container {
             this.leftIndexSpikes = this._randomSpike(limitSpike);
         }
     }
-    
+    // 
     _movebyTween(spike, position) {
         this.tween = new TWEEN.Tween(spike)
         .to({x: position.x, y: position.y}, 500);
         this.tween.start();
     }
+
     update(){
         TWEEN.update();
     }
@@ -139,6 +140,18 @@ export class SpikesManager extends Container {
     changeColor(color){
         this.poolSpikes.forEach(spike => {
             spike.changeColor(color);
+        })
+    }
+
+    onReset(){
+        this.changeColor("FFFFFF");
+
+        this.spikeRight.forEach(spike => {
+            spike.position.x = 0;
+        })
+
+        this.spikeLeft.forEach(spike => {
+            spike.position.x = 0;
         })
     }
 }

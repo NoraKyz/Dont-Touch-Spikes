@@ -53,9 +53,12 @@ export class Scene extends Container {
         this.gameManager.on("replay", this._reloadScene.bind(this));
     }
 
-    _reloadScene() {
-        Data.currentScore = 0;
-        Game._reloadScene();
+    _reloadScene() {      
+        //this.gameState = GameState.Ready;
+        Data.resetScore();
+        this.player.onReset();
+        this.traps.onReset();
+        this.gameOverUI.visible = false;
     }
 
     _onNextLevel(direction) {

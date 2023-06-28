@@ -17,24 +17,26 @@ export class GameManager extends EventEmitter {
     }
 
     updateLevel() {
+        let minSpikes = 0, maxSpikes = 0;
         if (Data.currentScore === 1) {
-            SpikesManager.minSpikes = 1;
-            SpikesManager.maxSpikes = 2;
+            minSpikes = 1;
+            maxSpikes = 2;
         } else if (Data.currentScore <= 4) {
-            SpikesManager.minSpikes = 2;
-            SpikesManager.maxSpikes = 3;
+            minSpikes = 2;
+            maxSpikes = 3;
         } else if (Data.currentScore <= 10) {
-            SpikesManager.minSpikes = 2;
-            SpikesManager.maxSpikes = 4;
+            minSpikes = 2;
+            maxSpikes = 4;
         } else if (Data.currentScore <= 20) {
-            SpikesManager.minSpikes = 3;
-            SpikesManager.maxSpikes = 5;
+            minSpikes = 3;
+            maxSpikes = 5;
         } else if (Data.currentScore <= 80) {
-            SpikesManager.minSpikes = 4;
-            SpikesManager.maxSpikes = 6;
+            minSpikes = 4;
+            maxSpikes = 6;
         } else {
-            SpikesManager.minSpikes = 4;
-            SpikesManager.maxSpikes = 7;
+            minSpikes = 4;
+            maxSpikes = 7;
         }
+        return {minSpikes: minSpikes, maxSpikes: maxSpikes};
     }
 }

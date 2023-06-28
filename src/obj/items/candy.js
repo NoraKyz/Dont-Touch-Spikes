@@ -1,6 +1,7 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import { Game } from "../../game";
 import { Collider } from "../physics/collider";
+import { Data } from "../../data";
 
 export class Candy extends Container {
     constructor() {
@@ -8,8 +9,8 @@ export class Candy extends Container {
         this._initSprite();
         this._initCollider();
         this.randomPosition();
-        this.speed = 0.25;
-        this.distance = 5;
+        this.speed = 1;
+        this.distance = 20;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
     }
@@ -18,8 +19,15 @@ export class Candy extends Container {
         this.candy = Sprite.from(Assets.get("candy"));
         this.scale.set(1.2);
         this.candy.anchor.set(0.5);
-        // test
         this.addChild(this.candy);
+    }
+
+    updateCandyQuantity(eaten){
+        if (!eaten) {
+            eaten = true;
+            console.log(123);
+            Data.itemQuantity++;
+        }
     }
 
     displayCandy() {
@@ -45,17 +53,20 @@ export class Candy extends Container {
     randomPosition() {
         const candyPosition = { x: 0, y: 0 };
         let randomX = Math.floor(Math.random() * 2);
-        if (randomX) candyPosition.x = -Game.app.view.width * 5.5 / 14;
+        if (randomX) candyPosition.x = -Game.app.view.width * 4 / 14;
         else candyPosition.x = Game.app.view.width * 4 / 14;
 
         let randomY = Math.floor(Math.random() * 2);
-        if (randomY) candyPosition.y = -Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 4));
+        if (randomY) candyPosition.y = -Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 3));
         else candyPosition.y = Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 2));
         this.x = candyPosition.x;
         this.y = candyPosition.y;
+        this.highestPos = this.y - this.distance;
+        this.lowestPos = this.y + this.distance;
     }
 
     update() {
+        //console.log(123);
         this._candyMove();
     }
 }

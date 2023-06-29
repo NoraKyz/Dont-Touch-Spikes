@@ -11,7 +11,7 @@ export class Candy extends Container {
         this._initCollider();
         this._initEffect();
         this.randomPosition();
-        this.speed = 1;
+        this.speed = 1 / Game.ratio;
         this.distance = 20 / Game.ratio;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;

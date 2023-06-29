@@ -87,7 +87,6 @@ export class Scene extends Container {
     _onLose() {
         if (this.gameState == GameState.Lose) return;
         this.gameState = GameState.Lose;
-        this.player.isDie = true;
         setTimeout(() => {
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();

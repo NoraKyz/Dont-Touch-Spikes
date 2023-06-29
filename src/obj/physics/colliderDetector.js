@@ -17,6 +17,10 @@ export class ColliderDetector extends EventEmitter {
     }
 
     checkCollider(obj1, obj2) {
+        if(obj1 === null || obj2 === null) {
+            return;
+        }  
+
         if (Array.isArray(obj2)) {
             obj2.forEach(child => {
                 if (this.isCollide(obj1.collider, child.collider)) {

@@ -44,7 +44,7 @@ export class Scene extends Container {
 
         if (obj1 === this.player && obj2 instanceof Candy) {
             if(this.gameState != GameState.Lose){
-                //Assets.get("eatSound").play();
+                Assets.get("eatingSound").play();
                 this.candy.randomPosition();
                 this.candy.updateCandyQuantity(this.candy.eaten);
             }      
@@ -65,7 +65,7 @@ export class Scene extends Container {
         this.background.onReset();
         this.mainUI.onReset();
         this.gameOverUI.onReset(); 
-        
+
         setTimeout(() => {
             this.gameState = GameState.Ready;
         }, 100);
@@ -109,7 +109,7 @@ export class Scene extends Container {
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
-            //Assets.get("flySound").play();
+            Assets.get("flyingSound").play();
         } 
     }
     

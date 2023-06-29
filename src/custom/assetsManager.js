@@ -7,8 +7,8 @@ export class AssetsManager {
 
         this._addBundle(
             "sound", {
-                "flySound": "./assets/sound/bird.mp3",
-                "eatSound": "./assets/sound/eating.mp3",
+                "flyingSound": "./assets/sound/flyingSound.mp3",
+                "eatingSound": "./assets/sound/eatingSound.mp3",
         })
 
         this._addBundle(

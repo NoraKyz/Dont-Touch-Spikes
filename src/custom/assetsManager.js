@@ -25,12 +25,12 @@ export class AssetsManager {
             }
         )
         
-        // this._addBundle(
-        //     "UI", {
-        //         "trophy": "./assets/images/trophy-20.png",
-        //         "leaderboard": "./assets/images/leaderboard_FILL1_wght400_GRADO_opsz48.png",
-        //     }
-        // )
+        this._addBundle(
+            "UI", {
+                "trophy": "./assets/images/trophy.png",
+                "leaderboard": "./assets/images/leaderboard.png",
+            }
+        )
         return Assets.loadBundle(this.keys);
     }
 

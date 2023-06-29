@@ -44,7 +44,7 @@ export class Scene extends Container {
 
         if (obj1 === this.player && obj2 instanceof Candy) {
             if(this.gameState != GameState.Lose){
-                Assets.get("eatSound").play();
+                //Assets.get("eatSound").play();
                 this.candy.randomPosition();
                 this.candy.updateCandyQuantity(this.candy.eaten);
             }      
@@ -64,8 +64,8 @@ export class Scene extends Container {
         this.traps.onReset();
         this.background.onReset();
         this.mainUI.onReset();
-        this.gameOverUI.onReset();
-        this.gameState = GameState.Ready;
+        this.gameOverUI.onReset(); 
+        this.gameState = GameState.Ready;   
     }
 
     _onNextLevel(direction) {
@@ -84,7 +84,6 @@ export class Scene extends Container {
         this.gameState = GameState.Lose;
         this.player.isDie = true;
         setTimeout(() => {
-            this._initGameOver();
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
         }, 1000);
@@ -99,6 +98,10 @@ export class Scene extends Container {
     }
 
     _onPointerDown() {
+        // if(this.gameOverUI.visible) {
+        //     return;
+        // }
+
         if (this.gameState != GameState.Lose) {
             if (this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
@@ -107,10 +110,13 @@ export class Scene extends Container {
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
-            Assets.get("flySound").play();
-
-        }
+            //Assets.get("flySound").play();
+        } 
+        // else {
+        //     this.gameState = GameState.Ready;
+        // }
     }
+    
     _initGameplay() {
         this.gameplay = new Container();
         this.gameplay.x = Game.app.screen.width / 2;

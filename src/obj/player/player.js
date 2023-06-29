@@ -72,7 +72,7 @@ export class Player extends Container {
 
     onPointerDown() {
         if (!this.isPlaying) {
-            this.velocity.x = this.jumpForce / 1.3;
+            this.velocity.x = this.jumpForce / 1.7;
             this.velocity.y = -this.jumpForce;
             this.isPlaying = true;
             this.direction = { x: 1, y: 1 };
@@ -128,7 +128,7 @@ export class Player extends Container {
 
     _touchWall() {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
-            this.velocity.y = -this.jumpForce;
+            this.velocity.y = -this.jumpForce * 0.7 ;
         } else {
             this.velocity.y = -4;
             if (this.isDie) {

@@ -25,10 +25,10 @@ export class Player extends Container {
     }
 
     _initProperties() {
-        this.radiousCollider = 40;
-        this.velocity = { x: 0, y: -1.5 };
-        this.gravity = 0.5;
-        this.jumpForce = 12;
+        this.radiousCollider = 40 / Game.ratio;
+        this.velocity = { x: 0 / Game.ratio, y: -1.5 / Game.ratio };
+        this.gravity = 0.5 / Game.ratio;
+        this.jumpForce = 12 / Game.ratio;
         this.direction = { x: 1, y: 1 };
         this.isPlaying = false;
         this.isDie = false;
@@ -39,14 +39,14 @@ export class Player extends Container {
 
         this.bird = new AnimatedSprite(this.animateTextures);
         this.bird.anchor.set(0.5);
-        this.bird.scale.set(0.5);
-        this.bird.animationSpeed = 0.018;
+        this.bird.scale.set(0.5 / Game.ratio);
+        this.bird.animationSpeed = 0.018 / Game.ratio;
         this.bird.play();
         this.addChild(this.bird);
 
         this.birdDead = Sprite.from(Assets.get("birdDead"));
         this.birdDead.anchor.set(0.5);
-        this.birdDead.scale.set(0.5);
+        this.birdDead.scale.set(0.5 / Game.ratio);
     }
 
     _initEffect() {
@@ -132,7 +132,7 @@ export class Player extends Container {
 
     _limitHozMovement() {
         let direction = 1;
-        if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / 2) {
+        if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / Game.ratio / 2) {
             // 1 direction
             direction = 1;
             this.gameManager.emit("nextLevel", direction);
@@ -141,7 +141,7 @@ export class Player extends Container {
             this._touchWall();
         }
 
-        if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / 2) {
+        if (this.position.x + this.radiousCollider >= GameConstant.GAME_WIDTH / Game.ratio / 2) {
             direction = 0;
             this.gameManager.emit("nextLevel", direction);
             this.direction.x = -1;
@@ -154,9 +154,9 @@ export class Player extends Container {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce * 0.7;
         } else {
-            this.velocity.y = -4;
+            this.velocity.y = -4 / Game.ratio;
             if (this.isDie) {
-                this.velocity.y = 2;
+                this.velocity.y = 2 / Game.ratio;
             }
         }
     }
@@ -197,11 +197,11 @@ export class Player extends Container {
         this.addChild(this.bird);
         this.isDie = false;
         this.isPlaying = false;
-        this.velocity = { x: 0, y: -1.5 };
+        this.velocity = { x: 0 / Game.ratio, y: -1.5 / Game.ratio };
         this.direction = { x: 1, y: 1 };
         this.position = { x: 0, y: 0 };
-        this.birdDead.scale.x = 0.5;
-        this.bird.scale.x = 0.5;
+        this.birdDead.scale.x = 0.5 / Game.ratio;
+        this.bird.scale.x = 0.5 / Game.ratio;
         this.fadeTween.stop();
     }
 

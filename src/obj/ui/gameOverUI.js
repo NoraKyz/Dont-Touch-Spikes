@@ -1,20 +1,20 @@
 import * as PIXI from "pixi.js";
 import {Assets, Container, Graphics, Sprite} from "pixi.js";
 import {Data} from "../../data";
-import { GameInfor } from "./gameInfor";
 import {GameManager} from "../../custom/gameManager";
+import { Game } from "../../game";
 
-const BUTTON = Object.freeze({
-    x: -280,
-    y: -45,
-    width: 560,
-    height: 90,
-    radius: 16,
-});
 
 export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
+        this.BUTTON = Object.freeze({
+            x: -280 / Game.ratio,
+            y: -45 / Game.ratio,
+            width: 560 / Game.ratio,
+            height: 90 / Game.ratio,
+            radius: 16 / Game.ratio,
+        });
         this.style = {
             fontFamily: "Calibri",
             fill: ['#ffffff'],
@@ -22,7 +22,7 @@ export class GameOverUI extends PIXI.Container {
         }
         this.bigTextStyle = new PIXI.TextStyle({
             ...this.style,
-            fontSize: 65,
+            fontSize: 65 / Game.ratio,
         });
         this._initPointButton();
         this._initReplayButton();
@@ -38,36 +38,36 @@ export class GameOverUI extends PIXI.Container {
         this.pointsButtonBar = new PIXI.Container();
         this.pointText = new PIXI.TextStyle({
             ...this.style,
-            fontSize: 60,
+            fontSize: 60 / Game.ratio,
         });
         this.pointNum = new PIXI.TextStyle({
             ...this.style,
-            fontSize: 115,
+            fontSize: 115 / Game.ratio,
             fontWeight: "bold",
         });
 
         this.pointsButton = new Graphics();
         this.pointsButton.beginFill(0xff2727);
-        this.pointsButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width,BUTTON.height*2, BUTTON.radius);
+        this.pointsButton.drawRoundedRect(this.BUTTON.x, this.BUTTON.y, this.BUTTON.width, this.BUTTON.height*2, this.BUTTON.radius);
         this.pointsButton.endFill();
         this.pointsButton.zIndex = 1;
         this.pointsButtonBar.addChild(this.pointsButton);
 
         this.pointsButtonNum = new PIXI.Text(Data.currentScore, this.pointNum);
-        this.pointsButtonNum.position.set(BUTTON.x + 278, BUTTON.y + 61);
+        this.pointsButtonNum.position.set(this.BUTTON.x + 278 / Game.ratio, this.BUTTON.y + 61 / Game.ratio);
         this.pointsButtonNum.anchor.set(0.5);
         this.pointsButtonNum.zIndex = 2;
         this.pointsButtonBar.addChild(this.pointsButtonNum);
 
         this.pointsButtonText = new PIXI.Text("POINTS", this.pointText);
-        this.pointsButtonText.position.set(BUTTON.x + 278, BUTTON.y + 136);
+        this.pointsButtonText.position.set(this.BUTTON.x + 278 / Game.ratio, this.BUTTON.y + 136 / Game.ratio);
         this.pointsButtonText.anchor.set(0.5);
         this.pointsButtonText.zIndex = 2;
         this.pointsButtonBar.addChild(this.pointsButtonText);
         this._decoratePointButton();
 
         this.pointsButtonBar.cursor = "pointer";
-        this.pointsButtonBar.position.set(0, -220);
+        this.pointsButtonBar.position.set(0, -220 / Game.ratio);
 
         this.addChild(this.pointsButtonBar);
     }
@@ -76,28 +76,28 @@ export class GameOverUI extends PIXI.Container {
         this.leftDecoration = new Container();
         this.buttonDecorationLeft = new Graphics();
         this.buttonDecorationLeft.beginFill(0xd11515);
-        this.buttonDecorationLeft.drawRoundedRect(BUTTON.x+25, BUTTON.y+25, 130,130, BUTTON.radius);
+        this.buttonDecorationLeft.drawRoundedRect(this.BUTTON.x+25 / Game.ratio, this.BUTTON.y+25 / Game.ratio, 130 / Game.ratio,130 / Game.ratio, this.BUTTON.radius);
         this.buttonDecorationLeft.endFill();
         this.buttonDecorationLeft.zIndex = 2;
         this.imageDecorationLeft = Sprite.from(Assets.get("trophy"));
         this.imageDecorationLeft.zIndex = 3;
         this.imageDecorationLeft.anchor.set(0.5);
-        this.imageDecorationLeft.scale.set(0.2);
-        this.imageDecorationLeft.position.set(BUTTON.x+90, BUTTON.y+90);
+        this.imageDecorationLeft.scale.set(0.2 / Game.ratio);
+        this.imageDecorationLeft.position.set(this.BUTTON.x+90 / Game.ratio, this.BUTTON.y+90 / Game.ratio);
         this.leftDecoration.addChild(this.buttonDecorationLeft);
         this.leftDecoration.addChild(this.imageDecorationLeft);
 
         this.rightDecoration = new Container();
         this.buttonDecorationRight = new Graphics();
         this.buttonDecorationRight.beginFill(0xd11515);
-        this.buttonDecorationRight.drawRoundedRect(BUTTON.x+405, BUTTON.y+25, 130,130, BUTTON.radius);
+        this.buttonDecorationRight.drawRoundedRect(this.BUTTON.x+405 / Game.ratio, this.BUTTON.y+25 / Game.ratio, 130 / Game.ratio,130 / Game.ratio, this.BUTTON.radius);
         this.buttonDecorationRight.endFill();
         this.buttonDecorationRight.zIndex = 2;
         this.imageDecorationRight = Sprite.from(Assets.get("leaderBoard"));
         this.imageDecorationRight.zIndex = 3;
         this.imageDecorationRight.anchor.set(0.5);
-        this.imageDecorationRight.scale.set(2);
-        this.imageDecorationRight.position.set(BUTTON.x+470, BUTTON.y+90);
+        this.imageDecorationRight.scale.set(2 / Game.ratio);
+        this.imageDecorationRight.position.set(this.BUTTON.x+470 / Game.ratio, this.BUTTON.y+90 / Game.ratio);
         this.rightDecoration.addChild(this.buttonDecorationRight);
         this.rightDecoration.addChild(this.imageDecorationRight);
 
@@ -110,7 +110,7 @@ export class GameOverUI extends PIXI.Container {
 
         this.replayButton = new Graphics();
         this.replayButton.beginFill(0xff2727);
-        this.replayButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width,BUTTON.height, BUTTON.radius);
+        this.replayButton.drawRoundedRect(this.BUTTON.x, this.BUTTON.y, this.BUTTON.width, this.BUTTON.height, this.BUTTON.radius);
         this.replayButton.endFill();
         this.replayButton.zIndex = 1;
         this.replayButtonBar.addChild(this.replayButton);
@@ -123,7 +123,7 @@ export class GameOverUI extends PIXI.Container {
         this.replayButtonBar.eventMode = 'static';
         this.replayButtonBar.cursor = "pointer";
         this.replayButtonBar.on("pointerdown", () => this._clickedReplayButton());
-        this.replayButtonBar.position.set(0, -30);
+        this.replayButtonBar.position.set(0, -30 / Game.ratio);
         this.addChild(this.replayButtonBar);
     }
 
@@ -135,7 +135,7 @@ export class GameOverUI extends PIXI.Container {
         this.shareButtonBar = new PIXI.Container();
         this.shareButton = new Graphics();
         this.shareButton.beginFill(0xff2727);
-        this.shareButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width,BUTTON.height, BUTTON.radius);
+        this.shareButton.drawRoundedRect(this.BUTTON.x, this.BUTTON.y, this.BUTTON.width, this.BUTTON.height, this.BUTTON.radius);
         this.shareButton.endFill();
         this.shareButton.zIndex = 1;
         this.shareButtonBar.addChild(this.shareButton);
@@ -147,7 +147,7 @@ export class GameOverUI extends PIXI.Container {
 
         this.shareButtonBar.cursor = "pointer";
         this.shareButtonBar.on("pointerdown", () => {});
-        this.shareButtonBar.position.set(0, 70);
+        this.shareButtonBar.position.set(0, 70 / Game.ratio);
         this.addChild(this.shareButtonBar);
     }
     onReset(){

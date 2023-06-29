@@ -44,7 +44,7 @@ export class Background extends Container {
     _initScoreBg() {
         // circle
         this.scoreBg = new Graphics();
-        this.scoreBg.circleRadius = 200;
+        this.scoreBg.circleRadius = 200 / Game.ratio;
         this.scoreBg.beginFill(0xffffff);
         this.scoreBg.drawCircle(0, -Game.app.view.height / 28, this.scoreBg.circleRadius);
         this.scoreBg.endFill();
@@ -54,7 +54,7 @@ export class Background extends Container {
         this.scoreText = new Text(`0${Data.currentScore}`, {
             fontFamily: 'Calibri',
             fontWeight: 500,
-            fontSize: 65,
+            fontSize: 65 / Game.ratio,
             fill: `0x${this.mainColor.color}`,
             opacity: 0.5,
         });

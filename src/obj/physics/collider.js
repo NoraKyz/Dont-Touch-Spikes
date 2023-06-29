@@ -9,7 +9,7 @@ export class Collider extends Graphics {
     }
 
     _initCollider() {
-        this.beginFill(0x000000, 0)
+        this.beginFill(0x000000, 0);
         this.drawCircle(0, 0, this.radius);
         this.endFill();
     }

@@ -1,6 +1,7 @@
 import { Container, Text } from "pixi.js";
 import { GameName } from "./gameName";
 import { GameInfor } from "./gameInfor";
+import { Game } from "../../game";
 
 export class MainUI extends Container{
   constructor(){
@@ -17,17 +18,17 @@ export class MainUI extends Container{
     const style = {
       fontFamily: 'Arial',
       fontWeight: 600,
-      fontSize: 40,
+      fontSize: 40 / Game.ratio, 
       fill: '0x909090',
       align: 'center',
     }
     this.gameTutolTop = new Text("TAP", style);
     this.gameTutolTop.anchor.set(0.5);
-    this.gameTutolTop.position.set(0, -200);
+    this.gameTutolTop.position.set(0, -200 / Game.ratio);
     
     this.gameTutolBottom = new Text("TO JUMP", style);
     this.gameTutolBottom.anchor.set(0.5);
-    this.gameTutolBottom.position.set(0, -160);
+    this.gameTutolBottom.position.set(0, -160 / Game.ratio);
     this.addChild(this.gameTutolTop);
     this.addChild(this.gameTutolBottom);
   }

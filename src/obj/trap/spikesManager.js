@@ -9,7 +9,7 @@ export class SpikesManager extends Container {
     constructor() {
         super();
         this.state = 0;
-        this.distance = 70 * Math.sqrt(3) / 2;
+        this.distance = (70 / Game.ratio) * Math.sqrt(3) / 2;
         this.velocity = this.distance / 30;
         this.minSpikes = 2;
         this.maxSpikes = 5;
@@ -83,10 +83,10 @@ export class SpikesManager extends Container {
         let startY_Top = - Game.app.view.height / 2 + Game.app.view.height / 14;
         let startY_Bottom = Game.app.view.height * 2.5 / 7;
      
-        this.spikesTop = this._spawnSpikeLine(-280, startY_Top, 7, Math.PI, 1);
-        this.spikesBottom = this._spawnSpikeLine(-280, startY_Bottom, 7, 0, 1);
-        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2, startY_Top + 80, 10, Math.PI / 2, 0);
-        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2, startY_Top + 80, 10, - Math.PI / 2, 0);
+        this.spikesTop = this._spawnSpikeLine(-280 / Game.ratio, startY_Top, 7, Math.PI, 1);
+        this.spikesBottom = this._spawnSpikeLine(-280 / Game.ratio, startY_Bottom, 7, 0, 1);
+        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2, startY_Top + 80 / Game.ratio, 10, Math.PI / 2, 0);
+        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2, startY_Top + 80 / Game.ratio, 10, - Math.PI / 2, 0);
 
         this.spikeLeft.forEach(spike => {
             spike.x -= this.distance;
@@ -103,7 +103,7 @@ export class SpikesManager extends Container {
     }
 
     _initColliders() {
-        let colliderRadious = 30;
+        let colliderRadious = 30 / Game.ratio;
         this.poolSpikes.forEach(spike => {
             let collider = new Collider(colliderRadious);
             spike.collider = collider;
@@ -115,7 +115,7 @@ export class SpikesManager extends Container {
         // dir = 1 => vẽ hàng, ngược lại vẽ cột
         let spikeLine = new Container();
         let spikes = [];
-        const spikeSpacing = 70 * 4 / 3;
+        const spikeSpacing = (70 / Game.ratio) * 4 / 3;
  
         for (let i = 0; i < numbers; i++) {
             let spike = new Spike();

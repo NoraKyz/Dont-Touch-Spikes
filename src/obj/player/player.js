@@ -56,7 +56,7 @@ export class Player extends Container {
             })
             .onStop(() => {
                 this.bird.alpha = 1;
-            });
+        });
     }
 
     _flyEffect() {

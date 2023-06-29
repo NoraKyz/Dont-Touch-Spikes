@@ -11,6 +11,7 @@ const BUTTON = Object.freeze({
     height: 90,
     radius: 16,
 });
+
 export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
@@ -138,6 +139,7 @@ export class GameOverUI extends PIXI.Container {
     }
 
     showGameOverUI() {
+        this.pointsButtonNum.text = Data.currentScore;
         this.visible = true;
     }
 

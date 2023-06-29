@@ -32,11 +32,11 @@ export class Candy extends Container {
     }
 
     displayCandy() {
-        this.addChild(this.candy);
+        this.visible = true;
     }
 
-    hideCandy() {
-        this.removeChild(this.candy);
+    _hideCandy() {
+        this.visible = false;
     }
 
     _initCollider() {

@@ -15,11 +15,14 @@ const BUTTON = Object.freeze({
 export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
-        this.bigTextStyle = new PIXI.TextStyle({
+        this.style = {
             fontFamily: "Calibri",
-            fontSize: 65,
             fill: ['#ffffff'],
             align: "center",
+        }
+        this.bigTextStyle = new PIXI.TextStyle({
+            ...this.style,
+            fontSize: 65,
         });
         this._initPointButton();
         this._initReplayButton();
@@ -34,16 +37,12 @@ export class GameOverUI extends PIXI.Container {
 
         this.pointsButtonBar = new PIXI.Container();
         this.pointText = new PIXI.TextStyle({
-            fontFamily: "Calibri",
-            fontSize: 45,
-            fill: ['#ffffff'],
-            align: "center",
+            ...this.style,
+            fontSize: 60,
         });
         this.pointNum = new PIXI.TextStyle({
-            fontFamily: "Calibri",
+            ...this.style,
             fontSize: 115,
-            fill: ['#ffffff'],
-            align: "center",
             fontWeight: "bold",
         });
 

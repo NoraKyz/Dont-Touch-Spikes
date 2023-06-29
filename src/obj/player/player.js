@@ -47,8 +47,6 @@ export class Player extends Container {
         this.birdDead = Sprite.from(Assets.get("birdDead"));
         this.birdDead.anchor.set(0.5);
         this.birdDead.scale.set(0.5);
-        this.birdDead.visible = false;
-        this.addChild(this.birdDead);
     }
 
     _initEffect() {
@@ -59,11 +57,18 @@ export class Player extends Container {
         this.fadeTween = new TWEEN.Tween(this.birdDead)
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
-                this.birdDead.visible = false;
+                this.removeChild(this.birdDead);
             })
             .onStop(() => {
                 this.birdDead.alpha = 1;
+                this.removeChild(this.birdDead);
             });
+    }
+
+    _deadEffect(dt) {
+        if(this.isDie) {
+            this.birdDead.rotation += 0.8 * dt;
+        }
     }
 
     _flyEffect() {
@@ -90,11 +95,18 @@ export class Player extends Container {
     }
 
     onCollision(obj) {
-        if (obj instanceof Spike) {
+        if (obj instanceof Spike) {   
             this.velocity.x = this.jumpForce * 1.5;
-            this.birdDead.visible = true;
-            this.bird.visible = false;
-            this.isDie = true;
+
+            if(this.isDie == false) {
+                this.addChild(this.birdDead);
+                this.removeChild(this.bird);
+                this.isDie = true;
+            }
+
+            if (!this.fadeTween.isPlaying()) {
+                this.fadeTween.start();
+            }          
         }
     }
 
@@ -112,6 +124,8 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
 
         this._limitVerMovement();
+
+        this._deadEffect(dt);
     }
 
     // xử lý chạm left or right
@@ -136,14 +150,13 @@ export class Player extends Container {
         }
     }
 
-    _touchWall(dt) {
+    _touchWall() {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce * 0.7;
         } else {
             this.velocity.y = -4;
             if (this.isDie) {
                 this.velocity.y = 2;
-                this._isDead();
             }
         }
     }
@@ -156,14 +169,12 @@ export class Player extends Container {
         if (this.position.y - this.radiousCollider <= topLimit) {
             this.position.y = topLimit + this.radiousCollider;
             if (this.isDie) {
-                this.velocity.y = - this.jumpForce * 1.5;
-                this._isDead();
+                this.velocity.y = this.jumpForce * 1.5;
             }
         } else if (this.position.y + this.radiousCollider >= bottomLimit) {
             this.position.y = bottomLimit - this.radiousCollider;
             if (this.isDie) {
-                this.velocity.y = - this.jumpForce;
-                this._isDead();
+                this.velocity.y = - this.jumpForce * 1.5;
             }
         }
     }
@@ -182,22 +193,15 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
     }
 
-    _isDead() {
-        if (!this.fadeTween.isPlaying()) {
-            this.fadeTween.start();
-        }
-    }
-
     onReset() {
-        this.birdDead.visible = false;
-        this.bird.visible = true;
+        this.addChild(this.bird);
         this.isDie = false;
         this.isPlaying = false;
         this.velocity = { x: 0, y: -1.5 };
         this.direction = { x: 1, y: 1 };
         this.position = { x: 0, y: 0 };
-        this.bird.scale.set(0.5);
-        this.birdDead.scale.set(0.5);
+        this.birdDead.scale.x = 0.5;
+        this.bird.scale.x = 0.5;
         this.fadeTween.stop();
     }
 

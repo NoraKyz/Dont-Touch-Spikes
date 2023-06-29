@@ -52,9 +52,9 @@ export class Background extends Container {
 
         // score
         this.scoreText = new Text(`0${Data.currentScore}`, {
-            fontFamily: 'Montserrat',
-            fontWeight: 1000,
-            fontSize: 50,
+            fontFamily: 'Calibri',
+            fontWeight: 500,
+            fontSize: 65,
             fill: `0x${this.mainColor.color}`,
             opacity: 0.5,
         });

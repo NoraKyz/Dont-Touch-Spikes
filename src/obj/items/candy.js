@@ -15,6 +15,7 @@ export class Candy extends Container {
         this.distance = 20;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
+        this.enableEating = true;
     }
 
     _initSprite() {
@@ -22,6 +23,20 @@ export class Candy extends Container {
         this.scale.set(1.2);
         this.candy.anchor.set(0.5);
         this.addChild(this.candy);
+    }
+
+
+    updateCandyQuantity() {
+        this.enableEating = false;
+        Data.itemQuantity++;
+    }
+
+    displayCandy() {
+        this.addChild(this.candy);
+    }
+
+    hideCandy() {
+        this.removeChild(this.candy);
     }
 
     _initCollider() {
@@ -53,17 +68,17 @@ export class Candy extends Container {
         this._hideCandy();
     }
 
-    _initEffect(){
+    _initEffect() {
         this.spawnEffect = new TWEEN.Tween(this)
-        .to({ alpha: 1 }, 2000)
-        .onStart(() => {
-            this.visible = true;
-        });
+            .to({ alpha: 1 }, 2000)
+            .onStart(() => {
+                this.visible = true;
+            });
         this.deSpawnEffect = new TWEEN.Tween(this)
-        .to({ alpha: 0 }, 2000)
-        .onComplete(() => {
-            this.visible = false;
-        });
+            .to({ alpha: 0 }, 2000)
+            .onComplete(() => {
+                this.visible = false;
+            });
     }
     onSpawn() {
         this.alpha = 0;
@@ -72,16 +87,6 @@ export class Candy extends Container {
     
     onDead() {
         this.deSpawnEffect.start();
-    }
-    
-    updateCandyQuantity(){
-        Data.itemQuantity++;
-    }
-    _hideCandy(){
-        this.visible = false;
-    }
-    displayCandy(){
-        this.visible = true;
     }
 
     update() {

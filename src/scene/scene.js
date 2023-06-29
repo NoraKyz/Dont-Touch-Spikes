@@ -39,14 +39,14 @@ export class Scene extends Container {
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
-            this.player.onCollision(obj2);
+            this.player.onCollision(obj2);                  
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            if(this.gameState != GameState.Lose){
-                Assets.get("eatSound").play();
-                this.candy.randomPosition(this.player.direction.x);
-                this.candy.updateCandyQuantity();
+            if(this.gameState != GameState.Lose && this.candy.enableEating){
+                Assets.get("eatingSound").play();
+                this.candy.randomPosition();
+                this.candy.updateCandyQuantity();              
             }      
         }
     }
@@ -64,14 +64,19 @@ export class Scene extends Container {
         this.traps.onReset();
         this.background.onReset();
         this.mainUI.onReset();
-        this.gameOverUI.onReset();
-        this.gameState = GameState.Ready;
+        this.gameOverUI.onReset(); 
+
+        setTimeout(() => {
+            this.gameState = GameState.Ready;
+        }, 100);
     }
 
     _onNextLevel(direction) {
         if (this.gameState == GameState.Lose) {
             return;
         }
+
+        this.candy.enableEating = true;
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
@@ -84,7 +89,6 @@ export class Scene extends Container {
         this.gameState = GameState.Lose;
         this.player.isDie = true;
         setTimeout(() => {
-            this._initGameOver();
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
             this.background.hideScore();
@@ -109,10 +113,10 @@ export class Scene extends Container {
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
-            Assets.get("flySound").play();
-
-        }
+            Assets.get("flyingSound").play();
+        } 
     }
+    
     _initGameplay() {
         this.gameplay = new Container();
         this.gameplay.x = Game.app.screen.width / 2;
@@ -160,9 +164,6 @@ export class Scene extends Container {
         this.gameInfor = new GameInfor();
         this.gameplay.addChild(this.gameInfor);
     }
-
-
-    // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
 
     _initGameOver() {
         this.gameOverUI = new GameOverUI();

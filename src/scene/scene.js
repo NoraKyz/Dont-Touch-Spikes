@@ -65,7 +65,10 @@ export class Scene extends Container {
         this.background.onReset();
         this.mainUI.onReset();
         this.gameOverUI.onReset(); 
-        this.gameState = GameState.Ready;   
+        
+        setTimeout(() => {
+            this.gameState = GameState.Ready;
+        }, 100);
     }
 
     _onNextLevel(direction) {
@@ -98,10 +101,6 @@ export class Scene extends Container {
     }
 
     _onPointerDown() {
-        // if(this.gameOverUI.visible) {
-        //     return;
-        // }
-
         if (this.gameState != GameState.Lose) {
             if (this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
@@ -112,9 +111,6 @@ export class Scene extends Container {
             this.gameState = GameState.Playing;
             //Assets.get("flySound").play();
         } 
-        // else {
-        //     this.gameState = GameState.Ready;
-        // }
     }
     
     _initGameplay() {

@@ -22,15 +22,16 @@ export class AssetsManager {
             "bird", {
                 "bird1": "./assets/images/Bird1.png",
                 "bird2": "./assets/images/Bird2.png",
+                "bird3": "./assets/images/Bird3.png",
             }
         )
         
-        // this._addBundle(
-        //     "UI", {
-        //         "trophy": "./assets/images/trophy-20.png",
-        //         "leaderboard": "./assets/images/leaderboard_FILL1_wght400_GRADO_opsz48.png",
-        //     }
-        // )
+        this._addBundle(
+             "UI", {
+                 "trophy": "./assets/images/trophy.png",
+                 "leaderboard": "./assets/images/leaderBoard.png",
+             }
+        )
         return Assets.loadBundle(this.keys);
     }
 

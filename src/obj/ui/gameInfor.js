@@ -13,7 +13,7 @@ export class GameInfor extends Container {
     const style = {
       fontFamily: 'Arial',
       fontWeight: 600,
-      fontSize: 60,
+      fontSize: 60 / Game.ratio,
       fill: '0xf50c0c',
     }
     this.itemImage = Sprite.from(Assets.get("candy"));
@@ -22,8 +22,8 @@ export class GameInfor extends Container {
     this.itemImage.scale.set(1.2);
     this.itemQuantity.anchor.set(0.5);
 
-    this.itemImage.position.set(-40, Game.app.view.height / 7 + 65);
-    this.itemQuantity.position.set(40, Game.app.view.height / 7 + 65);
+    this.itemImage.position.set(-40 / Game.ratio, Game.app.view.height / 7 + 65 / Game.ratio);
+    this.itemQuantity.position.set(40 / Game.ratio, Game.app.view.height / 7 + 65 / Game.ratio);
 
     this.addChild(this.itemImage);
     this.addChild(this.itemQuantity);
@@ -33,17 +33,17 @@ export class GameInfor extends Container {
     const style = {
       fontFamily: 'Arial',
       fontWeight: 600,
-      fontSize: 45,
+      fontSize: 45 / Game.ratio,
       fill: '0x808080',
       align: 'center',
     }
     this.gameInforTop = new Text(`BEST SCORE : ${Data.bestScore}`, style);
     this.gameInforTop.anchor.set(0.5);
-    this.gameInforTop.position.set(0, Game.app.view.height / 7 + 130);
+    this.gameInforTop.position.set(0, Game.app.view.height / 7 + 130 / Game.ratio);
 
     this.gameInforBottom = new Text(`GAMES PLAYED : ${Data.gamesPlayed}`, style);
     this.gameInforBottom.anchor.set(0.5);
-    this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180);
+    this.gameInforBottom.position.set(0, Game.app.view.height / 7 + 180 / Game.ratio);
 
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);

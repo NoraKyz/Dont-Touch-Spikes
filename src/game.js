@@ -27,8 +27,15 @@ export class Game {
     }
 
     static resize(width, height) {
-        this.app.view.width = width;
-        this.app.view.height = height;
+        this.style = this.app.view.style;
+        this.ratio = Math.max(GameConstant.GAME_WIDTH / width, GameConstant.GAME_HEIGHT / height);
+
+        this.app.view.width = GameConstant.GAME_WIDTH / this.ratio;
+        this.app.view.height = GameConstant.GAME_HEIGHT / this.ratio;
+
+        let vMargin = Math.floor((width - this.app.view.width) / 2);
+        let hMargin = Math.floor((height - this.app.view.height) / 2); 
+        this.style.margin = `${hMargin}px ${vMargin}px ${hMargin}px ${vMargin}px`;
 
         this.app.resizeTo = this.app.view;
         this.app.resize();

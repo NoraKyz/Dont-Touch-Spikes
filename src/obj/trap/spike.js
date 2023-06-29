@@ -1,4 +1,5 @@
 import { Container, Graphics } from "pixi.js";
+import { Game } from "../../game";
 
 export class Spike extends Container {
     constructor() {
@@ -8,7 +9,7 @@ export class Spike extends Container {
     }
 
     _initSprite() {
-        this.size = 70; // Kích thước cạnh tam giác
+        this.size = 70 / Game.ratio; // Kích thước cạnh tam giác
         this.spike = new Graphics();
         this.spike.beginFill(0x808080);
 

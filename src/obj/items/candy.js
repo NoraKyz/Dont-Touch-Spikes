@@ -12,7 +12,7 @@ export class Candy extends Container {
         this._initEffect();
         this.randomPosition();
         this.speed = 1;
-        this.distance = 20;
+        this.distance = 20 / Game.ratio;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
         this.enableEating = true;
@@ -20,7 +20,7 @@ export class Candy extends Container {
 
     _initSprite() {
         this.candy = Sprite.from(Assets.get("candy"));
-        this.scale.set(1.2);
+        this.scale.set(1.2 / Game.ratio);
         this.candy.anchor.set(0.5);
         this.addChild(this.candy);
     }
@@ -40,7 +40,7 @@ export class Candy extends Container {
     }
 
     _initCollider() {
-        const colliderRadious = 18;
+        const colliderRadious = 18 / Game.ratio;
         this.collider = new Collider(colliderRadious);
         this.addChild(this.collider);
     }

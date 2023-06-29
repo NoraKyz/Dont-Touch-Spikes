@@ -81,6 +81,7 @@ export class Scene extends Container {
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
+        if(this.candy.visible == false) this.candy.displayCandy();
     }
 
     _onLose() {
@@ -90,6 +91,7 @@ export class Scene extends Container {
         setTimeout(() => {
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
+            this.background.hideScore();
         }, 1000);
         this.gameInfor.updateGameInfor();
         this.candy.onDead();
@@ -107,6 +109,7 @@ export class Scene extends Container {
                 this.mainUI.hideMainUI();
                 this.gameInfor.hideGameInfor();
                 this.candy.onSpawn();
+                this.background.displayScore();
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
@@ -161,9 +164,6 @@ export class Scene extends Container {
         this.gameInfor = new GameInfor();
         this.gameplay.addChild(this.gameInfor);
     }
-
-
-    // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
 
     _initGameOver() {
         this.gameOverUI = new GameOverUI();

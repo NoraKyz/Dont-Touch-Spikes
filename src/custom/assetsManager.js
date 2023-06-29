@@ -22,13 +22,14 @@ export class AssetsManager {
             "bird", {
                 "bird1": "./assets/images/Bird1.png",
                 "bird2": "./assets/images/Bird2.png",
+                "birdDead": "./assets/images/birdDead.png",
             }
         )
         
         this._addBundle(
             "UI", {
                 "trophy": "./assets/images/trophy.png",
-                "leaderboard": "./assets/images/leaderboard.png",
+                "leaderBoard": "./assets/images/leaderboard.png",
             }
         )
         return Assets.loadBundle(this.keys);

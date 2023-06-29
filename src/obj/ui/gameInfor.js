@@ -19,7 +19,7 @@ export class GameInfor extends Container {
     this.itemImage = Sprite.from(Assets.get("candy"));
     this.itemQuantity = new Text(`${Data.itemQuantity}`, style);
     this.itemImage.anchor.set(0.5);
-    this.itemImage.scale.set(1.2);
+    this.itemImage.scale.set(1.2 / Game.ratio);
     this.itemQuantity.anchor.set(0.5);
 
     this.itemImage.position.set(-40 / Game.ratio, Game.app.view.height / 7 + 65 / Game.ratio);

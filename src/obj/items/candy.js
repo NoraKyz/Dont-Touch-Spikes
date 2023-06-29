@@ -69,24 +69,33 @@ export class Candy extends Container {
     }
 
     _initEffect() {
+        this._spawnEffect();
+        this._despawnEffect();
+    }
+
+    _spawnEffect() {
         this.spawnEffect = new TWEEN.Tween(this)
             .to({ alpha: 1 }, 2000)
             .onStart(() => {
                 this.visible = true;
-            });
-        this.deSpawnEffect = new TWEEN.Tween(this)
+        });
+    }
+
+    _despawnEffect() {
+        this.despawnEffect = new TWEEN.Tween(this)
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
                 this.visible = false;
-            });
+        });
     }
+
     onSpawn() {
         this.alpha = 0;
         this.spawnEffect.start();
     }
     
     onDead() {
-        this.deSpawnEffect.start();
+        this.despawnEffect.start();
     }
 
     update() {

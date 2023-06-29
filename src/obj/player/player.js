@@ -36,12 +36,19 @@ export class Player extends Container {
 
     _initSprite() {
         this.animateTextures = [Sprite.from(Assets.get("bird2")).texture, Sprite.from(Assets.get("bird1")).texture];
+
         this.bird = new AnimatedSprite(this.animateTextures);
         this.bird.anchor.set(0.5);
         this.bird.scale.set(0.5);
         this.bird.animationSpeed = 0.018;
         this.bird.play();
         this.addChild(this.bird);
+
+        this.birdDead = Sprite.from(Assets.get("birdDead"));
+        this.birdDead.anchor.set(0.5);
+        this.birdDead.scale.set(0.5);
+        this.birdDead.visible = false;
+        this.addChild(this.birdDead);
     }
 
     _initEffect() {
@@ -49,13 +56,13 @@ export class Player extends Container {
     }
 
     _despawnEffect() {
-        this.fadeTween = new TWEEN.Tween(this.bird)
+        this.fadeTween = new TWEEN.Tween(this.birdDead)
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
-                this.bird.visible = false;
+                this.birdDead.visible = false;
             })
             .onStop(() => {
-                this.bird.alpha = 1;
+                this.birdDead.alpha = 1;
             });
     }
 
@@ -68,6 +75,7 @@ export class Player extends Container {
 
     _changeDirection() {
         this.bird.scale.x *= -1;
+        this.birdDead.scale.x *= -1;
     }
 
     onPointerDown() {
@@ -84,6 +92,8 @@ export class Player extends Container {
     onCollision(obj) {
         if (obj instanceof Spike) {
             this.velocity.x = this.jumpForce * 1.5;
+            this.birdDead.visible = true;
+            this.bird.visible = false;
             this.isDie = true;
         }
     }
@@ -126,7 +136,7 @@ export class Player extends Container {
         }
     }
 
-    _touchWall() {
+    _touchWall(dt) {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce;
         } else {
@@ -179,6 +189,7 @@ export class Player extends Container {
     }
 
     onReset() {
+        this.birdDead.visible = false;
         this.bird.visible = true;
         this.isDie = false;
         this.isPlaying = false;
@@ -186,6 +197,7 @@ export class Player extends Container {
         this.direction = { x: 1, y: 1 };
         this.position = { x: 0, y: 0 };
         this.bird.scale.set(0.5);
+        this.birdDead.scale.set(0.5);
         this.fadeTween.stop();      
     }
 

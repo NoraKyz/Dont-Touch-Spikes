@@ -15,6 +15,7 @@ export class Candy extends Container {
         this.distance = 20;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
+        this.enableEating = true;
     }
 
     _initSprite() {
@@ -24,11 +25,9 @@ export class Candy extends Container {
         this.addChild(this.candy);
     }
 
-    updateCandyQuantity(eaten){
-        if (!eaten) {
-            eaten = true;
-            Data.itemQuantity++;
-        }
+    updateCandyQuantity() {
+        this.enableEating = false;
+        Data.itemQuantity++;
     }
 
     displayCandy() {
@@ -66,17 +65,17 @@ export class Candy extends Container {
         this.lowestPos = this.y + this.distance;
     }
 
-    _initEffect(){
+    _initEffect() {
         this.spawnEffect = new TWEEN.Tween(this)
-        .to({ alpha: 1 }, 2000)
-        .onStart(() => {
-            this.visible = true;
-        });
+            .to({ alpha: 1 }, 2000)
+            .onStart(() => {
+                this.visible = true;
+            });
         this.deSpawnEffect = new TWEEN.Tween(this)
-        .to({ alpha: 0 }, 2000)
-        .onComplete(() => {
-            this.visible = false;
-        });
+            .to({ alpha: 0 }, 2000)
+            .onComplete(() => {
+                this.visible = false;
+            });
     }
 
     onSpawn() {

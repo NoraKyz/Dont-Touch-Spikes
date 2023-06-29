@@ -39,14 +39,14 @@ export class Scene extends Container {
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
-            this.player.onCollision(obj2);
+            this.player.onCollision(obj2);                  
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            if(this.gameState != GameState.Lose){
+            if(this.gameState != GameState.Lose && this.candy.enableEating){
                 Assets.get("eatingSound").play();
                 this.candy.randomPosition();
-                this.candy.updateCandyQuantity(this.candy.eaten);
+                this.candy.updateCandyQuantity();              
             }      
         }
     }
@@ -76,6 +76,7 @@ export class Scene extends Container {
             return;
         }
 
+        this.candy.enableEating = true;
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);

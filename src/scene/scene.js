@@ -39,15 +39,15 @@ export class Scene extends Container {
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
-            this.player.onCollision(obj2);                  
+            this.player.onCollision(obj2);
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            if(this.gameState != GameState.Lose && this.candy.enableEating){
+            if (this.gameState != GameState.Lose && this.candy.enableEating) {
                 Assets.get("eatingSound").play();
                 this.candy.randomPosition(this.player.direction.x);
-                this.candy.updateCandyQuantity();              
-            }      
+                this.candy.updateCandyQuantity();
+            }
         }
     }
 
@@ -64,7 +64,7 @@ export class Scene extends Container {
         this.traps.onReset();
         this.background.onReset();
         this.mainUI.onReset();
-        this.gameOverUI.onReset(); 
+        this.gameOverUI.onReset();
 
         setTimeout(() => {
             this.gameState = GameState.Ready;
@@ -81,7 +81,7 @@ export class Scene extends Container {
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
-        if(this.candy.visible == false) this.candy.displayCandy();
+        if (this.candy.visible == false) this.candy.displayCandy();
     }
 
     _onLose() {
@@ -113,9 +113,9 @@ export class Scene extends Container {
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
             Assets.get("flyingSound").play();
-        } 
+        }
     }
-    
+
     _initGameplay() {
         this.gameplay = new Container();
         this.gameplay.x = Game.app.screen.width / 2;
@@ -172,9 +172,11 @@ export class Scene extends Container {
 
     update(dt) {
         this.player.update(dt);
-        this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
-        this.colliderDetector.checkCollider(this.player, this.candy);
-        this.traps.update();
-        this.candy.update();
+        if (this.gameState == GameState.Playing) {
+            this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
+            this.colliderDetector.checkCollider(this.player, this.candy);
+            this.traps.update();
+            this.candy.update();
+        }
     }
 }

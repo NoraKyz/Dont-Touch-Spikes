@@ -5,6 +5,7 @@ export class Collider extends Graphics {
     constructor(radius) {
         super();
         this.radius = radius;
+        this.enable = true;
         this._initCollider();
     }
 

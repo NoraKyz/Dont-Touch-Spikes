@@ -4433,14 +4433,15 @@ class AssetsManager {
       "bird",
       {
         "bird1": "./assets/images/Bird1.png",
-        "bird2": "./assets/images/Bird2.png"
+        "bird2": "./assets/images/Bird2.png",
+        "birdDead": "./assets/images/birdDead.png"
       }
     );
     this._addBundle(
       "UI",
       {
         "trophy": "./assets/images/trophy.png",
-        "leaderboard": "./assets/images/leaderboard.png"
+        "leaderBoard": "./assets/images/leaderboard.png"
       }
     );
     return pixi_js__WEBPACK_IMPORTED_MODULE_1__.Assets.loadBundle(this.keys);
@@ -4585,8 +4586,13 @@ class Game {
     });
   }
   static resize(width, height) {
-    this.app.view.width = width;
-    this.app.view.height = height;
+    this.style = this.app.view.style;
+    this.ratio = Math.max(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / width, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT / height);
+    this.app.view.width = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / this.ratio;
+    this.app.view.height = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT / this.ratio;
+    let vMargin = Math.floor((width - this.app.view.width) / 2);
+    let hMargin = Math.floor((height - this.app.view.height) / 2);
+    this.style.margin = `${hMargin}px ${vMargin}px ${hMargin}px ${vMargin}px`;
     this.app.resizeTo = this.app.view;
     this.app.resize();
     this.scene && this.scene.resize();
@@ -4659,7 +4665,6 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initRetangleBottom();
     this._initPlayGround();
     this._initScoreBg();
-    this.ok = 0;
   }
   _initProperties() {
     this.mainColor = { color: "ebebeb", colorDarker: "808080" };
@@ -4687,34 +4692,29 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initScoreBg() {
     this.scoreBg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.scoreBg.circleRadius = 200;
+    this.scoreBg.circleRadius = 200 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
     this.scoreBg.beginFill(16777215);
     this.scoreBg.drawCircle(0, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 28, this.scoreBg.circleRadius);
     this.scoreBg.endFill();
     this.addChild(this.scoreBg);
     this.scoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`0${_data__WEBPACK_IMPORTED_MODULE_3__.Data.currentScore}`, {
-      fontFamily: "Montserrat",
-      fontWeight: 1e3,
-      fontSize: 50,
+      fontFamily: "Calibri",
+      fontWeight: 500,
+      fontSize: 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
       fill: `0x${this.mainColor.color}`,
       opacity: 0.5
     });
     this.scoreText.anchor.set(0.5);
     this.scoreText.y = -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 28;
     this.scoreText.scale.set(4.5);
-    this.displayScore();
   }
   updateBackground(newScore) {
     if (newScore < 10)
       this.scoreText.text = `0${newScore}`;
     else
       this.scoreText.text = `${newScore}`;
-    if (newScore > 0 && newScore % 5 == 0) {
-      if (!this.ok)
-        this.changeBgColor();
-      this.ok = 1;
-    } else
-      this.ok = 0;
+    if (newScore > 0 && newScore % 5 == 0)
+      this.changeBgColor();
   }
   _newMainColor() {
     this.mainColor = _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.randomColorBackground();
@@ -4732,6 +4732,8 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   onReset() {
     this.mainColor = { color: "FFFFFF", colorDarker: "FFFFFF" };
     this._resetBgColor();
+    this.scoreText.tint = "ebebeb";
+    this.scoreText.text = `0${_data__WEBPACK_IMPORTED_MODULE_3__.Data.currentScore}`;
   }
   displayScore() {
     this.addChild(this.scoreText);
@@ -4773,14 +4775,14 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initEffect();
     this.randomPosition();
     this.speed = 1;
-    this.distance = 20;
+    this.distance = 20 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
     this.highestPos = this.y - this.distance;
     this.lowestPos = this.y + this.distance;
     this.enableEating = true;
   }
   _initSprite() {
     this.candy = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("candy"));
-    this.scale.set(1.2);
+    this.scale.set(1.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.candy.anchor.set(0.5);
     this.addChild(this.candy);
   }
@@ -4789,13 +4791,13 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     _data__WEBPACK_IMPORTED_MODULE_3__.Data.itemQuantity++;
   }
   displayCandy() {
-    this.addChild(this.candy);
+    this.visible = true;
   }
-  hideCandy() {
-    this.removeChild(this.candy);
+  _hideCandy() {
+    this.visible = false;
   }
   _initCollider() {
-    const colliderRadious = 18;
+    const colliderRadious = 18 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
     this.collider = new _physics_collider__WEBPACK_IMPORTED_MODULE_2__.Collider(colliderRadious);
     this.addChild(this.collider);
   }
@@ -4806,10 +4808,9 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.speed = -this.speed;
     this.y -= this.speed;
   }
-  randomPosition() {
+  randomPosition(direction) {
     const candyPosition = { x: 0, y: 0 };
-    let randomX = Math.floor(Math.random() * 2);
-    if (randomX)
+    if (direction === 1)
       candyPosition.x = -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width * 4 / 14;
     else
       candyPosition.x = _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width * 4 / 14;
@@ -4822,12 +4823,19 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.y = candyPosition.y;
     this.highestPos = this.y - this.distance;
     this.lowestPos = this.y + this.distance;
+    this._hideCandy();
   }
   _initEffect() {
+    this._spawnEffect();
+    this._despawnEffect();
+  }
+  _spawnEffect() {
     this.spawnEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this).to({ alpha: 1 }, 2e3).onStart(() => {
       this.visible = true;
     });
-    this.deSpawnEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this).to({ alpha: 0 }, 2e3).onComplete(() => {
+  }
+  _despawnEffect() {
+    this.despawnEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this).to({ alpha: 0 }, 2e3).onComplete(() => {
       this.visible = false;
     });
   }
@@ -4836,7 +4844,7 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.spawnEffect.start();
   }
   onDead() {
-    this.deSpawnEffect.start();
+    this.despawnEffect.start();
   }
   update() {
     this._candyMove();
@@ -4865,6 +4873,7 @@ class Collider extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics {
   constructor(radius) {
     super();
     this.radius = radius;
+    this.enable = true;
     this._initCollider();
   }
   _initCollider() {
@@ -4910,6 +4919,9 @@ const _ColliderDetector = class extends events__WEBPACK_IMPORTED_MODULE_1__.Even
     super();
   }
   checkCollider(obj1, obj2) {
+    if (obj1 === null || obj2 === null) {
+      return;
+    }
     if (Array.isArray(obj2)) {
       obj2.forEach((child) => {
         if (this.isCollide(obj1.collider, child.collider)) {
@@ -4989,10 +5001,10 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.collider);
   }
   _initProperties() {
-    this.radiousCollider = 40;
-    this.velocity = { x: 0, y: -1.5 };
-    this.gravity = 0.5;
-    this.jumpForce = 12;
+    this.radiousCollider = 40 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
+    this.velocity = { x: 0 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, y: -1.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio };
+    this.gravity = 0.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
+    this.jumpForce = 12 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
     this.direction = { x: 1, y: 1 };
     this.isPlaying = false;
     this.isDie = false;
@@ -5001,20 +5013,29 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.animateTextures = [pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2")).texture, pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1")).texture];
     this.bird = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.AnimatedSprite(this.animateTextures);
     this.bird.anchor.set(0.5);
-    this.bird.scale.set(0.5);
-    this.bird.animationSpeed = 0.018;
+    this.bird.scale.set(0.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
+    this.bird.animationSpeed = 0.018 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
     this.bird.play();
     this.addChild(this.bird);
+    this.birdDead = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("birdDead"));
+    this.birdDead.anchor.set(0.5);
+    this.birdDead.scale.set(0.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
   }
   _initEffect() {
     this._despawnEffect();
   }
   _despawnEffect() {
-    this.fadeTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_6__.Tween(this.bird).to({ alpha: 0 }, 2e3).onComplete(() => {
-      this.bird.visible = false;
+    this.fadeTween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_6__.Tween(this.birdDead).to({ alpha: 0 }, 2e3).onComplete(() => {
+      this.removeChild(this.birdDead);
     }).onStop(() => {
-      this.bird.alpha = 1;
+      this.birdDead.alpha = 1;
+      this.removeChild(this.birdDead);
     });
+  }
+  _deadEffect(dt) {
+    if (this.isDie) {
+      this.birdDead.rotation += 0.8 * dt;
+    }
   }
   _flyEffect() {
     let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle");
@@ -5024,6 +5045,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _changeDirection() {
     this.bird.scale.x *= -1;
+    this.birdDead.scale.x *= -1;
   }
   onPointerDown() {
     if (!this.isPlaying) {
@@ -5037,7 +5059,14 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   onCollision(obj) {
     if (obj instanceof _trap_spike__WEBPACK_IMPORTED_MODULE_4__.Spike) {
       this.velocity.x = this.jumpForce * 1.5;
-      this.isDie = true;
+      if (this.isDie == false) {
+        this.addChild(this.birdDead);
+        this.removeChild(this.bird);
+        this.isDie = true;
+      }
+      if (!this.fadeTween.isPlaying()) {
+        this.fadeTween.start();
+      }
     }
   }
   _move(dt) {
@@ -5049,18 +5078,19 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.position.x += this.velocity.x * this.direction.x * dt;
     this.position.y += this.velocity.y * this.direction.y * dt;
     this._limitVerMovement();
+    this._deadEffect(dt);
   }
   // xử lý chạm left or right
   _limitHozMovement() {
     let direction = 1;
-    if (this.position.x - this.radiousCollider <= -_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2) {
+    if (this.position.x - this.radiousCollider <= -_gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio / 2) {
       direction = 1;
       this.gameManager.emit("nextLevel", direction);
       this.direction.x = 1;
       this._changeDirection();
       this._touchWall();
     }
-    if (this.position.x + this.radiousCollider >= _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / 2) {
+    if (this.position.x + this.radiousCollider >= _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio / 2) {
       direction = 0;
       this.gameManager.emit("nextLevel", direction);
       this.direction.x = -1;
@@ -5072,10 +5102,9 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     if (this.velocity.y <= -this.jumpForce * 0.7) {
       this.velocity.y = -this.jumpForce * 0.7;
     } else {
-      this.velocity.y = -4;
+      this.velocity.y = -4 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
       if (this.isDie) {
-        this.velocity.y = 2;
-        this._isDead();
+        this.velocity.y = 2 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
       }
     }
   }
@@ -5086,14 +5115,12 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     if (this.position.y - this.radiousCollider <= topLimit) {
       this.position.y = topLimit + this.radiousCollider;
       if (this.isDie) {
-        this.velocity.y = -this.jumpForce * 1.5;
-        this._isDead();
+        this.velocity.y = this.jumpForce * 1.5;
       }
     } else if (this.position.y + this.radiousCollider >= bottomLimit) {
       this.position.y = bottomLimit - this.radiousCollider;
       if (this.isDie) {
-        this.velocity.y = -this.jumpForce;
-        this._isDead();
+        this.velocity.y = -this.jumpForce * 1.5;
       }
     }
   }
@@ -5108,19 +5135,15 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     }
     this.position.y += this.velocity.y * this.direction.y * dt;
   }
-  _isDead() {
-    if (!this.fadeTween.isPlaying()) {
-      this.fadeTween.start();
-    }
-  }
   onReset() {
-    this.bird.visible = true;
+    this.addChild(this.bird);
     this.isDie = false;
     this.isPlaying = false;
-    this.velocity = { x: 0, y: -1.5 };
+    this.velocity = { x: 0 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, y: -1.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio };
     this.direction = { x: 1, y: 1 };
     this.position = { x: 0, y: 0 };
-    this.bird.scale.set(0.5);
+    this.birdDead.scale.x = 0.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
+    this.bird.scale.x = 0.5 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio;
     this.fadeTween.stop();
   }
   update(dt) {
@@ -5145,6 +5168,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Spike: () => (/* binding */ Spike)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+
 
 class Spike extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
@@ -5153,7 +5178,7 @@ class Spike extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.collider = null;
   }
   _initSprite() {
-    this.size = 70;
+    this.size = 70 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
     this.spike = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.spike.beginFill(8421504);
     const halfSize = this.size / 2;
@@ -5205,7 +5230,7 @@ class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
     this.state = 0;
-    this.distance = 70 * Math.sqrt(3) / 2;
+    this.distance = 70 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio * Math.sqrt(3) / 2;
     this.velocity = this.distance / 30;
     this.minSpikes = 2;
     this.maxSpikes = 5;
@@ -5272,10 +5297,10 @@ class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initSpikes() {
     let startY_Top = -_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.height / 2 + _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.height / 14;
     let startY_Bottom = _game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.height * 2.5 / 7;
-    this.spikesTop = this._spawnSpikeLine(-280, startY_Top, 7, Math.PI, 1);
-    this.spikesBottom = this._spawnSpikeLine(-280, startY_Bottom, 7, 0, 1);
-    this.spikeLeft = this._spawnSpikeLine(-_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2, startY_Top + 80, 10, Math.PI / 2, 0);
-    this.spikeRight = this._spawnSpikeLine(_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2, startY_Top + 80, 10, -Math.PI / 2, 0);
+    this.spikesTop = this._spawnSpikeLine(-280 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, startY_Top, 7, Math.PI, 1);
+    this.spikesBottom = this._spawnSpikeLine(-280 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, startY_Bottom, 7, 0, 1);
+    this.spikeLeft = this._spawnSpikeLine(-_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2, startY_Top + 80 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, 10, Math.PI / 2, 0);
+    this.spikeRight = this._spawnSpikeLine(_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2, startY_Top + 80 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, 10, -Math.PI / 2, 0);
     this.spikeLeft.forEach((spike) => {
       spike.x -= this.distance;
     });
@@ -5289,7 +5314,7 @@ class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     });
   }
   _initColliders() {
-    let colliderRadious = 30;
+    let colliderRadious = 30 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
     this.poolSpikes.forEach((spike) => {
       let collider = new _physics_collider__WEBPACK_IMPORTED_MODULE_3__.Collider(colliderRadious);
       spike.collider = collider;
@@ -5299,7 +5324,7 @@ class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _spawnSpikeLine(startX, startY, numbers, rotation, dir) {
     let spikeLine = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     let spikes = [];
-    const spikeSpacing = 70 * 4 / 3;
+    const spikeSpacing = 70 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio * 4 / 3;
     for (let i = 0; i < numbers; i++) {
       let spike = new _spike__WEBPACK_IMPORTED_MODULE_1__.Spike();
       if (dir === 1) {
@@ -5366,16 +5391,16 @@ class GameInfor extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const style = {
       fontFamily: "Arial",
       fontWeight: 600,
-      fontSize: 60,
+      fontSize: 60 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
       fill: "0xf50c0c"
     };
     this.itemImage = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("candy"));
     this.itemQuantity = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`${_data__WEBPACK_IMPORTED_MODULE_2__.Data.itemQuantity}`, style);
     this.itemImage.anchor.set(0.5);
-    this.itemImage.scale.set(1.2);
+    this.itemImage.scale.set(1.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.itemQuantity.anchor.set(0.5);
-    this.itemImage.position.set(-40, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65);
-    this.itemQuantity.position.set(40, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65);
+    this.itemImage.position.set(-40 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.itemQuantity.position.set(40 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.addChild(this.itemImage);
     this.addChild(this.itemQuantity);
   }
@@ -5383,16 +5408,16 @@ class GameInfor extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const style = {
       fontFamily: "Arial",
       fontWeight: 600,
-      fontSize: 45,
+      fontSize: 45 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
       fill: "0x808080",
       align: "center"
     };
     this.gameInforTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`BEST SCORE : ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.bestScore}`, style);
     this.gameInforTop.anchor.set(0.5);
-    this.gameInforTop.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 130);
+    this.gameInforTop.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 130 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.gameInforBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`GAMES PLAYED : ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.gamesPlayed}`, style);
     this.gameInforBottom.anchor.set(0.5);
-    this.gameInforBottom.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 180);
+    this.gameInforBottom.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 180 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);
   }
@@ -5448,16 +5473,16 @@ class GameName extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const style = {
       fontFamily: "Arial",
       fontWeight: 700,
-      fontSize: 65,
+      fontSize: 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
       fill: "0x808080",
       align: "center"
     };
     this.gameNameTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("DON'T TOUCH", style);
     this.gameNameTop.anchor.set(0.5);
-    this.gameNameTop.position.set(0, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7 + 100);
+    this.gameNameTop.position.set(0, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7 + 100 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.gameNameBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("THE SPIKES", style);
     this.gameNameBottom.anchor.set(0.5);
-    this.gameNameBottom.position.set(0, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7 + 170);
+    this.gameNameBottom.position.set(0, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7 + 170 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
   }
   _displayGameName() {
     this.addChild(this.gameNameTop);
@@ -5484,91 +5509,122 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../data */ "./src/data.js");
-/* harmony import */ var _gameInfor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gameInfor */ "./src/obj/ui/gameInfor.js");
-/* harmony import */ var _custom_gameManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../custom/gameManager */ "./src/custom/gameManager.js");
+/* harmony import */ var _custom_gameManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../custom/gameManager */ "./src/custom/gameManager.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 
 
 
 
 
-const BUTTON = Object.freeze({
-  x: -280,
-  y: -45,
-  width: 560,
-  height: 90,
-  radius: 16
-});
 class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
-    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+    this.BUTTON = Object.freeze({
+      x: -280 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio,
+      y: -45 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio,
+      width: 560 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio,
+      height: 90 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio,
+      radius: 16 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio
+    });
+    this.style = {
       fontFamily: "Calibri",
-      fontSize: 65,
       fill: ["#ffffff"],
       align: "center"
-    });
+    };
+    this.bigTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle(__spreadProps(__spreadValues({}, this.style), {
+      fontSize: 65 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio
+    }));
     this._initPointButton();
     this._initReplayButton();
     this._initShareButton();
     this.sortChildren();
     this.zIndex = 1;
-    this.gameManager = _custom_gameManager__WEBPACK_IMPORTED_MODULE_3__.GameManager.instance;
+    this.gameManager = _custom_gameManager__WEBPACK_IMPORTED_MODULE_2__.GameManager.instance;
   }
   _initPointButton() {
     this.pointsButtonBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.pointText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Calibri",
-      fontSize: 45,
-      fill: ["#ffffff"],
-      align: "center"
-    });
-    this.pointNum = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
-      fontFamily: "Calibri",
-      fontSize: 115,
-      fill: ["#ffffff"],
-      align: "center",
+    this.pointText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle(__spreadProps(__spreadValues({}, this.style), {
+      fontSize: 60 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio
+    }));
+    this.pointNum = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle(__spreadProps(__spreadValues({}, this.style), {
+      fontSize: 115 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio,
       fontWeight: "bold"
-    });
+    }));
     this.pointsButton = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.pointsButton.beginFill(16721703);
-    this.pointsButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width, BUTTON.height * 2, BUTTON.radius);
+    this.pointsButton.drawRoundedRect(this.BUTTON.x, this.BUTTON.y, this.BUTTON.width, this.BUTTON.height * 2, this.BUTTON.radius);
     this.pointsButton.endFill();
     this.pointsButton.zIndex = 1;
     this.pointsButtonBar.addChild(this.pointsButton);
     this.pointsButtonNum = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore, this.pointNum);
-    this.pointsButtonNum.position.set(BUTTON.x + 278, BUTTON.y + 61);
+    this.pointsButtonNum.position.set(this.BUTTON.x + 278 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.y + 61 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.pointsButtonNum.anchor.set(0.5);
     this.pointsButtonNum.zIndex = 2;
     this.pointsButtonBar.addChild(this.pointsButtonNum);
     this.pointsButtonText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("POINTS", this.pointText);
-    this.pointsButtonText.position.set(BUTTON.x + 278, BUTTON.y + 136);
+    this.pointsButtonText.position.set(this.BUTTON.x + 278 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.y + 136 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.pointsButtonText.anchor.set(0.5);
     this.pointsButtonText.zIndex = 2;
     this.pointsButtonBar.addChild(this.pointsButtonText);
     this._decoratePointButton();
     this.pointsButtonBar.cursor = "pointer";
-    this.pointsButtonBar.position.set(0, -220);
+    this.pointsButtonBar.position.set(0, -220 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.addChild(this.pointsButtonBar);
   }
   _decoratePointButton() {
+    this.leftDecoration = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.buttonDecorationLeft = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.buttonDecorationLeft.beginFill(13702421);
-    this.buttonDecorationLeft.drawRoundedRect(BUTTON.x + 25, BUTTON.y + 25, 130, 130, BUTTON.radius);
+    this.buttonDecorationLeft.drawRoundedRect(this.BUTTON.x + 25 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.y + 25 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, 130 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, 130 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.radius);
     this.buttonDecorationLeft.endFill();
     this.buttonDecorationLeft.zIndex = 2;
-    this.pointsButtonBar.addChild(this.buttonDecorationLeft);
+    this.imageDecorationLeft = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("trophy"));
+    this.imageDecorationLeft.zIndex = 3;
+    this.imageDecorationLeft.anchor.set(0.5);
+    this.imageDecorationLeft.scale.set(0.2 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
+    this.imageDecorationLeft.position.set(this.BUTTON.x + 90 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.y + 90 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
+    this.leftDecoration.addChild(this.buttonDecorationLeft);
+    this.leftDecoration.addChild(this.imageDecorationLeft);
+    this.rightDecoration = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.buttonDecorationRight = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.buttonDecorationRight.beginFill(13702421);
-    this.buttonDecorationRight.drawRoundedRect(BUTTON.x + 405, BUTTON.y + 25, 130, 130, BUTTON.radius);
+    this.buttonDecorationRight.drawRoundedRect(this.BUTTON.x + 405 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.y + 25 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, 130 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, 130 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.radius);
     this.buttonDecorationRight.endFill();
     this.buttonDecorationRight.zIndex = 2;
-    this.pointsButtonBar.addChild(this.buttonDecorationRight);
+    this.imageDecorationRight = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("leaderBoard"));
+    this.imageDecorationRight.zIndex = 3;
+    this.imageDecorationRight.anchor.set(0.5);
+    this.imageDecorationRight.scale.set(2 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
+    this.imageDecorationRight.position.set(this.BUTTON.x + 470 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio, this.BUTTON.y + 90 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
+    this.rightDecoration.addChild(this.buttonDecorationRight);
+    this.rightDecoration.addChild(this.imageDecorationRight);
+    this.pointsButtonBar.addChild(this.rightDecoration);
+    this.pointsButtonBar.addChild(this.leftDecoration);
   }
   _initReplayButton() {
     this.replayButtonBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.replayButton = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.replayButton.beginFill(16721703);
-    this.replayButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width, BUTTON.height, BUTTON.radius);
+    this.replayButton.drawRoundedRect(this.BUTTON.x, this.BUTTON.y, this.BUTTON.width, this.BUTTON.height, this.BUTTON.radius);
     this.replayButton.endFill();
     this.replayButton.zIndex = 1;
     this.replayButtonBar.addChild(this.replayButton);
@@ -5579,7 +5635,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.replayButtonBar.eventMode = "static";
     this.replayButtonBar.cursor = "pointer";
     this.replayButtonBar.on("pointerdown", () => this._clickedReplayButton());
-    this.replayButtonBar.position.set(0, -30);
+    this.replayButtonBar.position.set(0, -30 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.addChild(this.replayButtonBar);
   }
   _clickedReplayButton() {
@@ -5589,7 +5645,7 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.shareButtonBar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.shareButton = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
     this.shareButton.beginFill(16721703);
-    this.shareButton.drawRoundedRect(BUTTON.x, BUTTON.y, BUTTON.width, BUTTON.height, BUTTON.radius);
+    this.shareButton.drawRoundedRect(this.BUTTON.x, this.BUTTON.y, this.BUTTON.width, this.BUTTON.height, this.BUTTON.radius);
     this.shareButton.endFill();
     this.shareButton.zIndex = 1;
     this.shareButtonBar.addChild(this.shareButton);
@@ -5600,13 +5656,14 @@ class GameOverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.shareButtonBar.cursor = "pointer";
     this.shareButtonBar.on("pointerdown", () => {
     });
-    this.shareButtonBar.position.set(0, 70);
+    this.shareButtonBar.position.set(0, 70 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.addChild(this.shareButtonBar);
   }
   onReset() {
     this.hideGameOverUI();
   }
   showGameOverUI() {
+    this.pointsButtonNum.text = _data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore;
     this.visible = true;
   }
   hideGameOverUI() {
@@ -5631,6 +5688,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _gameName__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameName */ "./src/obj/ui/gameName.js");
 /* harmony import */ var _gameInfor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gameInfor */ "./src/obj/ui/gameInfor.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+
 
 
 
@@ -5649,16 +5708,16 @@ class MainUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     const style = {
       fontFamily: "Arial",
       fontWeight: 600,
-      fontSize: 40,
+      fontSize: 40 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio,
       fill: "0x909090",
       align: "center"
     };
     this.gameTutolTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("TAP", style);
     this.gameTutolTop.anchor.set(0.5);
-    this.gameTutolTop.position.set(0, -200);
+    this.gameTutolTop.position.set(0, -200 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.gameTutolBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("TO JUMP", style);
     this.gameTutolBottom.anchor.set(0.5);
-    this.gameTutolBottom.position.set(0, -160);
+    this.gameTutolBottom.position.set(0, -160 / _game__WEBPACK_IMPORTED_MODULE_3__.Game.ratio);
     this.addChild(this.gameTutolTop);
     this.addChild(this.gameTutolBottom);
   }
@@ -5742,9 +5801,8 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     if (obj1 === this.player && obj2 instanceof _obj_items_candy__WEBPACK_IMPORTED_MODULE_11__.Candy) {
       if (this.gameState != GameState.Lose && this.candy.enableEating) {
         pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("eatingSound").play();
-        this.candy.randomPosition();
+        this.candy.randomPosition(this.player.direction.x);
         this.candy.updateCandyQuantity();
-        console.log(_data__WEBPACK_IMPORTED_MODULE_10__.Data.itemQuantity);
       }
     }
   }
@@ -5775,15 +5833,17 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.traps.moveSpikes(direction, limitSpike);
     if (_data__WEBPACK_IMPORTED_MODULE_10__.Data.currentScore >= 5)
       this.traps.changeColor(this.background.mainColor.colorDarker);
+    if (this.candy.visible == false)
+      this.candy.displayCandy();
   }
   _onLose() {
     if (this.gameState == GameState.Lose)
       return;
     this.gameState = GameState.Lose;
-    this.player.isDie = true;
     setTimeout(() => {
       this.gameOverUI.showGameOverUI();
       this.gameInfor.displayGameInfor();
+      this.background.hideScore();
     }, 1e3);
     this.gameInfor.updateGameInfor();
     this.candy.onDead();
@@ -5799,6 +5859,7 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         this.mainUI.hideMainUI();
         this.gameInfor.hideGameInfor();
         this.candy.onSpawn();
+        this.background.displayScore();
       }
       this.player.onPointerDown();
       this.gameState = GameState.Playing;
@@ -5846,7 +5907,6 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.gameInfor = new _obj_ui_gameInfor__WEBPACK_IMPORTED_MODULE_12__.GameInfor();
     this.gameplay.addChild(this.gameInfor);
   }
-  // TODO: init ngay từ đầu, set hide, sau đó mới đặt thành true khi cần
   _initGameOver() {
     this.gameOverUI = new _obj_ui_gameOverUI__WEBPACK_IMPORTED_MODULE_8__.GameOverUI();
     this.gameplay.addChild(this.gameOverUI);
@@ -5854,10 +5914,12 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   update(dt) {
     this.player.update(dt);
-    this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
-    this.colliderDetector.checkCollider(this.player, this.candy);
-    this.traps.update();
-    this.candy.update();
+    if (this.gameState == GameState.Playing) {
+      this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
+      this.colliderDetector.checkCollider(this.player, this.candy);
+      this.traps.update();
+      this.candy.update();
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import {Graphics} from "pixi.js";
+import {Assets, Container, Graphics, Sprite} from "pixi.js";
 import {Data} from "../../data";
 import { GameInfor } from "./gameInfor";
 import {GameManager} from "../../custom/gameManager";
@@ -74,21 +74,38 @@ export class GameOverUI extends PIXI.Container {
     }
 
     _decoratePointButton() {
+        this.leftDecoration = new Container();
         this.buttonDecorationLeft = new Graphics();
         this.buttonDecorationLeft.beginFill(0xd11515);
         this.buttonDecorationLeft.drawRoundedRect(BUTTON.x+25, BUTTON.y+25, 130,130, BUTTON.radius);
         this.buttonDecorationLeft.endFill();
         this.buttonDecorationLeft.zIndex = 2;
-        this.pointsButtonBar.addChild(this.buttonDecorationLeft);
+        this.imageDecorationLeft = Sprite.from(Assets.get("trophy"));
+        this.imageDecorationLeft.zIndex = 3;
+        this.imageDecorationLeft.anchor.set(0.5);
+        this.imageDecorationLeft.scale.set(0.2);
+        this.imageDecorationLeft.position.set(BUTTON.x+90, BUTTON.y+90);
+        this.leftDecoration.addChild(this.buttonDecorationLeft);
+        this.leftDecoration.addChild(this.imageDecorationLeft);
 
+        this.rightDecoration = new Container();
         this.buttonDecorationRight = new Graphics();
         this.buttonDecorationRight.beginFill(0xd11515);
         this.buttonDecorationRight.drawRoundedRect(BUTTON.x+405, BUTTON.y+25, 130,130, BUTTON.radius);
         this.buttonDecorationRight.endFill();
         this.buttonDecorationRight.zIndex = 2;
-        this.pointsButtonBar.addChild(this.buttonDecorationRight);
+        this.imageDecorationRight = Sprite.from(Assets.get("leaderBoard"));
+        this.imageDecorationRight.zIndex = 3;
+        this.imageDecorationRight.anchor.set(0.5);
+        this.imageDecorationRight.scale.set(2);
+        this.imageDecorationRight.position.set(BUTTON.x+470, BUTTON.y+90);
+        this.rightDecoration.addChild(this.buttonDecorationRight);
+        this.rightDecoration.addChild(this.imageDecorationRight);
+
+        this.pointsButtonBar.addChild(this.rightDecoration);
+        this.pointsButtonBar.addChild(this.leftDecoration);
     }
-    
+
     _initReplayButton(){
         this.replayButtonBar = new PIXI.Container();
 

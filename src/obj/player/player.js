@@ -51,6 +51,7 @@ export class Player extends Container {
 
     _initEffect() {
         this._despawnEffect();
+        //this._flyEffect();
     }
 
     _despawnEffect() {
@@ -76,6 +77,10 @@ export class Player extends Container {
         this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
         this.emitter.emit = true;
         this.emitter.playOnce();
+    }
+
+    _particleFolowing(x, y) {
+        this.emitter.updateOwnerPos(x, y);
     }
 
     _changeDirection() {
@@ -124,8 +129,15 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
 
         this._limitVerMovement();
-
+       // this.emitter.updateSpawnPos(this.position.x, this.position.y);
+        //this._particleFolowing(this.position.x, this.position.y);
         this._deadEffect(dt);
+        //this._checkPos();
+    }
+
+    _checkPos() {
+        console.log(this.emitter.spawnPos);
+        //console.log(this.emitter.ownerPos);
     }
 
     // xử lý chạm left or right
@@ -209,6 +221,6 @@ export class Player extends Container {
         this._move(dt);
         this._moveInMenu(dt);
         TWEEN.update();
-        //this.emitter.update(dt);
+        //this.emitter.update(dt * 0.1);
     }
 }

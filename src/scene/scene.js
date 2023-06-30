@@ -1,4 +1,4 @@
-import { Assets, Container } from "pixi.js";
+import {Assets, Container, Texture} from "pixi.js";
 import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
@@ -11,6 +11,8 @@ import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
 import { Candy } from "../obj/items/candy";
 import { GameInfor } from "../obj/ui/gameInfor";
+import {Emitter, upgradeConfig} from "@pixi/particle-emitter";
+import config from "../../assets/aim/emitter.json";
 
 
 export const GameState = Object.freeze({
@@ -23,12 +25,31 @@ export const GameState = Object.freeze({
 export class Scene extends Container {
     constructor() {
         super();
+        this.emitx = Game.app.stage.width / 2;
+        this.emity = Game.app.stage.height / 2;
         this._initGameplay();
         this._initInputHandle();
         this._initColliderDetector();
         this._initGameManager();
         this._initGameOver();
         this.gameState = GameState.Ready;
+    }
+
+    _initParticle() {
+        let texture = Texture.from("circle");
+        this.emitter = new Emitter(this.gameplay, upgradeConfig(config, [texture]));
+        this.emitter.emit = true;
+    }
+
+    _updateEmitterPosition() {
+        if(GameState.Playing) {
+            this.emitx = this.player.position.x;
+            console.log(this.emitx);
+            this.emity = this.player.position.y;
+            console.log(this.emity);
+
+            this.emitter.updateSpawnPos(this.emitx + 1, this.emity + 1);
+        }
     }
 
     _initColliderDetector() {
@@ -121,6 +142,7 @@ export class Scene extends Container {
         this.gameplay.x = Game.app.screen.width / 2;
         this.gameplay.y = Game.app.screen.height / 2;
         this.addChild(this.gameplay);
+        this._initParticle();
         this._initBackground();
         this._initPlayer();
         this._initTraps();
@@ -178,5 +200,7 @@ export class Scene extends Container {
             this.traps.update();
             this.candy.update();
         }
+        this.emitter.update(dt * 0.1);
+        this._updateEmitterPosition();
     }
 }

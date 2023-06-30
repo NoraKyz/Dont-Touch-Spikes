@@ -11,7 +11,7 @@ export class Candy extends Container {
         this._initCollider();
         this._initEffect();
         this.randomPosition();
-        this.speed = 1;
+        this.speed = 1 / Game.ratio;
         this.distance = 20 / Game.ratio;
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
@@ -23,6 +23,15 @@ export class Candy extends Container {
         this.scale.set(1.2 / Game.ratio);
         this.candy.anchor.set(0.5);
         this.addChild(this.candy);
+
+        // Lỗi khi thêm text vào
+        // this.numberAddItem = new Text(`${Data.itemQuantity}`, {
+        //     fontFamily: 'Arial',
+        //     fontWeight: 600,
+        //     fontSize: 60 / Game.ratio,
+        //     fill: '0xf50c0c',
+        // });
+        // this.addChild(this.numberAddItem);
     }
 
 
@@ -53,9 +62,9 @@ export class Candy extends Container {
 
     randomPosition(direction) {
         const candyPosition = { x: 0, y: 0 };
-        if(direction === 1) candyPosition.x = -Game.app.view.width * 4 / 14;
+        if (direction === 1) candyPosition.x = -Game.app.view.width * 4 / 14;
         else candyPosition.x = Game.app.view.width * 4 / 14;
-    
+
         let randomY = Math.floor(Math.random() * 2);
         if (randomY) candyPosition.y = -Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 3));
         else candyPosition.y = Game.app.view.height / 14 * (2 + Math.floor(Math.random() * 2));
@@ -78,7 +87,7 @@ export class Candy extends Container {
             .to({ alpha: 1 }, 2000)
             .onStart(() => {
                 this.visible = true;
-        });
+            });
     }
 
     _despawnEffect() {
@@ -86,16 +95,25 @@ export class Candy extends Container {
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
                 this.visible = false;
-        });
+            });
+    }
+
+    _beEatingEffect() {
+        // this.beEatingEffect = new TWEEN.Tween(this)
+        //     .to({ alpha: 0 }, 1000)
+        //     .onComplete(() => {
+
+        // });
     }
 
     onSpawn() {
         this.alpha = 0;
         this.spawnEffect.start();
     }
-    
+
     onDead() {
         this.despawnEffect.start();
+        //this.beEatingEffect.start();
     }
 
     update() {

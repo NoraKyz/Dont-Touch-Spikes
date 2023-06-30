@@ -5,8 +5,6 @@ import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { GameManager } from "../../custom/gameManager";
 import * as TWEEN from '@tweenjs/tween.js'
-import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
-import config from "../../../assets/aim/emitter.json"
 
 
 export class Player extends Container {
@@ -28,7 +26,7 @@ export class Player extends Container {
         this.radiousCollider = 40 / Game.ratio;
         this.velocity = { x: 0 / Game.ratio, y: -1.5 / Game.ratio };
         this.gravity = 0.5 / Game.ratio;
-        this.jumpForce = 12 / Game.ratio;
+        this.jumpForce = 16 / Game.ratio;
         this.direction = { x: 1, y: 1 };
         this.isPlaying = false;
         this.isDie = false;
@@ -71,12 +69,6 @@ export class Player extends Container {
         }
     }
 
-    _flyEffect() {
-        let texture = Texture.from("circle");
-        this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
-        this.emitter.emit = true;
-        this.emitter.playOnce();
-    }
 
     _changeDirection() {
         this.bird.scale.x *= -1;
@@ -124,7 +116,6 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
 
         this._limitVerMovement();
-
         this._deadEffect(dt);
     }
 
@@ -209,6 +200,5 @@ export class Player extends Container {
         this._move(dt);
         this._moveInMenu(dt);
         TWEEN.update();
-        //this.emitter.update(dt);
     }
 }

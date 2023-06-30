@@ -4785,13 +4785,6 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.scale.set(1.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
     this.candy.anchor.set(0.5);
     this.addChild(this.candy);
-    this.numberAddItem = new Text("+1", {
-      fontFamily: "Arial",
-      fontWeight: 600,
-      fontSize: 60 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
-      fill: "0xf50c0c"
-    });
-    this.addChild(this.numberAddItem);
   }
   updateCandyQuantity() {
     this.enableEating = false;

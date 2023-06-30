@@ -80,6 +80,7 @@ export class Scene extends Container {
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
+        //this.traps.moveSpikesHardMode(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
         if (this.candy.visible == false) this.candy.displayCandy();
     }

@@ -145,7 +145,7 @@ export class Scene extends Container {
     }
 
     _initCandy() {
-        this.candy = new Candy();
+        this.candy = new Candy(this.gameplay);
         this.gameplay.addChild(this.candy);
         this.candy.visible = false;
     }
@@ -159,6 +159,7 @@ export class Scene extends Container {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
+
     _initGameInfor() {
         this.gameInfor = new GameInfor();
         this.gameplay.addChild(this.gameInfor);

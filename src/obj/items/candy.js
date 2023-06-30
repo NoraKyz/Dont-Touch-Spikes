@@ -1,11 +1,11 @@
-import { Assets, Container, Sprite } from "pixi.js";
+import { Assets, Container, Sprite, Text } from "pixi.js";
 import { Game } from "../../game";
 import { Collider } from "../physics/collider";
 import { Data } from "../../data";
 import * as TWEEN from '@tweenjs/tween.js'
 
 export class Candy extends Container {
-    constructor() {
+    constructor(parent) {
         super();
         this._initSprite();
         this._initCollider();
@@ -16,6 +16,7 @@ export class Candy extends Container {
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
         this.enableEating = true;
+        this.parent = parent;
     }
 
     _initSprite() {
@@ -24,14 +25,14 @@ export class Candy extends Container {
         this.candy.anchor.set(0.5);
         this.addChild(this.candy);
 
-        // Lỗi khi thêm text vào
-        // this.numberAddItem = new Text(`${Data.itemQuantity}`, {
-        //     fontFamily: 'Arial',
-        //     fontWeight: 600,
-        //     fontSize: 60 / Game.ratio,
-        //     fill: '0xf50c0c',
-        // });
-        // this.addChild(this.numberAddItem);
+        
+        this.numberAddItem = new Text("+1", {
+            fontFamily: 'Arial',
+            fontWeight: 600,
+            fontSize: 35 / Game.ratio,
+            fill: '0xf50c0c',
+        });
+        this.numberAddItem.anchor.set(0.5);
     }
 
 
@@ -86,7 +87,7 @@ export class Candy extends Container {
         this.spawnEffect = new TWEEN.Tween(this)
             .to({ alpha: 1 }, 2000)
             .onStart(() => {
-                this.visible = true;
+                this.parent.addChild(this);
             });
     }
 
@@ -94,7 +95,7 @@ export class Candy extends Container {
         this.despawnEffect = new TWEEN.Tween(this)
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
-                this.visible = false;
+                this.parent.removeChild(this);
             });
     }
 

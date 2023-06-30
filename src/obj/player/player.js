@@ -1,12 +1,11 @@
-import { AnimatedSprite, Assets, Container, Sprite, Texture } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { GameConstant } from "../../gameConstant";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { GameManager } from "../../custom/gameManager";
 import * as TWEEN from '@tweenjs/tween.js'
-import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
-import config from "../../../assets/aim/emitter.json"
+import { PlayerSprite } from "./playerSprite";
 
 
 export class Player extends Container {
@@ -15,7 +14,6 @@ export class Player extends Container {
         this._initSprite();
         this._initProperties();
         this._initCollider();
-        this._initEffect();
         this.gameManager = GameManager.instance;
     }
 
@@ -35,52 +33,8 @@ export class Player extends Container {
     }
 
     _initSprite() {
-        this.animateTextures = [Sprite.from(Assets.get("bird2")).texture, Sprite.from(Assets.get("bird1")).texture];
-
-        this.bird = new AnimatedSprite(this.animateTextures);
-        this.bird.anchor.set(0.5);
-        this.bird.scale.set(0.5 / Game.ratio);
-        this.bird.animationSpeed = 0.018 / Game.ratio;
-        this.bird.play();
-        this.addChild(this.bird);
-
-        this.birdDead = Sprite.from(Assets.get("birdDead"));
-        this.birdDead.anchor.set(0.5);
-        this.birdDead.scale.set(0.5 / Game.ratio);
-    }
-
-    _initEffect() {
-        this._despawnEffect();
-    }
-
-    _despawnEffect() {
-        this.fadeTween = new TWEEN.Tween(this.birdDead)
-            .to({ alpha: 0 }, 2000)
-            .onComplete(() => {
-                this.removeChild(this.birdDead);
-            })
-            .onStop(() => {
-                this.birdDead.alpha = 1;
-                this.removeChild(this.birdDead);
-            });
-    }
-
-    _deadEffect(dt) {
-        if(this.isDie) {
-            this.birdDead.rotation += 0.8 * dt;
-        }
-    }
-
-    _flyEffect() {
-        let texture = Texture.from("circle");
-        this.emitter = new Emitter(this, upgradeConfig(config, [texture]));
-        this.emitter.emit = true;
-        this.emitter.playOnce();
-    }
-
-    _changeDirection() {
-        this.bird.scale.x *= -1;
-        this.birdDead.scale.x *= -1;
+        this.playerSprite = new PlayerSprite();
+        this.addChild(this.playerSprite);
     }
 
     onPointerDown() {
@@ -95,18 +49,9 @@ export class Player extends Container {
     }
 
     onCollision(obj) {
-        if (obj instanceof Spike) {   
+        if (obj instanceof Spike) {
             this.velocity.x = this.jumpForce * 1.5;
-
-            if(this.isDie == false) {
-                this.addChild(this.birdDead);
-                this.removeChild(this.bird);
-                this.isDie = true;
-            }
-
-            if (!this.fadeTween.isPlaying()) {
-                this.fadeTween.start();
-            }          
+            this.onLose();
         }
     }
 
@@ -124,8 +69,6 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
 
         this._limitVerMovement();
-
-        this._deadEffect(dt);
     }
 
     // xử lý chạm left or right
@@ -133,11 +76,10 @@ export class Player extends Container {
     _limitHozMovement() {
         let direction = 1;
         if (this.position.x - this.radiousCollider <= - GameConstant.GAME_WIDTH / Game.ratio / 2) {
-            // 1 direction
             direction = 1;
             this.gameManager.emit("nextLevel", direction);
             this.direction.x = 1;
-            this._changeDirection();
+            this.playerSprite.changeDirection();
             this._touchWall();
         }
 
@@ -145,7 +87,7 @@ export class Player extends Container {
             direction = 0;
             this.gameManager.emit("nextLevel", direction);
             this.direction.x = -1;
-            this._changeDirection();
+            this.playerSprite.changeDirection();
             this._touchWall();
         }
     }
@@ -193,22 +135,25 @@ export class Player extends Container {
         this.position.y += this.velocity.y * this.direction.y * dt;
     }
 
+    onLose() {
+        if (this.isDie == false) {
+            this.playerSprite.onLose();
+            this.isDie = true;
+        }
+    }
+
     onReset() {
-        this.addChild(this.bird);
         this.isDie = false;
         this.isPlaying = false;
+        this.playerSprite.onReset();
         this.velocity = { x: 0 / Game.ratio, y: -1.5 / Game.ratio };
         this.direction = { x: 1, y: 1 };
         this.position = { x: 0, y: 0 };
-        this.birdDead.scale.x = 0.5 / Game.ratio;
-        this.bird.scale.x = 0.5 / Game.ratio;
-        this.fadeTween.stop();
     }
 
     update(dt) {
         this._move(dt);
         this._moveInMenu(dt);
-        TWEEN.update();
-        //this.emitter.update(dt);
+        this.playerSprite.update(dt);
     }
 }

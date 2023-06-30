@@ -5,7 +5,7 @@ import { Data } from "../../data";
 import * as TWEEN from '@tweenjs/tween.js'
 
 export class Candy extends Container {
-    constructor(parent) {
+    constructor() {
         super();
         this._initSprite();
         this._initCollider();
@@ -16,7 +16,6 @@ export class Candy extends Container {
         this.highestPos = this.y - this.distance;
         this.lowestPos = this.y + this.distance;
         this.enableEating = true;
-        this.parent = parent;
     }
 
     _initSprite() {
@@ -87,7 +86,7 @@ export class Candy extends Container {
         this.spawnEffect = new TWEEN.Tween(this)
             .to({ alpha: 1 }, 2000)
             .onStart(() => {
-                this.parent.addChild(this);
+                
             });
     }
 
@@ -95,7 +94,7 @@ export class Candy extends Container {
         this.despawnEffect = new TWEEN.Tween(this)
             .to({ alpha: 0 }, 2000)
             .onComplete(() => {
-                this.parent.removeChild(this);
+
             });
     }
 

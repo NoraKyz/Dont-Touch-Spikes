@@ -1,6 +1,5 @@
 import { GameManager } from "../../custom/gameManager";
 import { Game } from "../../game";
-import { GameConstant } from "../../gameConstant";
 
 export class PlayerMovement {
     constructor(obj) {
@@ -17,6 +16,8 @@ export class PlayerMovement {
 
         this.topLimit = - Game.app.view.height / 2 + Game.app.view.height / 14;
         this.bottomLimit = Game.app.view.height * 2.5 / 7;
+        this.leftLimit = - Game.app.view.width / 2;
+        this.rightLimit = Game.app.view.width / 2;
     }
 
     _move(dt) {
@@ -36,11 +37,11 @@ export class PlayerMovement {
 
     // xử lý chạm left or right
     _limitHozMovement() {
-        if (this.obj.position.x - this.obj.radiousCollider <= - GameConstant.GAME_WIDTH / Game.ratio / 2) {          
+        if (this.obj.position.x - this.obj.radiousCollider <= this.leftLimit && this.direction.x == -1) {          
             this.direction.x = 1;
             this.gameManager.emit("nextLevel", this.direction.x);
             this._onTouchWall();
-        } else if (this.obj.position.x + this.obj.radiousCollider >= GameConstant.GAME_WIDTH / Game.ratio / 2) {          
+        } else if (this.obj.position.x + this.obj.radiousCollider >= this.rightLimit && this.direction.x == 1) {          
             this.direction.x = -1;
             this.gameManager.emit("nextLevel", this.direction.x);
             this._onTouchWall();

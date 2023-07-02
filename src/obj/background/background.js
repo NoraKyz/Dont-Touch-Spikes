@@ -69,6 +69,7 @@ export class Background extends Container {
 
         if(newScore > 0 && newScore % 5 == 0) this.changeBgColor(); 
     }
+    
     _newMainColor(){
         this.mainColor = CommonUtils.randomColorBackground()
     }
@@ -83,6 +84,7 @@ export class Background extends Container {
         this._newMainColor();
         this._resetBgColor();
     }
+
     onReset(){
         this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
         this._resetBgColor();

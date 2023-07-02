@@ -49,8 +49,7 @@ export class PlayerEffect {
     }
 
     update(dt) {
-        this._deadEffect(dt);
-        TWEEN.update();
+        this._deadEffect(dt);    
         //this.emitter.update(dt);
     }
 }

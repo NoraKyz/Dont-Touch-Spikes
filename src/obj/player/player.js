@@ -29,46 +29,42 @@ export class Player extends Container {
     }
 
     _initSprite() {
-        this.playerSprite = new PlayerSprite();
-        this.addChild(this.playerSprite);
+        this.sprite = new PlayerSprite();
+        this.addChild(this.sprite);
     }
 
     _initEffect() {
-        this.playerEffect = new PlayerEffect(this);
+        this.effect = new PlayerEffect(this);
     }
 
     _initMovement() {
-        this.playerMovement = new PlayerMovement(this);
+        this.movement = new PlayerMovement(this);
     }
 
     onNextLevel() {
-        this.playerSprite.changeDirection();
+        this.sprite.changeDirection();
     }
 
     onPointerDown() {
         if (!this.isPlaying) {
-            this.playerMovement.onStart();
+            this.movement.onStart();
             this.isPlaying = true;
         }
 
-        this.playerMovement.onPointerDown();
+        this.movement.onPointerDown();
     }
 
     onCollision(obj) {
         if (obj instanceof Spike) {
-            this.playerMovement.onCollisionSpike();
+            this.movement.onCollisionSpike();
             this._onLose();
         }
     }
 
     _onLose() {
-        if (this.isDie == true) {
-            return;
-        }
-
         this.isDie = true;
-        this.playerSprite.onLose();
-        this.playerEffect.onLose();
+        this.sprite.onLose();
+        this.effect.onLose();
     }
 
     onReset() {
@@ -76,13 +72,13 @@ export class Player extends Container {
         this.isPlaying = false;
         this.position.set(0,0);
 
-        this.playerSprite.onReset();
-        this.playerEffect.onReset();
-        this.playerMovement.onReset();
+        this.sprite.onReset();
+        this.effect.onReset();
+        this.movement.onReset();
     }
 
     update(dt) {
-        this.playerMovement.update(dt);
-        this.playerEffect.update(dt);
+        this.movement.update(dt);
+        this.effect.update(dt);
     }
 }

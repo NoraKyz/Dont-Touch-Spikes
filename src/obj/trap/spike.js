@@ -8,10 +8,10 @@ export class Spike extends Container {
         this.collider = null;
     }
 
-    _initSprite() {
+    _initSprite(color = 0x808080) {
         this.size = 70 / Game.ratio; // Kích thước cạnh tam giác
         this.spike = new Graphics();
-        this.spike.beginFill(0x808080);
+        this.spike.beginFill(color);
 
         const halfSize = this.size / 2;
         const x1 = -halfSize;
@@ -32,6 +32,7 @@ export class Spike extends Container {
     }
 
     changeColor(color){
-        this.spike.tint = color;
+        //this.spike.tint = color;
+        
     }
 }

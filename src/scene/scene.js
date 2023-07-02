@@ -45,8 +45,8 @@ export class Scene extends Container {
         if (obj1 === this.player && obj2 instanceof Candy) {
             if (this.gameState != GameState.Lose && this.candy.enableEating) {
                 Assets.get("eatingSound").play();
-                this.candy.randomPosition(this.player.playerMovement.direction.x);
-                this.candy.updateCandyQuantity();
+                this.candy.onSpawn(this.player.movement.direction.x);
+                this.candy.onEaten();
             }
         }
     }
@@ -77,12 +77,11 @@ export class Scene extends Container {
         }
 
         this.player.onNextLevel();
-        this.candy.enableEating = true;
+        this.candy.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
-        if (this.candy.visible == false) this.candy.displayCandy();
     }
 
     _onLose() {
@@ -94,7 +93,7 @@ export class Scene extends Container {
             this.background.hideScore();
         }, 1000);
         this.gameInfor.updateGameInfor();
-        this.candy.onDead();
+        this.candy.onLose();
     }
 
     _initInputHandle() {
@@ -148,7 +147,6 @@ export class Scene extends Container {
     _initCandy() {
         this.candy = new Candy(this.gameplay);
         this.gameplay.addChild(this.candy);
-        this.candy.visible = false;
     }
 
     _initBackground() {
@@ -178,7 +176,7 @@ export class Scene extends Container {
             this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
             this.colliderDetector.checkCollider(this.player, this.candy);
             this.traps.update();
-            this.candy.update();
+            this.candy.update(dt);
         }
     }
 }

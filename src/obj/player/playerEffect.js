@@ -20,13 +20,6 @@ export class PlayerEffect {
             .to({ alpha: 0 }, 2000)
     }
 
-    _flyEffect() {
-        let texture = Texture.from("circle");
-        this.emitter = new Emitter(this.obj, upgradeConfig(config, [texture]));
-        this.emitter.emit = true;
-        this.emitter.playOnce();
-    }
-
     _deadEffect(dt) {
         if (this.enableDeadEffect == false) {
             return;

@@ -49,6 +49,7 @@ export class Player extends Container {
 
     _initEffect() {
         this._despawnEffect();
+        //this._flyEffect();
     }
 
     _despawnEffect() {
@@ -69,6 +70,10 @@ export class Player extends Container {
         }
     }
 
+
+    _particleFolowing(x, y) {
+        this.emitter.updateOwnerPos(x, y);
+    }
 
     _changeDirection() {
         this.bird.scale.x *= -1;
@@ -117,6 +122,12 @@ export class Player extends Container {
 
         this._limitVerMovement();
         this._deadEffect(dt);
+        //this._checkPos();
+    }
+
+    _checkPos() {
+        console.log(this.emitter.spawnPos);
+        //console.log(this.emitter.ownerPos);
     }
 
     // xử lý chạm left or right

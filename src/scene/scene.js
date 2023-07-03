@@ -25,6 +25,8 @@ export const GameState = Object.freeze({
 export class Scene extends Container {
     constructor() {
         super();
+        this.emitx = Game.app.stage.width / 2;
+        this.emity = Game.app.stage.height / 2;
         this._initGameplay();
         this._initInputHandle();
         this._initColliderDetector();

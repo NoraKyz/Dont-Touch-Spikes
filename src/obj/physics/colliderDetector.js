@@ -17,9 +17,13 @@ export class ColliderDetector extends EventEmitter {
     }
 
     checkCollider(obj1, obj2) {
-        if(obj1 === null || obj2 === null) {
+        if (obj1 === null || obj2 === null) {
             return;
-        }  
+        }
+
+        if(obj1.collider.enable === false){
+            return;
+        }
 
         if (Array.isArray(obj2)) {
             obj2.forEach(child => {
@@ -33,15 +37,18 @@ export class ColliderDetector extends EventEmitter {
             }
         }
     }
-    
+
     checkGroupCollisions(groups1, groups2) {
         groups1.forEach(obj1 => {
             this.checkCollider(obj1, groups2);
         });
     }
-    
 
     isCollide(collider1, collider2) {
+        if (collider1.enable == false || collider2.enable == false) {
+            return false;
+        }
+
         const pos1 = collider1.getGlobalPosition();
         const pos2 = collider2.getGlobalPosition();
         return CommonUtils.circleCollision(

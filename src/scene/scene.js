@@ -9,10 +9,14 @@ import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
-import { Candy } from "../obj/items/candy";
 import { GameInfor } from "../obj/ui/gameInfor";
+
 import {Emitter, upgradeConfig} from "@pixi/particle-emitter";
 import config from "../../assets/aim/emitter.json";
+
+import { CandyManager } from "../obj/items/candyManager";
+import { Candy } from "../obj/items/candy";
+
 
 
 export const GameState = Object.freeze({
@@ -57,10 +61,9 @@ export class Scene extends Container {
         }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
-            if (this.gameState != GameState.Lose && this.candy.enableEating) {
+            if (this.gameState != GameState.Lose) {
                 Assets.get("eatingSound").play();
-                this.candy.randomPosition(this.player.direction.x);
-                this.candy.updateCandyQuantity();
+                this.candies.onCollision(obj2);
             }
         }
     }
@@ -79,6 +82,7 @@ export class Scene extends Container {
         this.background.onReset();
         this.mainUI.onReset();
         this.gameOverUI.onReset();
+        this.candies.onReset();
 
         setTimeout(() => {
             this.gameState = GameState.Ready;
@@ -90,12 +94,12 @@ export class Scene extends Container {
             return;
         }
 
-        this.candy.enableEating = true;
+        this.candies.onNextLevel(this.player.movement.direction.x);
+        this.player.onNextLevel();     
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
         this.traps.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) this.traps.changeColor(this.background.mainColor.colorDarker);
-        if (this.candy.visible == false) this.candy.displayCandy();
     }
 
     _onLose() {
@@ -107,7 +111,7 @@ export class Scene extends Container {
             this.background.hideScore();
         }, 1000);
         this.gameInfor.updateGameInfor();
-        this.candy.onDead();
+        this.candies.onLose();
     }
 
     _initInputHandle() {
@@ -121,7 +125,7 @@ export class Scene extends Container {
             if (this.gameState == GameState.Ready) {
                 this.mainUI.hideMainUI();
                 this.gameInfor.hideGameInfor();
-                this.candy.onSpawn();
+                // Spawn first candy
                 this.background.displayScore();
             }
             this.player.onPointerDown();
@@ -143,7 +147,7 @@ export class Scene extends Container {
         this._initBackground();
         this._initPlayer();
         this._initTraps();
-        this._initCandy();
+        this._initCandies();
         this._initUI();
         this._initGameInfor();
     }
@@ -163,10 +167,9 @@ export class Scene extends Container {
         this.gameplay.addChild(this.traps);
     }
 
-    _initCandy() {
-        this.candy = new Candy();
-        this.gameplay.addChild(this.candy);
-        this.candy.visible = false;
+    _initCandies() {
+        this.candies = new CandyManager();
+        this.gameplay.addChild(this.candies);
     }
 
     _initBackground() {
@@ -178,6 +181,7 @@ export class Scene extends Container {
         this.mainUI = new MainUI();
         this.gameplay.addChild(this.mainUI);
     }
+
     _initGameInfor() {
         this.gameInfor = new GameInfor();
         this.gameplay.addChild(this.gameInfor);
@@ -193,10 +197,13 @@ export class Scene extends Container {
         this.player.update(dt);
         if (this.gameState == GameState.Playing) {
             this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
-            this.colliderDetector.checkCollider(this.player, this.candy);
+            this.colliderDetector.checkCollider(this.player, this.candies.children);
             this.traps.update();
-            this.candy.update();
+
             this._updateEmitterPosition();
+
+            this.candies.update(dt);
+
         }
         this.emitter.update(dt * 0.1);
     }

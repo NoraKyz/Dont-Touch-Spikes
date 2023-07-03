@@ -22,8 +22,12 @@ export class PlayerEffect {
 
     _flyEffect() {
         let texture = Texture.from("circle");
-        this.emitter = new Emitter(this.gameplay, upgradeConfig(config, [texture]));
+        this.emitter = new Emitter(this.obj.parent, upgradeConfig(config, [texture]));
         this.emitter.emit = true;
+    }
+
+    _updateEmitterPosition() {
+        this.emitter.updateSpawnPos(this.obj.position.x, this.obj.position.y)
     }
 
     _deadEffect(dt) {
@@ -48,7 +52,8 @@ export class PlayerEffect {
     }
 
     update(dt) {
-        this._deadEffect(dt);    
-        //this.emitter.update(dt);
+        this._deadEffect(dt);   
+        this._updateEmitterPosition();
+        this.emitter.update(dt); 
     }
 }

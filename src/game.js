@@ -3,6 +3,7 @@ import { Scene } from "./scene/scene";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";
+import * as TWEEN from "@tweenjs/tween.js";
 
 export class Game {
     static init() {
@@ -49,6 +50,7 @@ export class Game {
 
     static update(dt) {
         this.scene.update(dt);
+        TWEEN.update();
     }
 }
 

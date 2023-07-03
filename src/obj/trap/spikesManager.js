@@ -37,7 +37,7 @@ export class SpikesManager extends Container {
 
     moveSpikes(state, limitSpike){
         this.state = state;
-        if(this.state == 0){
+        if(this.state == -1){
             this.spikeRight.forEach((spike, index) => {
                 if(this.rightIndexSpikes.includes(index)){
                     const target = {x: this.distance, y: spike.y};

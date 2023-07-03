@@ -87,7 +87,6 @@ export class Player extends Container {
     }
 
     update(dt) {
-
         this.movement.update(dt);
         this.effect.update(dt);
     }

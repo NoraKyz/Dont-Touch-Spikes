@@ -8,13 +8,14 @@ import { PlayerMovement } from "./playerMovement";
 
 
 export class Player extends Container {
-    constructor() {
+    constructor(parent) {
         super();
+        this.parent = parent;
         this._initSprite();
         this._initProperties();
         this._initCollider();
-        this._initEffect();
         this._initMovement();
+        this._initEffect();
     }
 
     _initCollider() {
@@ -23,7 +24,7 @@ export class Player extends Container {
         this.addChild(this.collider);
     }
 
-    _initProperties() {     
+    _initProperties() {
         this.isPlaying = false;
         this.isDie = false;
     }
@@ -50,7 +51,6 @@ export class Player extends Container {
             this.movement.onStart();
             this.isPlaying = true;
         }
-
         this.movement.onPointerDown();
     }
 

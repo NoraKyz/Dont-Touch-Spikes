@@ -2,6 +2,7 @@ import { Texture } from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import config from "../../../assets/aim/emitter.json";
 import * as TWEEN from "@tweenjs/tween.js";
+import { Scene } from "../../scene/scene";
 
 export class PlayerEffect {
   constructor(obj) {
@@ -20,13 +21,13 @@ export class PlayerEffect {
   }
 
   _flyEffect() {
-    let texture = Texture.from("assets/images/HardCircle.png");
+    let texture = Texture.from("circle");
     this.emitter = new Emitter(
       this.obj.parent,
-      [texture],
-      upgradeConfig(config)
+      upgradeConfig(config, [texture])
     );
     this.emitter.emit = true;
+    console.log(this.emitter.spawnPos);
   }
 
   _updateParticles() {
@@ -37,7 +38,6 @@ export class PlayerEffect {
     if (this.enableDeadEffect == false) {
       return;
     }
-
     this.obj.rotation += 0.8 * dt;
   }
 
@@ -56,6 +56,6 @@ export class PlayerEffect {
   update(dt) {
     this._deadEffect(dt);
     this.emitter.update(dt * 0.1);
-    this._updateParticles();
+    //this._updateParticles();
   }
 }

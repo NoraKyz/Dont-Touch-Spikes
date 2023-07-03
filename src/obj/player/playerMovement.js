@@ -28,7 +28,7 @@ export class PlayerMovement {
         this._limitHozMovement();
 
         // di chuyển bằng thay đổi pos
-        this.velocity.y += this.gravity;
+        this.velocity.y += this.gravity * dt;
         this.obj.position.x += this.velocity.x * this.direction.x * dt;
         this.obj.position.y += this.velocity.y * this.direction.y * dt;
 

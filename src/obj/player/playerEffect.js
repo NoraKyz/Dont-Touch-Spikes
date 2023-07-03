@@ -12,7 +12,7 @@ export class PlayerEffect {
 
     _initEffect() {
         this._despawnEffect();
-        //this._flyEffect();
+        this._flyEffect();
     }
 
     _despawnEffect() {
@@ -22,9 +22,8 @@ export class PlayerEffect {
 
     _flyEffect() {
         let texture = Texture.from("circle");
-        this.emitter = new Emitter(this.obj, upgradeConfig(config, [texture]));
+        this.emitter = new Emitter(this.gameplay, upgradeConfig(config, [texture]));
         this.emitter.emit = true;
-        this.emitter.playOnce();
     }
 
     _deadEffect(dt) {

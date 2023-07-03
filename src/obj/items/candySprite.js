@@ -17,7 +17,6 @@ export class CandySprite extends Container {
         this.candy = Sprite.from(Assets.get("candy"));
         this.scale.set(1.2 / Game.ratio);
         this.candy.anchor.set(0.5);
-        this.candy.visible = false;
         this.addChild(this.candy);
     }
 
@@ -29,16 +28,15 @@ export class CandySprite extends Container {
             fill: '0xf50c0c',
         });
         this.numberAddItem.anchor.set(0.5);
-        this.numberAddItem.visible = false;
         this.addChild(this.numberAddItem);
     }
 
-    onNextLevel() {
+    onSpawn() {
         this.candy.visible = true;
         this.numberAddItem.visible = false;
     }
 
-    onEaten() {
+    onCollision() {
         this.candy.visible = false;
         this.numberAddItem.visible = true;
     }

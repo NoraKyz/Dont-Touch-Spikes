@@ -10,14 +10,9 @@ export class Candy extends Container {
     constructor() {
         super();
         this._initSprite();
-        this._initProperties();
         this._initCollider();
         this._initEffect();
-        this._initSpawner();      
-    }
-
-    _initProperties() {
-        this.enableEating = true;
+        this._initSpawner();
     }
 
     _initSprite() {
@@ -39,25 +34,25 @@ export class Candy extends Container {
         this.spawner = new CandySpawner(this);
     }
 
-    onEaten() {    
-        this.enableEating = false; 
+    onCollision() {
+        this.sprite.onCollision();
+        this.effect.onCollision();
 
-        this.sprite.onEaten();    
-        Data.itemQuantity++; // Gọi ở chỗ khác
-    }  
-
-    onNextLevel() {
-        this.enableEating = true;
-
-        this.sprite.onNextLevel();    
+        Data.itemQuantity++;
     }
 
     onLose() {
         this.effect.onLose();
     }
 
-    onSpawn(direction = 1){
+    onFirstSpawn(direction) {
+        this.onSpawn(direction);
+        this.effect.onFirstSpawn();
+    }
+
+    onSpawn(direction) {
         this.spawner.onSpawn(direction);
+        this.sprite.onSpawn();
         this.effect.onSpawn();
     }
 

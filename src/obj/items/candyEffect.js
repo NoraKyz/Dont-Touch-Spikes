@@ -8,13 +8,10 @@ export class CandyEffect {
         this._initProperties();
     }
 
-    _initProperties(){
+    _initProperties() {
         this.speed = 1 / Game.ratio;
         this.direction = 1;
         this.distance = 20 / Game.ratio;
-
-        this.highestPos = this.obj.y - this.distance;
-        this.lowestPos = this.obj.y + this.distance;
     }
 
     _initEffect() {
@@ -37,19 +34,25 @@ export class CandyEffect {
 
     }
 
-    _moveEffect(dt){
+    _moveEffect(dt) {
         if (this.obj.y < this.highestPos) this.direction = 1;
         else if (this.obj.y > this.lowestPos) this.direction = -1;
         this.obj.y += this.speed * this.direction * dt;
     }
 
-    onEaten() {
-        this.highestPos = this.obj.y - this.distance;
-        this.lowestPos = this.obj.y + this.distance;
-    }   
+    onCollision() {
+        // Thêm hiệu ứng ở đây
+    }
+
+    onFirstSpawn() {
+        this.obj.alpha = 0;
+        this.spawnEffect.start();
+    }
 
     onSpawn() {
-        this.spawnEffect.start();
+        this.obj.alpha = 1;
+        this.highestPos = this.obj.y - this.distance;
+        this.lowestPos = this.obj.y + this.distance;
     }
 
     onLose() {

@@ -12,7 +12,7 @@ export class CandySpawner {
     randomPosition(direction) {
         const candyPosition = { x: 0, y: 0 };
 
-        if (direction === 1) candyPosition.x = -Game.app.view.width * 4 / 14;
+        if (direction === -1) candyPosition.x = -Game.app.view.width * 4 / 14;
         else candyPosition.x = Game.app.view.width * 4 / 14;
 
         let randomY = Math.floor(Math.random() * 2);

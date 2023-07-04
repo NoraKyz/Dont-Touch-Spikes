@@ -8,15 +8,7 @@ import { Game } from "../../game";
 export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
-        this.style = {
-            fontFamily: "Calibri",
-            fill: ['#ffffff'],
-            align: "center",
-        }
-        this.bigTextStyle = new PIXI.TextStyle({
-            ...this.style,
-            fontSize: 80 / Game.ratio,
-        });
+        this._initTextStyle();
         this._initPointButton();
         this._initReplayButton();
         this._initShareButton();
@@ -24,6 +16,15 @@ export class GameOverUI extends PIXI.Container {
         this.sortChildren();
         this.zIndex = 1;
         this.gameManager = GameManager.instance;
+    }
+
+    _initTextStyle() {
+        this.style = new PIXI.TextStyle({
+            fill: "#FFFFFF",
+            fontFamily: "Blissful Thinking",
+            fontSize: 85 / Game.ratio,
+            fontWeight: "lighter",
+        });
     }
 
     _initPointButton(){
@@ -34,7 +35,7 @@ export class GameOverUI extends PIXI.Container {
         this.pointsButton.scale.set(2 / Game.ratio);
         this.pointsButton.position.y = -130 / Game.ratio;
 
-        this.pointNumber = new PIXI.Text(Data.currentScore, this.bigTextStyle);
+        this.pointNumber = new PIXI.Text(Data.currentScore, this.style);
         this.pointNumber.anchor.set(0.5);
         this.pointNumber.position.y = -150 / Game.ratio;
           

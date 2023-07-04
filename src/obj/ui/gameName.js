@@ -1,37 +1,32 @@
-import { Container, Text } from "pixi.js";
+import { Assets, Container, Text, TextStyle } from "pixi.js";
 import { Game } from "../../game";
 
 export class GameName extends Container {
-  constructor() {
-    super();
-    this._initGameName();
-    this._displayGameName();
-  }
-  
-  _initGameName() {
-    const style = {
-      fontFamily: 'Arial',
-      fontWeight: 700,
-      fontSize: 65 / Game.ratio,
-      fill: '0x808080',
-      align: 'center',
+    constructor() {
+        super();
+        this._initGameName();
+        this._displayGameName();
     }
-    this.gameNameTop = new Text("DON'T TOUCH", style);
-    this.gameNameTop.anchor.set(0.5);
-    this.gameNameTop.position.set(0, -Game.app.view.height * 3 / 7 + 100 / Game.ratio);
 
-    this.gameNameBottom = new Text("THE SPIKES", style);
-    this.gameNameBottom.anchor.set(0.5);
-    this.gameNameBottom.position.set(0, -Game.app.view.height * 3 / 7 + 170 / Game.ratio);
-  }
+    _initGameName() {
+        const style = new TextStyle({
+            fill: "#808080",
+            fontFamily: "Blissful Thinking",
+            fontSize: 92 / Game.ratio,
+            fontWeight: 550,
+            letterSpacing: 1 / Game.ratio,
+        });
 
-  _displayGameName() {
-    this.addChild(this.gameNameTop);
-    this.addChild(this.gameNameBottom);
-  }
-  
-  hideGameName() {
-    this.visible = false;
-  }
+        this.gameName = new Text("DON\'T TOUCH\n   THE SPIKES", style);
+        this.gameName.anchor.set(0.5);
+        this.gameName.position.set(0, -400 / Game.ratio);
+    }
 
+    _displayGameName() {
+        this.addChild(this.gameName);
+    }
+
+    hideGameName() {
+        this.visible = false;
+    }
 }

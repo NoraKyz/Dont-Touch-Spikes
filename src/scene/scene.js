@@ -10,10 +10,6 @@ import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
 import { GameInfor } from "../obj/ui/gameInfor";
-
-import {Emitter, upgradeConfig} from "@pixi/particle-emitter";
-import config from "../../assets/aim/emitter.json";
-
 import { CandyManager } from "../obj/items/candyManager";
 import { Candy } from "../obj/items/candy";
 

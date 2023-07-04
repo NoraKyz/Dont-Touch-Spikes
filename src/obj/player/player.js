@@ -2,10 +2,6 @@ import { Container } from "pixi.js";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
-
-import { GameManager } from "../../custom/gameManager";
-import * as TWEEN from '@tweenjs/tween.js'
-
 import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";
 import { PlayerMovement } from "./playerMovement";
@@ -94,7 +90,6 @@ export class Player extends Container {
     }
 
     update(dt) {
-
         this.movement.update(dt);
         this.effect.update(dt);
     }

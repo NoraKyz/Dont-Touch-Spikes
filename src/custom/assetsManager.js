@@ -35,8 +35,15 @@ export class AssetsManager {
         )
 
         this._addBundle(
-            "Trap",{
+            "trap",{
                 "spike": "./assets/images/spike.png",
+            }
+        )
+
+        this._addBundle(
+            "font", {
+                "Blissful Thinking": "./assets/fonts/Blissful Thinking.otf",
+                "5Identification Mono": "./assets/fonts/5Identification-Mono.ttf"
             }
         )
 

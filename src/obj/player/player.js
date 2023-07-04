@@ -16,10 +16,10 @@ export class Player extends Container {
     constructor(parent) {
         super();
         this.parent = parent;
+        this._initEffect();
         this._initSprite();
         this._initProperties();
         this._initCollider();
-        this._initEffect();
         this._initMovement();
     }
 
@@ -29,9 +29,7 @@ export class Player extends Container {
         this.addChild(this.collider);
     }
 
-
     _initProperties() {
-
         this.isPlaying = false;
         this.isDie = false;
     }
@@ -59,8 +57,16 @@ export class Player extends Container {
             this.movement.onStart();
             this.isPlaying = true;
         }
-
         this.movement.onPointerDown();
+        this.effect.onPointerDown();
+    }
+
+    onPointerUp() {
+        if(!this.isPlaying) {
+            this.movement.onStart();
+            this.isPlaying = true;
+        }
+        this.effect.onPointerUp();
     }
 
     onCollision(obj) {

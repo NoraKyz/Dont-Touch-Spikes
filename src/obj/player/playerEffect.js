@@ -29,7 +29,6 @@ export class PlayerEffect {
         end: 0.035 / Game.ratio,
       minimumScaleMultiplier: 1,
     }
-
     this.emitter = new Emitter(
       this.obj.parent,
       upgradeConfig(cusConfig, [texture])
@@ -44,15 +43,7 @@ export class PlayerEffect {
   onPointerDown() {
     this.emitter.playOnce();
   }
-
-  onPointerUp() {
-    setTimeout(() => {
-      if(this.emitter.particleCount <= 8) {
-          this.emitter.emit = false;
-      }
-    }, 100);
-  }
-
+  
   _deadEffect(dt) {
     if (this.enableDeadEffect == false) {
       return;

@@ -106,12 +106,6 @@ export class Scene extends Container {
     })
   }
 
-  _onPointerUp() {
-    if (this.gameState == GameState.Playing) {
-      this.player.onPointerUp();
-    }
-  }
-
   _onPointerDown() {
     if (this.gameState != GameState.Lose) {
       if (this.gameState == GameState.Ready) {

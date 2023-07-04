@@ -11,11 +11,11 @@ export class Player extends Container {
     constructor(parent) {
         super();
         this.parent = parent;
+        this._initEffect();
         this._initSprite();
         this._initProperties();
         this._initCollider();
         this._initMovement();
-        this._initEffect();
     }
 
     _initCollider() {
@@ -52,6 +52,15 @@ export class Player extends Container {
             this.isPlaying = true;
         }
         this.movement.onPointerDown();
+        this.effect.onPointerDown();
+    }
+
+    onPointerUp() {
+        if(!this.isPlaying) {
+            this.movement.onStart();
+            this.isPlaying = true;
+        }
+        this.effect.onPointerUp();
     }
 
     onCollision(obj) {

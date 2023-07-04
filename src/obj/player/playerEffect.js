@@ -1,8 +1,8 @@
-import { Texture } from "pixi.js";
+import {Assets, Texture} from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import config from "../../../assets/aim/emitter.json";
 import * as TWEEN from "@tweenjs/tween.js";
-import { Scene } from "../../scene/scene";
+import {Game} from "../../game";
 
 export class PlayerEffect {
   constructor(obj) {
@@ -22,16 +22,36 @@ export class PlayerEffect {
 
   _flyEffect() {
     let texture = Texture.from("circle");
+    let cusConfig = config;
+    cusConfig.scale = {
+      start: 0.5 / Game.ratio,
+        end: 0.035 / Game.ratio,
+      minimumScaleMultiplier: 1,
+    }
+
     this.emitter = new Emitter(
       this.obj.parent,
-      upgradeConfig(config, [texture])
+      upgradeConfig(cusConfig, [texture])
     );
-    this.emitter.emit = true;
-    console.log(this.emitter.spawnPos);
+    this.emitter.emit = false;
   }
 
   _updateParticles() {
     this.emitter.updateSpawnPos(this.obj.position.x, this.obj.position.y);
+  }
+
+  onPointerDown() {
+    this.emitter.playOnce();
+  }
+
+  onPointerUp() {
+    setTimeout(() => {
+      console.log(this.emitter.particleCount);
+      if(this.emitter.particleCount <= 8) {
+          this.emitter.emit = false;
+      }
+    }, 100);
+    console.log(this.emitter.emit);
   }
 
   _deadEffect(dt) {
@@ -44,6 +64,7 @@ export class PlayerEffect {
   onLose() {
     this.enableDeadEffect = true;
     this.despawnEffect.start();
+    this.emitter.emit = false;
   }
 
   onReset() {
@@ -56,6 +77,6 @@ export class PlayerEffect {
   update(dt) {
     this._deadEffect(dt);
     this.emitter.update(dt * 0.1);
-    //this._updateParticles();
+    this._updateParticles();
   }
 }

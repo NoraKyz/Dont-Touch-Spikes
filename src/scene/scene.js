@@ -101,6 +101,15 @@ export class Scene extends Container {
     document.addEventListener("pointerdown", () => {
       this._onPointerDown();
     });
+    document.addEventListener("pointerup", () => {
+        this._onPointerUp();
+    })
+  }
+
+  _onPointerUp() {
+    if (this.gameState == GameState.Playing) {
+      this.player.onPointerUp();
+    }
   }
 
   _onPointerDown() {
@@ -122,7 +131,7 @@ export class Scene extends Container {
     this.gameplay.x = Game.app.screen.width / 2;
     this.gameplay.y = Game.app.screen.height / 2;
     this.addChild(this.gameplay);
-    this._initParticle();
+    //this._initParticle();
     this._initBackground();
     this._initPlayer();
     this._initTraps();
@@ -134,16 +143,6 @@ export class Scene extends Container {
   resize() {
     this.gameplay.x = Game.app.screen.width / 2;
     this.gameplay.y = Game.app.screen.height / 2;
-  }
-
-  _initParticle() {
-    let texture = Texture.from("circle");
-    this.emitter = new Emitter(this.gameplay, upgradeConfig(config, [texture]));
-    this.emitter.emit = false;
-  }
-
-  _updateEmitterPosition() {
-    this.emitter.updateSpawnPos(this.player.position.x, this.player.position.y)
   }
   _initPlayer() {
     this.player = new Player(this.gameplay);
@@ -189,6 +188,6 @@ export class Scene extends Container {
       this.traps.update();
       this.candies.update(dt);
     }
-    this.emitter.update(dt * 0.1);
+    //this.emitter.update(dt * 0.1);
   }
 }

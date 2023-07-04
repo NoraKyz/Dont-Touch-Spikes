@@ -47,12 +47,10 @@ export class PlayerEffect {
 
   onPointerUp() {
     setTimeout(() => {
-      console.log(this.emitter.particleCount);
       if(this.emitter.particleCount <= 8) {
           this.emitter.emit = false;
       }
     }, 100);
-    console.log(this.emitter.emit);
   }
 
   _deadEffect(dt) {

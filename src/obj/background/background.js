@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics, Sprite, Text, Texture } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Text, TextStyle, Texture } from "pixi.js";
 import { Game } from "../../game";
 import { CommonUtils } from "../../commonUtils.js";
 import { Data } from "../../data";
@@ -7,10 +7,20 @@ export class Background extends Container {
     constructor() {
         super();
         this._initProperties();
+        this._initTextStyle();     
         this._initRetangleTop();
         this._initRetangleBottom();
         this._initPlayGround();
         this._initScoreBg();
+    }
+
+    _initTextStyle() {
+        this.style = new TextStyle({
+            fontFamily: "Courier New",
+            fontWeight: "bolder",
+            fontSize: 65 / Game.ratio,
+            fill: `0x${this.mainColor.color}`,
+        });
     }
 
     _initProperties() {
@@ -51,26 +61,20 @@ export class Background extends Container {
         this.addChild(this.scoreBg);
 
         // score
-        this.scoreText = new Text(`0${Data.currentScore}`, {
-            fontFamily: "5identification Mono",
-            fontWeight: 500,
-            fontSize: 65 / Game.ratio,
-            fill: `0x${this.mainColor.color}`,
-            opacity: 0.5,
-        });
+        this.scoreText = new Text(`0${Data.currentScore}`, this.style);
         this.scoreText.anchor.set(0.5);
         this.scoreText.y = -Game.app.view.height / 28;
         this.scoreText.scale.set(4.5);
     }
 
-    updateBackground(newScore){
-        if(newScore < 10) this.scoreText.text = `0${newScore}`;
+    updateBackground(newScore) {
+        if (newScore < 10) this.scoreText.text = `0${newScore}`;
         else this.scoreText.text = `${newScore}`;
 
-        if(newScore > 0 && newScore % 5 == 0) this.changeBgColor(); 
+        if (newScore > 0 && newScore % 5 == 0) this.changeBgColor();
     }
-    
-    _newMainColor(){
+
+    _newMainColor() {
         this.mainColor = CommonUtils.randomColorBackground()
     }
 
@@ -80,12 +84,12 @@ export class Background extends Container {
         this.retangleTop.tint = this.mainColor.colorDarker;
         this.retangleBottom.tint = this.mainColor.colorDarker;
     }
-    changeBgColor(){
+    changeBgColor() {
         this._newMainColor();
         this._resetBgColor();
     }
 
-    onReset(){
+    onReset() {
         this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
         this._resetBgColor();
         this.scoreText.tint = 'ebebeb';
@@ -96,7 +100,7 @@ export class Background extends Container {
         this.addChild(this.scoreText);
     }
 
-    hideScore(){
+    hideScore() {
         this.removeChild(this.scoreText);
     }
 }

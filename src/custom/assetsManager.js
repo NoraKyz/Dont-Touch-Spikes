@@ -43,7 +43,7 @@ export class AssetsManager {
         this._addBundle(
             "font", {
                 "Blissful Thinking": "./assets/fonts/Blissful Thinking.otf",
-                "5Identification Mono": "./assets/fonts/5Identification-Mono.ttf"
+                "5Identification Mono": "./assets/fonts/5Identification-Mono.otf"
             }
         )
 

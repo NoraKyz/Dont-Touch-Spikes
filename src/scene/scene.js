@@ -158,7 +158,7 @@ export class Scene extends Container {
     }
 
     _initPlayer() {
-        this.player = new Player();
+        this.player = new Player(this.gameplay);
         this.gameplay.addChild(this.player);
     }
 

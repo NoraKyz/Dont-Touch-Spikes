@@ -28,10 +28,18 @@ export class AssetsManager {
         
         this._addBundle(
             "UI", {
-                "trophy": "./assets/images/trophy.png",
-                "leaderBoard": "./assets/images/leaderboard.png",
+                "pointsUI": "./assets/images/points.png",
+                "replayButton": "./assets/images/replayButton.png",
+                "shareButton": "./assets/images/shareButton.png",
             }
         )
+
+        this._addBundle(
+            "Trap",{
+                "spike": "./assets/images/spike.png",
+            }
+        )
+
         return Assets.loadBundle(this.keys);
     }
 

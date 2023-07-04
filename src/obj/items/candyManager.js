@@ -25,7 +25,7 @@ export class CandyManager extends Container {
             }
 
             this.addChild(candy);
-            return candy;
+            return;
         }
 
         let candy = this.pool.pop();

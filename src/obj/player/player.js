@@ -2,9 +2,14 @@ import { Container } from "pixi.js";
 import { Collider } from "../physics/collider";
 import { Game } from "../../game";
 import { Spike } from "../trap/spike";
+
+import { GameManager } from "../../custom/gameManager";
+import * as TWEEN from '@tweenjs/tween.js'
+
 import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";
 import { PlayerMovement } from "./playerMovement";
+
 
 
 export class Player extends Container {
@@ -24,7 +29,9 @@ export class Player extends Container {
         this.addChild(this.collider);
     }
 
-    _initProperties() {     
+
+    _initProperties() {
+
         this.isPlaying = false;
         this.isDie = false;
     }
@@ -44,6 +51,7 @@ export class Player extends Container {
 
     onNextLevel() {
         this.sprite.changeDirection();
+
     }
 
     onPointerDown() {
@@ -62,6 +70,7 @@ export class Player extends Container {
         }
     }
 
+
     _onLose() {
         this.isDie = true;
         this.sprite.onLose();
@@ -79,6 +88,7 @@ export class Player extends Container {
     }
 
     update(dt) {
+
         this.movement.update(dt);
         this.effect.update(dt);
     }

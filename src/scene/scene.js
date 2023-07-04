@@ -1,4 +1,4 @@
-import { Assets, Container } from "pixi.js";
+import {Assets, Container, Texture} from "pixi.js";
 import { Player } from "../obj/player/player";
 import { Game } from "../game";
 import { SpikesManager } from "../obj/trap/spikesManager";
@@ -10,8 +10,13 @@ import { GameOverUI } from "../obj/ui/gameOverUI";
 import { GameManager } from "../custom/gameManager";
 import { Data } from "../data";
 import { GameInfor } from "../obj/ui/gameInfor";
+
+import {Emitter, upgradeConfig} from "@pixi/particle-emitter";
+import config from "../../assets/aim/emitter.json";
+
 import { CandyManager } from "../obj/items/candyManager";
 import { Candy } from "../obj/items/candy";
+
 
 
 export const GameState = Object.freeze({
@@ -24,12 +29,24 @@ export const GameState = Object.freeze({
 export class Scene extends Container {
     constructor() {
         super();
+        this.emitx = Game.app.stage.width / 2;
+        this.emity = Game.app.stage.height / 2;
         this._initGameplay();
         this._initInputHandle();
         this._initColliderDetector();
         this._initGameManager();
         this._initGameOver();
         this.gameState = GameState.Ready;
+    }
+
+    _initParticle() {
+        let texture = Texture.from("circle");
+        this.emitter = new Emitter(this.gameplay, upgradeConfig(config, [texture]));
+        this.emitter.emit = false;
+    }
+
+    _updateEmitterPosition() {
+        this.emitter.updateSpawnPos(this.player.position.x, this.player.position.y)
     }
 
     _initColliderDetector() {
@@ -114,6 +131,10 @@ export class Scene extends Container {
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
             Assets.get("flyingSound").play();
+            this.emitter.emit = true;
+            setTimeout(() => {
+                this.emitter.emit = false;
+            }, 400);
         }
     }
 
@@ -122,6 +143,7 @@ export class Scene extends Container {
         this.gameplay.x = Game.app.screen.width / 2;
         this.gameplay.y = Game.app.screen.height / 2;
         this.addChild(this.gameplay);
+        this._initParticle();
         this._initBackground();
         this._initPlayer();
         this._initTraps();
@@ -177,7 +199,12 @@ export class Scene extends Container {
             this.colliderDetector.checkCollider(this.player, this.traps.poolSpikes);
             this.colliderDetector.checkCollider(this.player, this.candies.children);
             this.traps.update();
+
+            this._updateEmitterPosition();
+
             this.candies.update(dt);
+
         }
+        this.emitter.update(dt * 0.1);
     }
 }

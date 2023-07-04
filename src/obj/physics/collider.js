@@ -12,7 +12,7 @@ export class Collider extends Graphics {
     constructor(radius) {
         super();
         this.radius = radius;
-        this.enable = true;
+        this.enabled = true;
         this.tag = ColliderTag.Default;
         this._initCollider();
     }

@@ -36,7 +36,7 @@ export class CandyManager extends Container {
         } else {
             candy.onSpawn(direction);
         }
-        
+
         this.addChild(candy);
     }
 
@@ -61,7 +61,9 @@ export class CandyManager extends Container {
     onCollision(candy) {
         this.isEaten = true;
         candy.onCollision();
-        this._despawnCandy(candy);
+        setTimeout(() => {
+            this._despawnCandy(candy);
+        }, 1000);
     }
 
     onReset() {

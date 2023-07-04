@@ -4,8 +4,8 @@ import { Game } from "../../game";
 export class CandyEffect {
     constructor(obj) {
         this.obj = obj;
-        this._initEffect();
         this._initProperties();
+        this._initEffect();
     }
 
     _initProperties() {
@@ -17,31 +17,37 @@ export class CandyEffect {
     _initEffect() {
         this._spawnEffect();
         this._despawnEffect();
-        this._eatingEffect();
     }
 
     _spawnEffect() {
         this.spawnEffect = new TWEEN.Tween(this.obj)
-            .to({ alpha: 1 }, 2000)
+            .to({ alpha: 1 }, 2000);
     }
 
     _despawnEffect() {
         this.despawnEffect = new TWEEN.Tween(this.obj)
-            .to({ alpha: 0 }, 2000)
+            .to({ alpha: 0 }, 2000);
     }
 
     _eatingEffect() {
-
+        this.targetY = this.obj.y - 80 / Game.ratio;
+        this.moveAddNumber = new TWEEN.Tween(this.obj)
+            .to({ y: this.targetY, alpha: 0 }, 1000);
+        this.moveAddNumber.start();
     }
 
     _moveEffect(dt) {
+        if (this.obj.collider.enabled == false) {
+            return; // Candy is eaten
+        }
+
         if (this.obj.y < this.highestPos) this.direction = 1;
         else if (this.obj.y > this.lowestPos) this.direction = -1;
         this.obj.y += this.speed * this.direction * dt;
     }
 
     onCollision() {
-        // Thêm hiệu ứng ở đây
+        this._eatingEffect();
     }
 
     onFirstSpawn() {

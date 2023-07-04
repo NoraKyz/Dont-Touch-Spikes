@@ -101,9 +101,6 @@ export class Scene extends Container {
     document.addEventListener("pointerdown", () => {
       this._onPointerDown();
     });
-    document.addEventListener("pointerup", () => {
-        this._onPointerUp();
-    })
   }
 
   _onPointerDown() {

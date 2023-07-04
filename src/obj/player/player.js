@@ -13,8 +13,9 @@ import { PlayerMovement } from "./playerMovement";
 
 
 export class Player extends Container {
-    constructor() {
+    constructor(parent) {
         super();
+        this.parent = parent;
         this._initSprite();
         this._initProperties();
         this._initCollider();
@@ -41,7 +42,7 @@ export class Player extends Container {
     }
 
     _initEffect() {
-
+        this.effect = new PlayerEffect(this, this.parent);
     }
 
     _initMovement() {

@@ -23,7 +23,7 @@ export class PlayerEffect {
     _flyEffect() {
         let texture = Texture.from("circle");
         this.emitter = new Emitter(this.obj.parent, upgradeConfig(config, [texture]));
-        this.emitter.emit = true;
+        this.emitter.emit = false;
     }
 
     _updateEmitterPosition() {

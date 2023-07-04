@@ -8,13 +8,6 @@ import { Game } from "../../game";
 export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
-        this.BUTTON = Object.freeze({
-            x: -280 / Game.ratio,
-            y: -45 / Game.ratio,
-            width: 560 / Game.ratio,
-            height: 90 / Game.ratio,
-            radius: 16 / Game.ratio,
-        });
         this.style = {
             fontFamily: "Calibri",
             fill: ['#ffffff'],
@@ -22,7 +15,7 @@ export class GameOverUI extends PIXI.Container {
         }
         this.bigTextStyle = new PIXI.TextStyle({
             ...this.style,
-            fontSize: 65 / Game.ratio,
+            fontSize: 80 / Game.ratio,
         });
         this._initPointButton();
         this._initReplayButton();
@@ -34,21 +27,31 @@ export class GameOverUI extends PIXI.Container {
     }
 
     _initPointButton(){
+        this.pointsUI = new Container();
 
-        this.pointsUI = Sprite.from(Assets.get("pointsUI"));
+        this.pointsButton = Sprite.from(Assets.get("pointsUI"));
+        this.pointsButton.anchor.set(0.5);
+        this.pointsButton.scale.set(2 / Game.ratio);
+        this.pointsButton.position.y = -130 / Game.ratio;
+
+        this.pointNumber = new PIXI.Text(Data.currentScore, this.bigTextStyle);
+        this.pointNumber.anchor.set(0.5);
+        this.pointNumber.position.y = -150 / Game.ratio;
+          
         this.pointsUI.cursor = "pointer";
-        this.pointsUI.position.set(0, -220 / Game.ratio);
-
+        this.pointsUI.addChild(this.pointsButton);
+        this.pointsUI.addChild(this.pointNumber);
         this.addChild(this.pointsUI);
     }
 
     _initReplayButton(){
         this.replayButton = Sprite.from(Assets.get("replayButton"));
-
-        this.replayButton.eventMode = 'static';
+        this.replayButton.anchor.set(0.5);     
+        this.replayButton.scale.set(2 / Game.ratio);
+        this.replayButton.position.y = 10 / Game.ratio;
         this.replayButton.cursor = "pointer";
+        this.replayButton.eventMode = 'static';
         this.replayButton.on("pointerdown", () => this._clickedReplayButton());
-        this.replayButton.position.set(0, -30 / Game.ratio);
         this.addChild(this.replayButton);
     }
 
@@ -58,10 +61,11 @@ export class GameOverUI extends PIXI.Container {
 
     _initShareButton(){
         this.shareButton = Sprite.from(Assets.get("shareButton"));
-
+        this.shareButton.anchor.set(0.5);
+        this.shareButton.scale.set(2 / Game.ratio);
+        this.shareButton.position.y = 105 / Game.ratio;
         this.shareButton.cursor = "pointer";
         this.shareButton.on("pointerdown", () => {});
-        this.shareButton.position.set(0, 70 / Game.ratio);
         this.addChild(this.shareButton);
     }
 
@@ -70,7 +74,7 @@ export class GameOverUI extends PIXI.Container {
     }
 
     showGameOverUI() {
-        //this.pointsButtonNum.text = Data.currentScore;
+        this.pointNumber.text = Data.currentScore;
         this.visible = true;
     }
 

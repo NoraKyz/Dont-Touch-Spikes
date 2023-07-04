@@ -43,7 +43,7 @@ export class PlayerEffect {
   onPointerDown() {
     this.emitter.playOnce();
   }
-
+  
   _deadEffect(dt) {
     if (this.enableDeadEffect == false) {
       return;

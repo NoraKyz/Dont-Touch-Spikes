@@ -57,14 +57,6 @@ export class Player extends Container {
         this.effect.onPointerDown();
     }
 
-    onPointerUp() {
-        if(!this.isPlaying) {
-            this.movement.onStart();
-            this.isPlaying = true;
-        }
-        this.effect.onPointerUp();
-    }
-
     onCollision(obj) {
         if (obj instanceof Spike) {
             this.movement.onCollisionSpike();

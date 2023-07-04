@@ -35,6 +35,7 @@ export class Candy extends Container {
     }
 
     onCollision() {
+        this.collider.enabled = false;
         this.sprite.onCollision();
         this.effect.onCollision();
 
@@ -51,6 +52,7 @@ export class Candy extends Container {
     }
 
     onSpawn(direction) {
+        this.collider.enabled = true;
         this.spawner.onSpawn(direction);
         this.sprite.onSpawn();
         this.effect.onSpawn();

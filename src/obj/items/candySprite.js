@@ -1,11 +1,22 @@
-import { Assets, Container, Sprite, Text } from "pixi.js";
+import { Assets, Container, Sprite, Text, TextStyle } from "pixi.js";
 import { Game } from "../../game";
 
 export class CandySprite extends Container {
 
     constructor() {
         super();
+        this._initTextStyle();
         this._initSprite();
+    }
+
+    _initTextStyle() {
+        this.style = new TextStyle({
+            fill: "#FF8207",
+            fontFamily: "Blissful Thinking",
+            fontSize: 55 / Game.ratio,
+            fontWeight: "lighter",
+            letterSpacing: 1 / Game.ratio,
+        });
     }
 
     _initSprite() {
@@ -21,12 +32,7 @@ export class CandySprite extends Container {
     }
 
     _addItemSprite() {
-        this.numberAddItem = new Text("+1", {
-            fontFamily: 'Arial',
-            fontWeight: 600,
-            fontSize: 35 / Game.ratio,
-            fill: '0xf50c0c',
-        });
+        this.numberAddItem = new Text("+1", this.style);
         this.numberAddItem.anchor.set(0.5);
         this.addChild(this.numberAddItem);
     }

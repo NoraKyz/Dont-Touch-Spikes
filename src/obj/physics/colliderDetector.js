@@ -21,7 +21,7 @@ export class ColliderDetector extends EventEmitter {
             return;
         }
 
-        if(obj1.collider.enable === false){
+        if(obj1.collider.enabled === false){
             return;
         }
 
@@ -45,7 +45,7 @@ export class ColliderDetector extends EventEmitter {
     }
 
     isCollide(collider1, collider2) {
-        if (collider1.enable == false || collider2.enable == false) {
+        if (collider1.enabled == false || collider2.enabled == false) {
             return false;
         }
 

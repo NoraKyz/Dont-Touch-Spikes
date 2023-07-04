@@ -11,6 +11,7 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
+      allowedHosts: 'all',
       static: {
         directory: path.join(__dirname, "assets"),
       },

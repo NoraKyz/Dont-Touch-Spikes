@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite, Text, Texture } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Text, Texture } from "pixi.js";
 import { Game } from "../../game";
 import { CommonUtils } from "../../commonUtils.js";
 import { Data } from "../../data";
@@ -52,7 +52,7 @@ export class Background extends Container {
 
         // score
         this.scoreText = new Text(`0${Data.currentScore}`, {
-            fontFamily: 'Calibri',
+            fontFamily: "5identification Mono",
             fontWeight: 500,
             fontSize: 65 / Game.ratio,
             fill: `0x${this.mainColor.color}`,

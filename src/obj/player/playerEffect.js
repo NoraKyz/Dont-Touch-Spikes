@@ -11,6 +11,7 @@ export class PlayerEffect {
     this.onReset();
   }
 
+
   _initEffect() {
     this._despawnEffect();
     this._flyEffect();
@@ -60,7 +61,6 @@ export class PlayerEffect {
     }
     this.obj.rotation += 0.8 * dt;
   }
-
   onLose() {
     this.enableDeadEffect = true;
     this.despawnEffect.start();
@@ -80,3 +80,4 @@ export class PlayerEffect {
     this._updateParticles();
   }
 }
+

@@ -80,13 +80,13 @@ export class SpikesManager extends Container {
     }
 
     _initSpikes() {
-        let startY_Top = - Game.app.view.height / 2 + Game.app.view.height / 14;
-        let startY_Bottom = Game.app.view.height * 2.5 / 7;
+        let startY_Top = - 525 / Game.ratio;
+        let startY_Bottom = 434 / Game.ratio;
      
         this.spikesTop = this._spawnSpikeLine(-280 / Game.ratio, startY_Top, 7, Math.PI, 1);
         this.spikesBottom = this._spawnSpikeLine(-280 / Game.ratio, startY_Bottom, 7, 0, 1);
-        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2, startY_Top + 80 / Game.ratio, 10, Math.PI / 2, 0);
-        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2, startY_Top + 80 / Game.ratio, 10, - Math.PI / 2, 0);
+        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 / Game.ratio, startY_Top + 80 / Game.ratio, 10, Math.PI / 2, 0);
+        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 / Game.ratio, startY_Top + 80 / Game.ratio, 10, - Math.PI / 2, 0);
 
         this.spikeLeft.forEach(spike => {
             spike.x -= this.distance;
@@ -103,10 +103,11 @@ export class SpikesManager extends Container {
     }
 
     _initColliders() {
-        let colliderRadious = 30 / Game.ratio;
+        let colliderRadious = 25 / Game.ratio;
         this.poolSpikes.forEach(spike => {
             let collider = new Collider(colliderRadious);
             spike.collider = collider;
+            spike.collider.position.y = 10 / Game.ratio;
             spike.addChild(collider);
         });
     }

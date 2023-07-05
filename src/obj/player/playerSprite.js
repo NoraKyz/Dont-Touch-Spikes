@@ -1,8 +1,6 @@
 import { AnimatedSprite, Assets, Container, Sprite, Texture } from "pixi.js";
 import { Game } from "../../game";
 
-
-
 export class PlayerSprite extends Container {
     constructor() {
         super();

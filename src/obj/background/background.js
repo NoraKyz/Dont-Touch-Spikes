@@ -7,7 +7,15 @@ export class Background extends Container {
     constructor() {
         super();
         this._initProperties();
-        this._initTextStyle();     
+        this._initComponent();
+    }
+
+    _initProperties() {
+        this.mainColor = { color: 'ebebeb', colorDarker: '808080' };
+        this._initTextStyle();
+    }
+
+    _initComponent() {
         this._initRetangleTop();
         this._initRetangleBottom();
         this._initPlayGround();
@@ -21,10 +29,6 @@ export class Background extends Container {
             fontSize: 65 / Game.ratio,
             fill: `0x${this.mainColor.color}`,
         });
-    }
-
-    _initProperties() {
-        this.mainColor = { color: 'ebebeb', colorDarker: '808080' };
     }
 
     _initPlayGround() {

@@ -52,6 +52,7 @@ export class MainScene extends GameScene {
     }
 
     _reloadScene() {
+        Data.resetScore();
         this.player.onReset();
         this.traps.onReset();
         this.background.onReset();
@@ -72,7 +73,9 @@ export class MainScene extends GameScene {
     }
 
     _onNextLevel(direction) {
-        super._onNextLevel();
+        if (this.gameState == GameState.End) {
+            return;
+        }
 
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();

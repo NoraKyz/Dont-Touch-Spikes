@@ -58,11 +58,8 @@ export class GameScene extends Container {
         this._initSceneUI();
     }
 
-    _onNextLevel() {
-        if (this.gameState == GameState.End) {
-            return;
-        }
-    }
+    // abstract
+    _onNextLevel() { }
 
     _initInputHandle() {
         document.addEventListener("pointerdown", () => {

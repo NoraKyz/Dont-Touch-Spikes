@@ -88,6 +88,7 @@ export class Scene extends Container {
   _onLose() {
     if (this.gameState == GameState.Lose) return;
     this.gameState = GameState.Lose;
+    Assets.get("loseSound").play();
     setTimeout(() => {
       this.gameOverUI.showGameOverUI();
       this.gameInfor.displayGameInfor();

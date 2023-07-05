@@ -32,7 +32,7 @@ export class GameOverUI extends PIXI.Container {
 
         this.pointsButton = Sprite.from(Assets.get("pointsUI"));
         this.pointsButton.anchor.set(0.5);
-        this.pointsButton.scale.set(2 / Game.ratio);
+        this.pointsButton.scale.set(1 / Game.ratio);
         this.pointsButton.position.y = -130 / Game.ratio;
 
         this.pointNumber = new PIXI.Text(Data.currentScore, this.style);
@@ -48,7 +48,7 @@ export class GameOverUI extends PIXI.Container {
     _initReplayButton(){
         this.replayButton = Sprite.from(Assets.get("replayButton"));
         this.replayButton.anchor.set(0.5);     
-        this.replayButton.scale.set(2 / Game.ratio);
+        this.replayButton.scale.set(1 / Game.ratio);
         this.replayButton.position.y = 10 / Game.ratio;
         this.replayButton.cursor = "pointer";
         this.replayButton.eventMode = 'static';
@@ -64,7 +64,7 @@ export class GameOverUI extends PIXI.Container {
     _initShareButton(){
         this.shareButton = Sprite.from(Assets.get("shareButton"));
         this.shareButton.anchor.set(0.5);
-        this.shareButton.scale.set(2 / Game.ratio);
+        this.shareButton.scale.set(1 / Game.ratio);
         this.shareButton.position.y = 105 / Game.ratio;
         this.shareButton.cursor = "pointer";
         this.shareButton.on("pointerdown", () => {});

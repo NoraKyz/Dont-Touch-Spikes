@@ -39,7 +39,7 @@ export class MainScene extends GameScene {
         if (this.gameState == GameState.End) {
             return;
         }
-
+        
         this.gameState = GameState.End;
         Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();
@@ -52,11 +52,15 @@ export class MainScene extends GameScene {
     }
 
     _reloadScene() {
-        super._reloadScene();
-
-        Data.resetScore();
+        this.player.onReset();
+        this.traps.onReset();
+        this.background.onReset();
+        this.sceneUI.onReset();     
         this.gameOverUI.onReset();
         this.candies.onReset();
+        setTimeout(() => {
+            this.gameState = GameState.Ready;
+        }, 100);
     }
 
     _initGameplay() {

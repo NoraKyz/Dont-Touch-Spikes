@@ -43,16 +43,8 @@ export class GameScene extends Container {
     // abstract
     _onAddEventGM() { }
 
-    _reloadScene() {
-        this.player.onReset();
-        this.traps.onReset();
-        this.background.onReset();
-        this.sceneUI.onReset();
-
-        setTimeout(() => {
-            this.gameState = GameState.Ready;
-        }, 100);
-    }
+    // abstract
+    _reloadScene() { }
 
     onResize() {
         this.x = Game.app.screen.width / 2;

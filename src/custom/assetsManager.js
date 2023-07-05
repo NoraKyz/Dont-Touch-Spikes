@@ -9,6 +9,9 @@ export class AssetsManager {
             "sound", {
                 "flyingSound": "./assets/sound/flyingSound.mp3",
                 "eatingSound": "./assets/sound/eatingSound.mp3",
+                "replayButtonSound": "./assets/sound/replay.mp3",
+                "touchWallSound": "./assets/sound/touchWall.mp3",
+                "loseSound": "./assets/sound/gameOver.mp3",
         })
 
         this._addBundle(

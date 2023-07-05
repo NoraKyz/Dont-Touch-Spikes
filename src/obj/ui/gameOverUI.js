@@ -57,6 +57,7 @@ export class GameOverUI extends PIXI.Container {
     }
 
     _clickedReplayButton() {
+        Assets.get("replayButtonSound").play();
         this.gameManager.emit("replay");
     }
 

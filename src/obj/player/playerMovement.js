@@ -1,5 +1,7 @@
 import { GameManager } from "../../custom/gameManager";
 import { Game } from "../../game";
+import {Assets} from "pixi.js";
+import {GameState} from "../../scene/scene";
 
 export class PlayerMovement {
   constructor(obj) {
@@ -55,6 +57,9 @@ export class PlayerMovement {
   }
 
   _onTouchWall() {
+    if(!this.obj.isDie){
+      Assets.get("touchWallSound").play();
+    }
     // Nếu bird vẫn còn đang đi lên và chạm tường
     if (this.velocity.y <= -this.jumpForce * 0.7) {
       this.velocity.y = -this.jumpForce * 0.7;
@@ -64,6 +69,7 @@ export class PlayerMovement {
         this.velocity.y = 2 / Game.ratio;
       }
     }
+
   }
 
   //xử lý chạm top vs bottom

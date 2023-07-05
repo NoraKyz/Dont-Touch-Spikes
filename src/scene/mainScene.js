@@ -1,6 +1,13 @@
 import { Assets } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
+import { Background } from "../obj/background/background.js";
+import { MainUI } from "../obj/ui/mainUI.js";
+import { GameInfor } from "../obj/ui/gameInfor.js";
+import { GameOverUI } from "../obj/ui/gameOverUI.js";
+import { CandyManager } from "../obj/items/candyManager.js";
+import { Spike } from "../obj/trap/spike.js";
+import { Candy } from "../obj/items/candy.js";
 
 export class MainScene extends GameScene {
     constructor() {
@@ -9,7 +16,6 @@ export class MainScene extends GameScene {
 
     _onCollision(obj1, obj2) {
         super._onCollision();
-
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
             this.player.onCollision(obj2);
@@ -41,11 +47,11 @@ export class MainScene extends GameScene {
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
             this.background.hideScore();
-        }, 1000);       
+        }, 1000);
     }
 
     _reloadScene() {
-        super.onReloadScene();
+        super._reloadScene();
 
         Data.resetScore();
         this.gameOverUI.onReset();
@@ -57,9 +63,10 @@ export class MainScene extends GameScene {
 
         this._initCandies();
         this._initGameInfor();
+        this._initGameOver();
     }
 
-    _onNextLevel() {
+    _onNextLevel(direction) {
         super._onNextLevel();
 
         this.candies.onNextLevel(this.player.movement.direction.x);
@@ -75,7 +82,7 @@ export class MainScene extends GameScene {
     _onPointerDown() {
         if (this.gameState != GameState.End) {
             if (this.gameState == GameState.Ready) {
-                this.mainUI.hideMainUI();
+                this.sceneUI.hideMainUI();
                 this.gameInfor.hideGameInfor();
                 this.background.displayScore();
             }
@@ -84,6 +91,11 @@ export class MainScene extends GameScene {
             Assets.get("flyingSound").play();
         }
     }
+    
+    _initCandies() {
+        this.candies = new CandyManager();
+        this.addChild(this.candies);
+    }
 
     _initBackground() {
         this.background = new Background();
@@ -91,8 +103,8 @@ export class MainScene extends GameScene {
     }
 
     _initSceneUI() {
-        this.mainUI = new MainUI();
-        this.addChild(this.mainUI);
+        this.sceneUI = new MainUI();
+        this.addChild(this.sceneUI);
     }
 
     _initGameInfor() {

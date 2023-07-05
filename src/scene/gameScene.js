@@ -3,6 +3,7 @@ import { Game } from "../game";
 import { GameManager } from "../custom/gameManager";
 import { SpikesManager } from "../obj/trap/spikesManager";
 import { Player } from "../obj/player/player";
+import { ColliderDetector } from "../obj/physics/colliderDetector";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -58,11 +59,11 @@ export class GameScene extends Container {
         this.y = Game.app.screen.height / 2;
     }
 
-    _initGameplay() {
-        this._initPlayer();
+    _initGameplay() {       
         this._initBackground();
+        this._initPlayer();
         this._initTraps();
-        this._initUI();
+        this._initSceneUI();
     }
 
     _onNextLevel() {
@@ -81,7 +82,7 @@ export class GameScene extends Container {
     _onPointerDown() { }
 
     _initPlayer() {
-        this.player = new Player(this.gameplay);
+        this.player = new Player(this);
         this.addChild(this.player);
     }
 

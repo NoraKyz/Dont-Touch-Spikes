@@ -61,6 +61,7 @@ export class GameInfor extends Container {
     _updateGamePlayed() {
         this.gameInforBottom.text = `GAMES PLAYED : ${++Data.gamesPlayed}`;
     }
+    
     updateGameInfor() {
         this._updateBestScore();
         this._updateGamePlayed();

@@ -1,7 +1,6 @@
 import { GameManager } from "../../custom/gameManager";
 import { Game } from "../../game";
 import {Assets} from "pixi.js";
-import {GameState} from "../../scene/scene";
 
 export class PlayerMovement {
   constructor(obj) {

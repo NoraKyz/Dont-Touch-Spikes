@@ -41,6 +41,7 @@ export class MainScene extends GameScene {
         }
 
         this.gameState = GameState.End;
+        Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();
         this.candies.onLose();
         setTimeout(() => {

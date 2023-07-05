@@ -1,8 +1,6 @@
 import { Container } from "pixi.js";
 import { Game } from "../game";
 import { GameManager } from "../custom/gameManager";
-import { SpikesManager } from "../obj/trap/spikesManager";
-import { Player } from "../obj/player/player";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
 
 export const GameState = Object.freeze({
@@ -32,34 +30,10 @@ export class GameScene extends Container {
         this.colliderDetector.on("collision", this._onCollision.bind(this));
     }
 
-    // abstract
-    _onCollision() { }
-
     _initGameManager() {
         this.gameManager = GameManager.instance;
         this._onAddEventGM();
     }
-
-    // abstract
-    _onAddEventGM() { }
-
-    // abstract
-    _reloadScene() { }
-
-    onResize() {
-        this.x = Game.app.screen.width / 2;
-        this.y = Game.app.screen.height / 2;
-    }
-
-    _initGameplay() {       
-        this._initBackground();
-        this._initPlayer();
-        this._initTraps();
-        this._initSceneUI();
-    }
-
-    // abstract
-    _onNextLevel() { }
 
     _initInputHandle() {
         document.addEventListener("pointerdown", () => {
@@ -68,23 +42,24 @@ export class GameScene extends Container {
     }
 
     // abstract
+    _initGameplay() { }
+
+    // abstract
+    _onCollision() { }
+
+    // abstract
+    _onAddEventGM() { }
+
+    // abstract
     _onPointerDown() { }
 
-    _initPlayer() {
-        this.player = new Player(this);
-        this.addChild(this.player);
-    }
-
-    _initTraps() {
-        this.traps = new SpikesManager();
-        this.addChild(this.traps);
-    }
-
     // abstract
-    _initBackground() { }
+    _onResetScene() { }
 
-    // abstract
-    _initSceneUI() { }
+    onResize() {
+        this.x = Game.app.screen.width / 2;
+        this.y = Game.app.screen.height / 2;
+    }
 
     // abstract
     update(dt) { }

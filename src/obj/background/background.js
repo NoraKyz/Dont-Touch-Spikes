@@ -19,7 +19,7 @@ export class Background extends Container {
         this._initRetangleTop();
         this._initRetangleBottom();
         this._initPlayGround();
-        this._initScoreBg();
+        this._initScore();
     }
 
     _initTextStyle() {
@@ -55,8 +55,8 @@ export class Background extends Container {
         this.addChild(this.retangleBottom);
     }
 
-    _initScoreBg() {
-        // circle
+    _initScore() {
+        // score background
         this.scoreBg = new Graphics();
         this.scoreBg.circleRadius = 200 / Game.ratio;
         this.scoreBg.beginFill(0xffffff);
@@ -82,22 +82,31 @@ export class Background extends Container {
         this.originColor = CommonUtils.randomColorBackground()
     }
 
+    _resetProperties() {
+        this.originColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
+    }
+
     _resetBgColor() {
         this.scoreText.style.fill = this.originColor.color;
         this.playGround.tint = this.originColor.color;
         this.retangleTop.tint = this.originColor.colorDarker;
         this.retangleBottom.tint = this.originColor.colorDarker;
     }
+
+    _resetScore() {
+        this.scoreText.tint = 'ebebeb';
+        this.scoreText.text = `0${Data.currentScore}`;
+    }
+
     changeBgColor() {
         this._newMainColor();
         this._resetBgColor();
     }
 
     onReset() {
-        this.originColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
+        this._resetProperties();
         this._resetBgColor();
-        this.scoreText.tint = 'ebebeb';
-        this.scoreText.text = `0${Data.currentScore}`;
+        this._resetScore();
     }
 
     displayScore() {

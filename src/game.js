@@ -1,5 +1,5 @@
 import { Application, Assets } from "pixi.js";
-import { Scene } from "./scene/scene";
+import { SceneManager } from "./scene/sceneManager";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";
@@ -40,16 +40,16 @@ export class Game {
 
         this.app.resizeTo = this.app.view;
         this.app.resize();
-        this.scene && this.scene.resize();
+        this.sceneManager && this.sceneManager.resize();
     }
 
     static _initScene() {
-        this.scene = new Scene();
-        this.app.stage.addChild(this.scene);
+        this.sceneManager = new SceneManager();
+        this.app.stage.addChild(this.sceneManager);
     }
 
     static update(dt) {
-        this.scene.update(dt);
+        this.sceneManager.update(dt);
         TWEEN.update();
     }
 }

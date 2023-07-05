@@ -135,7 +135,7 @@ export class MainScene extends GameScene {
         let limitSpike = this.gameManager.updateLevel();
         this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
-            this.traps.changeColor(this.background.originColor.colorDarker);
+            this.spikes.changeColor(this.background.originColor.colorDarker);
         }
     }
 

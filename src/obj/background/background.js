@@ -11,7 +11,7 @@ export class Background extends Container {
     }
 
     _initProperties() {
-        this.mainColor = { color: 'ebebeb', colorDarker: '808080' };
+        this.originColor = { color: 'ebebeb', colorDarker: '808080' };
         this._initTextStyle();
     }
 
@@ -27,13 +27,13 @@ export class Background extends Container {
             fontFamily: "Courier New",
             fontWeight: "bolder",
             fontSize: 65 / Game.ratio,
-            fill: `0x${this.mainColor.color}`,
+            fill: `0x${this.originColor.color}`,
         });
     }
 
     _initPlayGround() {
         this.playGround = new Graphics();
-        this.playGround.beginFill(`0x${this.mainColor.color}`);
+        this.playGround.beginFill(`0x${this.originColor.color}`);
         this.playGround.drawRect(- Game.app.view.width / 2, -Game.app.view.height * 3 / 7, Game.app.view.width, Game.app.view.height * 5.5 / 7);
         this.playGround.endFill();
         this.addChild(this.playGround);
@@ -41,7 +41,7 @@ export class Background extends Container {
 
     _initRetangleTop() {
         this.retangleTop = new Graphics();
-        this.retangleTop.beginFill(`0x${this.mainColor.colorDarker}`);
+        this.retangleTop.beginFill(`0x${this.originColor.colorDarker}`);
         this.retangleTop.drawRect(-Game.app.view.width / 2, -Game.app.view.height / 2, Game.app.view.width, Game.app.view.height / 14);
         this.retangleTop.endFill();
         this.addChild(this.retangleTop);
@@ -49,7 +49,7 @@ export class Background extends Container {
 
     _initRetangleBottom() {
         this.retangleBottom = new Graphics();
-        this.retangleBottom.beginFill(`0x${this.mainColor.colorDarker}`);
+        this.retangleBottom.beginFill(`0x${this.originColor.colorDarker}`);
         this.retangleBottom.drawRect(-Game.app.view.width / 2, Game.app.view.height * 2.5 / 7, Game.app.view.width, Game.app.view.height / 7);
         this.retangleBottom.endFill();
         this.addChild(this.retangleBottom);
@@ -79,14 +79,14 @@ export class Background extends Container {
     }
 
     _newMainColor() {
-        this.mainColor = CommonUtils.randomColorBackground()
+        this.originColor = CommonUtils.randomColorBackground()
     }
 
     _resetBgColor() {
-        this.scoreText.style.fill = this.mainColor.color;
-        this.playGround.tint = this.mainColor.color;
-        this.retangleTop.tint = this.mainColor.colorDarker;
-        this.retangleBottom.tint = this.mainColor.colorDarker;
+        this.scoreText.style.fill = this.originColor.color;
+        this.playGround.tint = this.originColor.color;
+        this.retangleTop.tint = this.originColor.colorDarker;
+        this.retangleBottom.tint = this.originColor.colorDarker;
     }
     changeBgColor() {
         this._newMainColor();
@@ -94,7 +94,7 @@ export class Background extends Container {
     }
 
     onReset() {
-        this.mainColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
+        this.originColor = { color: 'FFFFFF', colorDarker: 'FFFFFF' };
         this._resetBgColor();
         this.scoreText.tint = 'ebebeb';
         this.scoreText.text = `0${Data.currentScore}`;

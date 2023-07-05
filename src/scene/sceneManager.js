@@ -4,7 +4,11 @@ import { MainScene } from "./mainScene";
 export class SceneManager extends Container {
     constructor() {
         super();
+        this._initProperties();
         this._initScenes();
+    }
+    _initProperties() {
+        this.scenes = [];
     }
 
     _initScenes() {

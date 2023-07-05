@@ -26,7 +26,7 @@ export class MainScene extends GameScene {
     }
 
     _initPlayer(){
-        this.player = new Player();
+        this.player = new Player(this);
         this.addChild(this.player);
     }
 

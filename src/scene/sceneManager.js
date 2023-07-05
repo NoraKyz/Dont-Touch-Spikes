@@ -13,13 +13,6 @@ import { GameInfor } from "../obj/ui/gameInfor";
 import { CandyManager } from "../obj/items/candyManager";
 import { Candy } from "../obj/items/candy";
 
-export const GameState = Object.freeze({
-  Ready: "ready",
-  Playing: "playing",
-  Win: "win",
-  Lose: "lose",
-});
-
 export class Scene extends Container {
   constructor() {
     super();
@@ -134,6 +127,7 @@ export class Scene extends Container {
     this.gameplay.x = Game.app.screen.width / 2;
     this.gameplay.y = Game.app.screen.height / 2;
   }
+
   _initPlayer() {
     this.player = new Player(this.gameplay);
     this.gameplay.addChild(this.player);

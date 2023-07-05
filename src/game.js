@@ -1,5 +1,5 @@
 import { Application, Assets } from "pixi.js";
-import { Scene } from "./scene/scene";
+import { Scene } from "./scene/sceneManager";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";

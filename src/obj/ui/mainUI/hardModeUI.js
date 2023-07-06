@@ -14,7 +14,6 @@ export class HardModeUI extends MainUI {
     this.gameName.style = this.titleStyle;
   }
   _initBackButton(){
-    console.log(2);
     this.backButton = new Graphics();
     this.backButton.circleRadius = 40 / Game.ratio;
     this.backButton.beginFill(0x888888);

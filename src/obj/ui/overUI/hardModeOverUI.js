@@ -5,6 +5,8 @@ export class HardModeOverUI extends GameOverUI {
   constructor() {
     super();
   }
+
+  
   _initTitleUI() {
     super._initTitleUI();
     this.gameName.text = "  HARD\n MODE";

@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import { Game } from "../game";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
+import { SceneManager } from "./sceneManager";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -9,8 +10,9 @@ export const GameState = Object.freeze({
 });
 
 export class GameScene extends Container {
-    constructor() {
+    constructor(parent) {
         super();
+        this.parent = parent;
         this._initProperties();
         this._initGameplay();
         this._initInputHandle();

@@ -3,11 +3,22 @@ import { HardModeScene } from "./hardModeScene";
 import { ClassicScene } from "./classicScene";
 
 export class SceneManager extends Container {
+
+    static _instance;
+
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new SceneManager();
+        }
+
+        return this._instance;
+    }
+
     constructor() {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("hardModeScene");
+        this.onStartScene("classicScene");
     }
 
     _initProperties() {
@@ -16,10 +27,10 @@ export class SceneManager extends Container {
     }
     // Khởi tạo hết các scene trong game và push vô mảng scenes
     _initScenes() {
-        this.mainScene = new ClassicScene();
+        this.mainScene = new ClassicScene(this);
         this.scenes.push(this.mainScene);
 
-        this.hardmodeScene = new HardModeScene();
+        this.hardmodeScene = new HardModeScene(this);
         this.scenes.push(this.hardmodeScene);
     }
     // Gọi id trong scene để chạy scene đó

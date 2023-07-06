@@ -27,12 +27,12 @@ export class ClassicUI extends MainUI {
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
-    this.hardModeSwitch.on("pointerdown", () => this._switchToHardModeScene());
+    this.hardModeSwitch.on("pointerdown", () => this._toHardModeScene());
 
     this.addChild(this.hardModeSwitch);
   }
 
-  _switchToHardModeScene() {
-    // Sự kiện
+  _toHardModeScene() {
+    this.emit("toHardModeScene")
   }
 }

@@ -11,6 +11,7 @@ import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/overUI/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
+import { SceneManager } from "./sceneManager.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -86,6 +87,9 @@ export class ClassicScene extends GameScene {
         this.on("nextLevel", this._onNextLevel.bind(this));
         this.on("lose", this._onLose.bind(this));
         this.gameOverUI.on("replay", this._onResetScene.bind(this));
+        this.sceneUI.on("toHardModeScene", () => {
+            this.parent.onStartScene("toHardModeScene");
+        })
     }
 
     _onPointerDown() {

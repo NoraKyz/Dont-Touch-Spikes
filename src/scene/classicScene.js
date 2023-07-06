@@ -20,7 +20,7 @@ export class ClassicScene extends GameScene {
 
     _initProperties() {
         super._initProperties();
-        this.id = "classicScene";
+        this.id = "classicModeScene";
     }
 
     _initGameplay() {
@@ -88,7 +88,7 @@ export class ClassicScene extends GameScene {
         this.on("lose", this._onLose.bind(this));
         this.gameOverUI.on("replay", this._onResetScene.bind(this));
         this.sceneUI.on("toHardModeScene", () => {
-            this.parent.onStartScene("toHardModeScene");
+            this.parent.onStartScene("hardModeScene");
         })
     }
 

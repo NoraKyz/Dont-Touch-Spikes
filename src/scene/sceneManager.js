@@ -18,7 +18,7 @@ export class SceneManager extends Container {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("classicScene");
+        this.onStartScene("classicModeScene");
     }
 
     _initProperties() {
@@ -47,13 +47,13 @@ export class SceneManager extends Container {
         });
     }
     // Reset scene hiện tại rồi loại bỏ nó
-    _onEndScene() {
+    _onEndScene() {     
         this.scenes.forEach(scene => {
             if (scene.id === this.enabledScene.id) {
                 this.enabledScene._onResetScene();
                 this.removeChild(scene);            
             }
-        });
+        });  
     }
 
     onResize() {

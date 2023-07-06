@@ -4,10 +4,13 @@ import { Game } from "../../../game";
 export class MainUI extends Container {
     constructor() {
         super();
+        this._initComponent();
+    }
+
+    _initComponent(){
         this._initTextStyle();
         this._initGameTutol();
         this._initTitleUI();
-        this._showMainUI();
     }
 
     _initTextStyle() {
@@ -41,6 +44,7 @@ export class MainUI extends Container {
         this.gameTutorial.position.set(0, - 165 / Game.ratio);
         this.addChild(this.gameTutorial);
     }
+    
     onReset() {
         this._showMainUI();
     }

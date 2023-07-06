@@ -117,6 +117,7 @@ export class SpikesManager extends Container {
             .to({ x: position.x, y: position.y }, 500);
         this.tween.start();
     }
+    
     _hardModeMovebyTween(spike, target, direction){
         spike.tween1 = new TWEEN.Tween(spike)
         .to(target, 300)

@@ -10,10 +10,6 @@ export class MainUI extends Container {
         this._initTitleUI();
         this._showMainUI();
     }
-    _initTitleUI() {
-        this.gameName = new GameName();
-        this.addChild(this.gameName);
-    }
 
     _initTextStyle() {
         this.style = new TextStyle({
@@ -24,6 +20,21 @@ export class MainUI extends Container {
             letterSpacing: 1 / Game.ratio,
         });
     }
+
+    _initTitleUI() {
+        const style = new TextStyle({
+            ...this.style,
+            fill: "#808080",
+            fontSize: 92 / Game.ratio,
+            fontWeight: 550,
+        });
+
+        this.gameName = new Text("DON\'T TOUCH\n   THE SPIKES", style);
+        this.gameName.anchor.set(0.5);
+        this.gameName.position.set(0, -400 / Game.ratio);
+        this.addChild(this.gameName);
+    }
+
 
     _initGameTutol() {
         this.gameTutorial = new Text("    TAP \nTO JUMP", this.style);

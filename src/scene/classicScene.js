@@ -18,7 +18,7 @@ export class ClassicScene extends GameScene {
 
     _initProperties() {
         super._initProperties();
-        this.id = "mainScene";
+        this.id = "classicScene";
     }
 
     _initGameplay() {
@@ -81,10 +81,10 @@ export class ClassicScene extends GameScene {
         }
     }
 
-    _onAddEventGM() {
-        this.gameManager.on("nextLevel", this._onNextLevel.bind(this));
-        this.gameManager.on("lose", this._onLose.bind(this));
-        this.gameManager.on("replay", this._onResetScene.bind(this));
+    _initSceneEvent() {
+        this.on("nextLevel", this._onNextLevel.bind(this));
+        this.on("lose", this._onLose.bind(this));
+        this.gameOverUI.on("replay", this._onResetScene.bind(this));
     }
 
     _onPointerDown() {
@@ -138,7 +138,7 @@ export class ClassicScene extends GameScene {
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
-        let limitSpike = this.gameManager.updateLevel();
+        let limitSpike = { minSpikes: 3, maxSpikes: 6 }; // TODO: Cần thêm 1 levelController
         this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);

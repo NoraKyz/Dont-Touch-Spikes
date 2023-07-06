@@ -1,6 +1,5 @@
 import { Container } from "pixi.js";
 import { Game } from "../game";
-import { GameManager } from "../custom/gameManager";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
 
 export const GameState = Object.freeze({
@@ -16,7 +15,7 @@ export class GameScene extends Container {
         this._initGameplay();
         this._initInputHandle();
         this._initColliderDetector();
-        this._initGameManager();
+        this._initSceneEvent();
     }
     // Khởi tạo các thuộc tính cơ bản của scene
     _initProperties() {
@@ -28,11 +27,6 @@ export class GameScene extends Container {
     _initColliderDetector() {
         this.colliderDetector = ColliderDetector.instance;
         this.colliderDetector.on("collision", this._onCollision.bind(this));
-    }
-
-    _initGameManager() {
-        this.gameManager = GameManager.instance;
-        this._onAddEventGM();
     }
 
     _initInputHandle() {
@@ -49,7 +43,7 @@ export class GameScene extends Container {
     _onCollision() { } // Xử lý va chạm
 
     // abstract
-    _onAddEventGM() { } // Đăng kí các sự kiện từ game manager
+    _initSceneEvent() { } // Đăng kí các sự kiện cho scene
 
     // abstract
     _onPointerDown() { } // Xử lý sự kiện click chuột

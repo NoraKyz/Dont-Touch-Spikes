@@ -1,9 +1,7 @@
 import * as PIXI from "pixi.js";
-import {Assets, Container, Graphics, Sprite} from "pixi.js";
+import {Assets, Container, Sprite} from "pixi.js";
 import {Data} from "../../data";
-import {GameManager} from "../../custom/gameManager";
 import { Game } from "../../game";
-
 
 export class GameOverUI extends PIXI.Container {
     constructor() {
@@ -17,7 +15,6 @@ export class GameOverUI extends PIXI.Container {
 
         this.sortChildren();
         this.zIndex = 1;
-        this.gameManager = GameManager.instance;
     }
 
     _initTextStyle() {
@@ -71,10 +68,8 @@ export class GameOverUI extends PIXI.Container {
         this.addChild(this.replayButton);
     }
 
-    _clickedReplayButton() {
-        Assets.get("replayButtonSound").play();
-        this.gameManager.emit("replay");
-    }
+    // abstract
+    _clickedReplayButton() { }
 
     _initShareButton(){
         this.shareButton = Sprite.from(Assets.get("shareButton"));

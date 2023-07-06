@@ -1,4 +1,3 @@
-import { GameManager } from "../../custom/gameManager";
 import { Game } from "../../game";
 import { Assets } from "pixi.js";
 
@@ -6,7 +5,6 @@ export class PlayerMovement {
     constructor(obj) {
         this.obj = obj;
         this._initProperties();
-        this.gameManager = GameManager.instance;
     }
 
     _initProperties() {
@@ -43,14 +41,14 @@ export class PlayerMovement {
             this.direction.x == -1
         ) {
             this.direction.x = 1;
-            this.gameManager.emit("nextLevel", this.direction.x);
+            this.obj.parent.emit("nextLevel", this.direction.x);
             this._onTouchWall();
         } else if (
             this.obj.position.x + this.obj.radiousCollider >= this.rightLimit &&
             this.direction.x == 1
         ) {
             this.direction.x = -1;
-            this.gameManager.emit("nextLevel", this.direction.x);
+            this.obj.parent.emit("nextLevel", this.direction.x);
             this._onTouchWall();
         }
     }

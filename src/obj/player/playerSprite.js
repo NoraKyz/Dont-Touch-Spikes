@@ -21,7 +21,7 @@ export class PlayerSprite extends Container {
     _initLiveSprite() {
         this.live = new AnimatedSprite(this.flyTextures);
         this.live.anchor.set(0.5);
-        this.live.scale.set(0.5 / Game.ratio);
+        this.live.scale.set(0.2 / Game.ratio);
         this.live.animationSpeed = 0.018 / Game.ratio;
         this.live.play();
         this.addChild(this.live);

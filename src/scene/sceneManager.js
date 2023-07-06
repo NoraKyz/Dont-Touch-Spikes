@@ -4,16 +4,6 @@ import { ClassicScene } from "./classicScene";
 
 export class SceneManager extends Container {
 
-    static _instance;
-
-    static get instance() {
-        if (!this._instance) {
-            this._instance = new SceneManager();
-        }
-
-        return this._instance;
-    }
-
     constructor() {
         super();
         this._initProperties();

@@ -25,6 +25,7 @@ export class AssetsManager {
             "bird", {
                 "bird1": "./assets/images/Bird1.png",
                 "bird2": "./assets/images/Bird2.png",
+                "bird3": "./assets/images/Bird3.png",
                 "birdDead": "./assets/images/birdDead.png",
             }
         )

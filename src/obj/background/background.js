@@ -12,9 +12,10 @@ export class Background extends Container {
     }
 
     _initProperties() {
+        this.eventMode = 'static';
         this.originColor = { color: 'ebebeb', colorDarker: '808080' };
         this._initTextStyle();
-        this._changeColorEffect();
+        this._changeColorEffect();    
     }
 
     _initComponent() {

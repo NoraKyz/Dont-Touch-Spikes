@@ -22,7 +22,7 @@ export class HardModeUI extends MainUI {
     this.backButton = new Graphics();
     this.backButton.circleRadius = 40 / Game.ratio;
     this.backButton.beginFill(0x888888);
-    this.backButton.drawCircle(300 / Game.ratio, -230 / Game.ratio, this.backButton.circleRadius);
+    this.backButton.drawCircle(-300 / Game.ratio, -230 / Game.ratio, this.backButton.circleRadius);
     this.backButton.endFill();
     
     this.backButton.cursor = "pointer";

@@ -8,8 +8,8 @@ import { Spike } from "../obj/trap/spike.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
-import { HardModeUI } from "../obj/ui/mainUI/hardModeUI.js";
 import { HardModeOverUI } from "../obj/ui/overUI/hardmodeOverUI.js";
+import { HardModeUI } from "../obj/ui/mainUI/hardmodeUI.js";
 
 export class HardModeScene extends GameScene {
     constructor() {

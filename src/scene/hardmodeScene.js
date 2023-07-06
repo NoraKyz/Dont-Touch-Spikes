@@ -10,6 +10,7 @@ import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { HardModeUI } from "../obj/ui/mainUI/hardModeUI.js";
 import { HardModeOverUI } from "../obj/ui/overUI/hardmodeOverUI.js";
+import { LevelController } from "../levelController.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -138,7 +139,7 @@ export class HardModeScene extends GameScene {
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
-        let limitSpike = {minSpikes : 3, maxSpikes: 6}; // TODO: Cần thêm 1 level
+        let limitSpike = LevelController.updateLevel();
         this.spikes.moveSpikesHardMode(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);

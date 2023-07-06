@@ -10,6 +10,7 @@ import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/overUI/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
+import { LevelController } from "../levelController.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -138,7 +139,7 @@ export class ClassicScene extends GameScene {
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
-        let limitSpike = { minSpikes: 3, maxSpikes: 6 }; // TODO: Cần thêm 1 levelController
+        let limitSpike = LevelController.updateLevel(); // TODO: Cần thêm 1 levelController
         this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);

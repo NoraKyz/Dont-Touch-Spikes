@@ -1,6 +1,5 @@
 import { Data } from "../data";
 import { EventEmitter } from "events";
-import { SpikesManager } from "../obj/trap/spikesManager";
 
 export class GameManager extends EventEmitter {
     static _instance;

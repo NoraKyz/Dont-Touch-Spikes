@@ -31,12 +31,12 @@ export class ClassicScene extends GameScene {
         this._initGameOverUI();
     }
     // Obj in scene
-    _initPlayer(){
+    _initPlayer() {
         this.player = new Player(this);
         this.addChild(this.player);
     }
 
-    _initSpikes(){
+    _initSpikes() {
         this.spikes = new SpikesManager();
         this.addChild(this.spikes);
     }
@@ -134,7 +134,7 @@ export class ClassicScene extends GameScene {
         if (this.gameState == GameState.End) {
             return;
         }
-        
+
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);

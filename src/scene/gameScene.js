@@ -20,7 +20,7 @@ export class GameScene extends Container {
     }
     // Khởi tạo các thuộc tính cơ bản của scene
     _initProperties() {
-        this.gameState = GameState.Ready;     
+        this.gameState = GameState.Ready;
         this.x = Game.app.screen.width / 2;
         this.y = Game.app.screen.height / 2;
     }

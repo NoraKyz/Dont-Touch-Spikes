@@ -23,6 +23,7 @@ export class GameOverUI extends PIXI.Container {
             fontFamily: "Blissful Thinking",
             fontSize: 85 / Game.ratio,
             fontWeight: "lighter",
+            letterSpacing: 1 / Game.ratio,
         });
     }
     _initTitleUI() {

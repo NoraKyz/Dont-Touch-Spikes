@@ -1,5 +1,5 @@
 import { Assets } from "pixi.js";
-import { GameOverUI } from "./OverUI";
+import { GameOverUI } from "../overUI/overUI";
 
 
 export class ClassicOverUI extends GameOverUI {

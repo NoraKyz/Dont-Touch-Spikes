@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Assets, Container, Sprite} from "pixi.js";
-import {Data} from "../../data";
-import { Game } from "../../game";
+import {Data} from "../../../data";
+import { Game } from "../../../game";
 
 export class GameOverUI extends PIXI.Container {
     constructor() {

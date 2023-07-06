@@ -2,13 +2,13 @@ import { Assets } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
-import { ClassicUI } from "../obj/ui/classicUI.js";
+import { ClassicUI } from "../obj/ui/mainUI/classicUI.js";
 import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
-import { ClassicOverUI } from "../obj/ui/classicOverUI.js";
+import { ClassicOverUI } from "../obj/ui/overUI/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 
 export class ClassicScene extends GameScene {

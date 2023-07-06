@@ -1,5 +1,5 @@
 import { Assets } from "pixi.js";
-import { GameOverUI } from "./OverUI";
+import { GameOverUI } from "./overUI";
 
 export class HardModeOverUI extends GameOverUI {
   constructor() {

@@ -32,7 +32,6 @@ export class HardModeUI extends Container {
         this.gameName.anchor.set(0.5);
         this.gameName.position.set(-15 / Game.ratio, -400 / Game.ratio);
         this.addChild(this.gameName);
-        console.log('add hardm');
     }
 
 

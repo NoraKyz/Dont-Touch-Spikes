@@ -7,7 +7,7 @@ export class SceneManager extends Container {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("mainScene");
+        this.onStartScene("hardmode");
     }
 
     _initProperties() {
@@ -18,6 +18,9 @@ export class SceneManager extends Container {
     _initScenes() {
         this.mainScene = new MainScene();
         this.scenes.push(this.mainScene);
+
+        this.hardmodeScene = new HardModeScene();
+        this.scenes.push(this.hardmodeScene);
     }
     // Gọi id trong scene để chạy scene đó
     onStartScene(id) {

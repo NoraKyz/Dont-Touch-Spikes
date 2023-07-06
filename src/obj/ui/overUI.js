@@ -36,8 +36,6 @@ export class GameOverUI extends PIXI.Container {
             fontWeight: 550,
         });
 
-        console.log(this.titleStyle);
-
         this.gameName = new PIXI.Text();
         this.gameName.anchor.set(0.5);
         this.gameName.position.set(0, -400 / Game.ratio);

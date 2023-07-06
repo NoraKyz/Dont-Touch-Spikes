@@ -6,7 +6,6 @@ export class HardModeUI extends MainUI {
   constructor() {
     super();
     this._backToClassicUI();
-    console.log(1);
   }
   _initTitleUI() {
     super._initTitleUI();
@@ -17,7 +16,7 @@ export class HardModeUI extends MainUI {
     this.backButton = new Graphics();
     this.backButton.circleRadius = 40 / Game.ratio;
     this.backButton.beginFill(0x888888);
-    this.backButton.drawCircle(-500 / Game.ratio, -230 / Game.ratio, this.backButton.circleRadius);
+    this.backButton.drawCircle(-120 / Game.ratio, -200 / Game.ratio, this.backButton.circleRadius);
     this.backButton.endFill();
 
     this.backButton.cursor = "pointer";

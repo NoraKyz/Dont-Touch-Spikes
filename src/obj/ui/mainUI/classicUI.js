@@ -14,7 +14,7 @@ export class ClassicUI extends MainUI {
       this.switchButton = new Graphics();
       this.switchButton.circleRadius = 40 / Game.ratio;
       this.switchButton.beginFill(0x888888);
-      this.switchButton.drawCircle(-500 / Game.ratio, -230 / Game.ratio, this.switchButton.circleRadius);
+      this.switchButton.drawCircle(-300 / Game.ratio, -230 / Game.ratio, this.switchButton.circleRadius);
       this.switchButton.endFill();
   
       this.switchButton.cursor = "pointer";

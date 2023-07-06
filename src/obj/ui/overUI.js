@@ -8,6 +8,7 @@ import { Game } from "../../game";
 export class GameOverUI extends PIXI.Container {
     constructor() {
         super();
+        
         this._initTextStyle();
         this._initPointButton();
         this._initReplayButton();
@@ -28,12 +29,14 @@ export class GameOverUI extends PIXI.Container {
         });
     }
     _initTitleUI() {
-        const style = new PIXI.TextStyle({
+        this.titleStyle = new PIXI.TextStyle({
             ...this.style,
             fill: "#808080",
             fontSize: 92 / Game.ratio,
             fontWeight: 550,
         });
+
+        console.log(this.titleStyle);
 
         this.gameName = new PIXI.Text();
         this.gameName.anchor.set(0.5);

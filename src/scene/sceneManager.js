@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
 import { HardModeScene } from "./hardModeScene";
+import { MainScene } from "./mainScene";
 
 export class SceneManager extends Container {
     constructor() {
@@ -12,7 +13,7 @@ export class SceneManager extends Container {
     }
 
     _initScenes() {
-        this.mainScene = new HardModeScene();
+        this.mainScene = new MainScene();
         this.addChild(this.mainScene);
     }
 

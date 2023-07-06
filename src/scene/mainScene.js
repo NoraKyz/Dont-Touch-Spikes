@@ -4,12 +4,12 @@ import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
 import { MainUI } from "../obj/ui/mainUI.js";
 import { GameInfor } from "../obj/ui/gameInfor.js";
-import { GameOverUI } from "../obj/ui/gameOverUI.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Spike } from "../obj/trap/spike.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
+import { ClassicOverUI } from "../obj/ui/classicOverUI.js";
 
 export class MainScene extends GameScene {
     constructor() {
@@ -56,7 +56,7 @@ export class MainScene extends GameScene {
     }
 
     _initGameOverUI() {
-        this.gameOverUI = new GameOverUI();
+        this.gameOverUI = new ClassicOverUI();
         this.addChild(this.gameOverUI);
         this.gameOverUI.hideGameOverUI();
     }

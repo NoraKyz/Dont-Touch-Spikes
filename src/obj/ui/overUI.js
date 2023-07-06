@@ -35,7 +35,7 @@ export class GameOverUI extends PIXI.Container {
             fontWeight: 550,
         });
 
-        this.gameName = new PIXI.Text("DON\'T TOUCH\n   THE SPIKES", style);
+        this.gameName = new PIXI.Text();
         this.gameName.anchor.set(0.5);
         this.gameName.position.set(0, -400 / Game.ratio);
         this.addChild(this.gameName);

@@ -1,5 +1,4 @@
 import { Container, Text, TextStyle } from "pixi.js";
-import { GameName } from "./gameName";
 import { Game } from "../../game";
 
 export class HardModeUI extends Container {

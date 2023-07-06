@@ -20,8 +20,7 @@ export class GameScene extends Container {
     }
 
     _initProperties() {
-        this.gameState = GameState.Ready;
-        this.enabled = false;
+        this.gameState = GameState.Ready;     
         this.x = Game.app.screen.width / 2;
         this.y = Game.app.screen.height / 2;
     }

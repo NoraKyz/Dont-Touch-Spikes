@@ -1,7 +1,8 @@
-import { Assets, Container, Graphics, Sprite, Text, TextStyle, Texture } from "pixi.js";
+import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { Game } from "../../game";
 import { CommonUtils } from "../../commonUtils.js";
 import { Data } from "../../data";
+import * as TWEEN from "@tweenjs/tween.js";
 
 export class Background extends Container {
     constructor() {
@@ -13,6 +14,7 @@ export class Background extends Container {
     _initProperties() {
         this.originColor = { color: 'ebebeb', colorDarker: '808080' };
         this._initTextStyle();
+        this._changeColorEffect();
     }
 
     _initComponent() {
@@ -78,7 +80,7 @@ export class Background extends Container {
         if (newScore > 0 && newScore % 5 == 0) this.changeBgColor();
     }
 
-    _newMainColor() {
+    _newColor() {
         this.originColor = CommonUtils.randomColorBackground()
     }
 
@@ -98,9 +100,16 @@ export class Background extends Container {
         this.scoreText.text = `0${Data.currentScore}`;
     }
 
+    _changeColorEffect() {
+        this.alpha = 0.95;
+        this.changeColorEffect = new TWEEN.Tween(this)
+            .to({ alpha: 1 }, 1000)    
+    }
+
     changeBgColor() {
-        this._newMainColor();
+        this._newColor();
         this._resetBgColor();
+        this.changeColorEffect.start();
     }
 
     onReset() {

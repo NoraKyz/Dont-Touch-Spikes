@@ -40,7 +40,7 @@ export class Game {
 
         this.app.resizeTo = this.app.view;
         this.app.resize();
-        this.sceneManager && this.sceneManager.resize();
+        this.sceneManager && this.sceneManager.onResize();
     }
 
     static _initScene() {

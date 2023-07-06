@@ -10,6 +10,7 @@ import { Spike } from "../obj/trap/spike.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
+import { HardModeUI } from "../obj/ui/hardmodeUI.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -46,7 +47,7 @@ export class HardModeScene extends GameScene {
     }
 
     _initSceneUI() {
-        this.sceneUI = new MainUI();
+        this.sceneUI = new HardModeUI();
         this.addChild(this.sceneUI);
     }
 

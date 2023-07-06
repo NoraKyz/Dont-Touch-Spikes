@@ -19,13 +19,8 @@ export class SpikesManager extends Container {
         this.spikeLeft = [];
         this.spikeRight = [];
         this.poolSpikes = [];
-        this._initProperties();
         this._initSpikes();
         this._initColliders();
-    }
-
-    _initProperties() {
-        this._changeColorEffect();
     }
 
     _randomSpike(limitSpike) {

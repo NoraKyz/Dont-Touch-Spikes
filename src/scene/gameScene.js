@@ -18,13 +18,13 @@ export class GameScene extends Container {
         this._initColliderDetector();
         this._initGameManager();
     }
-
+    // Khởi tạo các thuộc tính cơ bản của scene
     _initProperties() {
         this.gameState = GameState.Ready;     
         this.x = Game.app.screen.width / 2;
         this.y = Game.app.screen.height / 2;
     }
-
+    // Khởi tạo các thành phần cơ bản trong game scene, đăng kí các sự kiện tổng
     _initColliderDetector() {
         this.colliderDetector = ColliderDetector.instance;
         this.colliderDetector.on("collision", this._onCollision.bind(this));
@@ -40,21 +40,22 @@ export class GameScene extends Container {
             this._onPointerDown();
         });
     }
+    // Các hàm có comment abstract bắt buộc viết lại khi kế thừa
 
     // abstract
-    _initGameplay() { }
+    _initGameplay() { } // Chứa các thành phàn obj trong scene đó
 
     // abstract
-    _onCollision() { }
+    _onCollision() { } // Xử lý va chạm
 
     // abstract
-    _onAddEventGM() { }
+    _onAddEventGM() { } // Đăng kí các sự kiện từ game manager
 
     // abstract
-    _onPointerDown() { }
+    _onPointerDown() { } // Xử lý sự kiện click chuột
 
     // abstract
-    _onResetScene() { }
+    _onResetScene() { } // Reset lại scene
 
     onResize() {
         this.x = Game.app.screen.width / 2;
@@ -62,5 +63,5 @@ export class GameScene extends Container {
     }
 
     // abstract
-    update(dt) { }
+    update(dt) { } // Update các thành phần trong scene
 }

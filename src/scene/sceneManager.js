@@ -10,15 +10,15 @@ export class SceneManager extends Container {
     }
 
     _initProperties() {
-        this.scenes = []; // danh sách các scene
-        this.enabledScene = null; // scene đang chạy
+        this.scenes = []; // Danh sách các scene
+        this.enabledScene = null; // Scene đang chạy
     }
     // Khởi tạo hết các scene trong game và push vô mảng scenes
     _initScenes() {
         this.mainScene = new MainScene();
         this.scenes.push(this.mainScene);
     }
-    // gọi id trong scene để chạy scene đó
+    // Gọi id trong scene để chạy scene đó
     onStartScene(id) {
         if(this.enabledScene !== null){
             this._onEndScene();
@@ -31,7 +31,7 @@ export class SceneManager extends Container {
             }
         });
     }
-    // Reset scene rồi mới loại bỏ nó
+    // Reset scene hiện tại rồi loại bỏ nó
     _onEndScene() {
         this.scenes.forEach(scene => {
             if (scene.id === this.enabledScene.id) {
@@ -40,7 +40,7 @@ export class SceneManager extends Container {
             }
         });
     }
-    
+
     onResize() {
         this.enabledScene.onResize();
     }

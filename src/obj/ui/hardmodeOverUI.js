@@ -1,7 +1,7 @@
 import { GameOverUI } from "./OverUI";
 
 
-export class HardmodeOverUI extends GameOverUI {
+export class HardModeOverUI extends GameOverUI {
     constructor() {
         super();
     }

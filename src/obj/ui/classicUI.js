@@ -1,7 +1,7 @@
 import { Container, Text, TextStyle } from "pixi.js";
 import { Game } from "../../game";
 
-export class MainUI extends Container {
+export class ClassicUI extends Container {
     constructor() {
         super();
         this._initTextStyle();

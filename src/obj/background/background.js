@@ -74,6 +74,7 @@ export class Background extends Container {
     }
 
     updateBackground(newScore) {
+        
         if (newScore < 10) this.scoreText.text = `0${newScore}`;
         else this.scoreText.text = `${newScore}`;
 

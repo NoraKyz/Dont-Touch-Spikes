@@ -2,7 +2,7 @@ import { Assets } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
-import { MainUI } from "../obj/ui/mainUI.js";
+import { ClassicUI } from "../obj/ui/classicUI.js";
 import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Candy } from "../obj/items/candy.js";
@@ -11,7 +11,7 @@ import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 
-export class MainScene extends GameScene {
+export class ClassicScene extends GameScene {
     constructor() {
         super();
     }
@@ -52,7 +52,7 @@ export class MainScene extends GameScene {
     }
 
     _initSceneUI() {
-        this.sceneUI = new MainUI();
+        this.sceneUI = new ClassicUI();
         this.addChild(this.sceneUI);
     }
 
@@ -134,7 +134,7 @@ export class MainScene extends GameScene {
         if (this.gameState == GameState.End) {
             return;
         }
-
+        
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);

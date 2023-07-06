@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { HardModeScene } from "./hardModeScene";
-import { MainScene } from "./mainScene";
+import { ClassicScene } from "./classicScene";
 
 export class SceneManager extends Container {
     constructor() {
@@ -16,7 +16,7 @@ export class SceneManager extends Container {
     }
     // Khởi tạo hết các scene trong game và push vô mảng scenes
     _initScenes() {
-        this.mainScene = new MainScene();
+        this.mainScene = new ClassicScene();
         this.scenes.push(this.mainScene);
 
         this.hardmodeScene = new HardModeScene();

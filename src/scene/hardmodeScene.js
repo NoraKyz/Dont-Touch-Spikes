@@ -8,8 +8,8 @@ import { Spike } from "../obj/trap/spike.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
-import { HardModeUI } from "../obj/ui/hardmodeUI.js";
-import { HardmodeOverUI } from "../obj/ui/hardmodeOverUI.js";
+import { HardModeUI } from "../obj/ui/hardModeUI.js";
+import { HardModeOverUI } from "../obj/ui/hardModeOverUI.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -60,7 +60,7 @@ export class HardModeScene extends GameScene {
     }
 
     _initGameOverUI() {
-        this.gameOverUI = new HardmodeOverUI();
+        this.gameOverUI = new HardModeOverUI();
         this.addChild(this.gameOverUI);
         this.gameOverUI.hideGameOverUI();
     }
@@ -132,7 +132,7 @@ export class HardModeScene extends GameScene {
         if (this.gameState == GameState.End) {
             return;
         }
-
+        
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);

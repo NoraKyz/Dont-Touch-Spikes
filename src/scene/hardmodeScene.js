@@ -2,24 +2,23 @@ import { Assets } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
-import { MainUI } from "../obj/ui/mainUI.js";
 import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
+import { Spike } from "../obj/trap/spike.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
-import { ClassicOverUI } from "../obj/ui/classicOverUI.js";
+import { HardModeUI } from "../obj/ui/hardmodeUI.js";
+import { HardmodeOverUI } from "../obj/ui/hardmodeOverUI.js";
 
-export class MainScene extends GameScene {
+export class HardModeScene extends GameScene {
     constructor() {
         super();
     }
-
-    _initProperties() {
+    _initProperties(){
         super._initProperties();
-        this.id = "mainScene";
+        this.id = 'hardmode';
     }
-
     _initGameplay() {
         this._initBackground();
         this._initPlayer();
@@ -29,7 +28,7 @@ export class MainScene extends GameScene {
         this._initGameInfor();
         this._initGameOverUI();
     }
-    // Obj in scene
+
     _initPlayer(){
         this.player = new Player(this);
         this.addChild(this.player);
@@ -51,7 +50,7 @@ export class MainScene extends GameScene {
     }
 
     _initSceneUI() {
-        this.sceneUI = new MainUI();
+        this.sceneUI = new HardModeUI();
         this.addChild(this.sceneUI);
     }
 
@@ -61,12 +60,13 @@ export class MainScene extends GameScene {
     }
 
     _initGameOverUI() {
-        this.gameOverUI = new ClassicOverUI();
+        this.gameOverUI = new HardmodeOverUI();
         this.addChild(this.gameOverUI);
         this.gameOverUI.hideGameOverUI();
     }
 
     _onCollision(obj1, obj2) {
+        super._onCollision();
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
             this.player.onCollision(obj2);
@@ -112,7 +112,6 @@ export class MainScene extends GameScene {
         }, 100);
     }
 
-    // Mở rộng thêm để xử lý scene
     _onLose() {
         if (this.gameState == GameState.End) {
             return;
@@ -138,7 +137,7 @@ export class MainScene extends GameScene {
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = this.gameManager.updateLevel();
-        this.spikes.moveSpikes(direction, limitSpike);
+        this.spikes.moveSpikesHardMode(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);
         }

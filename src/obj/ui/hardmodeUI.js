@@ -1,7 +1,7 @@
 import { Container, Text, TextStyle } from "pixi.js";
 import { Game } from "../../game";
 
-export class MainUI extends Container {
+export class HardModeUI extends Container {
     constructor() {
         super();
         this._initTextStyle();
@@ -28,10 +28,11 @@ export class MainUI extends Container {
             fontWeight: 550,
         });
 
-        this.gameName = new Text("DON\'T TOUCH\n   THE SPIKES", style);
+        this.gameName = new Text("  HARD\n MODE", style);
         this.gameName.anchor.set(0.5);
-        this.gameName.position.set(0, -400 / Game.ratio);
+        this.gameName.position.set(-15 / Game.ratio, -400 / Game.ratio);
         this.addChild(this.gameName);
+        console.log('add hardm');
     }
 
 

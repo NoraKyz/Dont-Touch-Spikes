@@ -91,6 +91,9 @@ export class HardModeScene extends GameScene {
         this.sceneUI.on("toClassicModeScene", () => {
             this.parent.onStartScene("classicModeScene");
         })
+        this.background.on("pointerdown", () => {
+            this._onPointerDown();
+        });
     }
 
     _onPointerDown() {
@@ -114,9 +117,7 @@ export class HardModeScene extends GameScene {
         this.sceneUI.onReset();
         this.gameOverUI.onReset();
         this.candies.onReset();
-        setTimeout(() => {
-            this.gameState = GameState.Ready;
-        }, 100);
+        this.gameState = GameState.Ready;
     }
 
     _onLose() {

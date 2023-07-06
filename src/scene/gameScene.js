@@ -10,12 +10,10 @@ export const GameState = Object.freeze({
 });
 
 export class GameScene extends Container {
-    constructor(parent) {
+    constructor() {
         super();
-        this.parent = parent;
         this._initProperties();
         this._initGameplay();
-        this._initInputHandle();
         this._initColliderDetector();
         this._initSceneEvent();
     }
@@ -30,12 +28,6 @@ export class GameScene extends Container {
         this.colliderDetector = ColliderDetector.instance;
         this.colliderDetector.on("collision", this._onCollision.bind(this));
     }
-
-    _initInputHandle() {
-        document.addEventListener("pointerdown", () => {
-            this._onPointerDown();
-        });
-    }
     // Các hàm có comment abstract bắt buộc viết lại khi kế thừa
 
     // abstract
@@ -46,9 +38,6 @@ export class GameScene extends Container {
 
     // abstract
     _initSceneEvent() { } // Đăng kí các sự kiện cho scene
-
-    // abstract
-    _onPointerDown() { } // Xử lý sự kiện click chuột
 
     // abstract
     _onResetScene() { } // Reset lại scene

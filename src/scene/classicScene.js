@@ -89,7 +89,10 @@ export class ClassicScene extends GameScene {
         this.gameOverUI.on("replay", this._onResetScene.bind(this));
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("hardModeScene");
-        })
+        });
+        this.background.on("pointerdown", () => {
+            this._onPointerDown();
+        });
     }
 
     _onPointerDown() {
@@ -113,9 +116,7 @@ export class ClassicScene extends GameScene {
         this.sceneUI.onReset();
         this.gameOverUI.onReset();
         this.candies.onReset();
-        setTimeout(() => {
-            this.gameState = GameState.Ready;
-        }, 100);
+        this.gameState = GameState.Ready;
     }
 
     // Mở rộng thêm để xử lý scene

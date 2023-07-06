@@ -6,8 +6,10 @@ import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";
 import { PlayerMovement } from "./playerMovement";
 
-
-
+/*
+    Class tổng của player
+    Gọi method trong player = tất cả method trong các class con
+*/
 export class Player extends Container {
     constructor(parent) {
         super();
@@ -45,7 +47,6 @@ export class Player extends Container {
 
     onNextLevel() {
         this.sprite.changeDirection();
-
     }
 
     onPointerDown() {
@@ -53,6 +54,7 @@ export class Player extends Container {
             this.movement.onStart();
             this.isPlaying = true;
         }
+        
         this.movement.onPointerDown();
         this.effect.onPointerDown();
     }

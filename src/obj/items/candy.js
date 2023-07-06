@@ -6,6 +6,11 @@ import { CandySprite } from "./candySprite";
 import { CandyEffect } from "./candyEffect";
 import { CandySpawner } from "./candySpawner";
 
+/*
+    Class tổng của candy
+    Gọi method trong candy = tất cả method trong các class con
+*/
+
 export class Candy extends Container {
     constructor() {
         super();

@@ -1,6 +1,6 @@
 
 export class InputManager {
-  // Key
+  // Bắt sự kiện nhấn các phím
   static _handleKeyDown(e) {
     this.keys[e.keyCode] = true;
   }
@@ -9,7 +9,7 @@ export class InputManager {
     this.keys[e.keyCode] = false;
   }
 
-  // Cái này chỉ hoạt động với ký tự
+  // Chuyển từ charCode
   static isKeyPressed(key) {
     return !!this.keys[key.charCodeAt()];
   }

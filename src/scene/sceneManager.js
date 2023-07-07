@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
-import { HardModeScene } from "./hardModeScene";
 import { ClassicScene } from "./classicScene";
+import { HardModeScene } from "./hardModeScene";
 
 export class SceneManager extends Container {
 

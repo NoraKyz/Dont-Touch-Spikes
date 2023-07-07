@@ -32,6 +32,7 @@ export class SceneManager extends Container {
         this.scenes.forEach(scene => {
             if (scene.id === id) {
                 this.enabledScene = scene;
+                this.enabledScene._onResetScene();
                 this.addChild(scene);            
             }
         });
@@ -40,7 +41,6 @@ export class SceneManager extends Container {
     _onEndScene() {     
         this.scenes.forEach(scene => {
             if (scene.id === this.enabledScene.id) {
-                this.enabledScene._onResetScene();
                 this.removeChild(scene);            
             }
         });  

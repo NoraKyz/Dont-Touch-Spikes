@@ -110,6 +110,7 @@ export class HardModeScene extends GameScene {
 
     _onResetScene() {
         Data.resetScore();
+        this.gameInfor.onReset();
         this.player.onReset();
         this.spikes.onReset();
         this.background.onReset();

@@ -30,6 +30,7 @@ export class Player extends Container {
     _initProperties() {
         this.isPlaying = false;
         this.isDie = false;
+        this.hardModeEnabled = false;
     }
 
     _initSprite() {

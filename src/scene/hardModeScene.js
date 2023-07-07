@@ -34,6 +34,7 @@ export class HardModeScene extends GameScene {
 
     _initPlayer(){
         this.player = new Player(this);
+        this.player.hardModeEnabled = true;
         this.addChild(this.player);
     }
 

@@ -102,7 +102,12 @@ export class PlayerMovement {
     }
 
     onStart() {
-        this.velocity.x = this.jumpForce / 1.7;
+        if(this.obj.hardModeEnabled) {
+            this.velocity.x = this.jumpForce / 1.2;
+        } else {
+            this.velocity.x = this.jumpForce / 1.7;
+        }
+        
         this.velocity.y = -this.jumpForce;
         this.direction = { x: 1, y: 1 };
     }

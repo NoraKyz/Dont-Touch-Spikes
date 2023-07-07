@@ -14,13 +14,13 @@ export class LevelController {
             maxSpikes = 4;
         } else if (Data.currentScore <= 10) {
             minSpikes = 3;
-            maxSpikes = 6;
+            maxSpikes = 5;
         } else if (Data.currentScore <= 30) {
-            minSpikes = 5;
+            minSpikes = 4;
             maxSpikes = 6;
         } else {
             minSpikes = 6;
-            maxSpikes = 7;
+            maxSpikes = 6;
         }
         return {minSpikes: minSpikes, maxSpikes: maxSpikes};
     }

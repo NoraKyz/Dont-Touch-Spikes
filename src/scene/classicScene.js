@@ -34,6 +34,7 @@ export class ClassicScene extends GameScene {
     // Obj in scene
     _initPlayer() {
         this.player = new Player(this);
+        this.player.hardModeEnabled = false;
         this.addChild(this.player);
     }
 
@@ -144,7 +145,8 @@ export class ClassicScene extends GameScene {
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
-        let limitSpike = LevelController.updateLevel(); // TODO: Cần thêm 1 levelController
+        let limitSpike = LevelController.updateLevel();
+        console.log(limitSpike);
         this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);

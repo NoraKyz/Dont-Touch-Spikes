@@ -1,12 +1,11 @@
 import { Assets } from "pixi.js";
-import { GameOverUI } from "./overUI";
+import { OverUI } from "./overUI";
 
-export class HardModeOverUI extends GameOverUI {
+export class HardModeOverUI extends OverUI {
   constructor() {
     super();
   }
 
-  
   _initTitleUI() {
     super._initTitleUI();
     this.gameName.text = "  HARD\n MODE";

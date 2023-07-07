@@ -1,6 +1,6 @@
 import { Graphics } from "pixi.js";
 import { Game } from "../../../game";
-import { MainUI } from "./mainUI";
+import { MainUI } from "./mainUI.js";
 
 export class HardModeUI extends MainUI {
   constructor() {

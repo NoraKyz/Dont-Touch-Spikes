@@ -4,14 +4,13 @@ import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
 import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
-import { Spike } from "../obj/trap/spike.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
-import { HardModeOverUI } from "../obj/ui/overUI/hardmodeOverUI.js";
-import { HardModeUI } from "../obj/ui/mainUI/hardModeUI.js";
+import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import { SceneManager } from "./sceneManager.js";
+import { HardModeUI } from "../obj/ui/main/hardModeUI.js";
+import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js";
 
 export class HardModeScene extends GameScene {
     constructor() {

@@ -1,8 +1,8 @@
 import { Assets } from "pixi.js";
-import { GameOverUI } from "../overUI/overUI";
+import { OverUI } from "./overUI";
 
 
-export class ClassicOverUI extends GameOverUI {
+export class ClassicOverUI extends OverUI {
     constructor() {
       super();
     }

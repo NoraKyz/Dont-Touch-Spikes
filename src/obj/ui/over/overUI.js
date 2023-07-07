@@ -1,9 +1,9 @@
 import * as PIXI from "pixi.js";
-import {Assets, Container, Sprite} from "pixi.js";
-import {Data} from "../../../data";
+import { Assets, Container, Sprite } from "pixi.js";
+import { Data } from "../../../data";
 import { Game } from "../../../game";
 
-export class GameOverUI extends PIXI.Container {
+export class OverUI extends PIXI.Container {
     constructor() {
         super();
         
@@ -40,7 +40,7 @@ export class GameOverUI extends PIXI.Container {
         this.addChild(this.gameName);
     }
 
-    _initPointButton(){
+    _initPointButton() {
         this.pointsUI = new Container();
 
         this.pointsButton = Sprite.from(Assets.get("pointsUI"));
@@ -51,16 +51,16 @@ export class GameOverUI extends PIXI.Container {
         this.pointNumber = new PIXI.Text(Data.currentScore, this.style);
         this.pointNumber.anchor.set(0.5);
         this.pointNumber.position.y = -150 / Game.ratio;
-          
+
         this.pointsUI.cursor = "pointer";
         this.pointsUI.addChild(this.pointsButton);
         this.pointsUI.addChild(this.pointNumber);
         this.addChild(this.pointsUI);
     }
 
-    _initReplayButton(){
+    _initReplayButton() {
         this.replayButton = Sprite.from(Assets.get("replayButton"));
-        this.replayButton.anchor.set(0.5);     
+        this.replayButton.anchor.set(0.5);
         this.replayButton.scale.set(1 / Game.ratio);
         this.replayButton.position.y = 10 / Game.ratio;
         this.replayButton.cursor = "pointer";
@@ -72,17 +72,17 @@ export class GameOverUI extends PIXI.Container {
     // abstract
     _clickedReplayButton() { }
 
-    _initShareButton(){
+    _initShareButton() {
         this.shareButton = Sprite.from(Assets.get("shareButton"));
         this.shareButton.anchor.set(0.5);
         this.shareButton.scale.set(1 / Game.ratio);
         this.shareButton.position.y = 105 / Game.ratio;
         this.shareButton.cursor = "pointer";
-        this.shareButton.on("pointerdown", () => {});
+        this.shareButton.on("pointerdown", () => { });
         this.addChild(this.shareButton);
     }
 
-    onReset(){
+    onReset() {
         this.hideGameOverUI();
     }
 

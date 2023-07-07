@@ -1,7 +1,6 @@
 import { Container } from "pixi.js";
 import { Game } from "../game";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
-import { SceneManager } from "./sceneManager";
 
 export const GameState = Object.freeze({
     Ready: "ready",

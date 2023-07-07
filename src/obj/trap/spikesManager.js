@@ -29,7 +29,7 @@ export class SpikesManager extends Container {
         const arrayIndex = [];
         let randomQuantitySpikes = CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
         for (let i = 1; i <= randomQuantitySpikes; i++) {
-            let newSpike = CommonUtils.randomInt(2, 9);
+            let newSpike = CommonUtils.randomInt(2, 8);
             if (!arrayIndex.includes(newSpike)) arrayIndex.push(newSpike);
         }
         return arrayIndex;
@@ -71,7 +71,7 @@ export class SpikesManager extends Container {
 
     moveSpikesHardMode(state, limitSpike){
         this.state = state;
-        this.deviatedY = 30 / Game.ratio;
+        this.deviatedY = 50 / Game.ratio;
         if(this.state == -1){
             this.spikeRight.forEach((spike, index) => {
                 if(this.rightIndexSpikes.includes(index)){
@@ -123,10 +123,10 @@ export class SpikesManager extends Container {
         .to(target, 300)
         .onComplete(() => {
             let newtarget;
-            if(direction == 0) newtarget = {x: target.x, y: target.y + 50 / Game.ratio};
-            else newtarget = {x: target.x, y: target.y - 50 / Game.ratio};
+            if(direction == 0) newtarget = {x: target.x, y: target.y + 70 / Game.ratio};
+            else newtarget = {x: target.x, y: target.y - 70 / Game.ratio};
             spike.tween2 = new TWEEN.Tween(spike)
-            .to(newtarget, 1000)
+            .to(newtarget, 700)
             .yoyo(true)
             .repeat(Infinity)
             .start();  

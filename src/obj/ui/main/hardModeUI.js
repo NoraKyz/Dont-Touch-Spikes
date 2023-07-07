@@ -1,4 +1,4 @@
-import { Graphics } from "pixi.js";
+import { Assets, Graphics, Sprite } from "pixi.js";
 import { Game } from "../../../game";
 import { MainUI } from "./mainUI.js";
 
@@ -19,12 +19,11 @@ export class HardModeUI extends MainUI {
   }
 
   _initBackButton() {
-    this.backButton = new Graphics();
-    this.backButton.circleRadius = 40 / Game.ratio;
-    this.backButton.beginFill(0x888888);
-    this.backButton.drawCircle(-300 / Game.ratio, -230 / Game.ratio, this.backButton.circleRadius);
-    this.backButton.endFill();
-    
+    this.backButton = Sprite.from(Assets.get("undoButton"));
+    this.backButton.anchor.set(0.5);
+    this.backButton.scale.set(0.15 / Game.ratio);
+    this.backButton.position.set(-290 / Game.ratio, -420 / Game.ratio);
+
     this.backButton.cursor = "pointer";
     this.backButton.eventMode = 'static';
     this.backButton.on("pointerdown", () => this._toClassicModeScene());

@@ -1,4 +1,4 @@
-import { Graphics } from "pixi.js";
+import { Assets, Graphics, Sprite } from "pixi.js";
 import { MainUI } from "./mainUI";
 import { Game } from "../../../game";
 
@@ -19,11 +19,10 @@ export class ClassicUI extends MainUI {
   }
 
   _initHardModeSwitch() {
-    this.hardModeSwitch = new Graphics();
-    this.hardModeSwitch.circleRadius = 40 / Game.ratio;
-    this.hardModeSwitch.beginFill(0x888888);
-    this.hardModeSwitch.drawCircle(-300 / Game.ratio, -230 / Game.ratio, this.hardModeSwitch.circleRadius);
-    this.hardModeSwitch.endFill();
+    this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
+    this.hardModeSwitch.anchor.set(0.5);
+    this.hardModeSwitch.scale.set(0.15 / Game.ratio);
+    this.hardModeSwitch.position.set(-290 / Game.ratio, -230 / Game.ratio);
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';

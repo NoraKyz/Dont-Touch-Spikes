@@ -35,6 +35,8 @@ export class AssetsManager {
                 "pointsUI": "./assets/images/points.png",
                 "replayButton": "./assets/images/replayButton.png",
                 "shareButton": "./assets/images/shareButton.png",
+                "undoButton": "./assets/images/Undo.png",
+                "hardModeButton": "./assets/images/HardMode.png",
             }
         )
 

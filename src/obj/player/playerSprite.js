@@ -2,15 +2,16 @@ import { AnimatedSprite, Assets, Container, Sprite, Texture } from "pixi.js";
 import { Game } from "../../game";
 
 export class PlayerSprite extends Container {
-    constructor() {
+    constructor(parent) {
         super();
+        this.parent = parent;
         this._initTexture();
         this._initSprite();
         this.onReset();
     }
 
     _initTexture() {
-        this.flyTextures = [Assets.get("bird2"), Assets.get("bird1")];
+        this.flyTextures = [Assets.get("bird2"), Assets.get("bird1"), Assets.get("bird3")];
     }
 
     _initSprite() {
@@ -19,11 +20,25 @@ export class PlayerSprite extends Container {
     }  
 
     _initLiveSprite() {
-        this.live = new AnimatedSprite(this.flyTextures);
-        this.live.anchor.set(0.5);
-        this.live.scale.set(0.2 / Game.ratio);
-        this.live.animationSpeed = 0.018 / Game.ratio;
-        this.live.play();
+        this.live = new Container();
+        this.live.sprite1 = Sprite.from(Assets.get("bird1"));
+        this.live.sprite1.anchor.set(0.5);
+        this.live.sprite1.scale.set(0.2 / Game.ratio);
+        this.live.addChild(this.live.sprite1);
+        this.live.sprite1.visible = true;
+
+        this.live.sprite2 = Sprite.from(Assets.get("bird2"));
+        this.live.sprite2.anchor.set(0.5);
+        this.live.sprite2.scale.set(0.2 / Game.ratio);
+        this.live.addChild(this.live.sprite2);
+        this.live.sprite2.visible = false;
+
+        this.live.sprite3 = Sprite.from(Assets.get("bird3"));
+        this.live.sprite3.anchor.set(0.5);
+        this.live.sprite3.scale.set(0.2 / Game.ratio);
+        this.live.addChild(this.live.sprite3);
+        this.live.sprite3.visible = false;
+
         this.addChild(this.live);
     }
 
@@ -33,6 +48,12 @@ export class PlayerSprite extends Container {
         this.birdDead.scale.set(0.5 / Game.ratio);
         this.addChild(this.birdDead);
     } 
+    onPointerDown(){
+        //console.log(this.parent.movement);
+        this.live.sprite1.visible = false;
+        this.live.sprite2.visible = false;
+        this.live.sprite3.visible = true;
+    }
 
     onLose() {
         this.live.visible = false;
@@ -48,5 +69,25 @@ export class PlayerSprite extends Container {
 
     changeDirection() {
         this.scale.x *= -1;
+    }
+    update(dt){
+        //console.log(this.parent.movement.velocity.y);
+        if(this.parent.isPlaying){
+            if(this.parent.movement.velocity.y < 1 && this.parent.movement.velocity.y > -1){
+                this.live.sprite1.visible = true;
+                this.live.sprite2.visible = false;
+                this.live.sprite3.visible = false;
+            }
+        } else {
+            if (this.parent.position.y >= this.parent.radiousCollider) {
+                this.live.sprite1.visible = true;
+                this.live.sprite2.visible = false;
+                this.live.sprite3.visible = false;
+            } else if (this.parent.position.y <= -this.parent.radiousCollider) {
+                this.live.sprite1.visible = false;
+                this.live.sprite2.visible = true;
+                this.live.sprite3.visible = false;
+            }
+        }
     }
 }

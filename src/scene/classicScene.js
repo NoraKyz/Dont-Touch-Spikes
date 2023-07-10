@@ -72,10 +72,10 @@ export class ClassicScene extends GameScene {
     }
 
     _onCollision(obj1, obj2) {
-        // if (obj1 === this.player && obj2 instanceof Spike) {
-        //     this._onLose();
-        //     this.player.onCollision(obj2);
-        // }
+        if (obj1 === this.player && obj2 instanceof Spike) {
+            this._onLose();
+            this.player.onCollision(obj2);
+        }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
             if (this.gameState != GameState.End) {

@@ -11,6 +11,7 @@ import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { HardModeUI } from "../obj/ui/main/hardModeUI.js";
 import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js";
+import { NewSM } from "../obj/trap/newSM.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -39,7 +40,7 @@ export class HardModeScene extends GameScene {
     }
 
     _initSpikes(){
-        this.spikes = new SpikesManager();
+        this.spikes = new NewSM(this.id);
         this.addChild(this.spikes);
     }
 
@@ -146,7 +147,7 @@ export class HardModeScene extends GameScene {
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = LevelController.updateLevel();
-        this.spikes.moveSpikesHardMode(direction, limitSpike);
+        this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);
         }

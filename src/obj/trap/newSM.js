@@ -7,8 +7,9 @@ import * as TWEEN from '@tweenjs/tween.js'
 import { SpikeMovement } from "./spikeMovement";
 
 export class NewSM extends Container {
-    constructor() {
+    constructor(id) {
         super();
+        this.id = id;
         this.state = 0;
         this.distance = (70 ) * Math.sqrt(3) / 2;
         this.minSpikes = 2;
@@ -36,32 +37,57 @@ export class NewSM extends Container {
 
     moveSpikes(state, limitSpike) {
         this.state = state;
-        if (this.state == -1) {
+        this.deviatedY = 50 ;
+        if (this.state == -1){
             this.spikeRight.forEach((spike, index) => {
                 if (this.rightIndexSpikes.includes(index)) {
-                    const target = { x: this.distance, y: spike.y };
-                    spike.movement.enterClassic(target);
+                    const target = { x: this.distance, y: spike.y};
+                    if(this.id == "ClassicModeScene") spike.movement.enterClassic(target);
+                    if(this.id == "HardModeScene"){
+                        target.y -= this.deviatedY;
+                        spike.movement.enterHardMode(target);
+                    }
                 }
+            })
+            this.spikeLeft.forEach((spike, index) => {
+                spike.x = this.constPositionLeftX[index];
+                spike.y = this.constPositionY[index];
             })
             this.spikeLeft.forEach((spike, index) => {
                 if (this.leftIndexSpikes.includes(index)) {
                     const target = { x: 0, y: spike.y };
-                    spike.movement.goOutClassic(target);
+                    if(this.id == "ClassicModeScene") spike.movement.goOutClassic(target);;
+                    if(this.id == "HardModeScene"){
+                        target.y -= this.deviatedY;
+                        spike.movement.goOutHardMode(target);
+                    }
                 }
             })
             this.rightIndexSpikes = this._randomSpike(limitSpike);
         }
         if (this.state == 1) {
             this.spikeRight.forEach((spike, index) => {
+                spike.x = this.constPositionRightX[index];
+                spike.y = this.constPositionY[index];
+            })
+            this.spikeRight.forEach((spike, index) => {
                 if (this.rightIndexSpikes.includes(index)) {
                     const target = { x: 0, y: spike.y };
-                    spike.movement.goOutClassic(target);
+                    if(this.id == "ClassicModeScene") spike.movement.goOutClassic(target);;
+                    if(this.id == "HardModeScene"){
+                        target.y += this.deviatedY;
+                        spike.movement.goOutHardMode(target);
+                    }
                 }
             })
             this.spikeLeft.forEach((spike, index) => {
                 if (this.leftIndexSpikes.includes(index)) {
                     const target = { x: -this.distance, y: spike.y };
-                    spike.movement.enterClassic(target);
+                    if(this.id == "ClassicModeScene") spike.movement.enterClassic(target);
+                    if(this.id == "HardModeScene"){
+                        target.y += this.deviatedY;
+                        spike.movement.enterHardMode(target);
+                    }
                 }
             })
             this.leftIndexSpikes = this._randomSpike(limitSpike);
@@ -69,16 +95,26 @@ export class NewSM extends Container {
     }
 
     _initSpikes() {
-      let startY_Top = - 525 ;
-      let startY_Bottom = 434 ;
+        let startY_Top = - 525 ;
+        let startY_Bottom = 434 ;
 
-      this.spikesTop = this._spawnSpikeLine(-280 , startY_Top, 7, Math.PI, 1);
-      this.spikesBottom = this._spawnSpikeLine(-280 , startY_Bottom, 7, 0, 1);
-      this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 , startY_Top + 80 , 10, Math.PI / 2, 0);
-      this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 , startY_Top + 80 , 10, - Math.PI / 2, 0);
+        this.spikesTop = this._spawnSpikeLine(-280 , startY_Top, 7, Math.PI, 1);
+        this.spikesBottom = this._spawnSpikeLine(-280 , startY_Bottom, 7, 0, 1);
+        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 , startY_Top + 80 , 10, Math.PI / 2, 0);
+        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 , startY_Top + 80 , 10, - Math.PI / 2, 0);
 
-      this.spikeLeft.forEach(spike => spike.x -= this.distance);	
-      this.spikeRight.forEach(spike => spike.x += this.distance);
+        this.constPositionY = [];	
+        this.constPositionLeftX = [];	
+        this.constPositionRightX = [];	
+        this.spikeLeft.forEach(spike => {	
+            spike.x -= this.distance;	
+            this.constPositionY.push(spike.y);	
+            this.constPositionLeftX.push(spike.x);	
+        })	
+        this.spikeRight.forEach(spike => {	
+            spike.x += this.distance;	
+            this.constPositionRightX.push(spike.x);	
+        })
     }
     _addPoolSpike(array) {
         array.forEach(spike => this.poolSpikes.push(spike));

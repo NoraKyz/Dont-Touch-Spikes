@@ -41,7 +41,7 @@ export class ClassicScene extends GameScene {
 
     _initSpikes() {     
         //this.spikes = new SpikesManager();
-        this.spikes = new NewSM();
+        this.spikes = new NewSM(this.id);
         this.addChild(this.spikes);
     }
 

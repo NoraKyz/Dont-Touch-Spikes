@@ -9,9 +9,9 @@ export class CandyEffect {
     }
 
     _initProperties() {
-        this.speed = 1 / Game.ratio;
+        this.speed = 1 ;
         this.direction = 1;
-        this.distance = 20 / Game.ratio;
+        this.distance = 20 ;
     }
 
     _initEffect() {
@@ -30,7 +30,7 @@ export class CandyEffect {
     }
 
     _eatingEffect() {
-        this.targetY = this.obj.y - 80 / Game.ratio;
+        this.targetY = this.obj.y - 80 ;
         this.moveAddNumber = new TWEEN.Tween(this.obj)
             .to({ y: this.targetY, alpha: 0 }, 1000);
         this.moveAddNumber.start();

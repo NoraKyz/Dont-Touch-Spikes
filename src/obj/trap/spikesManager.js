@@ -9,7 +9,7 @@ export class SpikesManager extends Container {
     constructor() {
         super();
         this.state = 0;
-        this.distance = (70 / Game.ratio) * Math.sqrt(3) / 2;
+        this.distance = (70 ) * Math.sqrt(3) / 2;
         this.velocity = this.distance / 30;
         this.minSpikes = 2;
         this.maxSpikes = 5;
@@ -71,7 +71,7 @@ export class SpikesManager extends Container {
 
     moveSpikesHardMode(state, limitSpike){
         this.state = state;
-        this.deviatedY = 50 / Game.ratio;
+        this.deviatedY = 50 ;
         if(this.state == -1){
             this.spikeRight.forEach((spike, index) => {
                 if(this.rightIndexSpikes.includes(index)){
@@ -123,8 +123,8 @@ export class SpikesManager extends Container {
         .to(target, 300)
         .onComplete(() => {
             let newtarget;
-            if(direction == 0) newtarget = {x: target.x, y: target.y + 70 / Game.ratio};
-            else newtarget = {x: target.x, y: target.y - 70 / Game.ratio};
+            if(direction == 0) newtarget = {x: target.x, y: target.y + 70 };
+            else newtarget = {x: target.x, y: target.y - 70 };
             spike.tween2 = new TWEEN.Tween(spike)
             .to(newtarget, 700)
             .yoyo(true)
@@ -139,13 +139,13 @@ export class SpikesManager extends Container {
     }
 
     _initSpikes() {
-        let startY_Top = - 525 / Game.ratio;
-        let startY_Bottom = 434 / Game.ratio;
+        let startY_Top = - 525 ;
+        let startY_Bottom = 434 ;
 
-        this.spikesTop = this._spawnSpikeLine(-280 / Game.ratio, startY_Top, 7, Math.PI, 1);
-        this.spikesBottom = this._spawnSpikeLine(-280 / Game.ratio, startY_Bottom, 7, 0, 1);
-        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 / Game.ratio, startY_Top + 80 / Game.ratio, 10, Math.PI / 2, 0);
-        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 / Game.ratio, startY_Top + 80 / Game.ratio, 10, - Math.PI / 2, 0);
+        this.spikesTop = this._spawnSpikeLine(-280 , startY_Top, 7, Math.PI, 1);
+        this.spikesBottom = this._spawnSpikeLine(-280 , startY_Bottom, 7, 0, 1);
+        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 , startY_Top + 80 , 10, Math.PI / 2, 0);
+        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 , startY_Top + 80 , 10, - Math.PI / 2, 0);
 
         this.constPositionY = [];	
         this.constPositionLeftX = [];	
@@ -168,11 +168,11 @@ export class SpikesManager extends Container {
     }
 
     _initColliders() {
-        let colliderRadious = 25 / Game.ratio;
+        let colliderRadious = 25 ;
         this.poolSpikes.forEach(spike => {
             let collider = new Collider(colliderRadious);
             spike.collider = collider;
-            spike.collider.position.y = 10 / Game.ratio;
+            spike.collider.position.y = 10 ;
             spike.addChild(collider);
         });
     }
@@ -181,7 +181,7 @@ export class SpikesManager extends Container {
         // dir = 1 => vẽ hàng, ngược lại vẽ cột
         let spikeLine = new Container();
         let spikes = [];
-        const spikeSpacing = (70 / Game.ratio) * 4 / 3;
+        const spikeSpacing = (70 ) * 4 / 3;
 
         for (let i = 0; i < numbers; i++) {
             let spike = new Spike();

@@ -21,22 +21,22 @@ export class OverUI extends PIXI.Container {
         this.style = new PIXI.TextStyle({
             fill: "#FFFFFF",
             fontFamily: "Blissful Thinking",
-            fontSize: 85 / Game.ratio,
+            fontSize: 85 ,
             fontWeight: "lighter",
-            letterSpacing: 1 / Game.ratio,
+            letterSpacing: 1 ,
         });
     }
     _initTitleUI() {
         this.titleStyle = new PIXI.TextStyle({
             ...this.style,
             fill: "#808080",
-            fontSize: 92 / Game.ratio,
+            fontSize: 92 ,
             fontWeight: 550,
         });
 
         this.gameName = new PIXI.Text();
         this.gameName.anchor.set(0.5);
-        this.gameName.position.set(0, -400 / Game.ratio);
+        this.gameName.position.set(0, -400 );
         this.addChild(this.gameName);
     }
 
@@ -45,12 +45,12 @@ export class OverUI extends PIXI.Container {
 
         this.pointsButton = Sprite.from(Assets.get("pointsUI"));
         this.pointsButton.anchor.set(0.5);
-        this.pointsButton.scale.set(1 / Game.ratio);
-        this.pointsButton.position.y = -130 / Game.ratio;
+        this.pointsButton.scale.set(1 );
+        this.pointsButton.position.y = -130 ;
 
         this.pointNumber = new PIXI.Text(Data.currentScore, this.style);
         this.pointNumber.anchor.set(0.5);
-        this.pointNumber.position.y = -150 / Game.ratio;
+        this.pointNumber.position.y = -150 ;
 
         this.pointsUI.cursor = "pointer";
         this.pointsUI.addChild(this.pointsButton);
@@ -61,8 +61,8 @@ export class OverUI extends PIXI.Container {
     _initReplayButton() {
         this.replayButton = Sprite.from(Assets.get("replayButton"));
         this.replayButton.anchor.set(0.5);
-        this.replayButton.scale.set(1 / Game.ratio);
-        this.replayButton.position.y = 10 / Game.ratio;
+        this.replayButton.scale.set(1 );
+        this.replayButton.position.y = 10 ;
         this.replayButton.cursor = "pointer";
         this.replayButton.eventMode = 'static';
         this.replayButton.on("pointerdown", () => this._clickedReplayButton());
@@ -75,8 +75,8 @@ export class OverUI extends PIXI.Container {
     _initShareButton() {
         this.shareButton = Sprite.from(Assets.get("shareButton"));
         this.shareButton.anchor.set(0.5);
-        this.shareButton.scale.set(1 / Game.ratio);
-        this.shareButton.position.y = 105 / Game.ratio;
+        this.shareButton.scale.set(1 );
+        this.shareButton.position.y = 105 ;
         this.shareButton.cursor = "pointer";
         this.shareButton.on("pointerdown", () => { });
         this.addChild(this.shareButton);

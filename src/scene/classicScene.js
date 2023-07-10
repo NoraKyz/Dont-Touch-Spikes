@@ -86,7 +86,7 @@ export class ClassicScene extends GameScene {
     _initSceneEvent() {
         this.on("nextLevel", this._onNextLevel.bind(this));
         this.on("lose", this._onLose.bind(this));
-        this.gameOverUI.on("replay", this._onResetScene.bind(this));
+        this.gameOverUI.on("replay", this.onResetScene.bind(this));
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("HardModeScene");
         });

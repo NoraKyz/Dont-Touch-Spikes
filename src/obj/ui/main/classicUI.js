@@ -21,8 +21,8 @@ export class ClassicUI extends MainUI {
   _initHardModeSwitch() {
     this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
-    this.hardModeSwitch.scale.set(0.15 / Game.ratio);
-    this.hardModeSwitch.position.set(-290 / Game.ratio, -230 / Game.ratio);
+    this.hardModeSwitch.scale.set(0.15 );
+    this.hardModeSwitch.position.set(-290 , -230 );
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';

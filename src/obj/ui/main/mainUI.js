@@ -17,9 +17,9 @@ export class MainUI extends Container {
         this.style = new TextStyle({
             fill: "#FF3464",
             fontFamily: "Blissful Thinking",
-            fontSize: 55 / Game.ratio,
+            fontSize: 55 ,
             fontWeight: "lighter",
-            letterSpacing: 1 / Game.ratio,
+            letterSpacing: 1 ,
         });
     }
 
@@ -27,13 +27,13 @@ export class MainUI extends Container {
         this.titleStyle = new TextStyle({
             ...this.style,
             fill: "#808080",
-            fontSize: 92 / Game.ratio,
+            fontSize: 92 ,
             fontWeight: 550,
         });
 
         this.gameName = new Text();
         this.gameName.anchor.set(0.5);
-        this.gameName.position.set(0, -400 / Game.ratio);
+        this.gameName.position.set(0, -400 );
         this.addChild(this.gameName);
     }
 
@@ -41,7 +41,7 @@ export class MainUI extends Container {
     _initGameTutol() {
         this.gameTutorial = new Text("    TAP \nTO JUMP", this.style);
         this.gameTutorial.anchor.set(0.5);
-        this.gameTutorial.position.set(0, - 165 / Game.ratio);
+        this.gameTutorial.position.set(0, - 165 );
         this.addChild(this.gameTutorial);
     }
     

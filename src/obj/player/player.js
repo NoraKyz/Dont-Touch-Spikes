@@ -22,7 +22,7 @@ export class Player extends Container {
     }
 
     _initCollider() {
-        this.radiousCollider = 40 / Game.ratio;
+        this.radiousCollider = 40 ;
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);
     }

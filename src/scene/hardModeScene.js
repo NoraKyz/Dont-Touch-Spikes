@@ -157,7 +157,6 @@ export class HardModeScene extends GameScene {
         if (this.gameState == GameState.Playing) {
             this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);
             this.colliderDetector.checkCollider(this.player, this.candies.children);
-            this.spikes.update();
             this.candies.update(dt);
         }
     }

@@ -10,7 +10,6 @@ export class SpikesManager extends Container {
         super();
         this.state = 0;
         this.distance = (70 ) * Math.sqrt(3) / 2;
-        this.velocity = this.distance / 30;
         this.minSpikes = 2;
         this.maxSpikes = 5;
         this.leftIndexSpikes = [4, 5];
@@ -20,9 +19,8 @@ export class SpikesManager extends Container {
         this.spikeRight = [];
         this.poolSpikes = [];
         this._initSpikes();
-        this._initColliders();
     }
-
+    // manager
     _randomSpike(limitSpike) {
         this.minSpikes = limitSpike.minSpikes;
         this.maxSpikes = limitSpike.maxSpikes;
@@ -111,13 +109,13 @@ export class SpikesManager extends Container {
             this.leftIndexSpikes = this._randomSpike(limitSpike);
         }
     } 
-     
+    // r
     _movebyTween(spike, position) {
         this.tween = new TWEEN.Tween(spike)
             .to({ x: position.x, y: position.y }, 500);
         this.tween.start();
     }
-    
+    // r
     _hardModeMovebyTween(spike, target, direction){
         spike.tween1 = new TWEEN.Tween(spike)
         .to(target, 300)
@@ -133,11 +131,7 @@ export class SpikesManager extends Container {
         })
         spike.tween1.start();
     }
-
-    update() {
-        TWEEN.update();
-    }
-
+    // manager
     _initSpikes() {
         let startY_Top = - 525 ;
         let startY_Bottom = 434 ;
@@ -160,23 +154,13 @@ export class SpikesManager extends Container {
             this.constPositionRightX.push(spike.x);	
         })
     }
-
+    // manager
     _addPoolSpike(array) {
         array.forEach(spike => {
             this.poolSpikes.push(spike);
         })
     }
-
-    _initColliders() {
-        let colliderRadious = 25 ;
-        this.poolSpikes.forEach(spike => {
-            let collider = new Collider(colliderRadious);
-            spike.collider = collider;
-            spike.collider.position.y = 10 ;
-            spike.addChild(collider);
-        });
-    }
-
+    // manager
     _spawnSpikeLine(startX, startY, numbers, rotation, dir) {
         // dir = 1 => vẽ hàng, ngược lại vẽ cột
         let spikeLine = new Container();
@@ -203,18 +187,12 @@ export class SpikesManager extends Container {
         return spikes;
     }
 
-    _changeColorEffect() {
-        this.alpha = 0.9;
-        this.changeColorEffect = new TWEEN.Tween(this)
-            .to({ alpha: 1 }, 1000)
-    }
-
     changeColor(color) {
         this.poolSpikes.forEach(spike => {
             spike.changeColor(color);
         })
     }
-
+    // move
     onReset() {
         this.changeColor("FFFFFF");
         // không tắt được cái spike di chuyển lên xuống liên tục :((
@@ -237,6 +215,8 @@ export class SpikesManager extends Container {
                 spike.x = this.constPositionRightX[index];
             } 
         })
+
+        // manager
         this.leftIndexSpikes = [4, 5];
         this.rightIndexSpikes = [];
     }

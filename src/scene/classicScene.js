@@ -11,6 +11,7 @@ import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
+import { NewSM } from "../obj/trap/newSM.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -39,7 +40,8 @@ export class ClassicScene extends GameScene {
     }
 
     _initSpikes() {     
-        this.spikes = new SpikesManager();
+        //this.spikes = new SpikesManager();
+        this.spikes = new NewSM();
         this.addChild(this.spikes);
     }
 
@@ -70,10 +72,10 @@ export class ClassicScene extends GameScene {
     }
 
     _onCollision(obj1, obj2) {
-        if (obj1 === this.player && obj2 instanceof Spike) {
-            this._onLose();
-            this.player.onCollision(obj2);
-        }
+        // if (obj1 === this.player && obj2 instanceof Spike) {
+        //     this._onLose();
+        //     this.player.onCollision(obj2);
+        // }
 
         if (obj1 === this.player && obj2 instanceof Candy) {
             if (this.gameState != GameState.End) {
@@ -157,7 +159,6 @@ export class ClassicScene extends GameScene {
         if (this.gameState == GameState.Playing) {
             this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);
             this.colliderDetector.checkCollider(this.player, this.candies.children);
-            this.spikes.update();
             this.candies.update(dt);
         }
     }

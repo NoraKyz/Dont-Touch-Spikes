@@ -14,6 +14,6 @@ export class SpikeSprite extends Container{
     this.addChild(this.sprite);
   }
   changeColor(color){
-    this.tint = color;       
+    this.sprite.tint = color;       
   }
 }

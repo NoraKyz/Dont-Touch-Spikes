@@ -7,11 +7,10 @@ import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
-import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import { NewSM } from "../obj/trap/newSM.js";
+import { SpikesManager } from "../obj/trap/spikesManager.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -40,8 +39,7 @@ export class ClassicScene extends GameScene {
     }
 
     _initSpikes() {     
-        //this.spikes = new SpikesManager();
-        this.spikes = new NewSM(this.id);
+        this.spikes = new SpikesManager(this.id);
         this.addChild(this.spikes);
     }
 

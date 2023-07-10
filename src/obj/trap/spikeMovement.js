@@ -1,7 +1,7 @@
 import * as TWEEN from '@tweenjs/tween.js'
 
 export class SpikeMovement{
-  constructor(spike, target){
+  constructor(spike){
     this.spike = spike;
   }
   _moveClassic(target) {

@@ -6,12 +6,11 @@ import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
-import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { HardModeUI } from "../obj/ui/main/hardModeUI.js";
-import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js";
-import { NewSM } from "../obj/trap/newSM.js";
+import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js"
+import { SpikesManager } from "../obj/trap/spikesManager.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -40,7 +39,7 @@ export class HardModeScene extends GameScene {
     }
 
     _initSpikes(){
-        this.spikes = new NewSM(this.id);
+        this.spikes = new SpikesManager(this.id);
         this.addChild(this.spikes);
     }
 

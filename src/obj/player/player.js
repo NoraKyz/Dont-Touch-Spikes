@@ -5,6 +5,7 @@ import { Spike } from "../trap/spike";
 import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";
 import { PlayerMovement } from "./playerMovement";
+import {PlayerMovementDual} from "./playerMovementDual";
 
 /*
     Class tổng của player
@@ -22,7 +23,7 @@ export class Player extends Container {
     }
 
     _initCollider() {
-        this.radiousCollider = 40 / Game.ratio;
+        this.radiousCollider = 40;
         this.collider = new Collider(this.radiousCollider);
         this.addChild(this.collider);
     }
@@ -31,6 +32,7 @@ export class Player extends Container {
         this.isPlaying = false;
         this.isDie = false;
         this.hardModeEnabled = false;
+        this.dualModeEnabled = false;
     }
 
     _initSprite() {
@@ -43,7 +45,13 @@ export class Player extends Container {
     }
 
     _initMovement() {
-        this.movement = new PlayerMovement(this);
+        switch (this.parent.id) {
+            case 'dualModeScene':
+                this.movement = new PlayerMovementDual(this);
+                break;
+            default:
+                this.movement = new PlayerMovement(this);
+        }
     }
 
     onNextLevel() {

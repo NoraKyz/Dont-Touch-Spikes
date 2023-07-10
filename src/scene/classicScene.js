@@ -35,6 +35,7 @@ export class ClassicScene extends GameScene {
     _initPlayer() {
         this.player = new Player(this);
         this.player.hardModeEnabled = false;
+        this.player.dualModeEnabled = false;
         this.addChild(this.player);
     }
 
@@ -90,6 +91,9 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("hardModeScene");
         });
+        this.sceneUI.on("toDualModeScene", () => {
+            this.parent.onStartScene("dualModeScene");
+        })
         this.background.on("pointerdown", () => {
             this._onPointerDown();
         });

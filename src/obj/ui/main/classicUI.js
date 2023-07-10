@@ -10,6 +10,7 @@ export class ClassicUI extends MainUI {
   _initComponent() {
     super._initComponent();
     this._initHardModeSwitch();
+    this._initDualModeSwitch();
   }
 
   _initTitleUI() {
@@ -21,7 +22,7 @@ export class ClassicUI extends MainUI {
   _initHardModeSwitch() {
     this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
-    this.hardModeSwitch.scale.set(0.15 / Game.ratio);
+    this.hardModeSwitch.scale.set(0.18 / Game.ratio);
     this.hardModeSwitch.position.set(-290 / Game.ratio, -230 / Game.ratio);
 
     this.hardModeSwitch.cursor = "pointer";
@@ -31,7 +32,24 @@ export class ClassicUI extends MainUI {
     this.addChild(this.hardModeSwitch);
   }
 
+  _initDualModeSwitch() {
+    this.dualModeSwitch = Sprite.from(Assets.get("dualModeButton"));
+    this.dualModeSwitch.anchor.set(0.5);
+    this.dualModeSwitch.scale.set(0.18 / Game.ratio);
+    this.dualModeSwitch.position.set(-290 / Game.ratio, -120 / Game.ratio);
+
+    this.dualModeSwitch.cursor = "pointer";
+    this.dualModeSwitch.eventMode = 'static';
+    this.dualModeSwitch.on("pointerdown", () => this._toDualModeScene());
+
+    this.addChild(this.dualModeSwitch);
+  }
+
   _toHardModeScene() {
-    this.emit("toHardModeScene")
+    this.emit("toHardModeScene");
+  }
+
+  _toDualModeScene() {
+    this.emit("toDualModeScene");
   }
 }

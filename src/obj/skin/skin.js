@@ -8,7 +8,7 @@ export class Skin {
 
         this.cost = {
             type: null, // Type of currency
-            amount: null // Amount of currency
+            value: null // Amount of currency
         }
         this.enabled = false; // Has the player unlocked this skin?
     }

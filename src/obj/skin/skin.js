@@ -1,15 +1,12 @@
 
 export class Skin {
-    constructor() {     
-        this.texture1 = null;  // Default
-        this.texture2 = null; // Flying while playing
-        this.texture3 = null; // Flying while not playing
-        this.particle = null; // Particle effect
+    constructor(data) {     
+        this.texture1 = data.texture1;  // Default
+        this.texture2 = data.texture2; // Flying while playing
+        this.texture3 = data.texture3; // Flying while not playing
+        this.particle = data.particle; // Particle effect
 
-        this.cost = {
-            type: null, // Type of currency
-            value: null // Amount of currency
-        }
-        this.enabled = false; // Has the player unlocked this skin?
+        this.cost = data.cost
+        this.enabled = data.enabled; // Has the player unlocked this skin?
     }
 }

@@ -19,7 +19,7 @@ export class HardModeScene extends GameScene {
 
     _initProperties(){
         super._initProperties();
-        this.id = 'hardModeScene';
+        this.id = 'HardModeScene';
     }
 
     _initGameplay() {
@@ -89,7 +89,7 @@ export class HardModeScene extends GameScene {
         this.on("lose", this._onLose.bind(this));
         this.gameOverUI.on("replay", this._onResetScene.bind(this));
         this.sceneUI.on("toClassicModeScene", () => {
-            this.parent.onStartScene("classicModeScene");
+            this.parent.onStartScene("ClassicModeScene");
         })
         this.background.on("pointerdown", () => {
             this._onPointerDown();
@@ -109,7 +109,7 @@ export class HardModeScene extends GameScene {
         }
     }
 
-    _onResetScene() {
+    onResetScene() {
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();

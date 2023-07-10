@@ -28,7 +28,6 @@ export class SpikesManager extends Container {
         this.maxSpikes = limitSpike.maxSpikes;
         const arrayIndex = [];
         let randomQuantitySpikes = CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
-        console.log(randomQuantitySpikes);
         while(arrayIndex.length < randomQuantitySpikes) {
             let newSpike = CommonUtils.randomInt(0, 9);
             if (!arrayIndex.includes(newSpike)) arrayIndex.push(newSpike);

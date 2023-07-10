@@ -8,7 +8,6 @@ export class PlayerMovement {
     }
 
     _initProperties() {
-        console.log(this.obj);
         this.velocity = { x: 0 / Game.ratio, y: -1.5 / Game.ratio };
         this.gravity = 0.5 / Game.ratio;
         this.jumpForce = 12 / Game.ratio;

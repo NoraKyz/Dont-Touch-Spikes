@@ -19,7 +19,7 @@ export class ClassicScene extends GameScene {
 
     _initProperties() {
         super._initProperties();
-        this.id = "classicModeScene";
+        this.id = "ClassicModeScene";
     }
 
     _initGameplay() {
@@ -88,7 +88,7 @@ export class ClassicScene extends GameScene {
         this.on("lose", this._onLose.bind(this));
         this.gameOverUI.on("replay", this._onResetScene.bind(this));
         this.sceneUI.on("toHardModeScene", () => {
-            this.parent.onStartScene("hardModeScene");
+            this.parent.onStartScene("HardModeScene");
         });
         this.background.on("pointerdown", () => {
             this._onPointerDown();
@@ -108,7 +108,7 @@ export class ClassicScene extends GameScene {
         }
     }
 
-    _onResetScene() {
+    onResetScene() {
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();
@@ -146,7 +146,6 @@ export class ClassicScene extends GameScene {
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = LevelController.updateLevel();
-        console.log(limitSpike);
         this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);

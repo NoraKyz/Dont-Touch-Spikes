@@ -7,7 +7,6 @@ export class MovementClassic {
     this.spikeRight = parent.spikeRight;
     this.distance = parent.distance;
     this._initProperties();
-    this.moveSpikes();
   }
   _initProperties(){
     this.leftIndexSpikes = [4, 5];
@@ -45,5 +44,19 @@ export class MovementClassic {
         })
         this.leftIndexSpikes = this.parent._randomSpike(limitSpike);
     }
-}
+    }
+    onReset(){
+        this.spikeRight.forEach((spike, index) => {
+          if (this.rightIndexSpikes.includes(index)) {
+              spike.x = this.distance;
+            }
+        })
+        this.spikeLeft.forEach((spike, index) => {
+            if (this.leftIndexSpikes.includes(index)) {
+                spike.x = -this.distance;
+            }
+        })
+        this.leftIndexSpikes = [4, 5];
+        this.rightIndexSpikes = [];
+    }
 }

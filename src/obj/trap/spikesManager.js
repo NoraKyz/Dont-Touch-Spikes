@@ -13,8 +13,6 @@ export class SpikesManager extends Container {
         this.distance = (70 ) * Math.sqrt(3) / 2;
         this.minSpikes = 2;
         this.maxSpikes = 5;
-        this.leftIndexSpikes = [4, 5];
-        this.rightIndexSpikes = [];
 
         this.spikeLeft = [];
         this.spikeRight = [];
@@ -55,18 +53,8 @@ export class SpikesManager extends Container {
         this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 , startY_Top + 80 , 10, Math.PI / 2, 0);
         this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 , startY_Top + 80 , 10, - Math.PI / 2, 0);
 
-        this.constPositionY = [];	
-        this.constPositionLeftX = [];	
-        this.constPositionRightX = [];	
-        this.spikeLeft.forEach(spike => {	
-            spike.x -= this.distance;	
-            this.constPositionY.push(spike.y);	
-            this.constPositionLeftX.push(spike.x);	
-        })	
-        this.spikeRight.forEach(spike => {	
-            spike.x += this.distance;	
-            this.constPositionRightX.push(spike.x);	
-        })
+        this.spikeLeft.forEach(spike => spike.x -= this.distance);
+        this.spikeRight.forEach(spike => spike.x += this.distance);
     }
     _addPoolSpike(array) {
         array.forEach(spike => this.poolSpikes.push(spike));
@@ -103,33 +91,9 @@ export class SpikesManager extends Container {
             spike.sprite.changeColor(color);
         })
     }
-    // move
+    
     onReset() {
         this.changeColor("FFFFFF");
-        
-        this.spikeRight.forEach((spike, index) => {
-            if (this.rightIndexSpikes.includes(index)) {
-                const target = { x: this.distance, y: spike.y};
-                if(this.id == "ClassicModeScene") spike.movement.enterClassic(target);
-                if(this.id == "HardModeScene"){
-                    target.y -= this.deviatedY;
-                    spike.movement.enterHardMode(target);
-                }
-                spike.x = this.constPositionRightX[index];
-            }
-        })
-        this.spikeLeft.forEach((spike, index) => {
-            if (this.leftIndexSpikes.includes(index)) {
-                const target = { x: -this.distance, y: spike.y };
-                if(this.id == "ClassicModeScene") spike.movement.enterClassic(target);
-                if(this.id == "HardModeScene"){
-                    target.y += this.deviatedY;
-                    spike.movement.enterHardMode(target);
-                }
-                spike.x = this.constPositionLeftX[index];
-            }
-        })
-        this.leftIndexSpikes = [4, 5];
-        this.rightIndexSpikes = [];
+        this.movement.onReset();
     }
 }

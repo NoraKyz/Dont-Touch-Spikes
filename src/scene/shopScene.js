@@ -1,5 +1,6 @@
 import { ScrollBox } from "@pixi/ui";
 import { Container, Graphics } from "pixi.js";
+import { GameConstant } from "../gameConstant";
 
 export class ShopScene extends Container {
     constructor() {
@@ -17,15 +18,24 @@ export class ShopScene extends Container {
     }
 
     _initShop() {
-        // this.shop = new ScrollBox();
+        this.shop = new ScrollBox({
+            width: GameConstant.GAME_WIDTH,
+            height: GameConstant.GAME_HEIGHT,
+            background: 0xFFFFFF,
+            elementsMargin: 100,
+            vertPadding: 55,
+            horPadding: 106,
+            items: [
+                new Graphics().beginFill(0x000000).drawRect(0, 0, 200, 200),
+                new Graphics().beginFill(0x000000).drawRect(0, 0, 200, 200),
+                new Graphics().beginFill(0x000000).drawRect(0, 0, 200, 200),
+                new Graphics().beginFill(0x000000).drawRect(0, 0, 200, 200),
+            ],
+        });
 
-        // const content = new Graphics();
-        // content.beginFill(0x808080);
-        // content.drawRect(0, 0, 400, 400);
-        // content.endFill();
+        this.shop.background.alpha = 0;
 
-        // this.shop.addItem(content);
-        // this.addChild(this.shop);
+        this.addChild(this.shop);
     }
 
     onResetScene() {

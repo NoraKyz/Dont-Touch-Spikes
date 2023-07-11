@@ -10,7 +10,7 @@ export class SkinManager {
     }
 
     static init() {
-        this.currentSkin = null;
+        this.currentSkin = new Skin(SkinStorage.Default);
     }
 
     _initSkins() {
@@ -25,6 +25,7 @@ export class SkinManager {
             Data.add(skin.cost.type, -skin.cost.value);
             skin.enabled = true;
             this.currentSkin = true;
+            console.log("Skin unlocked!");
         } else {
             console.log("Not enough " + skin.cost.type);
         }
@@ -33,6 +34,7 @@ export class SkinManager {
     onSetSkin(skin) {
         if(skin.enabled == true) {
             this.currentSkin = skin;
+            console.log("Skin set!");
         }
     }
 }

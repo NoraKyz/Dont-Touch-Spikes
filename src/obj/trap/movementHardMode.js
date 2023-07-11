@@ -8,6 +8,7 @@ export class MovementHardMode {
     this.distance = parent.distance;
     this._initProperties();
   }
+
   _initProperties(){
     this.leftIndexSpikes = [4, 5];
     this.rightIndexSpikes = [];
@@ -25,6 +26,7 @@ export class MovementHardMode {
         this.constPositionRightX.push(spike.x);	
     })
   };
+
   moveSpikes(state, limitSpike) {
     this.state = state;
     this.deviatedY = 50 ;
@@ -67,6 +69,7 @@ export class MovementHardMode {
         this.leftIndexSpikes = this.parent._randomSpike(limitSpike);
     }
   }
+  
   onReset(){
     this.spikeRight.forEach((spike, index) => {
       if (this.rightIndexSpikes.includes(index)) {

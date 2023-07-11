@@ -1,5 +1,4 @@
-import { Assets, Container, Graphics, Sprite } from "pixi.js";
-import { Game } from "../../game";
+import { Container } from "pixi.js";
 import { Collider } from "../physics/collider";
 import { SpikeSprite } from "./spikeSprite";
 import { SpikeMovement } from "./spikeMovement";

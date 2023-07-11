@@ -9,7 +9,7 @@ export class SceneManager extends Container {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("ShopScene");
+        this.onStartScene("ClassicModeScene");
     }
 
     _initProperties() {

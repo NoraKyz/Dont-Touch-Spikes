@@ -4,6 +4,7 @@ import { Game } from "../../game";
 import { CommonUtils } from "../../commonUtils";
 import { MovementClassic } from "./movementClassic";
 import { MovementHardMode } from "./movementHardMode";
+import { MovementDuo } from "./movementDuo";
 
 export class SpikesManager extends Container {
     constructor(id) {
@@ -36,6 +37,9 @@ export class SpikesManager extends Container {
                 break;
             case "HardModeScene":
                 this.movement = new MovementHardMode(this);
+                break;
+            case "DuoModeScene":
+                this.movement = new MovementDuo(this);
                 break;
         }
     }

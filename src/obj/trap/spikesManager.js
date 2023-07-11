@@ -1,10 +1,9 @@
 import { Container } from "pixi.js";
 import { Spike } from "./spike";
 import { Game } from "../../game";
-import { Collider } from "../physics/collider";
 import { CommonUtils } from "../../commonUtils";
-import * as TWEEN from '@tweenjs/tween.js'
-import { SpikeMovement } from "./spikeMovement";
+import { MovementClassic } from "./movementClassic";
+import { MovementHardMode } from "./movementHardMode";
 
 export class SpikesManager extends Container {
     constructor(id) {
@@ -21,6 +20,7 @@ export class SpikesManager extends Container {
         this.spikeRight = [];
         this.poolSpikes = [];
         this._initSpikes();
+        this._initMoveSpikes();
     }
     
     _randomSpike(limitSpike) {
@@ -31,63 +31,19 @@ export class SpikesManager extends Container {
         return arrayIndex;
     }
 
+    _initMoveSpikes(){
+        switch(this.id){
+            case "ClassicModeScene": 
+                this.movement = new MovementClassic(this);
+                break;
+            case "HardModeScene":
+                this.movement = new MovementHardMode(this);
+                break;
+        }
+    }
+
     moveSpikes(state, limitSpike) {
-        this.state = state;
-        this.deviatedY = 50 ;
-        if (this.state == -1){
-            this.spikeRight.forEach((spike, index) => {
-                if (this.rightIndexSpikes.includes(index)) {
-                    const target = { x: this.distance, y: spike.y};
-                    if(this.id == "ClassicModeScene") spike.movement.enterClassic(target);
-                    if(this.id == "HardModeScene"){
-                        target.y -= this.deviatedY;
-                        spike.movement.enterHardMode(target);
-                    }
-                }
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                spike.x = this.constPositionLeftX[index];
-                spike.y = this.constPositionY[index];
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                if (this.leftIndexSpikes.includes(index)) {
-                    const target = { x: 0, y: spike.y };
-                    if(this.id == "ClassicModeScene") spike.movement.goOutClassic(target);;
-                    if(this.id == "HardModeScene"){
-                        target.y -= this.deviatedY;
-                        spike.movement.goOutHardMode(target);
-                    }
-                }
-            })
-            this.rightIndexSpikes = this._randomSpike(limitSpike);
-        }
-        if (this.state == 1) {
-            this.spikeRight.forEach((spike, index) => {
-                spike.x = this.constPositionRightX[index];
-                spike.y = this.constPositionY[index];
-            })
-            this.spikeRight.forEach((spike, index) => {
-                if (this.rightIndexSpikes.includes(index)) {
-                    const target = { x: 0, y: spike.y };
-                    if(this.id == "ClassicModeScene") spike.movement.goOutClassic(target);;
-                    if(this.id == "HardModeScene"){
-                        target.y += this.deviatedY;
-                        spike.movement.goOutHardMode(target);
-                    }
-                }
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                if (this.leftIndexSpikes.includes(index)) {
-                    const target = { x: -this.distance, y: spike.y };
-                    if(this.id == "ClassicModeScene") spike.movement.enterClassic(target);
-                    if(this.id == "HardModeScene"){
-                        target.y += this.deviatedY;
-                        spike.movement.enterHardMode(target);
-                    }
-                }
-            })
-            this.leftIndexSpikes = this._randomSpike(limitSpike);
-        }
+        this.movement.moveSpikes(state, limitSpike);
     }
 
     _initSpikes() {

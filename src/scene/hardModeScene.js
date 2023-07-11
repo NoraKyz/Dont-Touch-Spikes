@@ -19,7 +19,7 @@ export class HardModeScene extends GameScene {
 
     _initProperties(){
         super._initProperties();
-        this.id = 'HardModeScene';
+        this.id = "HardModeScene";
     }
 
     _initGameplay() {

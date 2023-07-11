@@ -26,12 +26,8 @@ export class SpikesManager extends Container {
     _randomSpike(limitSpike) {
         this.minSpikes = limitSpike.minSpikes;
         this.maxSpikes = limitSpike.maxSpikes;
-        const arrayIndex = [];
         let randomQuantitySpikes = CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
-        while(arrayIndex.length < randomQuantitySpikes) {
-            let newSpike = CommonUtils.randomInt(0, 9);
-            if (!arrayIndex.includes(newSpike)) arrayIndex.push(newSpike);
-        }
+        const arrayIndex = CommonUtils.randomArray(randomQuantitySpikes);
         return arrayIndex;
     }
 
@@ -155,15 +151,6 @@ export class SpikesManager extends Container {
     onReset() {
         this.changeColor("FFFFFF");
         
-        // this.spikeLeft.forEach((spike, index) => {
-        //     if(this.leftIndexSpikes.includes(index)){
-        //         //if(spike.tween1){
-        //             const target = {x: -this.distance, y: spike.y + this.deviatedY};
-        //             spike.movement.enterHardMode(spike, target);
-        //         //} 
-        //         spike.x = this.constPositionLeftX[index];
-        //     } 
-        // })
         this.spikeRight.forEach((spike, index) => {
             if (this.rightIndexSpikes.includes(index)) {
                 const target = { x: this.distance, y: spike.y};

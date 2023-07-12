@@ -12,6 +12,7 @@ import { LevelController } from "../levelController.js";
 import {DualModeUI} from "../obj/ui/main/dualModeUI.js";
 import {Game} from "../game";
 import {BackgroundDual} from "../obj/background/backgroundDual";
+import { DualModeOverUI } from "../obj/ui/over/dualModeOverUI.js";
 
 export class DualModeScene extends GameScene {
   constructor() {
@@ -25,8 +26,9 @@ export class DualModeScene extends GameScene {
 
   _initGameplay() {
     this._initBackground();
-    this._initPlayer();
+    //this._initPlayer();
     this._initSceneUI();
+    this._initSceneOverUI();
   }
 
   _initPlayer(){
@@ -49,7 +51,11 @@ export class DualModeScene extends GameScene {
 
   _initSceneUI() {
     this.sceneUI = new DualModeUI();
-    this.addChild(this.sceneUI);
+    //this.addChild(this.sceneUI);
+  }
+  _initSceneOverUI() {
+    this.sceneOverUI = new DualModeOverUI();
+    this.addChild(this.sceneOverUI);
   }
 
   _initSceneEvent() {
@@ -65,8 +71,9 @@ export class DualModeScene extends GameScene {
 
   update(dt) {
     //console.log(123);
-    this.player1.update(dt);
-    this.player2.update(dt);
-    this.sceneUI.update(dt);
+    // this.player1.update(dt);
+    // this.player2.update(dt);
+    //this.sceneUI.update(dt);
+    this.sceneOverUI.update(dt);
   }
 }

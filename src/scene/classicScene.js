@@ -91,6 +91,9 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("HardModeScene");
         });
+        this.sceneUI.on("toShopSkinScene", () => { 
+            this.parent.onStartScene("ShopSkinScene");
+        });
         this.background.on("pointerdown", () => {
             this._onPointerDown();
         });

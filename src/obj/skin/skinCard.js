@@ -10,14 +10,14 @@ export class SkinCard extends Container {
     _initProperties(skin) {
         this.texture = skin.texture1;
         this.cost =  skin.cost;
-        this.unlocked = skin.enabled;
+        this.enabled = skin.enabled;
     }
 
     _initSprite() {
         this._spriteLocked();
         this._spriteUnlocked();
 
-        if(this.unlocked) this.onUnlocked();
+        if(this.enabled) this.onUnlocked();
         else this.onLocked();
     }
 
@@ -26,7 +26,7 @@ export class SkinCard extends Container {
 
         this.bg1 = new Graphics();
         this.bg1.beginFill(0xFFFFFF);
-        this.bg1.drawRoundedRect(-150, -55, 300, 110, 18);
+        this.bg1.drawRoundedRect(-160, -55, 320, 110, 18);
         this.bg1.endFill();
         this.unlocked.addChild(this.bg1);
 
@@ -43,7 +43,7 @@ export class SkinCard extends Container {
 
         this.bg2 = new Graphics();
         this.bg2.beginFill(0xFF8207);
-        this.bg2.drawRoundedRect(-150, -55, 300, 110, 18);
+        this.bg2.drawRoundedRect(-160, -55, 320, 110, 18);
         this.bg2.endFill();
         this.locked.addChild(this.bg2);
 

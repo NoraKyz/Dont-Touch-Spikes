@@ -4,19 +4,18 @@ import { Data } from "../../data.js"
 
 export class SkinManager {
     constructor() {
-        this.skins = [];
+        this.skinsList = [];
 
         this._initSkins();
     }
 
     static init() {
-        this.currentSkin = new Skin(SkinStorage.Default);
+        this.currentSkin = new Skin(SkinStorage.storage[0]);
     }
 
     _initSkins() {
-        SkinStorage.forEach(data => {
-            let skin = new Skin(data);
-            this.skins.push(skin);
+        SkinStorage.storage.forEach(skin => {
+            this.skinsList.push(new Skin(skin));
         });
     }
 

@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { ClassicScene } from "./classicScene";
 import { HardModeScene } from "./hardModeScene";
-import { ShopScene } from "./shopScene";
+import { ShopSkinScene } from "./shopSkinScene";
 
 export class SceneManager extends Container {
 
@@ -9,7 +9,7 @@ export class SceneManager extends Container {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("ShopScene");
+        this.onStartScene("ClassicModeScene");
     }
 
     _initProperties() {
@@ -24,8 +24,8 @@ export class SceneManager extends Container {
         this.hardmodeScene = new HardModeScene(this);
         this.scenes.push(this.hardmodeScene);
 
-        this.shopScene = new ShopScene();
-        this.scenes.push(this.shopScene);
+        this.shopSkinScene = new ShopSkinScene();
+        this.scenes.push(this.shopSkinScene);
     }
     // Gọi id trong scene để chạy scene đó
     onStartScene(id) {

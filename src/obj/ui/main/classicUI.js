@@ -10,6 +10,7 @@ export class ClassicUI extends MainUI {
   _initComponent() {
     super._initComponent();
     this._initHardModeSwitch();
+    this._initShopSkinButton();
   }
 
   _initTitleUI() {
@@ -21,8 +22,8 @@ export class ClassicUI extends MainUI {
   _initHardModeSwitch() {
     this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
-    this.hardModeSwitch.scale.set(0.15 );
-    this.hardModeSwitch.position.set(-290 , -230 );
+    this.hardModeSwitch.scale.set(0.15);
+    this.hardModeSwitch.position.set(-290, -230);
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
@@ -31,7 +32,23 @@ export class ClassicUI extends MainUI {
     this.addChild(this.hardModeSwitch);
   }
 
+  _initShopSkinButton(){
+    this.skinShopButton = Sprite.from(Assets.get("skinShopButton"));
+    this.skinShopButton.anchor.set(0.5);
+    this.skinShopButton.scale.set(0.15);
+    this.skinShopButton.position.set(290, -230);
+
+    this.skinShopButton.cursor = "pointer";
+    this.skinShopButton.eventMode = 'static';
+    this.skinShopButton.on("pointerdown", () => this._toShopSkinScene());
+    this.addChild(this.skinShopButton);
+  }
+
   _toHardModeScene() {
-    this.emit("toHardModeScene")
+    this.emit("toHardModeScene");
+  }
+
+  _toShopSkinScene() {
+    this.emit("toShopSkinScene");
   }
 }

@@ -4,6 +4,7 @@ import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";
 import * as TWEEN from "@tweenjs/tween.js";
+import { SkinStorage } from "./obj/skin/skinStorage";
 
 export class Game {
     static init() {
@@ -23,6 +24,7 @@ export class Game {
         // this.resizef(window.innerWidth, window.innerHeight);
 
         AssetsManager._loadAssets().then(() => {
+            SkinStorage.init();
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
         });
@@ -66,7 +68,7 @@ export class Game {
 
 window.onload = function () {
     Data.init();
-    Game.init();
+    Game.init();  
     window.onresize = () => {
         Game.resize();
     }

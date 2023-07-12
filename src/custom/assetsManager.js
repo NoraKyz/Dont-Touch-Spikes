@@ -37,6 +37,7 @@ export class AssetsManager {
                 "shareButton": "./assets/images/shareButton.png",
                 "undoButton": "./assets/images/Undo.png",
                 "hardModeButton": "./assets/images/HardMode.png",
+                "skinShopButton": "./assets/images/skinShopButton.png",
             }
         )
 

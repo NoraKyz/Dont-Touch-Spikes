@@ -9,7 +9,7 @@ export class PlayerMovement {
 
     _initProperties() {
         this.velocity = { x: 0 , y: -1.5  };
-        this.gravity = 0.5 ;
+        this.gravity = 0.5;
         this.jumpForce = 12 ;
         this.direction = { x: 1, y: 1 };
 

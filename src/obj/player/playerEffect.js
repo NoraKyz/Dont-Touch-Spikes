@@ -2,7 +2,6 @@ import { Assets, Texture } from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import config from "../../../assets/aim/emitter.json";
 import * as TWEEN from "@tweenjs/tween.js";
-import { Game } from "../../game";
 
 export class PlayerEffect {
     constructor(obj) {

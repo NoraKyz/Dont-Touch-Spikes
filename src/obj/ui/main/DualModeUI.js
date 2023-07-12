@@ -19,7 +19,7 @@ export class DualModeUI extends MainUI {
     this._UIEffect();
   }
 
-  initStar(position){
+  _initStar(position){
     const star = new Container();
     this.loseStar = Sprite.from(Assets.get("star1"));
     this.loseStar.position.set(position.x, position.y);
@@ -36,9 +36,9 @@ export class DualModeUI extends MainUI {
   }
 
   _initStarTop(){
-    this.topStar1 = this.initStar({x: -60, y: 140});
-    this.topStar2 = this.initStar({x: 0, y: 138});
-    this.topStar3 = this.initStar({x: 60, y: 140});
+    this.topStar1 = this._initStar({x: -60, y: 140});
+    this.topStar2 = this._initStar({x: 0, y: 138});
+    this.topStar3 = this._initStar({x: 60, y: 140});
     this.topStar1.scale.set(-1); 
     this.topStar2.scale.set(-1);
     this.topStar3.scale.set(-1);
@@ -47,9 +47,9 @@ export class DualModeUI extends MainUI {
     this.addChild(this.topStar3);
   }
   _initStarBottom(){
-    this.bottomStar1 = this.initStar({x: -60, y: 140});
-    this.bottomStar2 = this.initStar({x: 0, y: 138});
-    this.bottomStar3 = this.initStar({x: 60, y: 140});
+    this.bottomStar1 = this._initStar({x: -60, y: 140});
+    this.bottomStar2 = this._initStar({x: 0, y: 138});
+    this.bottomStar3 = this._initStar({x: 60, y: 140});
     this.addChild(this.bottomStar1);
     this.addChild(this.bottomStar2);
     this.addChild(this.bottomStar3);

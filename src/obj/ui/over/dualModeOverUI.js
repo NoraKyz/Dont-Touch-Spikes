@@ -1,4 +1,4 @@
-import { Assets, Graphics, Sprite, Text, TextStyle } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Text, TextStyle } from "pixi.js";
 import { OverUI } from "./overUI";
 
 
@@ -16,6 +16,8 @@ export class DualModeOverUI extends OverUI {
 
       this._initBluePlayer();
       this._initRedPlayer();
+      this._initStarLeft();
+      this._initStarRight();
     }
     _initBluePlayer(){
       this.blueSprite1 = Sprite.from(Assets.get("bird1"));
@@ -46,6 +48,35 @@ export class DualModeOverUI extends OverUI {
       this.redSprite2.scale.x *= -1;
       this.addChild(this.redSprite2);
       this.redSprite2.visible = false;
+    }
+    _initStar(position){
+      const star = new Container();
+      this.loseStar = Sprite.from(Assets.get("star1"));
+      this.loseStar.position.set(position.x, position.y);
+      this.loseStar.anchor.set(0.5);
+      this.winStar = Sprite.from(Assets.get("star2"));
+      this.winStar.position.set(position.x, position.y);
+      this.winStar.anchor.set(0.5);
+      star.addChild(this.loseStar);
+      star.addChild(this.winStar);
+      this.loseStar.visible = false;
+      return star;
+    }
+    _initStarLeft(){
+      this.leftStar1 = this._initStar({x: -195, y: -40});
+      this.leftStar2 = this._initStar({x: -150, y: -40});
+      this.leftStar3 = this._initStar({x: -105, y: -40});
+      this.addChild(this.leftStar1);
+      this.addChild(this.leftStar2);
+      this.addChild(this.leftStar3);
+    }
+    _initStarRight(){
+      this.rightStar1 = this._initStar({x: 195, y: -40});
+      this.rightStar2 = this._initStar({x: 150, y: -40});
+      this.rightStar3 = this._initStar({x: 105, y: -40});
+      this.addChild(this.rightStar1);
+      this.addChild(this.rightStar2);
+      this.addChild(this.rightStar3);
     }
 
     _initReplayButton(){

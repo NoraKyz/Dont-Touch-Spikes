@@ -26,7 +26,7 @@ export class DualModeScene extends GameScene {
 
   _initGameplay() {
     this._initBackground();
-    this._initPlayer();
+    //this._initPlayer();
     this._initSceneUI();
     this._initSceneOverUI();
   }
@@ -50,11 +50,11 @@ export class DualModeScene extends GameScene {
 
   _initSceneUI() {
     this.sceneUI = new DualModeUI();
-    this.addChild(this.sceneUI);
+    //this.addChild(this.sceneUI);
   }
   _initSceneOverUI() {
-    // this.sceneOverUI = new DualModeOverUI();
-    // this.addChild(this.sceneOverUI);
+    this.sceneOverUI = new DualModeOverUI();
+    this.addChild(this.sceneOverUI);
   }
 
   _initSceneEvent() {
@@ -69,9 +69,9 @@ export class DualModeScene extends GameScene {
   }
 
   update(dt) {
-    this.player1.update(dt);
-    this.player2.update(dt);
-    this.sceneUI.update(dt);
-    //this.sceneOverUI.update(dt);
+    // this.player1.update(dt);
+    // this.player2.update(dt);
+    // this.sceneUI.update(dt);
+    this.sceneOverUI.update(dt);
   }
 }

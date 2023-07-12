@@ -18,42 +18,6 @@ export class DualModeUI extends MainUI {
     this._initEffect();
     this._UIEffect();
   }
-
-  _initStar(position){
-    const star = new Container();
-    this.loseStar = Sprite.from(Assets.get("star1"));
-    this.loseStar.position.set(position.x, position.y);
-    this.loseStar.anchor.set(0.5);
-    this.loseStar.scale.set(1.2);
-    this.winStar = Sprite.from(Assets.get("star2"));
-    this.winStar.position.set(position.x, position.y);
-    this.winStar.anchor.set(0.5);
-    this.winStar.scale.set(1.2);
-    star.addChild(this.loseStar);
-    star.addChild(this.winStar);
-    this.winStar.visible = false;
-    return star;
-  }
-
-  _initStarTop(){
-    this.topStar1 = this._initStar({x: -60, y: 140});
-    this.topStar2 = this._initStar({x: 0, y: 138});
-    this.topStar3 = this._initStar({x: 60, y: 140});
-    this.topStar1.scale.set(-1); 
-    this.topStar2.scale.set(-1);
-    this.topStar3.scale.set(-1);
-    this.addChild(this.topStar1);
-    this.addChild(this.topStar2);
-    this.addChild(this.topStar3);
-  }
-  _initStarBottom(){
-    this.bottomStar1 = this._initStar({x: -60, y: 140});
-    this.bottomStar2 = this._initStar({x: 0, y: 138});
-    this.bottomStar3 = this._initStar({x: 60, y: 140});
-    this.addChild(this.bottomStar1);
-    this.addChild(this.bottomStar2);
-    this.addChild(this.bottomStar3);
-  }
   
   _initProperties() {
     this.styleBig = new TextStyle({
@@ -70,6 +34,8 @@ export class DualModeUI extends MainUI {
         fontWeight: 550,
         letterSpacing: 1,
     });
+    this.stateStarTop = [false, false, false];
+    this.stateStarBottom = [false, false, false];
   } 
 
   _initGameTutol() {
@@ -118,6 +84,55 @@ export class DualModeUI extends MainUI {
     this.backButton.on("pointerdown", () => this._toClassicModeScene());
 
     this.addChild(this.backButton);
+  }
+
+  _initStar(position){
+    const star = new Container();
+    star.loseStar = Sprite.from(Assets.get("star1"));
+    star.loseStar.position.set(position.x, position.y);
+    star.loseStar.anchor.set(0.5);
+    star.loseStar.scale.set(1.2);
+    star.winStar = Sprite.from(Assets.get("star2"));
+    star.winStar.position.set(position.x, position.y);
+    star.winStar.anchor.set(0.5);
+    star.winStar.scale.set(1.2);
+    star.addChild(star.loseStar);
+    star.addChild(star.winStar);
+    star.winStar.visible = false;
+    return star;
+  }
+
+  _initStarTop(){
+    this.topStar1 = this._initStar({x: -60, y: 140});
+    this.topStar2 = this._initStar({x: 0, y: 138});
+    this.topStar3 = this._initStar({x: 60, y: 140});
+    this.topStar1.scale.set(-1); 
+    this.topStar2.scale.set(-1);
+    this.topStar3.scale.set(-1);
+    this.addChild(this.topStar1);
+    this.addChild(this.topStar2);
+    this.addChild(this.topStar3);
+  }
+  _initStarBottom(){
+    this.bottomStar1 = this._initStar({x: -60, y: 140});
+    this.bottomStar2 = this._initStar({x: 0, y: 138});
+    this.bottomStar3 = this._initStar({x: 60, y: 140});
+    this.addChild(this.bottomStar1);
+    this.addChild(this.bottomStar2);
+    this.addChild(this.bottomStar3);
+  }
+
+  onPlayer1Win(){
+    if(this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
+    else if (this.bottomStar2.winStar.visible === false) this.bottomStar2.winStar.visible = true;
+    else if (this.bottomStar3.winStar.visible === false) this.bottomStar3.winStar.visible = true;
+    this.stateStarBottom = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
+  }
+  onPlayer2Win(){
+    if(this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
+    else if (this.topStar2.winStar.visible === false) this.topStar2.winStar.visible = true;
+    else if (this.topStar3.winStar.visible === false) this.topStar3.winStar.visible = true;
+    this.stateStarTop = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
   }
 
   _toClassicModeScene() {

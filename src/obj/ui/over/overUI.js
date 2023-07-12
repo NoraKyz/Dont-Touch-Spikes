@@ -12,7 +12,7 @@ export class OverUI extends PIXI.Container {
         this._initReplayButton();
         this._initShareButton();
         this._initTitleUI();
-
+        
         this.sortChildren();
         this.zIndex = 1;
     }

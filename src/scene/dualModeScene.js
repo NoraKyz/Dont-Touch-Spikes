@@ -53,11 +53,20 @@ export class DualModeScene extends GameScene {
     //this.addChild(this.sceneUI);
   }
   _initSceneOverUI() {
+    console.log(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom);
     this.sceneOverUI = new DualModeOverUI();
     this.addChild(this.sceneOverUI);
+    this.sceneOverUI.onReset(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom)
+    //this.sceneOverUI.hideGameOverUI();
+  }
+
+  _onResetScene(){
+    // this.sceneUI.onReset();
+    // this.sceneOverUI.onReset();
   }
 
   _initSceneEvent() {
+    this.sceneOverUI.on("replay", this._onResetScene.bind(this));
     this.on("lose", this._onLose.bind(this));
     this.sceneUI.on("toClassicModeScene", () => {
       this.parent.onStartScene("classicModeScene")

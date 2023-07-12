@@ -23,15 +23,9 @@ export class PlayerEffect {
 
     _flyEffect() {
         let texture = Texture.from("circle");
-        let cusConfig = config;
-        cusConfig.scale = {
-            start: 0.5 ,
-            end: 0.035 ,
-            minimumScaleMultiplier: 1,
-        }
         this.emitter = new Emitter(
             this.obj.parent,
-            upgradeConfig(cusConfig, [texture])
+            upgradeConfig(config, [texture])
         );
         this.emitter.emit = false;
     }

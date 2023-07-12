@@ -9,7 +9,7 @@ export class SkinCard extends Container {
 
     _initProperties(skin) {
         this.texture = skin.texture1;
-        this.cost =  skin.cost.value;
+        this.cost =  skin.cost;
         this.unlocked = skin.enabled;
     }
 
@@ -53,7 +53,7 @@ export class SkinCard extends Container {
         this.icon.position.set(-80, 0);
         this.locked.addChild(this.icon);
 
-        this.price = new Text(this.cost, {
+        this.price = new Text(this.cost.value, {
             fill: "#FFFFFF",
             fontFamily: "Blissful Thinking",
             fontSize: 70,

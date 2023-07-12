@@ -12,6 +12,7 @@ import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { SkinCard } from "../obj/skin/skinCard.js";
+import { SpikesManager } from "../obj/trap/spikesManager.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -40,7 +41,7 @@ export class ClassicScene extends GameScene {
     }
 
     _initSpikes() {     
-        this.spikes = new SpikesManager();
+        this.spikes = new SpikesManager(this.id);
         this.addChild(this.spikes);
     }
 
@@ -158,7 +159,6 @@ export class ClassicScene extends GameScene {
         if (this.gameState == GameState.Playing) {
             this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);
             this.colliderDetector.checkCollider(this.player, this.candies.children);
-            this.spikes.update();
             this.candies.update(dt);
         }
     }

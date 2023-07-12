@@ -3,7 +3,7 @@ import { Data } from "./data";
 export class LevelController {
     static updateLevel() {
         let minSpikes = 0, maxSpikes = 0;
-        if (Data.currentScore === 1) {
+        if (Data.currentScore == 1) {
             minSpikes = 1;
             maxSpikes = 2;
         } else if (Data.currentScore <= 2) {

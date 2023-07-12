@@ -12,9 +12,47 @@ export class DualModeUI extends MainUI {
     this._initProperties();
     this._initBackButton();
     this._initGameTutol();
+    this._initStarTop();
+    this._initStarBottom();
     this._initLine();
     this._initEffect();
     this._UIEffect();
+  }
+
+  initStar(position){
+    const star = new Container();
+    this.loseStar = Sprite.from(Assets.get("star1"));
+    this.loseStar.position.set(position.x, position.y);
+    this.loseStar.anchor.set(0.5);
+    this.loseStar.scale.set(1.2);
+    this.winStar = Sprite.from(Assets.get("star2"));
+    this.winStar.position.set(position.x, position.y);
+    this.winStar.anchor.set(0.5);
+    this.winStar.scale.set(1.2);
+    star.addChild(this.loseStar);
+    star.addChild(this.winStar);
+    this.winStar.visible = false;
+    return star;
+  }
+
+  _initStarTop(){
+    this.topStar1 = this.initStar({x: -60, y: 140});
+    this.topStar2 = this.initStar({x: 0, y: 138});
+    this.topStar3 = this.initStar({x: 60, y: 140});
+    this.topStar1.scale.set(-1); 
+    this.topStar2.scale.set(-1);
+    this.topStar3.scale.set(-1);
+    this.addChild(this.topStar1);
+    this.addChild(this.topStar2);
+    this.addChild(this.topStar3);
+  }
+  _initStarBottom(){
+    this.bottomStar1 = this.initStar({x: -60, y: 140});
+    this.bottomStar2 = this.initStar({x: 0, y: 138});
+    this.bottomStar3 = this.initStar({x: 60, y: 140});
+    this.addChild(this.bottomStar1);
+    this.addChild(this.bottomStar2);
+    this.addChild(this.bottomStar3);
   }
   
   _initProperties() {

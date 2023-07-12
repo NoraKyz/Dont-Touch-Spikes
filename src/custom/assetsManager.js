@@ -39,6 +39,8 @@ export class AssetsManager {
                 "hardModeButton": "./assets/images/HardMode.png",
                 "dualModeButton": "./assets/images/DualMode.png",
                 "line": "./assets/images/line.png",
+                "star1": "./assets/images/star1.png",
+                "star2": "./assets/images/star2.png",
             }
         )
 

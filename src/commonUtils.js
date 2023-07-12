@@ -59,4 +59,25 @@ export class CommonUtils {
         }
         return { color: color, colorDarker: colorDarker };
     }
+
+    // luôn luôn có khoảng trống 2 ô trên spikeLine để dễ chơi
+    static randomArray(quantity){
+        const resultArray = [];
+        const makerArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        const num = this.randomInt(1, 7);
+        makerArray[num] = 1;
+        makerArray[num + 1] = 1;
+        const valueArray = [num, num + 1];
+        while(valueArray.length < makerArray.length - quantity){
+            let newNum = CommonUtils.randomInt(0, 9);
+            if(!valueArray.includes(newNum)){
+                valueArray.push(newNum);
+                makerArray[newNum] = 1;
+            }
+        }
+        makerArray.forEach((value, index) => {
+            if(value == 0) resultArray.push(index);
+        })
+        return resultArray;
+    }
 }

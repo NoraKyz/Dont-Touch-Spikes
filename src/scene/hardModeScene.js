@@ -6,11 +6,11 @@ import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
-import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { HardModeUI } from "../obj/ui/main/hardModeUI.js";
-import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js";
+import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js"
+import { SpikesManager } from "../obj/trap/spikesManager.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -19,7 +19,7 @@ export class HardModeScene extends GameScene {
 
     _initProperties(){
         super._initProperties();
-        this.id = 'HardModeScene';
+        this.id = "HardModeScene";
     }
 
     _initGameplay() {
@@ -39,7 +39,7 @@ export class HardModeScene extends GameScene {
     }
 
     _initSpikes(){
-        this.spikes = new SpikesManager();
+        this.spikes = new SpikesManager(this.id);
         this.addChild(this.spikes);
     }
 
@@ -146,7 +146,7 @@ export class HardModeScene extends GameScene {
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
         let limitSpike = LevelController.updateLevel();
-        this.spikes.moveSpikesHardMode(direction, limitSpike);
+        this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);
         }
@@ -157,7 +157,6 @@ export class HardModeScene extends GameScene {
         if (this.gameState == GameState.Playing) {
             this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);
             this.colliderDetector.checkCollider(this.player, this.candies.children);
-            this.spikes.update();
             this.candies.update(dt);
         }
     }

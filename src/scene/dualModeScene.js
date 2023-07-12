@@ -9,7 +9,7 @@ import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import {DualModeUI} from "../obj/ui/main/DualModeUI";
+import {DualModeUI} from "../obj/ui/main/dualModeUI.js";
 import {Game} from "../game";
 import {BackgroundDual} from "../obj/background/backgroundDual";
 
@@ -20,7 +20,7 @@ export class DualModeScene extends GameScene {
 
   _initProperties(){
     super._initProperties();
-    this.id = 'dualModeScene';
+    this.id = "dualModeScene";
   }
 
   _initGameplay() {
@@ -30,22 +30,20 @@ export class DualModeScene extends GameScene {
   }
 
   _initPlayer(){
-
-
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
+    this.player1.position.set(0, -50);
+    this.player1.scale.set(-1);
     this.addChild(this.player1);
 
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
-    this.player2.position.set(100, 100);
-    this.player2.scale.set(-1);
-
+    this.player2.position.set(0, 50);
     this.addChild(this.player2);
   }
   _initBackground() {
     this.background = new BackgroundDual();
-    console.log(this.background);
+    //console.log(this.background);
     this.addChild(this.background);
   }
 
@@ -66,7 +64,9 @@ export class DualModeScene extends GameScene {
   }
 
   update(dt) {
+    //console.log(123);
     this.player1.update(dt);
     this.player2.update(dt);
+    this.sceneUI.update(dt);
   }
 }

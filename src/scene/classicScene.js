@@ -12,7 +12,6 @@ import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { SkinCard } from "../obj/skin/skinCard.js";
-import { SpikesManager } from "../obj/trap/spikesManager.js";
 
 export class ClassicScene extends GameScene {
     constructor() {

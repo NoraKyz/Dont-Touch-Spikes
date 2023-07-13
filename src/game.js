@@ -8,6 +8,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 export class Game {
     static init() {
         this.app = new Application({
+            resolution: window.devicePixelRatio || 1,
             width: GameConstant.GAME_WIDTH,
             height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0xe0ddd5,
@@ -15,32 +16,41 @@ export class Game {
         });
         document.body.appendChild(this.app.view);
         
-        const viewStyle = this.app.view.style;
-        viewStyle.position = "absolute";
-        viewStyle.display = "block";
-        viewStyle.padding = "0px 0px 0px 0px";
-        this.resize(window.innerWidth, window.innerHeight);
+        // const viewStyle = this.app.view.style;
+        // viewStyle.position = "absolute";
+        // viewStyle.display = "block";
+        // viewStyle.padding = "0px 0px 0px 0px";
+        // this.resizef(window.innerWidth, window.innerHeight);
 
         AssetsManager._loadAssets().then(() => {
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
         });
+
+        Game.resize();
     }
 
-    static resize(width, height) {
-        this.style = this.app.view.style;
-        this.ratio = Math.max(GameConstant.GAME_WIDTH / width, GameConstant.GAME_HEIGHT / height);
+    static resize(){
+        // current screen size
+        const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-        this.app.view.width = GameConstant.GAME_WIDTH / this.ratio;
-        this.app.view.height = GameConstant.GAME_HEIGHT / this.ratio;
+        // uniform scale for our game
+        const scale = Math.min(screenWidth / GameConstant.GAME_WIDTH, screenHeight / GameConstant.GAME_HEIGHT);
 
-        let vMargin = Math.floor((width - this.app.view.width) / 2);
-        let hMargin = Math.floor((height - this.app.view.height) / 2); 
-        this.style.margin = `${hMargin}px ${vMargin}px ${hMargin}px ${vMargin}px`;
+        // the "uniformly englarged" size for our game
+        const enlargedWidth = Math.floor(scale * GameConstant.GAME_WIDTH);
+        const enlargedHeight = Math.floor(scale * GameConstant.GAME_HEIGHT);
 
-        this.app.resizeTo = this.app.view;
-        this.app.resize();
-        this.sceneManager && this.sceneManager.onResize();
+        // margins for centering our game
+        const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+        const verticalMargin = (screenHeight - enlargedHeight) / 2;
+
+        // now we use css trickery to set the sizes and margins
+        this.app.view.style.width = `${enlargedWidth}px`;
+        this.app.view.style.height = `${enlargedHeight}px`;
+        this.app.view.style.marginLeft = this.app.view.style.marginRight = `${horizontalMargin}px`;
+        this.app.view.style.marginTop = this.app.view.style.marginBottom = `${verticalMargin}px`;
     }
 
     static _initScene() {
@@ -58,7 +68,7 @@ window.onload = function () {
     Data.init();
     Game.init();
     window.onresize = () => {
-        Game.resize(window.innerWidth, window.innerHeight);
+        Game.resize();
     }
 }
 

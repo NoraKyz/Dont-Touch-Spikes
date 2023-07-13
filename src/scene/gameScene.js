@@ -39,7 +39,7 @@ export class GameScene extends Container {
     _initSceneEvent() { } // Đăng kí các sự kiện cho scene
 
     // abstract
-    _onResetScene() { } // Reset lại scene
+    onResetScene() { } // Reset lại scene
 
     onResize() {
         this.x = Game.app.screen.width / 2;

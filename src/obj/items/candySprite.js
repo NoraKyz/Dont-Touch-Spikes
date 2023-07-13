@@ -13,9 +13,9 @@ export class CandySprite extends Container {
         this.style = new TextStyle({
             fill: "#FF8207",
             fontFamily: "Blissful Thinking",
-            fontSize: 55 * Game.ratio,
+            fontSize: 55 ,
             fontWeight: "lighter",
-            letterSpacing: 1 * Game.ratio,
+            letterSpacing: 1 ,
         });
     }
 
@@ -26,14 +26,14 @@ export class CandySprite extends Container {
 
     _candySprite() {
         this.candy = Sprite.from(Assets.get("candy"));
-        this.scale.set(1.2 / Game.ratio);
+        this.scale.set(1.2 );
         this.candy.anchor.set(0.5);
         this.addChild(this.candy);
     }
 
     _addItemSprite() {
         this.numberAddItem = new Text("+1", this.style);
-        this.numberAddItem.scale.set(1 / Game.ratio);
+        this.numberAddItem.scale.set(1 );
         this.numberAddItem.anchor.set(0.5);
         this.addChild(this.numberAddItem);
     }

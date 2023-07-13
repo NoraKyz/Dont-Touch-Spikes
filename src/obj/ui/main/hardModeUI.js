@@ -21,8 +21,8 @@ export class HardModeUI extends MainUI {
   _initBackButton() {
     this.backButton = Sprite.from(Assets.get("undoButton"));
     this.backButton.anchor.set(0.5);
-    this.backButton.scale.set(0.15 / Game.ratio);
-    this.backButton.position.set(-290 / Game.ratio, -420 / Game.ratio);
+    this.backButton.scale.set(0.15 );
+    this.backButton.position.set(-290 , -420 );
 
     this.backButton.cursor = "pointer";
     this.backButton.eventMode = 'static';

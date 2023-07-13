@@ -1,188 +1,74 @@
 import { Container } from "pixi.js";
 import { Spike } from "./spike";
 import { Game } from "../../game";
-import { Collider } from "../physics/collider";
 import { CommonUtils } from "../../commonUtils";
-import * as TWEEN from '@tweenjs/tween.js'
+import { MovementClassic } from "./movementClassic";
+import { MovementHardMode } from "./movementHardMode";
+import { MovementDuo } from "./movementDuo";
 
 export class SpikesManager extends Container {
-    constructor() {
+    constructor(id) {
         super();
+        this.id = id;
         this.state = 0;
-        this.distance = (70 / Game.ratio) * Math.sqrt(3) / 2;
-        this.velocity = this.distance / 30;
+        this.distance = (70 ) * Math.sqrt(3) / 2;
         this.minSpikes = 2;
         this.maxSpikes = 5;
-        this.leftIndexSpikes = [4, 5];
-        this.rightIndexSpikes = [];
 
         this.spikeLeft = [];
         this.spikeRight = [];
         this.poolSpikes = [];
         this._initSpikes();
-        this._initColliders();
+        this._initMoveSpikes();
     }
-
+    
     _randomSpike(limitSpike) {
         this.minSpikes = limitSpike.minSpikes;
         this.maxSpikes = limitSpike.maxSpikes;
-        const arrayIndex = [];
         let randomQuantitySpikes = CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
-        console.log(randomQuantitySpikes);
-        while(arrayIndex.length < randomQuantitySpikes) {
-            let newSpike = CommonUtils.randomInt(0, 9);
-            if (!arrayIndex.includes(newSpike)) arrayIndex.push(newSpike);
-        }
+        const arrayIndex = CommonUtils.randomArray(randomQuantitySpikes);
         return arrayIndex;
     }
 
+    _initMoveSpikes(){
+        switch(this.id){
+            case "ClassicModeScene": 
+                this.movement = new MovementClassic(this);
+                break;
+            case "HardModeScene":
+                this.movement = new MovementHardMode(this);
+                break;
+            case "DuoModeScene":
+                this.movement = new MovementDuo(this);
+                break;
+        }
+    }
+
     moveSpikes(state, limitSpike) {
-        this.state = state;
-        if (this.state == -1) {
-            this.spikeRight.forEach((spike, index) => {
-                if (this.rightIndexSpikes.includes(index)) {
-                    const target = { x: this.distance, y: spike.y };
-                    this._movebyTween(spike, target);
-                }
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                if (this.leftIndexSpikes.includes(index)) {
-                    const target = { x: 0, y: spike.y };
-                    this._movebyTween(spike, target);
-                }
-            })
-            this.rightIndexSpikes = this._randomSpike(limitSpike);
-        }
-        if (this.state == 1) {
-            this.spikeRight.forEach((spike, index) => {
-                if (this.rightIndexSpikes.includes(index)) {
-                    const target = { x: 0, y: spike.y };
-                    this._movebyTween(spike, target);
-                }
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                if (this.leftIndexSpikes.includes(index)) {
-                    const target = { x: -this.distance, y: spike.y };
-                    this._movebyTween(spike, target);
-                }
-            })
-            this.leftIndexSpikes = this._randomSpike(limitSpike);
-        }
-    }
-
-    moveSpikesHardMode(state, limitSpike){
-        this.state = state;
-        this.deviatedY = 50 / Game.ratio;
-        if(this.state == -1){
-            this.spikeRight.forEach((spike, index) => {
-                if(this.rightIndexSpikes.includes(index)){
-                    const target = {x: this.distance, y: spike.y - this.deviatedY};
-                    this._hardModeMovebyTween(spike, target);
-                } 
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                spike.x = this.constPositionLeftX[index];
-                spike.y = this.constPositionY[index];
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                if(this.leftIndexSpikes.includes(index)){
-                    const target = {x: 0, y: spike.y - this.deviatedY};
-                    this._hardModeMovebyTween(spike, target);
-                } 
-            })
-            this.rightIndexSpikes = this._randomSpike(limitSpike);
-        }
-        if(this.state == 1){
-            this.spikeRight.forEach((spike, index) => {
-                spike.x = this.constPositionRightX[index];
-                spike.y = this.constPositionY[index];
-            })
-            this.spikeRight.forEach((spike, index) => {
-                if(this.rightIndexSpikes.includes(index)){
-                    const target = {x: 0, y: spike.y + this.deviatedY};
-                    this._hardModeMovebyTween(spike, target);
-                } 
-            })
-            this.spikeLeft.forEach((spike, index) => {
-                if(this.leftIndexSpikes.includes(index)){
-                    const target = {x: -this.distance, y: spike.y + this.deviatedY};
-                    this._hardModeMovebyTween(spike, target);
-                } 
-            })
-            this.leftIndexSpikes = this._randomSpike(limitSpike);
-        }
-    } 
-     
-    _movebyTween(spike, position) {
-        this.tween = new TWEEN.Tween(spike)
-            .to({ x: position.x, y: position.y }, 500);
-        this.tween.start();
-    }
-    
-    _hardModeMovebyTween(spike, target, direction){
-        spike.tween1 = new TWEEN.Tween(spike)
-        .to(target, 300)
-        .onComplete(() => {
-            let newtarget;
-            if(direction == 0) newtarget = {x: target.x, y: target.y + 70 / Game.ratio};
-            else newtarget = {x: target.x, y: target.y - 70 / Game.ratio};
-            spike.tween2 = new TWEEN.Tween(spike)
-            .to(newtarget, 700)
-            .yoyo(true)
-            .repeat(Infinity)
-            .start();  
-        })
-        spike.tween1.start();
-    }
-
-    update() {
-        TWEEN.update();
+        this.movement.moveSpikes(state, limitSpike);
     }
 
     _initSpikes() {
-        let startY_Top = - 525 / Game.ratio;
-        let startY_Bottom = 434 / Game.ratio;
+        let startY_Top = - 525 ;
+        let startY_Bottom = 434 ;
 
-        this.spikesTop = this._spawnSpikeLine(-280 / Game.ratio, startY_Top, 7, Math.PI, 1);
-        this.spikesBottom = this._spawnSpikeLine(-280 / Game.ratio, startY_Bottom, 7, 0, 1);
-        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 / Game.ratio, startY_Top + 80 / Game.ratio, 10, Math.PI / 2, 0);
-        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 / Game.ratio, startY_Top + 80 / Game.ratio, 10, - Math.PI / 2, 0);
+        this.spikesTop = this._spawnSpikeLine(-280 , startY_Top, 7, Math.PI, 1);
+        this.spikesBottom = this._spawnSpikeLine(-280 , startY_Bottom, 7, 0, 1);
+        this.spikeLeft = this._spawnSpikeLine(-Game.app.view.width / 2 + 24 , startY_Top + 80 , 10, Math.PI / 2, 0);
+        this.spikeRight = this._spawnSpikeLine(Game.app.view.width / 2 - 24 , startY_Top + 80 , 10, - Math.PI / 2, 0);
 
-        this.constPositionY = [];	
-        this.constPositionLeftX = [];	
-        this.constPositionRightX = [];	
-        this.spikeLeft.forEach(spike => {	
-            spike.x -= this.distance;	
-            this.constPositionY.push(spike.y);	
-            this.constPositionLeftX.push(spike.x);	
-        })	
-        this.spikeRight.forEach(spike => {	
-            spike.x += this.distance;	
-            this.constPositionRightX.push(spike.x);	
-        })
+        this.spikeLeft.forEach(spike => spike.x -= this.distance);
+        this.spikeRight.forEach(spike => spike.x += this.distance);
     }
-
     _addPoolSpike(array) {
-        array.forEach(spike => {
-            this.poolSpikes.push(spike);
-        })
+        array.forEach(spike => this.poolSpikes.push(spike));
     }
-
-    _initColliders() {
-        let colliderRadious = 25 / Game.ratio;
-        this.poolSpikes.forEach(spike => {
-            let collider = new Collider(colliderRadious);
-            spike.collider = collider;
-            spike.collider.position.y = 10 / Game.ratio;
-            spike.addChild(collider);
-        });
-    }
-
+    
     _spawnSpikeLine(startX, startY, numbers, rotation, dir) {
         // dir = 1 => vẽ hàng, ngược lại vẽ cột
         let spikeLine = new Container();
         let spikes = [];
-        const spikeSpacing = (70 / Game.ratio) * 4 / 3;
+        const spikeSpacing = (70 ) * 4 / 3;
 
         for (let i = 0; i < numbers; i++) {
             let spike = new Spike();
@@ -204,41 +90,14 @@ export class SpikesManager extends Container {
         return spikes;
     }
 
-    _changeColorEffect() {
-        this.alpha = 0.9;
-        this.changeColorEffect = new TWEEN.Tween(this)
-            .to({ alpha: 1 }, 1000)
-    }
-
     changeColor(color) {
         this.poolSpikes.forEach(spike => {
-            spike.changeColor(color);
+            spike.sprite.changeColor(color);
         })
     }
-
+    
     onReset() {
         this.changeColor("FFFFFF");
-        // không tắt được cái spike di chuyển lên xuống liên tục :((
- 
-        this.spikeLeft.forEach((spike, index) => {
-            if(this.leftIndexSpikes.includes(index)){
-                if(spike.tween1){
-                    const target = {x: -this.distance, y: spike.y + this.deviatedY};
-                    this._hardModeMovebyTween(spike, target);
-                } 
-                spike.x = this.constPositionLeftX[index];
-            } 
-        })
-        this.spikeRight.forEach((spike, index) => {
-            if(this.rightIndexSpikes.includes(index)){
-                if(spike.tween1){
-                    const target = {x: this.distance, y: spike.y - this.deviatedY};
-                    this._hardModeMovebyTween(spike, target);
-                } 
-                spike.x = this.constPositionRightX[index];
-            } 
-        })
-        this.leftIndexSpikes = [4, 5];
-        this.rightIndexSpikes = [];
+        this.movement.onReset();
     }
 }

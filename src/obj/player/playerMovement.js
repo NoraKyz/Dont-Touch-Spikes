@@ -59,9 +59,9 @@ export class PlayerMovement {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce * 0.7;
         } else {
-            this.velocity.y = -4 / Game.ratio;
+            this.velocity.y = -4 ;
             if (this.obj.isDie) {
-                this.velocity.y = 2 / Game.ratio;
+                this.velocity.y = 2 ;
             }
         }
 
@@ -111,7 +111,7 @@ export class PlayerMovement {
     }
 
     onReset() {
-        this.velocity = { x: 0 / Game.ratio, y: -1.5 / Game.ratio };
+        this.velocity = { x: 0 , y: -1.5  };
         this.direction = { x: 1, y: 1 };
     }
 

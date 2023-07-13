@@ -24,9 +24,6 @@ export class SkinManager {
             Data.add(skin.cost.type, -skin.cost.value);
             skin.enabled = true;
             this.currentSkin = true;
-            console.log("Skin unlocked!");
-        } else {
-            console.log("Not enough " + skin.cost.type);
         }
     }
 

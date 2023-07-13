@@ -1,11 +1,17 @@
 import { Assets, Container, Sprite, Text, TextStyle } from "pixi.js";
-import { Data } from "../../../data";
+import { Data } from "../../../../data";
+import * as TWEEN from "@tweenjs/tween.js";
 
-export class ShopUI extends Container {
+export class SkinsShopUI extends Container {
     constructor() {
         super();
-
+        this._initProperties();
         this._initComponents();
+        this._initEffects();
+    }
+
+    _initProperties() {
+        //this.position.set(-280, -400);
     }
 
     _initComponents() {
@@ -29,7 +35,6 @@ export class ShopUI extends Container {
         this.backButton = Sprite.from(Assets.get("undoButton"));
         this.backButton.anchor.set(0.5);
         this.backButton.scale.set(0.2);
-        this.backButton.position.set(0, 0);
 
         this.backButton.cursor = "pointer";
         this.backButton.eventMode = 'static';
@@ -70,11 +75,30 @@ export class ShopUI extends Container {
         this.addChild(this.shopInfor);
     }
 
-    onGetSkin() {
-        this.itemQuantity = new Text(` ${Data.itemQuantity}`, {
-            ...this.style,
-            fontSize: 80,
-            fill: "#FF8207"
-        });
+    _initEffects() {
+        this._spawnInforEffect();
+        this._despawnInforEffect();
+    }
+
+    _spawnInforEffect() {
+        this.spawnInforEffect = new TWEEN.Tween(this.shopInfor)
+            .to({ alpha: 1 }, 1500)
+            .onComplete(() => {
+                this.despawnInforEffect.start();
+            });
+    }
+
+    _despawnInforEffect() {
+        this.despawnInforEffect = new TWEEN.Tween(this.shopInfor)
+            .to({ alpha: 0 }, 1500)
+            .onComplete(() => {
+                this.spawnInforEffect.start();
+            });
+    }
+
+    
+
+    onReset() {
+        this.itemQuantity.text = ` ${Data.itemQuantity}`;
     }
 }

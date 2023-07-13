@@ -1,13 +1,12 @@
 import { ScrollBox } from "@pixi/ui";
-import { SkinCard } from "../../skin/skinCard";
-import { GameConstant } from "../../../gameConstant"
-import { Assets, Sprite } from "pixi.js";
+import { SkinCard } from "../../../skin/skinCard";
+import { GameConstant } from "../../../../gameConstant"
 
-export class Shop extends ScrollBox {
+export class SkinsList extends ScrollBox {
     constructor() {
         super({
             width: GameConstant.GAME_WIDTH,
-            height: GameConstant.GAME_HEIGHT * 2 / 3,
+            height: GameConstant.GAME_HEIGHT * 0.624,
             background: 0xFFFFFF,
             elementsMargin: 12,
             vertPadding: 75,
@@ -18,6 +17,7 @@ export class Shop extends ScrollBox {
 
     _initProperties() {
         this.background.alpha = 0;
+        this.position.set(-360, -340);
     }
 
     initSkins(skinsList) {

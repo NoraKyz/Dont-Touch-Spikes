@@ -11,7 +11,7 @@ import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import { SkinCard } from "../obj/skin/skinCard.js";
+import { SkinsShop } from "../obj/ui/shop/skin/skinsShop.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -31,6 +31,7 @@ export class ClassicScene extends GameScene {
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
+        this._initSkinsShop();
     }
     // Obj in scene
     _initPlayer() {
@@ -70,6 +71,11 @@ export class ClassicScene extends GameScene {
         this.gameOverUI.hideGameOverUI();
     }
 
+    _initSkinsShop() {
+        this.skinsShop = new SkinsShop();
+        this.addChild(this.skinsShop);
+    }
+
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
@@ -91,8 +97,8 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("HardModeScene");
         });
-        this.sceneUI.on("toShopSkinScene", () => { 
-            this.parent.onStartScene("ShopSkinScene");
+        this.sceneUI.on("startSkinsShopUI", () => { 
+            
         });
         this.background.on("pointerdown", () => {
             this._onPointerDown();

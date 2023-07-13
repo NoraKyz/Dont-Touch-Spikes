@@ -33,7 +33,7 @@ export class MainUI extends Container {
 
         this.gameName = new Text();
         this.gameName.anchor.set(0.5);
-        this.gameName.position.set(0, -400 );
+        this.gameName.position.set(0, -400);
         this.addChild(this.gameName);
     }
 

@@ -17,12 +17,21 @@ export class SkinCard extends Container {
         this._spriteLocked();
         this._spriteUnlocked();
 
-        if(this.enabled) this.onUnlocked();
-        else this.onLocked();
+        if(this.enabled) {
+            this.unlocked.visible = true;
+            this.locked.visible = false;
+            
+        } else {
+            this.unlocked.visible = false;
+            this.locked.visible = true;
+        }
     }
 
     _spriteUnlocked() {
         this.unlocked = new Container();
+        this.unlocked.cursor = "pointer";
+        this.unlocked.eventMode = 'static';
+        this.unlocked.on("pointerdown", () => this.onSetSkin());
 
         this.bg1 = new Graphics();
         this.bg1.beginFill(0xFFFFFF);
@@ -40,6 +49,9 @@ export class SkinCard extends Container {
 
     _spriteLocked() {
         this.locked = new Container();
+        this.locked.cursor = "pointer";
+        this.locked.eventMode = 'static';
+        this.locked.on("pointerdown", () => this.onGetSkin());
 
         this.bg2 = new Graphics();
         this.bg2.beginFill(0xFF8207);
@@ -67,13 +79,11 @@ export class SkinCard extends Container {
         this.addChild(this.locked);
     }
 
-    onUnlocked() {
-        this.unlocked.visible = true;
-        this.locked.visible = false;
+    onGetSkin() {
+        
     }
 
-    onLocked() {
-        this.unlocked.visible = false;
-        this.locked.visible = true;
+    onSetSkin() {
+        
     }
 }

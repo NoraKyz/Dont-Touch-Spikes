@@ -29,7 +29,7 @@ export class SkinStorage {
                     type: TypeCurrency.Candy,
                     value: 10
                 },
-                enabled: false
+                enabled: true
             },
             {
                 texture1: Assets.get("bird1"),

@@ -1,6 +1,5 @@
-import { Assets, Graphics, Sprite } from "pixi.js";
+import { Assets, Sprite } from "pixi.js";
 import { MainUI } from "./mainUI";
-import { Game } from "../../../game";
 
 export class ClassicUI extends MainUI {
   constructor() {
@@ -40,7 +39,7 @@ export class ClassicUI extends MainUI {
 
     this.skinShopButton.cursor = "pointer";
     this.skinShopButton.eventMode = 'static';
-    this.skinShopButton.on("pointerdown", () => this._toShopSkinScene());
+    this.skinShopButton.on("pointerdown", () => this._startSkinsShopUI());
     this.addChild(this.skinShopButton);
   }
 
@@ -48,7 +47,7 @@ export class ClassicUI extends MainUI {
     this.emit("toHardModeScene");
   }
 
-  _toShopSkinScene() {
-    this.emit("toShopSkinScene");
+  _startSkinsShopUI() {
+    this.emit("startSkinsShopUI");
   }
 }

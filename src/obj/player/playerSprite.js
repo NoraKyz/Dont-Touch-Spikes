@@ -23,19 +23,19 @@ export class PlayerSprite extends Container {
         this.live = new Container();
         this.live.sprite1 = Sprite.from(Assets.get("bird1"));
         this.live.sprite1.anchor.set(0.5);
-        this.live.sprite1.scale.set(0.2 );
+        this.live.sprite1.scale.set(0.2);
         this.live.addChild(this.live.sprite1);
         this.live.sprite1.visible = true;
 
         this.live.sprite2 = Sprite.from(Assets.get("bird2"));
         this.live.sprite2.anchor.set(0.5);
-        this.live.sprite2.scale.set(0.2 );
+        this.live.sprite2.scale.set(0.2);
         this.live.addChild(this.live.sprite2);
         this.live.sprite2.visible = false;
 
         this.live.sprite3 = Sprite.from(Assets.get("bird3"));
         this.live.sprite3.anchor.set(0.5);
-        this.live.sprite3.scale.set(0.2 );
+        this.live.sprite3.scale.set(0.2);
         this.live.addChild(this.live.sprite3);
         this.live.sprite3.visible = false;
 

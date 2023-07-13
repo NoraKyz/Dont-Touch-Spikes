@@ -105,7 +105,7 @@ export class Background extends Container {
     _changeColorEffect() {
         this.alpha = 0.95;
         this.changeColorEffect = new TWEEN.Tween(this)
-            .to({ alpha: 1 }, 1000)    
+            .to({ alpha: 1 }, 2000)
     }
 
     changeBgColor() {

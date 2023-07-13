@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import { ClassicScene } from "./classicScene";
 import { HardModeScene } from "./hardModeScene";
+import { DualModeScene } from "./dualModeScene";
 import { ShopScene } from "./shopScene";
 
 export class SceneManager extends Container {
@@ -24,6 +25,9 @@ export class SceneManager extends Container {
         this.hardmodeScene = new HardModeScene(this);
         this.scenes.push(this.hardmodeScene);
 
+        this.dualmodeScene = new DualModeScene(this);
+        this.scenes.push(this.dualmodeScene);
+      
         this.shopScene = new ShopScene();
         this.scenes.push(this.shopScene);
     }

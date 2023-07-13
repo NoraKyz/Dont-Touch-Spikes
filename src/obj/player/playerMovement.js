@@ -8,9 +8,9 @@ export class PlayerMovement {
     }
 
     _initProperties() {
-        this.velocity = { x: 0 , y: -1.5  };
-        this.gravity = 0.5 ;
-        this.jumpForce = 12 ;
+        this.velocity = { x: 0, y: -1.5};
+        this.gravity = 0.5;
+        this.jumpForce = 12;
         this.direction = { x: 1, y: 1 };
 
         this.topLimit = -Game.app.view.height / 2 + Game.app.view.height / 14;
@@ -23,9 +23,7 @@ export class PlayerMovement {
         if (this.obj.isPlaying == false) {
             return;
         }
-
         this._limitHozMovement();
-
         // di chuyển bằng thay đổi pos
         this.velocity.y += this.gravity * dt;
         this.obj.position.x += this.velocity.x * this.direction.x * dt;

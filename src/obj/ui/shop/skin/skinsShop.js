@@ -52,6 +52,7 @@ export class SkinsShop extends Container {
 
     onStart() {
         this.visible = true;
+        this.skinsList.resize();
         this.effect.onStart();
     }
 

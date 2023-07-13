@@ -50,13 +50,13 @@ export class SkinsShopEffect {
             });
 
         this.spawnShopEffect2 = new TWEEN.Tween(this.skinsShop)
-            .to({ y: 120 }, 500)
+            .to({ y: 80 }, 200)
             .onComplete(() => {
                 this.spawnShopEffect3.start();
             });
 
         this.spawnShopEffect3 = new TWEEN.Tween(this.skinsShop)
-            .to({ y: 0 }, 500);
+            .to({ y: 0 }, 250);
     }
 
     _despawnShopEffect() {

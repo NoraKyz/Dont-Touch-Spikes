@@ -26,24 +26,25 @@ export class DualModeScene extends GameScene {
 
   _initGameplay() {
     this._initBackground();
-    //this._initPlayer();
+    this._initPlayer();
     this._initSceneUI();
     this._initSceneOverUI();
   }
 
   _initPlayer(){
+    this.flag = false;
     //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
     this.player1.position.set(0, -50);
-    this.player1.scale.set(-1);
     this.addChild(this.player1);
+    this.direction1 = this.player1.movement.direction.x;
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
     this.player2.position.set(100, 100);
     this.player2.scale.set(-1);
-    
+    this.direction2 = this.player2.movement.direction.x;
     this.player2.movement.jumpForce *= -1;
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
@@ -67,22 +68,20 @@ export class DualModeScene extends GameScene {
     this.addChild(this.background2);
   }
 
-
   _initSceneUI() {
     this.sceneUI = new DualModeUI();
-    //this.addChild(this.sceneUI);
+    this.addChild(this.sceneUI);
   }
   _initSceneOverUI() {
-    console.log(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom);
     this.sceneOverUI = new DualModeOverUI();
     this.addChild(this.sceneOverUI);
     this.sceneOverUI.onReset(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom)
-    //this.sceneOverUI.hideGameOverUI();
+    this.sceneOverUI.hideGameOverUI();
   }
 
   _onResetScene(){
-    // this.sceneUI.onReset();
-    // this.sceneOverUI.onReset();
+    this.sceneUI.onReset();
+    this.sceneOverUI.onReset();
   }
 
   _initSceneEvent() {
@@ -90,7 +89,7 @@ export class DualModeScene extends GameScene {
     this.sceneOverUI.on("replay", this._onResetScene.bind(this));
     this.on("lose", this._onLose.bind(this));
     this.sceneUI.on("toClassicModeScene", () => {
-      this.parent.onStartScene("classicModeScene")
+      this.parent.onStartScene("ClassicModeScene")
     });
     this.background1.on("pointerdown", () => {
       this._onPointerDownBackground1();
@@ -136,16 +135,34 @@ export class DualModeScene extends GameScene {
     if(this.gameState == GameState.End) {
       return;
     }
-    //this.player1.onNextLevel();
-    this.player2.onNextLevel();
+    if(this.player1.movement.direction.x == this.direction1 * -1) {
+      this.player1.onNextLevel();
+      this.direction1 *= -1;
+      if(!this.flag) {
+        console.log("spikes");
+        this.flag = true;
+      } else {
+        this.flag = false;
+      }
+    }
+    if(this.player2.movement.direction.x == this.direction2 * -1) {
+      this.player2.onNextLevel();
+      this.direction2 *= -1;
+      if(!this.flag) {
+        console.log("spikes");
+        this.flag = true;
+      } else {
+        this.flag = false;
+      }
+    }
   }
 
 
 
   update(dt) {
-    // this.player1.update(dt);
-    // this.player2.update(dt);
-    // this.sceneUI.update(dt);
+    this.player1.update(dt);
+    this.player2.update(dt);
+    this.sceneUI.update(dt);
     this.sceneOverUI.update(dt);
   }
 }

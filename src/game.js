@@ -8,7 +8,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 export class Game {
     static init() {
         this.app = new Application({
-            resolution: window.devicePixelRatio || 1,
+            //resolution: window.devicePixelRatio || 1,
             width: GameConstant.GAME_WIDTH,
             height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0xe0ddd5,

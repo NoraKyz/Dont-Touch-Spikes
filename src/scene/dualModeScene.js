@@ -95,7 +95,8 @@ export class DualModeScene extends GameScene {
     this.sceneUI.onReset();
     this.background1.onReset();
     this.background2.onReset();
-    this.background2.visible = false;
+    this.background2.playGroundTop.visible = false;
+    this.background2.scoreBgTop.visible = false;
     this.spikes.onReset(); // màu
     this.spikes.changeColor(this.background1.originColor.colorDarker);  
 
@@ -112,13 +113,9 @@ export class DualModeScene extends GameScene {
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
-    this.player1.victory = false;
-    this.player2.scale.set(-1);
+    this.player2.victory = false;
     this.direction2 = this.player2.movement.direction.x;
     this.player2.scale.set(-1);
-    this.player2.movement.jumpForce *= -1;
-    this.player2.movement.gravity *= -1;
-    this.player2.movement.direction2 *= -1;
   }
 
   _initSceneEvent() {

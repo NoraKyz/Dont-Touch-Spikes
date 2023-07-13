@@ -14,7 +14,7 @@ export class BackgroundDual extends Background {
   }
 
   _initBgColor(){
-    this.originColor = { color: 'e2dfe8', colorDarker: 'c6bfd6' };
+    this.originColor = { color: 'f3f2f5', colorDarker: 'c6bfd6' };
     this._resetBgColor(); 
   }
 
@@ -78,7 +78,6 @@ export class BackgroundDual extends Background {
     //score
     this.scoreText = new Text(`0${Data.currentScore}`, this.style);
     this.scoreText.anchor.set(0.5);
-    this.scoreText.y = -Game.app.view.height / 28;
     this.scoreText.scale.set(4.5);
   }
 

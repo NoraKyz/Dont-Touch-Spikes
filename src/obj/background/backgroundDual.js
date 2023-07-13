@@ -10,14 +10,19 @@ export class BackgroundDual extends Background {
 
   _initProperties() {
     super._initProperties();
-    this.originColor = { color: 'E6E1F5', colorDarker: '6C6381' };
+    this.originColor = { color: 'ebebeb', colorDarker: '808080' };
   }
 
+  _initBgColor(){
+    this.originColor = { color: 'e2dfe8', colorDarker: 'c6bfd6' };
+    this._resetBgColor(); 
+  }
 
   _initPlayGround() {
     this._initFullPlayGround();
     this._initPlayGroundTop();
     this._initPlayGroundBottom();
+    this._initBgColor();
   }
 
   _initFullPlayGround() {
@@ -97,6 +102,7 @@ export class BackgroundDual extends Background {
     this.scoreBgTop.visible = false;
   }
 
+
   _initScoreBgBottom() {
     this.scoreBgBottom = new Graphics();
     this.scoreBgBottom.beginFill(0xffffff);
@@ -105,6 +111,13 @@ export class BackgroundDual extends Background {
     this.addChild(this.scoreBgBottom);
 
     this.scoreBgBottom.visible = false;
+  }
+
+  _resetBgColor(){
+    this.playGroundTop.tint = this.originColor.color;
+    this.playGroundBottom.tint = this.originColor.color;
+    this.retangleTop.tint = this.originColor.colorDarker;
+    this.retangleBottom.tint = this.originColor.colorDarker;
   }
 
   _resetScore() {

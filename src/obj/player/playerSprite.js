@@ -68,11 +68,9 @@ export class PlayerSprite extends Container {
     }
 
     changeDirection() {
-        console.log(this.scale.x);
         this.scale.x *= -1;
     }
     update(dt){
-        //console.log(this.parent.movement.velocity.y);
         if(this.parent.isPlaying){
             if(this.parent.movement.velocity.y < 1 && this.parent.movement.velocity.y > -1){
                 this.live.sprite1.visible = true;

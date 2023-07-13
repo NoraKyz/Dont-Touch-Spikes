@@ -29,10 +29,11 @@ export class DualModeScene extends GameScene {
     this._initPlayer();
     this._initSceneUI();
     this._initSceneOverUI();
+    this._initSpikes(); 
   }
 
   _initPlayer(){
-    this.flag = false;
+    this.movedSpikes = false;
     //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
@@ -49,6 +50,13 @@ export class DualModeScene extends GameScene {
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
     this.addChild(this.player2);
+  }
+
+  _initSpikes() {     
+    this.spikes = new SpikesManager(this.id);
+    this.spikes.spikesBottom.forEach(spike => spike.y = 91);
+    this.spikes.changeColor(this.background1.originColor.colorDarker);  
+    this.addChild(this.spikes);
   }
   
   _initBackground() {
@@ -128,35 +136,44 @@ export class DualModeScene extends GameScene {
   }
 
   _onLose() {
-
+    if (this.gameState == GameState.End) {
+      return;
+    }
+    this.gameState = GameState.End;
   }
 
-  _onNextLevel() {
+  _onNextLevel(direction) {
     if(this.gameState == GameState.End) {
       return;
     }
     if(this.player1.movement.direction.x == this.direction1 * -1) {
       this.player1.onNextLevel();
       this.direction1 *= -1;
-      if(!this.flag) {
+      if(!this.movedSpikes) {
         console.log("spikes");
-        this.flag = true;
+        this.movedSpikes = true;
       } else {
-        this.flag = false;
+        this.movedSpikes = false;
       }
     }
     if(this.player2.movement.direction.x == this.direction2 * -1) {
       this.player2.onNextLevel();
       this.direction2 *= -1;
-      if(!this.flag) {
+      if(!this.movedSpikes) {
         console.log("spikes");
-        this.flag = true;
+        this.movedSpikes = true;
       } else {
-        this.flag = false;
+        this.movedSpikes = false;
       }
     }
   }
 
+  _onCollision(obj1, obj2) {
+    if (obj1 === this.player && obj2 instanceof Spike) {
+      this._onLose();
+      this.player.onCollision(obj2);
+    }
+  }
 
 
   update(dt) {
@@ -164,5 +181,9 @@ export class DualModeScene extends GameScene {
     this.player2.update(dt);
     this.sceneUI.update(dt);
     this.sceneOverUI.update(dt);
+    if (this.gameState == GameState.Playing) {
+      this.colliderDetector.checkCollider(this.player1, this.spikes.poolSpikes);
+      this.colliderDetector.checkCollider(this.player2, this.spikes.poolSpikes);
+    }
   }
 }

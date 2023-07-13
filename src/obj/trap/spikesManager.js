@@ -38,7 +38,7 @@ export class SpikesManager extends Container {
             case "HardModeScene":
                 this.movement = new MovementHardMode(this);
                 break;
-            case "DuoModeScene":
+            case "dualModeScene":
                 this.movement = new MovementDuo(this);
                 break;
         }

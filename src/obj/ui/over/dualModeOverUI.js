@@ -5,7 +5,6 @@ import { OverUI } from "./overUI";
 export class DualModeOverUI extends OverUI {
     constructor() {
       super();
-      console.log(this.stateStarLeft, this.stateStarRight);
       this.elapsed = 0;
     }
     _initPointButton(){
@@ -26,9 +25,6 @@ export class DualModeOverUI extends OverUI {
       this.rightBlock.drawRoundedRect(94, -180, 140, 140, 20); 
       this.rightBlock.endFill();
       this.addChild(this.rightBlock);
-
-      // 192018
-      // fc741a
 
       this._initStarLeft();
       this._initStarRight();

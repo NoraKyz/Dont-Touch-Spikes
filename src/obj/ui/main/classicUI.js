@@ -29,7 +29,6 @@ export class ClassicUI extends MainUI {
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
     this.hardModeSwitch.on("pointerdown", () => this._toHardModeScene());
-
     this.addChild(this.hardModeSwitch);
   }
 
@@ -42,7 +41,6 @@ export class ClassicUI extends MainUI {
     this.dualModeSwitch.cursor = "pointer";
     this.dualModeSwitch.eventMode = 'static';
     this.dualModeSwitch.on("pointerdown", () => this._toDualModeScene());
-
     this.addChild(this.dualModeSwitch);
   }
 

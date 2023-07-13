@@ -19,7 +19,7 @@ export class ClassicScene extends GameScene {
 
     _initProperties() {
         super._initProperties();
-        this.id = "ClassicModeScene";
+        this.id = "dualModeScene";
     }
 
     _initGameplay() {
@@ -149,10 +149,8 @@ export class ClassicScene extends GameScene {
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
-        
         let limitSpike = LevelController.updateLevel();
         this.spikes.moveSpikes(direction, limitSpike);
-
         if (Data.currentScore >= 5) {
             this.spikes.changeColor(this.background.originColor.colorDarker);
         }

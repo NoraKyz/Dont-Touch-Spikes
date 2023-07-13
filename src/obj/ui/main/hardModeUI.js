@@ -1,5 +1,4 @@
 import { Assets, Graphics, Sprite } from "pixi.js";
-import { Game } from "../../../game";
 import { MainUI } from "./mainUI.js";
 
 export class HardModeUI extends MainUI {

@@ -26,7 +26,7 @@ export class Candy extends Container {
     }
 
     _initCollider() {
-        const colliderRadious = 18 / Game.ratio;
+        const colliderRadious = 18 ;
         this.collider = new Collider(colliderRadious);
         this.addChild(this.collider);
     }

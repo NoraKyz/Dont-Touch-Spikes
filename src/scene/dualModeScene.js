@@ -9,9 +9,10 @@ import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import {DualModeUI} from "../obj/ui/main/DualModeUI";
+import {DualModeUI} from "../obj/ui/main/dualModeUI.js";
 import {Game} from "../game";
 import {BackgroundDual} from "../obj/background/backgroundDual";
+import { DualModeOverUI } from "../obj/ui/over/dualModeOverUI.js";
 
 export class DualModeScene extends GameScene {
   constructor() {
@@ -20,30 +21,35 @@ export class DualModeScene extends GameScene {
 
   _initProperties(){
     super._initProperties();
-    this.id = 'dualModeScene';
+    this.id = "dualModeScene";
   }
 
   _initGameplay() {
     this._initBackground();
-    this._initPlayer();
+    //this._initPlayer();
     this._initSceneUI();
+    this._initSceneOverUI();
   }
 
   _initPlayer(){
-
+    //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
+    this.player1.position.set(0, -50);
+    this.player1.scale.set(-1);
     this.addChild(this.player1);
-
+    //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
     this.player2.position.set(100, 100);
     this.player2.scale.set(-1);
+    
     this.player2.movement.jumpForce *= -1;
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
     this.addChild(this.player2);
   }
+  
   _initBackground() {
     this._initBackgroundFull();
     this._initBackgroundTop();
@@ -64,11 +70,24 @@ export class DualModeScene extends GameScene {
 
   _initSceneUI() {
     this.sceneUI = new DualModeUI();
-    this.addChild(this.sceneUI);
+    //this.addChild(this.sceneUI);
+  }
+  _initSceneOverUI() {
+    console.log(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom);
+    this.sceneOverUI = new DualModeOverUI();
+    this.addChild(this.sceneOverUI);
+    this.sceneOverUI.onReset(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom)
+    //this.sceneOverUI.hideGameOverUI();
+  }
+
+  _onResetScene(){
+    // this.sceneUI.onReset();
+    // this.sceneOverUI.onReset();
   }
 
   _initSceneEvent() {
     this.on("nextLevel", this._onNextLevel.bind(this));
+    this.sceneOverUI.on("replay", this._onResetScene.bind(this));
     this.on("lose", this._onLose.bind(this));
     this.sceneUI.on("toClassicModeScene", () => {
       this.parent.onStartScene("classicModeScene")
@@ -124,7 +143,9 @@ export class DualModeScene extends GameScene {
 
 
   update(dt) {
-    this.player1.update(dt);
-    this.player2.update(dt);
+    // this.player1.update(dt);
+    // this.player2.update(dt);
+    // this.sceneUI.update(dt);
+    this.sceneOverUI.update(dt);
   }
 }

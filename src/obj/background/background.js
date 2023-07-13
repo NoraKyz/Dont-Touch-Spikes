@@ -29,7 +29,7 @@ export class Background extends Container {
         this.style = new TextStyle({
             fontFamily: "Courier New",
             fontWeight: "bolder",
-            fontSize: 65 / Game.ratio,
+            fontSize: 65 ,
             fill: `0x${this.originColor.color}`,
         });
     }
@@ -61,7 +61,7 @@ export class Background extends Container {
     _initScore() {
         // score background
         this.scoreBg = new Graphics();
-        this.scoreBg.circleRadius = 200 / Game.ratio;
+        this.scoreBg.circleRadius = 200 ;
         this.scoreBg.beginFill(0xffffff);
         this.scoreBg.drawCircle(0, -Game.app.view.height / 28, this.scoreBg.circleRadius);
         this.scoreBg.endFill();

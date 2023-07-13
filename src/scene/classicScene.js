@@ -73,7 +73,7 @@ export class ClassicScene extends GameScene {
 
     _initSkinsShop() {
         this.skinsShop = new SkinsShop();
-        this.background.addChild(this.skinsShop);
+        this.addChild(this.skinsShop);
     }
 
     _onCollision(obj1, obj2) {

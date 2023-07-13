@@ -14,7 +14,6 @@ export class Background extends Container {
     _initProperties() {
         this.eventMode = 'static';
         this.originColor = { color: 'ebebeb', colorDarker: '808080' };
-        this.sortableChildren = true;
         this._initTextStyle();
         this._changeColorEffect();    
     }
@@ -48,7 +47,6 @@ export class Background extends Container {
         this.retangleTop.beginFill(`0x${this.originColor.colorDarker}`);
         this.retangleTop.drawRect(-Game.app.view.width / 2, -Game.app.view.height / 2, Game.app.view.width, Game.app.view.height / 14);
         this.retangleTop.endFill();
-        this.retangleTop.zIndex = 10;
         this.addChild(this.retangleTop);
     }
 
@@ -57,7 +55,6 @@ export class Background extends Container {
         this.retangleBottom.beginFill(`0x${this.originColor.colorDarker}`);
         this.retangleBottom.drawRect(-Game.app.view.width / 2, Game.app.view.height * 2.5 / 7, Game.app.view.width, Game.app.view.height / 7);
         this.retangleBottom.endFill();
-        this.retangleBottom.zIndex = 10;
         this.addChild(this.retangleBottom);
     }
 
@@ -121,6 +118,7 @@ export class Background extends Container {
         this._resetProperties();
         this._resetBgColor();
         this._resetScore();
+        this._showScoreGround();
     }
 
     displayScore() {
@@ -129,5 +127,13 @@ export class Background extends Container {
 
     hideScore() {
         this.removeChild(this.scoreText);
+    }
+
+    hideScoreGround() {
+        this.scoreBg.visible = false;
+    }
+
+    _showScoreGround() {
+        this.scoreBg.visible = true;
     }
 }

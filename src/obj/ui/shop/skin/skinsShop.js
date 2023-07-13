@@ -15,7 +15,6 @@ export class SkinsShop extends Container {
 
     _initProperties() {
         this.visible = false;
-        this.zIndex = 5;
         this.y = GameConstant.GAME_HEIGHT * 0.7;
     }
 
@@ -37,7 +36,7 @@ export class SkinsShop extends Container {
 
     _initSkinsList() {
         this.skinsList = new SkinsList();
-        this.skinsList.initSkins(this.skinManager.skinsList);
+        this.skinsList.initSkinCards(this.skinManager);
         this.addChild(this.skinsList);
     }
 
@@ -53,15 +52,11 @@ export class SkinsShop extends Container {
 
     onStart() {
         this.visible = true;
-        this.skinsList.resize();
+        this.skinsList.scrollTop(); 
         this.effect.onStart();
     }
 
-    onClose() {
-        this.effect.onClose();
-    }
-
-    onReset() {
-        
+    onClose() {  
+        this.effect.onClose();        
     }
 }

@@ -2,25 +2,25 @@ import { Assets, Container, Graphics, Sprite, Text } from "pixi.js";
 
 export class SkinCard extends Container {
     constructor(skin) {
-        super();     
+        super();
         this._initProperties(skin);
         this._initSprite();
     }
 
     _initProperties(skin) {
-        this.texture = skin.texture1;
-        this.cost =  skin.cost;
-        this.enabled = skin.enabled;
+        this.skinData = skin;
+        this.texture = this.skinData.texture1;
+        this.cost = this.skinData.cost;
+        this.enabled = this.skinData.enabled;
     }
 
     _initSprite() {
         this._spriteLocked();
         this._spriteUnlocked();
 
-        if(this.enabled) {
+        if (this.enabled) {
             this.unlocked.visible = true;
             this.locked.visible = false;
-            
         } else {
             this.unlocked.visible = false;
             this.locked.visible = true;
@@ -31,7 +31,7 @@ export class SkinCard extends Container {
         this.unlocked = new Container();
         this.unlocked.cursor = "pointer";
         this.unlocked.eventMode = 'static';
-        this.unlocked.on("pointerdown", () => this.onSetSkin());
+        this.unlocked.on("pointertap", () => this.onSetSkin());
 
         this.bg1 = new Graphics();
         this.bg1.beginFill(0xFFFFFF);
@@ -51,7 +51,7 @@ export class SkinCard extends Container {
         this.locked = new Container();
         this.locked.cursor = "pointer";
         this.locked.eventMode = 'static';
-        this.locked.on("pointerdown", () => this.onGetSkin());
+        this.locked.on("pointertap", () => this.onGetSkin());
 
         this.bg2 = new Graphics();
         this.bg2.beginFill(0xFF8207);
@@ -70,7 +70,7 @@ export class SkinCard extends Container {
             fontFamily: "Blissful Thinking",
             fontSize: 70,
             fontWeight: "lighter",
-            letterSpacing: 1 ,
+            letterSpacing: 1,
         });
         this.price.anchor.set(0.5);
         this.price.position.set(this.price.width * 0.45, 0);
@@ -79,11 +79,18 @@ export class SkinCard extends Container {
         this.addChild(this.locked);
     }
 
+    onUnlocked() {
+        this.skinData.enabled = true;
+        this.enabled = true;
+        this.unlocked.visible = true;
+        this.locked.visible = false;
+    }
+
     onGetSkin() {
-        
+        this.emit("getSkin", this);
     }
 
     onSetSkin() {
-        
+        this.emit("setSkin", this);
     }
 }

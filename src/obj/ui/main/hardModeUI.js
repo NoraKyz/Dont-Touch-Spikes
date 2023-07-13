@@ -26,7 +26,7 @@ export class HardModeUI extends MainUI {
 
     this.backButton.cursor = "pointer";
     this.backButton.eventMode = 'static';
-    this.backButton.on("pointerdown", () => this._toClassicModeScene());
+    this.backButton.on("pointertap", () => this._toClassicModeScene());
 
     this.addChild(this.backButton);
   }

@@ -1,5 +1,5 @@
 import { ScrollBox } from "@pixi/ui";
-import { SkinCard } from "../../../skin/skinCard";
+import { SkinCard } from "./skinCard"; 
 import { GameConstant } from "../../../../gameConstant"
 
 export class SkinsList extends ScrollBox {
@@ -20,9 +20,15 @@ export class SkinsList extends ScrollBox {
         this.position.set(-360, -340);
     }
 
-    initSkins(skinsList) {
-        skinsList.forEach(skin => {
+    initSkinCards(skinManager) {
+        skinManager.skinsList.forEach(skin => {
             let skinCard = new SkinCard(skin);
+            skinCard.on("getSkin", (skin) => {
+                skinManager.onGetSkin(skin);
+            });
+            skinCard.on("setSkin", (skin) => {
+                skinManager.onSetSkin(skin);
+            });
             this.addItem(skinCard);
         });
 

@@ -19,18 +19,18 @@ export class SkinManager {
         });
     }
 
-    onGetSkin(skin) {
-        if(Data.get(skin.cost.type) >= skin.cost.value) {
-            Data.add(skin.cost.type, -skin.cost.value);
-            skin.enabled = true;
+    onGetSkin(skinCard) {
+        let skinData = skinCard.skinData;
+        if(Data.itemQuantity >= skinData.cost.value) {
+            Data.itemQuantity -= skinData.cost.value;
+            skinCard.onUnlocked();
             this.currentSkin = true;
         }
     }
 
-    onSetSkin(skin) {
-        if(skin.enabled == true) {
-            this.currentSkin = skin;
-            console.log("Skin set!");
+    onSetSkin(skinCard) {
+        if(skinCard.enabled == true) {
+            this.currentSkin = skinCard;
         }
     }
 }

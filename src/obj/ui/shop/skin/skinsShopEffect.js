@@ -68,7 +68,7 @@ export class SkinsShopEffect {
     }
 
     onStart() {
-        this.spawnInforEffect.start();
+        this.despawnInforEffect.start();
         this.spawnShopEffect1.start();
     }
 

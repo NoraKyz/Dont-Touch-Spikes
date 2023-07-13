@@ -26,7 +26,7 @@ export class ClassicUI extends MainUI {
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
-    this.hardModeSwitch.on("pointerdown", () => this._toHardModeScene());
+    this.hardModeSwitch.on("pointertap", () => this._toHardModeScene());
 
     this.addChild(this.hardModeSwitch);
   }
@@ -39,7 +39,7 @@ export class ClassicUI extends MainUI {
 
     this.skinShopButton.cursor = "pointer";
     this.skinShopButton.eventMode = 'static';
-    this.skinShopButton.on("pointerdown", () => this._startSkinsShopUI());
+    this.skinShopButton.on("pointertap", () => this._startSkinsShopUI());
     this.addChild(this.skinShopButton);
   }
 

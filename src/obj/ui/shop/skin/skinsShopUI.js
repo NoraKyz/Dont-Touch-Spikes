@@ -37,13 +37,14 @@ export class SkinsShopUI extends Container {
 
         this.backButton.cursor = "pointer";
         this.backButton.eventMode = 'static';
-        this.backButton.on("pointerdown", () => this._onClose());
+        this.backButton.on("pointertap", () => this._onClose());
 
         this.addChild(this.backButton);
     }
 
     _onClose() {
-        this.emit("close")
+        this.emit("close");
+        this.shopInfor.alpha = 1;
     }
 
     _initTitle() {
@@ -72,14 +73,6 @@ export class SkinsShopUI extends Container {
         this.shopInfor.addChild(this.itemQuantity);
 
         this.addChild(this.shopInfor);
-    }
-
-    onStart() {
-
-    }
-
-    onClose() {
-        
     }
 
     onReset() {

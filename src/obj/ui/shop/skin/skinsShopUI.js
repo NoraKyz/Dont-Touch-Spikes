@@ -75,7 +75,7 @@ export class SkinsShopUI extends Container {
         this.addChild(this.shopInfor);
     }
 
-    onReset() {
+    updateData() {
         this.itemQuantity.text = ` ${Data.itemQuantity}`;
     }
 }

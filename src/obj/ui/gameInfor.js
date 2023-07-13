@@ -31,7 +31,7 @@ export class GameInfor extends Container {
         this.itemQuantity.anchor.set(0.5);
 
         this.itemImage.position.set(-40 , Game.app.view.height / 7 + 65 );
-        this.itemQuantity.position.set(40 , Game.app.view.height / 7 + 65 );
+        this.itemQuantity.position.set(this.itemQuantity.width * 0.3 + this.itemImage.width * 0.5 , Game.app.view.height / 7 + 65 );
 
         this.addChild(this.itemImage);
         this.addChild(this.itemQuantity);

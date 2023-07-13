@@ -5,20 +5,22 @@ export class SkinCard extends Container {
         super();
         this._initProperties(skin);
         this._initSprite();
+        this._initEvents();
     }
 
     _initProperties(skin) {
-        this.skinData = skin;
-        this.texture = this.skinData.texture1;
-        this.cost = this.skinData.cost;
-        this.enabled = this.skinData.enabled;
+        this.data = skin;
+    }
+
+    _initEvents() {
+        this.on("unlockSkin", () => this.onUnlocked());
     }
 
     _initSprite() {
         this._spriteLocked();
         this._spriteUnlocked();
 
-        if (this.enabled) {
+        if (this.data.enabled) {
             this.unlocked.visible = true;
             this.locked.visible = false;
         } else {
@@ -39,7 +41,7 @@ export class SkinCard extends Container {
         this.bg1.endFill();
         this.unlocked.addChild(this.bg1);
 
-        this.skin = new Sprite(this.texture);
+        this.skin = new Sprite(this.data.texture1);
         this.skin.anchor.set(0.5);
         this.skin.scale.set(0.2);
         this.unlocked.addChild(this.skin);
@@ -65,7 +67,7 @@ export class SkinCard extends Container {
         this.icon.position.set(-80, 0);
         this.locked.addChild(this.icon);
 
-        this.price = new Text(this.cost.value, {
+        this.price = new Text(this.data.cost.value, {
             fill: "#FFFFFF",
             fontFamily: "Blissful Thinking",
             fontSize: 70,
@@ -80,8 +82,6 @@ export class SkinCard extends Container {
     }
 
     onUnlocked() {
-        this.skinData.enabled = true;
-        this.enabled = true;
         this.unlocked.visible = true;
         this.locked.visible = false;
     }

@@ -3,7 +3,7 @@ export class Data {
         this.currentScore = 0;
         this.bestScore = 0;
         this.gamesPlayed = 0;
-        this.itemQuantity = 1000;
+        this.itemQuantity = 100;
     }
 
     static resetScore() {

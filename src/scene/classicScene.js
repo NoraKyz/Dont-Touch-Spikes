@@ -114,6 +114,7 @@ export class ClassicScene extends GameScene {
         this.sceneUI.hideMainUI();
         this.gameInfor.hide();
         this.player.hide();
+        this.background.hideScoreBackground();
     }
 
     _onCloseSkinsShop() {

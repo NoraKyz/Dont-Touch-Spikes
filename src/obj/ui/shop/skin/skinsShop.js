@@ -44,6 +44,12 @@ export class SkinsShop extends Container {
         this.shopUI.on("close", () => {
             this.emit("close");
         });
+
+        this.skinManager
+            .on("setSkin", () => {
+                this.emit("close");
+            })
+            .on("dataChanged", () => this.update());
     }
 
     _initEffect() {
@@ -52,11 +58,16 @@ export class SkinsShop extends Container {
 
     onStart() {
         this.visible = true;
-        this.skinsList.scrollTop(); 
+        this.skinsList.scrollTop();
         this.effect.onStart();
+        this.update();
     }
 
-    onClose() {  
-        this.effect.onClose();        
+    onClose() {
+        this.effect.onClose();
+    }
+
+    update() {
+        this.shopUI.updateData();
     }
 }

@@ -41,8 +41,8 @@ export class DualModeScene extends GameScene {
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
-    this.player2.victory = false;
-    
+    this.player1.victory = false;
+    this.player2.scale.set(-1);
     this.direction2 = this.player2.movement.direction.x;
     this.player2.scale.set(-1);
     this.player2.movement.jumpForce *= -1;
@@ -112,8 +112,8 @@ export class DualModeScene extends GameScene {
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
-    this.player2.victory = false;
-  
+    this.player1.victory = false;
+    this.player2.scale.set(-1);
     this.direction2 = this.player2.movement.direction.x;
     this.player2.scale.set(-1);
     this.player2.movement.jumpForce *= -1;

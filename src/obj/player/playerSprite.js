@@ -68,6 +68,7 @@ export class PlayerSprite extends Container {
     }
 
     changeDirection() {
+        console.log(this.scale.x);
         this.scale.x *= -1;
     }
     update(dt){

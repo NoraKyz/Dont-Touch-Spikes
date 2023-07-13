@@ -33,18 +33,19 @@ export class DualModeScene extends GameScene {
   }
 
   _initPlayer(){
+    this.movedSpikes = false;
     //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
     this.player1.position.set(0, -50);
-    this.player1.scale.set(-1);
     this.addChild(this.player1);
+    this.direction1 = this.player1.movement.direction.x;
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
     this.player2.position.set(100, 100);
     this.player2.scale.set(-1);
-    
+    this.direction2 = this.player2.movement.direction.x;
     this.player2.movement.jumpForce *= -1;
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
@@ -74,7 +75,6 @@ export class DualModeScene extends GameScene {
     this.background2 = new BackgroundDual();
     this.addChild(this.background2);
   }
-
 
   _initSceneUI() {
     this.sceneUI = new DualModeUI();
@@ -143,11 +143,26 @@ export class DualModeScene extends GameScene {
     if(this.gameState == GameState.End) {
       return;
     }
-    //this.player1.onNextLevel();
-    this.player2.onNextLevel();
-    let limitSpike = LevelController.updateLevel();
-    console.log('dual', limitSpike);
-    this.spikes.moveSpikes(direction, limitSpike);
+    if(this.player1.movement.direction.x == this.direction1 * -1) {
+      this.player1.onNextLevel();
+      this.direction1 *= -1;
+      if(!this.movedSpikes) {
+        console.log("spikes");
+        this.movedSpikes = true;
+      } else {
+        this.movedSpikes = false;
+      }
+    }
+    if(this.player2.movement.direction.x == this.direction2 * -1) {
+      this.player2.onNextLevel();
+      this.direction2 *= -1;
+      if(!this.movedSpikes) {
+        console.log("spikes");
+        this.movedSpikes = true;
+      } else {
+        this.movedSpikes = false;
+      }
+    }
   }
 
 

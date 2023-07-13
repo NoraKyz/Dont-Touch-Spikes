@@ -20,10 +20,11 @@ export class ClassicUI extends MainUI {
   }
 
   _initHardModeSwitch() {
+    console.log("init hard mode switch");
     this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
     this.hardModeSwitch.scale.set(0.18);
-    this.hardModeSwitch.position.set(-290 , -230);
+    this.hardModeSwitch.position.set(-290, -230);
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
@@ -35,7 +36,7 @@ export class ClassicUI extends MainUI {
     this.dualModeSwitch = Sprite.from(Assets.get("dualModeButton"));
     this.dualModeSwitch.anchor.set(0.5);
     this.dualModeSwitch.scale.set(0.18);
-    this.dualModeSwitch.position.set(-290 , -120 );
+    this.dualModeSwitch.position.set(-290, -120);
 
     this.dualModeSwitch.cursor = "pointer";
     this.dualModeSwitch.eventMode = 'static';

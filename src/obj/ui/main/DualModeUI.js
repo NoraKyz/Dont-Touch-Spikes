@@ -70,8 +70,6 @@ export class DualModeUI extends MainUI {
     this.line.position.set(0, 0);
     this.addChild(this.line);
   }
-
-
   _initBackButton() {
     this.backButton = Sprite.from(Assets.get("undoButton"));
     this.backButton.anchor.set(0.5);
@@ -121,13 +119,13 @@ export class DualModeUI extends MainUI {
     this.addChild(this.bottomStar3);
   }
 
-  onPlayer1Win(){
+  _onPlayer1Win(){
     if(this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
     else if (this.bottomStar2.winStar.visible === false) this.bottomStar2.winStar.visible = true;
     else if (this.bottomStar3.winStar.visible === false) this.bottomStar3.winStar.visible = true;
     this.stateStarBottom = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
   }
-  onPlayer2Win(){
+  _onPlayer2Win(){
     if(this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
     else if (this.topStar2.winStar.visible === false) this.topStar2.winStar.visible = true;
     else if (this.topStar3.winStar.visible === false) this.topStar3.winStar.visible = true;

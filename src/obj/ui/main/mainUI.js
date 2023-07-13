@@ -6,13 +6,11 @@ export class MainUI extends Container {
         super();
         this._initComponent();
     }
-
     _initComponent(){
         this._initTextStyle();
         this._initGameTutol();
         this._initTitleUI();
     }
-
     _initTextStyle() {
         this.style = new TextStyle({
             fill: "#FF3464",

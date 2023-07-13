@@ -21,7 +21,6 @@ export class BackgroundDual extends Background {
   _initPlayGround() {
     this._initFullPlayGround();
     this._initPlayGroundTop();
-    this._initPlayGroundBottom();
     this._initBgColor();
   }
 
@@ -45,16 +44,6 @@ export class BackgroundDual extends Background {
     this.playGroundTop.visible = false;
   }
 
-  _initPlayGroundBottom() {
-    this.playGroundBottom = new Graphics();
-    this.playGroundBottom.beginFill(`0x${this.originColor.color}`);
-    this.playGroundBottom.drawRect(- Game.app.view.width / 2, 0, Game.app.view.width, Game.app.view.height * 3 / 7);
-    this.playGroundBottom.endFill();
-    this.addChild(this.playGroundBottom);
-
-    this.playGroundBottom.visible = false;
-  }
-
   _initRetangleTop() {
     this.retangleTop = new Graphics();
     this.retangleTop.beginFill(`0x${this.originColor.colorDarker}`);
@@ -74,7 +63,6 @@ export class BackgroundDual extends Background {
     //circle
     this._initScoreBgFull();
     this._initScoreBgTop();
-    this._initScoreBgBottom();
     //score
     this.scoreText = new Text(`0${Data.currentScore}`, this.style);
     this.scoreText.anchor.set(0.5);
@@ -101,20 +89,8 @@ export class BackgroundDual extends Background {
     this.scoreBgTop.visible = false;
   }
 
-
-  _initScoreBgBottom() {
-    this.scoreBgBottom = new Graphics();
-    this.scoreBgBottom.beginFill(0xffffff);
-    this.scoreBgBottom.arc(0, 0, this.scoreBgFull.circleRadius, 0, Math.PI);
-    this.scoreBgBottom.endFill();
-    this.addChild(this.scoreBgBottom);
-
-    this.scoreBgBottom.visible = false;
-  }
-
   _resetBgColor(){
     this.playGroundTop.tint = this.originColor.color;
-    this.playGroundBottom.tint = this.originColor.color;
     this.retangleTop.tint = this.originColor.colorDarker;
     this.retangleBottom.tint = this.originColor.colorDarker;
   }

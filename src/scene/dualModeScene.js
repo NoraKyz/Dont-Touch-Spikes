@@ -33,16 +33,17 @@ export class DualModeScene extends GameScene {
   }
 
   _initPlayer(){
-    this.movedSpikes = false;
     //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
+    this.player1.victory = false;
     this.player1.position.set(0, -50);
     this.addChild(this.player1);
     this.direction1 = this.player1.movement.direction.x;
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
+    this.player1.victory = false;
     this.player2.position.set(0, 50);
     this.player2.scale.set(-1);
     this.direction2 = this.player2.movement.direction.x;
@@ -52,7 +53,8 @@ export class DualModeScene extends GameScene {
     this.addChild(this.player2);
   }
 
-  _initSpikes() {     
+  _initSpikes() {
+    this.movedSpikes = false;
     this.spikes = new SpikesManager(this.id);
     this.spikes.spikesBottom.forEach(spike => spike.y = 91);
     this.spikes.changeColor(this.background1.originColor.colorDarker);  
@@ -66,13 +68,14 @@ export class DualModeScene extends GameScene {
 
   _initBackgroundFull() {
     this.background1 = new BackgroundDual();
-    this.background1.fullPlayGround.visible =  true;
+    this.background1.fullPlayGround.visible = true;
     this.background1.scoreBgFull.visible = true;
     this.addChild(this.background1);
   }
 
   _initBackgroundTop() {
     this.background2 = new BackgroundDual();
+    this.background2.alpha = 0;
     this.addChild(this.background2);
   }
 
@@ -112,17 +115,13 @@ export class DualModeScene extends GameScene {
       if(this.gameState == GameState.Ready) {
         this.sceneUI.hideMainUI();
         this.player2.onPointerDown();
-        this.background2.displayScore();
+        this.background1.displayScore();
       }
       this.player1.onPointerDown();
       this.gameState = GameState.Playing;
       //hiện Bg
-      this.background1.fullPlayGround.visible = false;
-      this.background1.playGroundBottom.visible = true;
       this.background2.playGroundTop.visible = true;
       //hiện ScoreBg
-      this.background1.scoreBgFull.visible = false;
-      this.background1.scoreBgBottom.visible = true;
       this.background2.scoreBgTop.visible = true;
       Assets.get("flyingSound").play();
     }
@@ -140,7 +139,14 @@ export class DualModeScene extends GameScene {
     if (this.gameState == GameState.End) {
       return;
     }
+
     this.gameState = GameState.End;
+    // this.gameInfor.updateGameInfor();
+    // setTimeout(() => {
+    //   this.gameOverUI.showGameOverUI();
+    //   this.gameInfor.displayGameInfor();
+    //   this.background.hideScore();
+    // }, 1000);
   }
 
   _onNextLevel(direction) {
@@ -151,7 +157,7 @@ export class DualModeScene extends GameScene {
       this.player1.onNextLevel();
       this.direction1 *= -1;
       if(!this.movedSpikes) {
-        this.background2.updateBackground(++Data.currentScore);
+        this.background1.updateBackground(++Data.currentScore);
         let limitSpike = LevelController.updateLevel();
         this.spikes.moveSpikes(direction, limitSpike);
         this.movedSpikes = true;
@@ -163,7 +169,7 @@ export class DualModeScene extends GameScene {
       this.player2.onNextLevel();
       this.direction2 *= -1;
       if(!this.movedSpikes) {
-        this.background2.updateBackground(++Data.currentScore);
+         this.background1.updateBackground(++Data.currentScore);
         let limitSpike = LevelController.updateLevel();
         this.spikes.moveSpikes(direction, limitSpike);
         this.movedSpikes = true;
@@ -174,12 +180,20 @@ export class DualModeScene extends GameScene {
   }
 
   _onCollision(obj1, obj2) {
-    if (obj1 === this.player && obj2 instanceof Spike) {
+    if (obj1 === this.player1 && obj2 instanceof Spike) {
       this._onLose();
-      this.player.onCollision(obj2);
+      this.player1.onCollision(obj2);
+      this.player2.victory = true;
+    }
+    if (obj1 === this.player2 && obj2 instanceof Spike) {
+      this._onLose();
+      this.player2.onCollision(obj2);
+      this.player1.victory = true;
+    }
+    if (obj1 === this.player1 && obj2 === this.player2) {
+
     }
   }
-
 
   update(dt) {
     this.player1.update(dt);

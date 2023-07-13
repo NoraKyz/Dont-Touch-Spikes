@@ -15,6 +15,7 @@ export class SkinsShop extends Container {
 
     _initProperties() {
         this.visible = false;
+        this.zIndex = 5;
         this.y = GameConstant.GAME_HEIGHT * 0.7;
     }
 

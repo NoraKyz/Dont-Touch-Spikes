@@ -20,7 +20,6 @@ export class ClassicUI extends MainUI {
   }
 
   _initHardModeSwitch() {
-    console.log("init hard mode switch");
     this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
     this.hardModeSwitch.scale.set(0.18);

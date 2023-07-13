@@ -15,7 +15,7 @@ export class BackgroundDual extends Background {
 
   _initBgColor(){
     this.originColor = { color: 'f3f2f5', colorDarker: 'c6bfd6' };
-    this._resetBgColor(); 
+    this._resetBgColor(this.originColor); 
   }
 
   _initPlayGround() {
@@ -89,10 +89,16 @@ export class BackgroundDual extends Background {
     this.scoreBgTop.visible = false;
   }
 
-  _resetBgColor(){
-    this.playGroundTop.tint = this.originColor.color;
-    this.retangleTop.tint = this.originColor.colorDarker;
-    this.retangleBottom.tint = this.originColor.colorDarker;
+  onReset(){
+    this.originColor = { color: 'ffffff', colorDarker: 'ffffff' };
+    this._resetBgColor(this.originColor);
+    this._initBgColor();
+  }
+
+  _resetBgColor(originColor){
+    this.playGroundTop.tint = originColor.color;
+    this.retangleTop.tint = originColor.colorDarker;
+    this.retangleBottom.tint = originColor.colorDarker;
   }
 
   _resetScore() {

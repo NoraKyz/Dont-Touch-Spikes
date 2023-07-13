@@ -41,8 +41,8 @@ export class DualModeScene extends GameScene {
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
-    this.player1.victory = false;
-    this.player2.scale.set(-1);
+    this.player2.victory = false;
+    
     this.direction2 = this.player2.movement.direction.x;
     this.player2.scale.set(-1);
     this.player2.movement.jumpForce *= -1;
@@ -89,18 +89,36 @@ export class DualModeScene extends GameScene {
   }
 
   _onResetScene(){
+    this.gameState = GameState.Ready;
     Data.resetScore();
     this.sceneOverUI.onReset();
     this.sceneUI.onReset();
+    this.background1.onReset();
+    this.background2.onReset();
+    this.background2.visible = false;
+    this.spikes.onReset(); // màu
+    this.spikes.changeColor(this.background1.originColor.colorDarker);  
 
     // this.gameInfor.onReset();
     this.player1.onReset();
     this.player2.onReset(); // vị trí
-    this.spikes.onReset(); // màu
-    this.spikes.changeColor(this.background1.originColor.colorDarker);  
-    this.background1.onReset();
-    this.background2.onReset();
-    this.gameState = GameState.Ready;
+
+    this.player1.dualModeEnabled = true;
+    this.player1.rootPos = {x: 0, y: 50};
+    this.player1.position = this.player1.rootPos;
+    this.player1.victory = false;
+    this.direction1 = this.player1.movement.direction.x;
+    //player2
+    this.player2.dualModeEnabled = true;
+    this.player2.rootPos = {x: 0, y: -50};
+    this.player2.position = this.player2.rootPos;
+    this.player2.victory = false;
+  
+    this.direction2 = this.player2.movement.direction.x;
+    this.player2.scale.set(-1);
+    this.player2.movement.jumpForce *= -1;
+    this.player2.movement.gravity *= -1;
+    this.player2.movement.direction2 *= -1;
   }
 
   _initSceneEvent() {
@@ -120,16 +138,14 @@ export class DualModeScene extends GameScene {
 
   _onPointerDownBackground1() {
     if(this.gameState != GameState.End) {
-      if(this.gameState == GameState.Ready) {
+      if(this.gameState === GameState.Ready) {
         this.sceneUI.hideMainUI();
         this.player2.onPointerDown();
         this.background1.displayScore();
       }
       this.player1.onPointerDown();
       this.gameState = GameState.Playing;
-      //hiện Bg
       this.background2.playGroundTop.visible = true;
-      //hiện ScoreBg
       this.background2.scoreBgTop.visible = true;
       Assets.get("flyingSound").play();
     }
@@ -137,6 +153,12 @@ export class DualModeScene extends GameScene {
 
   _onPointerDownBackground2() {
     if(this.gameState != GameState.End) {
+      console.log(this.gameState, GameState.Ready);
+      if(this.gameState === GameState.Ready) {
+        this.sceneUI.hideMainUI();
+        this.player2.onPointerDown();
+        this.background1.displayScore();
+      }
       this.player2.onPointerDown();
       this.gameState = GameState.Playing;
       Assets.get("flyingSound").play();
@@ -147,7 +169,6 @@ export class DualModeScene extends GameScene {
     if (this.gameState == GameState.End) {
         return;
     }
-
     this.gameState = GameState.End;
     Assets.get("loseSound").play();
     setTimeout(() => {
@@ -155,6 +176,7 @@ export class DualModeScene extends GameScene {
         this.sceneOverUI.showGameOverUI();
         this.background2.hideScore();
     }, 1000);
+    console.log(this.gameState);
   }
 
   _onNextLevel(direction) {

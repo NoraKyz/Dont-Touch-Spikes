@@ -147,6 +147,11 @@ export class DualModeUI extends MainUI {
       .to({alpha: 1}, 1000);
   }
 
+  onReset(){
+    this.stateStarTop = [];
+    this.stateStarBottom = [];
+  }
+
   _UIEffect(){ 
     this.tween1.start().onComplete(() => {
       this.tween2.start();

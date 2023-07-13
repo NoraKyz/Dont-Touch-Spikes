@@ -44,14 +44,6 @@ export class BackgroundDual extends Background {
     this.playGroundTop.visible = false;
   }
 
-  _initRetangleTop() {
-    this.retangleTop = new Graphics();
-    this.retangleTop.beginFill(`0x${this.originColor.colorDarker}`);
-    this.retangleTop.drawRect(-Game.app.view.width / 2, -Game.app.view.height / 2, Game.app.view.width, Game.app.view.height / 14);
-    this.retangleTop.endFill();
-    this.addChild(this.retangleTop);
-  }
-
   _initRetangleBottom() {
     this.retangleBottom = new Graphics();
     this.retangleBottom.beginFill(`0x${this.originColor.colorDarker}`);
@@ -99,6 +91,12 @@ export class BackgroundDual extends Background {
     this.scoreText.tint = 'E6E1F5';
     this.scoreText.text = `0${Data.currentScore}`;
   }
+
+  onReset() {
+    this._resetProperties();
+    this._resetBgColor();
+    this._resetScore();
+}
 
   updateBackground(newScore) {
     if (newScore < 10) this.scoreText.text = `0${newScore}`;

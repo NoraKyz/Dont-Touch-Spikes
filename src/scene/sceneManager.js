@@ -2,7 +2,7 @@ import { Container } from "pixi.js";
 import { ClassicScene } from "./classicScene";
 import { HardModeScene } from "./hardModeScene";
 import { DualModeScene } from "./dualModeScene";
-import { ShopScene } from "./shopScene";
+
 
 export class SceneManager extends Container {
 

@@ -63,7 +63,10 @@ export class ClassicUI extends MainUI {
 
   _toDualModeScene() {
     this.emit("toDualModeScene");
+  }
+  
   _startSkinsShopUI() {
     this.emit("startSkinsShopUI");
   }
+
 }

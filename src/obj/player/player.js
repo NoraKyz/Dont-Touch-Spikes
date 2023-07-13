@@ -74,6 +74,10 @@ export class Player extends Container {
             this.movement.onCollisionSpike();
             this._onLose();
         }
+
+        if (obj instanceof Player) {
+
+        }
     }
 
 

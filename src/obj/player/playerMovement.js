@@ -8,7 +8,6 @@ export class PlayerMovement {
     }
 
     _initProperties() {
-        this.touchWall = false;
         this.direction2 = 1;
         this.velocity = { x: 0, y: -1.5};
         this.gravity = 0.5;

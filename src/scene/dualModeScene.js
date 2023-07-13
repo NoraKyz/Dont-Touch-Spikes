@@ -33,16 +33,17 @@ export class DualModeScene extends GameScene {
   }
 
   _initPlayer(){
-    this.movedSpikes = false;
     //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
+    this.player1.victory = false;
     this.player1.position.set(0, -50);
     this.addChild(this.player1);
     this.direction1 = this.player1.movement.direction.x;
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
+    this.player1.victory = false;
     this.player2.position.set(0, 50);
     this.player2.scale.set(-1);
     this.direction2 = this.player2.movement.direction.x;
@@ -52,7 +53,8 @@ export class DualModeScene extends GameScene {
     this.addChild(this.player2);
   }
 
-  _initSpikes() {     
+  _initSpikes() {
+    this.movedSpikes = false;
     this.spikes = new SpikesManager(this.id);
     this.spikes.spikesBottom.forEach(spike => spike.y = 91);
     this.spikes.changeColor(this.background1.originColor.colorDarker);  
@@ -66,7 +68,7 @@ export class DualModeScene extends GameScene {
 
   _initBackgroundFull() {
     this.background1 = new BackgroundDual();
-    this.background1.fullPlayGround.visible =  true;
+    this.background1.fullPlayGround.visible = true;
     this.background1.scoreBgFull.visible = true;
     this.addChild(this.background1);
   }
@@ -181,10 +183,17 @@ export class DualModeScene extends GameScene {
     if (obj1 === this.player1 && obj2 instanceof Spike) {
       this._onLose();
       this.player1.onCollision(obj2);
+      this.player2.victory = true;
     }
+    if (obj1 === this.player2 && obj2 instanceof Spike) {
+      this._onLose();
+      this.player2.onCollision(obj2);
+      this.player1.victory = true;
+    }
+    if (obj1 === this.player1 && obj2 === this.player2) {
 
+    }
   }
-
 
   update(dt) {
     this.player1.update(dt);

@@ -8,6 +8,8 @@ export class PlayerMovement {
     }
 
     _initProperties() {
+        this.direction2 = 1;
+
         this.velocity = { x: 0, y: -1.5};
         this.gravity = 0.5;
         this.jumpForce = 12;
@@ -36,16 +38,17 @@ export class PlayerMovement {
     _limitHozMovement() {
         if (
             this.obj.position.x - this.obj.radiousCollider <= this.leftLimit &&
-            this.direction.x == -1
+            this.direction.x == -1 * this.direction2
+
         ) {
-            this.direction.x = 1;
+            this.direction.x = 1 * this.direction2
             this.obj.parent.emit("nextLevel", this.direction.x);
             this._onTouchWall();
         } else if (
             this.obj.position.x + this.obj.radiousCollider >= this.rightLimit &&
-            this.direction.x == 1
+            this.direction.x == 1 * this.direction2
         ) {
-            this.direction.x = -1;
+            this.direction.x = -1 * this.direction2
             this.obj.parent.emit("nextLevel", this.direction.x);
             this._onTouchWall();
         }
@@ -59,9 +62,10 @@ export class PlayerMovement {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce * 0.7;
         } else {
-            this.velocity.y = -4 ;
+
+            this.velocity.y = -4 * this.direction2;
             if (this.obj.isDie) {
-                this.velocity.y = 2 ;
+                this.velocity.y = 2 * this.direction2;
             }
         }
 
@@ -89,7 +93,6 @@ export class PlayerMovement {
         if (this.obj.isPlaying) {
             return;
         }
-
         if (this.obj.position.y >= this.obj.radiousCollider) {
             this.direction.y = 1;
         } else if (this.obj.position.y <= -this.obj.radiousCollider) {
@@ -111,7 +114,7 @@ export class PlayerMovement {
     }
 
     onReset() {
-        this.velocity = { x: 0 , y: -1.5  };
+        this.velocity = { x: 0, y: -1.5};
         this.direction = { x: 1, y: 1 };
     }
 

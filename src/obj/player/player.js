@@ -63,7 +63,6 @@ export class Player extends Container {
             this.movement.onStart();
             this.isPlaying = true;
         }
-        
         this.movement.onPointerDown();
         this.effect.onPointerDown();
         this.sprite.onPointerDown();

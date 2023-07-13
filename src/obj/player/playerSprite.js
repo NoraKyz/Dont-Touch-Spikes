@@ -45,7 +45,7 @@ export class PlayerSprite extends Container {
     _initDeadSprite() {
         this.birdDead = Sprite.from(Assets.get("birdDead"));
         this.birdDead.anchor.set(0.5);
-        this.birdDead.scale.set(0.5 );
+        this.birdDead.scale.set(0.5);
         this.addChild(this.birdDead);
     } 
     onPointerDown(){
@@ -68,6 +68,7 @@ export class PlayerSprite extends Container {
     }
 
     changeDirection() {
+        console.log(this.scale.x);
         this.scale.x *= -1;
     }
     update(dt){

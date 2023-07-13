@@ -25,8 +25,8 @@ export class PlayerEffect {
         let texture = Texture.from("circle");
         let cusConfig = config;
         cusConfig.scale = {
-            start: 0.5 ,
-            end: 0.035 ,
+            start: 0.5,
+            end: 0.035,
             minimumScaleMultiplier: 1,
         }
         this.emitter = new Emitter(

@@ -118,6 +118,7 @@ export class Background extends Container {
         this._resetProperties();
         this._resetBgColor();
         this._resetScore();
+        this._showScoreGround();
     }
 
     displayScore() {
@@ -126,5 +127,13 @@ export class Background extends Container {
 
     hideScore() {
         this.removeChild(this.scoreText);
+    }
+
+    hideScoreBackground() {
+        this.scoreBg.visible = false;
+    }
+
+    _showScoreGround() {
+        this.scoreBg.visible = true;
     }
 }

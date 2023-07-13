@@ -41,6 +41,7 @@ export class AssetsManager {
                 "line": "./assets/images/line.png",
                 "star1": "./assets/images/star1.png",
                 "star2": "./assets/images/star2.png",
+                "skinShopButton": "./assets/images/skinShopButton.png",
             }
         )
 

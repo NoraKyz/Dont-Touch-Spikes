@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Assets, Container, Sprite } from "pixi.js";
 import { Data } from "../../../data";
-import { Game } from "../../../game";
 
 export class OverUI extends PIXI.Container {
     constructor() {
@@ -65,7 +64,7 @@ export class OverUI extends PIXI.Container {
         this.replayButton.position.y = 10 ;
         this.replayButton.cursor = "pointer";
         this.replayButton.eventMode = 'static';
-        this.replayButton.on("pointerdown", () => this._clickedReplayButton());
+        this.replayButton.on("pointertap", () => this._clickedReplayButton());
         this.addChild(this.replayButton);
     }
 
@@ -78,7 +77,7 @@ export class OverUI extends PIXI.Container {
         this.shareButton.scale.set(1 );
         this.shareButton.position.y = 105 ;
         this.shareButton.cursor = "pointer";
-        this.shareButton.on("pointerdown", () => { });
+        this.shareButton.on("pointertap", () => { });
         this.addChild(this.shareButton);
     }
 

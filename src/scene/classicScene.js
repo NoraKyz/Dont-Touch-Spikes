@@ -7,10 +7,11 @@ import { GameInfor } from "../obj/ui/gameInfor.js";
 import { CandyManager } from "../obj/items/candyManager.js";
 import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
+import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import { SpikesManager } from "../obj/trap/spikesManager.js";
+import { SkinsShop } from "../obj/ui/shop/skin/skinsShop.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -25,6 +26,7 @@ export class ClassicScene extends GameScene {
     _initGameplay() {
         this._initBackground();
         this._initPlayer();
+        this._initSkinsShop();
         this._initSpikes();
         this._initSceneUI();
         this._initCandies();
@@ -39,12 +41,12 @@ export class ClassicScene extends GameScene {
         this.addChild(this.player);
     }
 
-    _initSpikes() {     
+    _initSpikes() {
         this.spikes = new SpikesManager(this.id);
         this.addChild(this.spikes);
     }
 
-    _initCandies() {     
+    _initCandies() {
         this.candies = new CandyManager();
         this.addChild(this.candies);
     }
@@ -70,6 +72,11 @@ export class ClassicScene extends GameScene {
         this.gameOverUI.hideGameOverUI();
     }
 
+    _initSkinsShop() {
+        this.skinsShop = new SkinsShop();
+        this.addChild(this.skinsShop);
+    }
+
     _onCollision(obj1, obj2) {
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
@@ -91,6 +98,12 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("HardModeScene");
         });
+        this.sceneUI.on("startSkinsShopUI", () => {
+            this._onStartSkinsShop();
+        });
+        this.skinsShop.on("close", () => {
+            this._onCloseSkinsShop()
+        });
         this.sceneUI.on("toDualModeScene", () => {
             this.parent.onStartScene("dualModeScene");
         })
@@ -99,11 +112,25 @@ export class ClassicScene extends GameScene {
         });
     }
 
+    _onStartSkinsShop() {
+        this.gameState = GameState.PlayDisabled;
+        this.skinsShop.onStart();
+        this.sceneUI.hideMainUI();
+        this.gameInfor.hide();
+        this.player.hide();
+        this.background.hideScoreBackground();
+    }
+
+    _onCloseSkinsShop() {
+        this.skinsShop.onClose();
+        this.onResetScene();
+    }
+
     _onPointerDown() {
-        if (this.gameState != GameState.End) {
+        if (this.gameState == GameState.Ready || this.gameState == GameState.Playing) {
             if (this.gameState == GameState.Ready) {
                 this.sceneUI.hideMainUI();
-                this.gameInfor.hideGameInfor();
+                this.gameInfor.hide();
                 this.background.displayScore();
             }
             this.player.onPointerDown();
@@ -136,7 +163,7 @@ export class ClassicScene extends GameScene {
         this.candies.onLose();
         setTimeout(() => {
             this.gameOverUI.showGameOverUI();
-            this.gameInfor.displayGameInfor();
+            this.gameInfor.onReset();
             this.background.hideScore();
         }, 1000);
     }

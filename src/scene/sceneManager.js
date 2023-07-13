@@ -27,9 +27,6 @@ export class SceneManager extends Container {
 
         this.dualmodeScene = new DualModeScene(this);
         this.scenes.push(this.dualmodeScene);
-      
-        this.shopScene = new ShopScene();
-        this.scenes.push(this.shopScene);
     }
     // Gọi id trong scene để chạy scene đó
     onStartScene(id) {

@@ -1,39 +1,39 @@
-import { AnimatedSprite, Assets, Container, Sprite, Texture } from "pixi.js";
-import { Game } from "../../game";
+import { Assets, Container, Sprite } from "pixi.js";
+import { SkinManager } from "../skin/skinManager.js"
 
 export class PlayerSprite extends Container {
     constructor(parent) {
         super();
         this.parent = parent;
-        this._initTexture();
+        this._initSkin();
         this._initSprite();
         this.onReset();
     }
 
-    _initTexture() {
-        this.flyTextures = [Assets.get("bird2"), Assets.get("bird1"), Assets.get("bird3")];
+    _initSkin() {
+        this.skin = SkinManager.currentSkin;
     }
 
     _initSprite() {
         this._initLiveSprite();
         this._initDeadSprite();
-    }  
+    }
 
     _initLiveSprite() {
         this.live = new Container();
-        this.live.sprite1 = Sprite.from(Assets.get("bird1"));
+        this.live.sprite1 = Sprite.from(this.skin.texture1);
         this.live.sprite1.anchor.set(0.5);
         this.live.sprite1.scale.set(0.2);
         this.live.addChild(this.live.sprite1);
         this.live.sprite1.visible = true;
 
-        this.live.sprite2 = Sprite.from(Assets.get("bird2"));
+        this.live.sprite2 = Sprite.from(this.skin.texture2);
         this.live.sprite2.anchor.set(0.5);
         this.live.sprite2.scale.set(0.2);
         this.live.addChild(this.live.sprite2);
         this.live.sprite2.visible = false;
 
-        this.live.sprite3 = Sprite.from(Assets.get("bird3"));
+        this.live.sprite3 = Sprite.from(this.skin.texture3);
         this.live.sprite3.anchor.set(0.5);
         this.live.sprite3.scale.set(0.2);
         this.live.addChild(this.live.sprite3);
@@ -47,9 +47,8 @@ export class PlayerSprite extends Container {
         this.birdDead.anchor.set(0.5);
         this.birdDead.scale.set(0.5);
         this.addChild(this.birdDead);
-    } 
-    onPointerDown(){
-        //console.log(this.parent.movement);
+    }
+    onPointerDown() {
         this.live.sprite1.visible = false;
         this.live.sprite2.visible = false;
         this.live.sprite3.visible = true;
@@ -61,18 +60,27 @@ export class PlayerSprite extends Container {
     }
 
     onReset() {
+        this._updateSkin();
         this.live.visible = true;
-        this.birdDead.visible = false;      
-       
-        this.scale.x = 1;    
+        this.birdDead.visible = false;
+
+        this.scale.x = 1;
+    }
+
+    _updateSkin() {
+        this.skin = SkinManager.currentSkin;
+        this.live.sprite1.texture = this.skin.texture1;
+        this.live.sprite2.texture = this.skin.texture2;
+        this.live.sprite3.texture = this.skin.texture3;
     }
 
     changeDirection() {
         this.scale.x *= -1;
     }
-    update(dt){
-        if(this.parent.isPlaying){
-            if(this.parent.movement.velocity.y < 1 && this.parent.movement.velocity.y > -1){
+
+    update(dt) {
+        if (this.parent.isPlaying) {
+            if (this.parent.movement.velocity.y < 1 && this.parent.movement.velocity.y > -1) {
                 this.live.sprite1.visible = true;
                 this.live.sprite2.visible = false;
                 this.live.sprite3.visible = false;

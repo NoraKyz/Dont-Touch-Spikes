@@ -1,5 +1,4 @@
 
-
 export class MovementHardMode {
   constructor(parent){
     this.parent = parent;

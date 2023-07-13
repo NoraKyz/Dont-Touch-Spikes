@@ -2,6 +2,8 @@ import { Container } from "pixi.js";
 import { SkinsList } from "./skinsList";
 import { SkinManager } from "../../../skin/skinManager";
 import { SkinsShopUI } from "./skinsShopUI";
+import { GameConstant } from "../../../../gameConstant";
+import { SkinsShopEffect } from "./skinsShopEffect";
 
 export class SkinsShop extends Container {
     constructor() {
@@ -12,13 +14,15 @@ export class SkinsShop extends Container {
     }
 
     _initProperties() {
-
+        this.visible = false;
+        this.y = GameConstant.GAME_HEIGHT * 0.7;
     }
 
     _initComponents() {
         this._initSkinManager();
         this._initSkinsList();
         this._initShopUI();
+        this._initEffect();
     }
 
     _initSkinManager() {
@@ -37,6 +41,25 @@ export class SkinsShop extends Container {
     }
 
     _initEventUI() {
+        this.shopUI.on("close", () => {
+            this.emit("close");
+        });
+    }
 
+    _initEffect() {
+        this.effect = new SkinsShopEffect(this);
+    }
+
+    onStart() {
+        this.visible = true;
+        this.effect.onStart();
+    }
+
+    onClose() {
+        this.effect.onClose();
+    }
+
+    onReset() {
+        
     }
 }

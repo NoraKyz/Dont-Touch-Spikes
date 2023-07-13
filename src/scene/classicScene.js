@@ -26,12 +26,12 @@ export class ClassicScene extends GameScene {
     _initGameplay() {
         this._initBackground();
         this._initPlayer();
+        this._initSkinsShop();
         this._initSpikes();
         this._initSceneUI();
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
-        this._initSkinsShop();
     }
     // Obj in scene
     _initPlayer() {
@@ -40,12 +40,12 @@ export class ClassicScene extends GameScene {
         this.addChild(this.player);
     }
 
-    _initSpikes() {     
+    _initSpikes() {
         this.spikes = new SpikesManager(this.id);
         this.addChild(this.spikes);
     }
 
-    _initCandies() {     
+    _initCandies() {
         this.candies = new CandyManager();
         this.addChild(this.candies);
     }
@@ -97,19 +97,35 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toHardModeScene", () => {
             this.parent.onStartScene("HardModeScene");
         });
-        this.sceneUI.on("startSkinsShopUI", () => { 
-            
+        this.sceneUI.on("startSkinsShopUI", () => {
+            this._onStartSkinsShop();
+        });
+        this.skinsShop.on("close", () => {
+            this._onCloseSkinsShop()
         });
         this.background.on("pointerdown", () => {
             this._onPointerDown();
         });
     }
 
+    _onStartSkinsShop() {
+        this.gameState = GameState.PlayDisabled;
+        this.skinsShop.onStart();
+        this.sceneUI.hideMainUI();
+        this.gameInfor.hide();
+        this.player.hide();
+    }
+
+    _onCloseSkinsShop() {
+        this.skinsShop.onClose();
+        this.onResetScene();
+    }
+
     _onPointerDown() {
-        if (this.gameState != GameState.End) {
+        if (this.gameState == GameState.Ready || this.gameState == GameState.Playing) {
             if (this.gameState == GameState.Ready) {
                 this.sceneUI.hideMainUI();
-                this.gameInfor.hideGameInfor();
+                this.gameInfor.hide();
                 this.background.displayScore();
             }
             this.player.onPointerDown();
@@ -142,7 +158,7 @@ export class ClassicScene extends GameScene {
         this.candies.onLose();
         setTimeout(() => {
             this.gameOverUI.showGameOverUI();
-            this.gameInfor.displayGameInfor();
+            this.gameInfor.onReset();
             this.background.hideScore();
         }, 1000);
     }

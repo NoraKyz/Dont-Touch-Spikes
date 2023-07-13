@@ -1,17 +1,16 @@
 import { Assets, Container, Sprite, Text, TextStyle } from "pixi.js";
 import { Data } from "../../../../data";
-import * as TWEEN from "@tweenjs/tween.js";
+
 
 export class SkinsShopUI extends Container {
     constructor() {
         super();
         this._initProperties();
         this._initComponents();
-        this._initEffects();
     }
 
     _initProperties() {
-        //this.position.set(-280, -400);
+        this.position.set(-280, -400);
     }
 
     _initComponents() {
@@ -38,13 +37,13 @@ export class SkinsShopUI extends Container {
 
         this.backButton.cursor = "pointer";
         this.backButton.eventMode = 'static';
-        this.backButton.on("pointerdown", () => this._toClassicModeScene());
+        this.backButton.on("pointerdown", () => this._onClose());
 
         this.addChild(this.backButton);
     }
 
-    _toClassicModeScene() {
-        this.emit("toClassicModeScene")
+    _onClose() {
+        this.emit("close")
     }
 
     _initTitle() {
@@ -75,28 +74,13 @@ export class SkinsShopUI extends Container {
         this.addChild(this.shopInfor);
     }
 
-    _initEffects() {
-        this._spawnInforEffect();
-        this._despawnInforEffect();
+    onStart() {
+
     }
 
-    _spawnInforEffect() {
-        this.spawnInforEffect = new TWEEN.Tween(this.shopInfor)
-            .to({ alpha: 1 }, 1500)
-            .onComplete(() => {
-                this.despawnInforEffect.start();
-            });
+    onClose() {
+        
     }
-
-    _despawnInforEffect() {
-        this.despawnInforEffect = new TWEEN.Tween(this.shopInfor)
-            .to({ alpha: 0 }, 1500)
-            .onComplete(() => {
-                this.spawnInforEffect.start();
-            });
-    }
-
-    
 
     onReset() {
         this.itemQuantity.text = ` ${Data.itemQuantity}`;

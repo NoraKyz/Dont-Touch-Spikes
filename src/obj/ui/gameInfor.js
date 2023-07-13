@@ -8,7 +8,7 @@ export class GameInfor extends Container {
         this._initTextStyle();
         this._initGameInfor();
         this._initItemQuantity();
-        this.displayGameInfor();
+        this.display();
     }
     _initTextStyle() {
         this.style = new TextStyle({
@@ -69,15 +69,17 @@ export class GameInfor extends Container {
     }
 
     onReset() {
+        this.display();
         this.gameInforTop.text = `BEST SCORE : ${Data.bestScore}`;
         this.gameInforBottom.text = `GAMES PLAYED : ${Data.gamesPlayed}`
         this.itemQuantity.text = `${Data.itemQuantity}`;
     }
 
-    displayGameInfor() {
+    display() {
         this.visible = true;
     }
-    hideGameInfor() {
+
+    hide() {
         this.visible = false;
     }
 }

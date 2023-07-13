@@ -75,6 +75,10 @@ export class Player extends Container {
         this.effect.onLose();
     }
 
+    hide() {
+        this.alpha = 0;
+    }
+
     onReset() {
         this.isDie = false;
         this.isPlaying = false;

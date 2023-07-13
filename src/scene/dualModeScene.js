@@ -43,7 +43,7 @@ export class DualModeScene extends GameScene {
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
-    this.player2.position.set(100, 100);
+    this.player2.position.set(0, 50);
     this.player2.scale.set(-1);
     this.direction2 = this.player2.movement.direction.x;
     this.player2.movement.jumpForce *= -1;
@@ -112,6 +112,7 @@ export class DualModeScene extends GameScene {
       if(this.gameState == GameState.Ready) {
         this.sceneUI.hideMainUI();
         this.player2.onPointerDown();
+        this.background2.displayScore();
       }
       this.player1.onPointerDown();
       this.gameState = GameState.Playing;
@@ -147,7 +148,9 @@ export class DualModeScene extends GameScene {
       this.player1.onNextLevel();
       this.direction1 *= -1;
       if(!this.movedSpikes) {
-        console.log("spikes");
+        this.background2.updateBackground(++Data.currentScore);
+        let limitSpike = LevelController.updateLevel();
+        this.spikes.moveSpikes(direction, limitSpike);
         this.movedSpikes = true;
       } else {
         this.movedSpikes = false;
@@ -157,7 +160,9 @@ export class DualModeScene extends GameScene {
       this.player2.onNextLevel();
       this.direction2 *= -1;
       if(!this.movedSpikes) {
-        console.log("spikes");
+        this.background2.updateBackground(++Data.currentScore);
+        let limitSpike = LevelController.updateLevel();
+        this.spikes.moveSpikes(direction, limitSpike);
         this.movedSpikes = true;
       } else {
         this.movedSpikes = false;

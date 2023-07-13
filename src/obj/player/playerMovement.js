@@ -47,15 +47,12 @@ export class PlayerMovement {
             this.direction.x == 1 * this.direction2
         ) {
             this.direction.x = -1 * this.direction2
-            this.touchWall = true;
             this.obj.parent.emit("nextLevel", this.direction.x);
             this._onTouchWall();
-            this.touchWall = false;
         }
     }
 
     _onTouchWall() {
-        this.touchWall = true;
         if (!this.obj.isDie) {
             Assets.get("touchWallSound").play();
         }

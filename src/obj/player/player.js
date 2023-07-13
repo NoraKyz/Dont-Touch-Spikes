@@ -76,7 +76,7 @@ export class Player extends Container {
         }
 
         if (obj instanceof Player) {
-
+            this.movement.direction.x *= -1;
         }
     }
 

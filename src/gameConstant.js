@@ -4,5 +4,5 @@ export const GameConstant = Object.freeze({
   SPIKE_NUMBER_HORIZONTAL: 7,
   SPIKE_NUMBER_VERTICAL: 11,
 
-  DEBUG_DRAW_COLLIDER: 0,
+  DEBUG_DRAW_COLLIDER: 1,
 })

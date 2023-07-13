@@ -8,12 +8,12 @@ export class PlayerMovement {
     }
 
     _initProperties() {
+        this.touchWall = false;
         this.direction2 = 1;
-
         this.velocity = { x: 0, y: -1.5};
         this.gravity = 0.5;
         this.jumpForce = 12;
-        this.direction = { x: 1, y: 1 };
+        this.direction = {x: 1, y: 1};
 
         this.topLimit = -Game.app.view.height / 2 + Game.app.view.height / 14;
         this.bottomLimit = (Game.app.view.height * 2.5) / 7;
@@ -39,7 +39,6 @@ export class PlayerMovement {
         if (
             this.obj.position.x - this.obj.radiousCollider <= this.leftLimit &&
             this.direction.x == -1 * this.direction2
-
         ) {
             this.direction.x = 1 * this.direction2
             this.obj.parent.emit("nextLevel", this.direction.x);
@@ -49,12 +48,15 @@ export class PlayerMovement {
             this.direction.x == 1 * this.direction2
         ) {
             this.direction.x = -1 * this.direction2
+            this.touchWall = true;
             this.obj.parent.emit("nextLevel", this.direction.x);
             this._onTouchWall();
+            this.touchWall = false;
         }
     }
 
     _onTouchWall() {
+        this.touchWall = true;
         if (!this.obj.isDie) {
             Assets.get("touchWallSound").play();
         }
@@ -62,7 +64,6 @@ export class PlayerMovement {
         if (this.velocity.y <= -this.jumpForce * 0.7) {
             this.velocity.y = -this.jumpForce * 0.7;
         } else {
-
             this.velocity.y = -4 * this.direction2;
             if (this.obj.isDie) {
                 this.velocity.y = 2 * this.direction2;

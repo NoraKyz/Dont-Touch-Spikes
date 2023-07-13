@@ -76,7 +76,9 @@ export class Player extends Container {
         }
 
         if (obj instanceof Player) {
-            this.movement.direction.x *= -1;
+            this.movement.velocity.y = -this.movement.jumpForce * 0.7;
+            this.movement.velocity.x *= -1;
+
         }
     }
 

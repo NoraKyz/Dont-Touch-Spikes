@@ -111,6 +111,7 @@ export class PlayerMovement {
     }
 
     onReset() {
+        this.obj.victory = false;
         this.velocity = { x: 0, y: -1.5};
         this.direction = { x: 1, y: 1 };
     }

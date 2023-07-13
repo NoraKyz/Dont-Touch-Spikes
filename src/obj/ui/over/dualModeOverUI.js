@@ -1,5 +1,6 @@
 import { Assets, Container, Graphics, Sprite, Text, TextStyle } from "pixi.js";
 import { OverUI } from "./overUI";
+import { Data } from "../../../data";
 
 
 export class DualModeOverUI extends OverUI {
@@ -19,6 +20,10 @@ export class DualModeOverUI extends OverUI {
       this.leftBlock.drawRoundedRect(-232, -180, 140, 140, 20); 
       this.leftBlock.endFill();
       this.addChild(this.leftBlock);
+
+      this.pointNumber = new Text(Data.currentScore, this.style);
+      this.pointNumber.anchor.set(0.5);
+      this.pointNumber.position.y = -150 ;
 
       this.rightBlock = new Graphics();
       this.rightBlock.beginFill('fc741a'); 
@@ -93,10 +98,9 @@ export class DualModeOverUI extends OverUI {
       this.addChild(this.rightStar3);
     }
 
-    onReset(stateStarTop, stateStarBottom){
-      this.stateStarLeft = stateStarTop;
-      this.stateStarRight = stateStarBottom;
-
+    _onResetStar(gameState){
+      this.stateStarLeft = gameState.player2;
+      this.stateStarRight = gameState.player1;
       if(this.stateStarLeft[0]) this.leftStar1.winStar.visible = true;
       if(this.stateStarLeft[1]) this.leftStar2.winStar.visible = true;
       if(this.stateStarLeft[2]) this.leftStar3.winStar.visible = true;

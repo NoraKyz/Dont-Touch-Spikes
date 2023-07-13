@@ -16,10 +16,6 @@ export class DualModeUI extends MainUI {
     this._initLine();
     this._initEffect();
     this._UIEffect();
-
-    this._onPlayer1Win();
-    this._onPlayer1Win();
-    this._onPlayer2Win();
   }
   
   _initProperties() {
@@ -37,11 +33,9 @@ export class DualModeUI extends MainUI {
         fontWeight: 550,
         letterSpacing: 1,
     });
-    this.stateStarTop = [false, false, false];
-    this.stateStarBottom = [false, false, false];
     this.gameState = {
-      player1: this.stateStarBottom,
-      player2: this.stateStarTop,
+      player1: [false, false, false],
+      player2: [false, false, false],
     }
   } 
 
@@ -152,10 +146,15 @@ export class DualModeUI extends MainUI {
       .to({alpha: 1}, 1000);
   }
 
-  onReset(){
-    super.onReset();
-    this.stateStarTop = [false, false, false];
-    this.stateStarBottom = [false, false, false];
+  onAllReSet(){
+    this.gameState.player1 = [false, false, false];
+    this.gameState.player2 = [false, false, false];
+    this.topStar1.winStar.visible = false;
+    this.topStar2.winStar.visible = false;
+    this.topStar3.winStar.visible = false;
+    this.bottomStar1.winStar.visible = false;
+    this.bottomStar2.winStar.visible = false;
+    this.bottomStar3.winStar.visible = false;
   }
 
   _UIEffect(){ 

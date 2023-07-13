@@ -93,6 +93,7 @@ export class BackgroundDual extends Background {
     this.originColor = { color: 'ffffff', colorDarker: 'ffffff' };
     this._resetBgColor(this.originColor);
     this._initBgColor();
+    this._resetScore();
   }
 
   _resetBgColor(originColor){
@@ -102,8 +103,9 @@ export class BackgroundDual extends Background {
   }
 
   _resetScore() {
-    this.scoreText.tint = 'E6E1F5';
+    this.scoreText.tint = 'f3f2f5';
     this.scoreText.text = `0${Data.currentScore}`;
+    this.hideScore();
   }
 
   updateBackground(newScore) {

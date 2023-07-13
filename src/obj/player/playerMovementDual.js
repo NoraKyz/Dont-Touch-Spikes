@@ -18,5 +18,4 @@ export class PlayerMovementDual extends PlayerMovement {
       this._move(dt);
     }
   }
-
 }

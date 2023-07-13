@@ -80,14 +80,12 @@ export class DualModeOverUI extends OverUI {
       return star;
     }
     _initStarLeft(){
-      //console.log(this.stateStarLeft);
       this.leftStar1 = this._initStar({x: -207, y: -37});
       this.leftStar2 = this._initStar({x: -162, y: -37});
       this.leftStar3 = this._initStar({x: -116, y: -37});
       this.addChild(this.leftStar1);
       this.addChild(this.leftStar2);
       this.addChild(this.leftStar3);
-      
     }
     _initStarRight(){
       this.rightStar1 = this._initStar({x: 207, y: -37});
@@ -101,13 +99,20 @@ export class DualModeOverUI extends OverUI {
     _onResetStar(gameState){
       this.stateStarLeft = gameState.player2;
       this.stateStarRight = gameState.player1;
-      if(this.stateStarLeft[0]) this.leftStar1.winStar.visible = true;
-      if(this.stateStarLeft[1]) this.leftStar2.winStar.visible = true;
-      if(this.stateStarLeft[2]) this.leftStar3.winStar.visible = true;
+      this.leftStar1.winStar.visible = this.stateStarLeft[0];
+      this.leftStar2.winStar.visible = this.stateStarLeft[1];
+      this.leftStar3.winStar.visible = this.stateStarLeft[2];
+      this.rightStar1.winStar.visible = this.stateStarRight[2];
+      this.rightStar2.winStar.visible = this.stateStarRight[1];
+      this.rightStar3.winStar.visible = this.stateStarRight[0];
+    }
 
-      if(this.stateStarRight[2]) this.rightStar1.winStar.visible = true;
-      if(this.stateStarRight[1]) this.rightStar2.winStar.visible = true;
-      if(this.stateStarRight[0]) this.rightStar3.winStar.visible = true;
+    onAllReset(){
+      const gameState = {
+        player1: [false, false, false],
+        player2: [false, false, false],
+      }
+      this._onResetStar(gameState);
     }
 
     _initReplayButton(){

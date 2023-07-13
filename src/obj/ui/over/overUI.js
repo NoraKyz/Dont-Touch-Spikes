@@ -87,6 +87,7 @@ export class OverUI extends PIXI.Container {
     }
 
     showGameOverUI() {
+        this.pointNumber.text = Data.currentScore;
         this.visible = true;
     }
 

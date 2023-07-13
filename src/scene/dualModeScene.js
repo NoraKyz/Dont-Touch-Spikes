@@ -49,6 +49,9 @@ export class DualModeScene extends GameScene {
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
     this.addChild(this.player2);
+
+    this.player1Point = 0;
+    this.player2Point = 0;
   }
 
   _initSpikes() {
@@ -84,15 +87,20 @@ export class DualModeScene extends GameScene {
   _initSceneOverUI() {
     this.sceneOverUI = new DualModeOverUI();
     this.addChild(this.sceneOverUI);
-    this.sceneOverUI._onResetStar(this.sceneUI.gameState)
     this.sceneOverUI.hideGameOverUI();
   }
 
   _onResetScene(){
+    this.sceneUI.backButton.visible = false;
+    if(this.player1Point === 3 || this.player2Point === 3){
+      this.player1Point = 0;
+      this.player2Point = 0;
+      this.sceneUI.onAllReSet();
+      this.sceneOverUI.onAllReset();
+      this.sceneUI.backButton.visible = true;
+    }
     this.gameState = GameState.Ready;
     Data.resetScore();
-    this.sceneOverUI.onReset();
-    this.sceneUI.onReset();
     this.background1.onReset();
     this.background2.onReset();
     this.background2.playGroundTop.visible = false;
@@ -100,7 +108,9 @@ export class DualModeScene extends GameScene {
     this.spikes.onReset(); // màu
     this.spikes.changeColor(this.background1.originColor.colorDarker);  
 
-    // this.gameInfor.onReset();
+    this.sceneOverUI.onReset();
+    this.sceneUI.onReset();
+
     this.player1.onReset();
     this.player2.onReset(); // vị trí
 
@@ -116,6 +126,7 @@ export class DualModeScene extends GameScene {
     this.player2.victory = false;
     this.direction2 = this.player2.movement.direction.x;
     this.player2.scale.set(-1);
+
   }
 
   _initSceneEvent() {
@@ -150,7 +161,6 @@ export class DualModeScene extends GameScene {
 
   _onPointerDownBackground2() {
     if(this.gameState != GameState.End) {
-      console.log(this.gameState, GameState.Ready);
       if(this.gameState === GameState.Ready) {
         this.sceneUI.hideMainUI();
         this.player2.onPointerDown();
@@ -173,7 +183,6 @@ export class DualModeScene extends GameScene {
         this.sceneOverUI.showGameOverUI();
         this.background2.hideScore();
     }, 1000);
-    console.log(this.gameState);
   }
 
   _onNextLevel(direction) {
@@ -208,14 +217,23 @@ export class DualModeScene extends GameScene {
 
   _onCollision(obj1, obj2) {
     if (obj1 === this.player1 && obj2 instanceof Spike) {
-      this._onLose();
+      this.sceneUI._onPlayer2Win();
       this.player1.onCollision(obj2);
       this.player2.victory = true;
+      this.player2Point++;
+      if(this.player1Point === 3 || this.player2Point === 3){
+        this._onLose();
+      } else this._onResetScene();
     }
     if (obj1 === this.player2 && obj2 instanceof Spike) {
-      this._onLose();
       this.player2.onCollision(obj2);
       this.player1.victory = true;
+        console.log(123);
+        this.sceneUI._onPlayer1Win();
+        this.player1Point++;
+        if(this.player1Point === 3 || this.player2Point === 3){
+          this._onLose();
+        } else this._onResetScene();
     }
     if (obj1 === this.player1 && obj2 === this.player2) {
 

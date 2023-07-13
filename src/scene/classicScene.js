@@ -113,6 +113,7 @@ export class ClassicScene extends GameScene {
     }
 
     onResetScene() {
+       // console.log(Data.currentScore);
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();
@@ -135,6 +136,7 @@ export class ClassicScene extends GameScene {
         this.gameInfor.updateGameInfor();
         this.candies.onLose();
         setTimeout(() => {
+            console.log(Data.currentScore);
             this.gameOverUI.showGameOverUI();
             this.gameInfor.displayGameInfor();
             this.background.hideScore();
@@ -149,7 +151,6 @@ export class ClassicScene extends GameScene {
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);
-        
         let limitSpike = LevelController.updateLevel();
         this.spikes.moveSpikes(direction, limitSpike);
 

@@ -22,26 +22,24 @@ export class ClassicUI extends MainUI {
   _initHardModeSwitch() {
     this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
-    this.hardModeSwitch.scale.set(0.15 );
-    this.hardModeSwitch.position.set(-290 , -230 );
+    this.hardModeSwitch.scale.set(0.18);
+    this.hardModeSwitch.position.set(-290 , -230);
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
     this.hardModeSwitch.on("pointerdown", () => this._toHardModeScene());
-
     this.addChild(this.hardModeSwitch);
   }
 
   _initDualModeSwitch() {
     this.dualModeSwitch = Sprite.from(Assets.get("dualModeButton"));
     this.dualModeSwitch.anchor.set(0.5);
-    this.dualModeSwitch.scale.set(0.18 / Game.ratio);
-    this.dualModeSwitch.position.set(-290 / Game.ratio, -120 / Game.ratio);
+    this.dualModeSwitch.scale.set(0.18);
+    this.dualModeSwitch.position.set(-290 , -120 );
 
     this.dualModeSwitch.cursor = "pointer";
     this.dualModeSwitch.eventMode = 'static';
     this.dualModeSwitch.on("pointerdown", () => this._toDualModeScene());
-
     this.addChild(this.dualModeSwitch);
   }
 

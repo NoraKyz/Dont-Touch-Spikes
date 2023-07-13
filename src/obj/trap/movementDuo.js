@@ -16,7 +16,6 @@ export class MovementDuo {
 
     moveSpikes(state, limitSpike) {
         this.state = state;
-        console.log(this.leftIndexSpikes, this.rightIndexSpikes);
 
         this.spikeRight.forEach((spike, index) => {
           if (this.rightIndexSpikes.includes(index)) {

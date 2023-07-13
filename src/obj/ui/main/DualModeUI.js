@@ -1,6 +1,5 @@
 import {Assets, Container, Graphics, Sprite, Text, TextStyle} from "pixi.js";
 import {MainUI} from "./mainUI.js";
-import { Game } from "../../../game.js";
 import * as TWEEN from '@tweenjs/tween.js'
 
 export class DualModeUI extends MainUI {

@@ -26,9 +26,10 @@ export class DualModeScene extends GameScene {
 
   _initGameplay() {
     this._initBackground();
-    //this._initPlayer();
+    this._initPlayer();
     this._initSceneUI();
     this._initSceneOverUI();
+    this._initSpikes(); 
   }
 
   _initPlayer(){
@@ -48,6 +49,13 @@ export class DualModeScene extends GameScene {
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
     this.addChild(this.player2);
+  }
+
+  _initSpikes() {     
+    this.spikes = new SpikesManager(this.id);
+    this.spikes.spikesBottom.forEach(spike => spike.y = 91);
+    this.spikes.changeColor(this.background1.originColor.colorDarker);  
+    this.addChild(this.spikes);
   }
   
   _initBackground() {
@@ -70,19 +78,18 @@ export class DualModeScene extends GameScene {
 
   _initSceneUI() {
     this.sceneUI = new DualModeUI();
-    //this.addChild(this.sceneUI);
+    this.addChild(this.sceneUI);
   }
   _initSceneOverUI() {
-    console.log(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom);
     this.sceneOverUI = new DualModeOverUI();
     this.addChild(this.sceneOverUI);
     this.sceneOverUI.onReset(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom)
-    //this.sceneOverUI.hideGameOverUI();
+    this.sceneOverUI.hideGameOverUI();
   }
 
   _onResetScene(){
-    // this.sceneUI.onReset();
-    // this.sceneOverUI.onReset();
+    this.sceneUI.onReset();
+    this.sceneOverUI.onReset();
   }
 
   _initSceneEvent() {
@@ -90,7 +97,7 @@ export class DualModeScene extends GameScene {
     this.sceneOverUI.on("replay", this._onResetScene.bind(this));
     this.on("lose", this._onLose.bind(this));
     this.sceneUI.on("toClassicModeScene", () => {
-      this.parent.onStartScene("classicModeScene")
+      this.parent.onStartScene("ClassicModeScene")
     });
     this.background1.on("pointerdown", () => {
       this._onPointerDownBackground1();
@@ -132,20 +139,23 @@ export class DualModeScene extends GameScene {
 
   }
 
-  _onNextLevel() {
+  _onNextLevel(direction) {
     if(this.gameState == GameState.End) {
       return;
     }
     //this.player1.onNextLevel();
     this.player2.onNextLevel();
+    let limitSpike = LevelController.updateLevel();
+    console.log('dual', limitSpike);
+    this.spikes.moveSpikes(direction, limitSpike);
   }
 
 
 
   update(dt) {
-    // this.player1.update(dt);
-    // this.player2.update(dt);
-    // this.sceneUI.update(dt);
+    this.player1.update(dt);
+    this.player2.update(dt);
+    this.sceneUI.update(dt);
     this.sceneOverUI.update(dt);
   }
 }

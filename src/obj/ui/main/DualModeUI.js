@@ -16,6 +16,10 @@ export class DualModeUI extends MainUI {
     this._initLine();
     this._initEffect();
     this._UIEffect();
+
+    this._onPlayer1Win();
+    this._onPlayer1Win();
+    this._onPlayer2Win();
   }
   
   _initProperties() {
@@ -35,6 +39,10 @@ export class DualModeUI extends MainUI {
     });
     this.stateStarTop = [false, false, false];
     this.stateStarBottom = [false, false, false];
+    this.gameState = {
+      player1: this.stateStarBottom,
+      player2: this.stateStarTop,
+    }
   } 
 
   _initGameTutol() {
@@ -123,13 +131,13 @@ export class DualModeUI extends MainUI {
     if(this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
     else if (this.bottomStar2.winStar.visible === false) this.bottomStar2.winStar.visible = true;
     else if (this.bottomStar3.winStar.visible === false) this.bottomStar3.winStar.visible = true;
-    this.stateStarBottom = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
+    this.gameState.player1 = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
   }
   _onPlayer2Win(){
     if(this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
     else if (this.topStar2.winStar.visible === false) this.topStar2.winStar.visible = true;
     else if (this.topStar3.winStar.visible === false) this.topStar3.winStar.visible = true;
-    this.stateStarTop = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
+    this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
   }
 
   _toClassicModeScene() {
@@ -145,8 +153,9 @@ export class DualModeUI extends MainUI {
   }
 
   onReset(){
-    this.stateStarTop = [];
-    this.stateStarBottom = [];
+    super.onReset();
+    this.stateStarTop = [false, false, false];
+    this.stateStarBottom = [false, false, false];
   }
 
   _UIEffect(){ 

@@ -33,6 +33,7 @@ export class Player extends Container {
         this.isDie = false;
         this.hardModeEnabled = false;
         this.dualModeEnabled = false;
+        this.rootPos = {x: 0, y: 0};
     }
 
     _initSprite() {
@@ -85,7 +86,8 @@ export class Player extends Container {
     onReset() {
         this.isDie = false;
         this.isPlaying = false;
-        this.position.set(0,0);
+        console.log(this.rootPos);
+        this.position = this.rootPos;
 
         this.sprite.onReset();
         this.effect.onReset();

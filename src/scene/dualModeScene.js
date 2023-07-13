@@ -1,18 +1,13 @@
 import {Assets, Container, Graphics} from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
-import { Background } from "../obj/background/background.js";
-import { GameInfor } from "../obj/ui/gameInfor.js";
-import { CandyManager } from "../obj/items/candyManager.js";
-import { Candy } from "../obj/items/candy.js";
 import { Player } from "../obj/player/player.js";
 import { SpikesManager } from "../obj/trap/spikesManager.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
-import {DualModeUI} from "../obj/ui/main/dualModeUI.js";
-import {Game} from "../game";
 import {BackgroundDual} from "../obj/background/backgroundDual";
 import { DualModeOverUI } from "../obj/ui/over/dualModeOverUI.js";
+import { DualModeUI } from "../obj/ui/main/dualModeUI.js";
 
 export class DualModeScene extends GameScene {
   constructor() {
@@ -37,15 +32,17 @@ export class DualModeScene extends GameScene {
     //player1
     this.player1 = new Player(this);
     this.player1.dualModeEnabled = true;
-    this.player1.position.set(0, -50);
+    this.player1.rootPos = {x: 0, y: 50};
+    this.player1.position = this.player1.rootPos;
     this.addChild(this.player1);
     this.direction1 = this.player1.movement.direction.x;
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
-    this.player2.position.set(0, 50);
-    this.player2.scale.set(-1);
+    this.player2.rootPos = {x: 0, y: -50};
+    this.player2.position = this.player2.rootPos;
     this.direction2 = this.player2.movement.direction.x;
+    this.player2.scale.set(-1);
     this.player2.movement.jumpForce *= -1;
     this.player2.movement.gravity *= -1;
     this.player2.movement.direction2 *= -1;
@@ -83,13 +80,23 @@ export class DualModeScene extends GameScene {
   _initSceneOverUI() {
     this.sceneOverUI = new DualModeOverUI();
     this.addChild(this.sceneOverUI);
-    this.sceneOverUI.onReset(this.sceneUI.stateStarTop, this.sceneUI.stateStarBottom)
+    this.sceneOverUI._onResetStar(this.sceneUI.gameState)
     this.sceneOverUI.hideGameOverUI();
   }
 
   _onResetScene(){
-    this.sceneUI.onReset();
+    Data.resetScore();
     this.sceneOverUI.onReset();
+    this.sceneUI.onReset();
+
+    // this.gameInfor.onReset();
+    this.player1.onReset();
+    this.player2.onReset(); // vị trí
+    this.spikes.onReset(); // màu
+    this.spikes.changeColor(this.background1.originColor.colorDarker);  
+    this.background1.onReset();
+    this.background2.onReset();
+    this.gameState = GameState.Ready;
   }
 
   _initSceneEvent() {
@@ -138,9 +145,16 @@ export class DualModeScene extends GameScene {
 
   _onLose() {
     if (this.gameState == GameState.End) {
-      return;
+        return;
     }
+
     this.gameState = GameState.End;
+    Assets.get("loseSound").play();
+    setTimeout(() => {
+        this.sceneOverUI._onResetStar(this.sceneUI.gameState);
+        this.sceneOverUI.showGameOverUI();
+        this.background2.hideScore();
+    }, 1000);
   }
 
   _onNextLevel(direction) {
@@ -174,10 +188,14 @@ export class DualModeScene extends GameScene {
   }
 
   _onCollision(obj1, obj2) {
-    if (obj1 === this.player && obj2 instanceof Spike) {
+    if (obj1 === this.player1 && obj2 instanceof Spike) {
       this._onLose();
-      this.player.onCollision(obj2);
+      this.player1.onCollision(obj2);
     }
+    // if (obj1 === this.player2 && obj2 instanceof Spike) {
+    //   this._onLose();
+    //   this.player2.onCollision(obj2);
+    // }
   }
 
 

@@ -136,7 +136,10 @@ export class DualModeScene extends GameScene {
   }
 
   _onLose() {
-
+    if (this.gameState == GameState.End) {
+      return;
+    }
+    this.gameState = GameState.End;
   }
 
   _onNextLevel(direction) {
@@ -165,6 +168,12 @@ export class DualModeScene extends GameScene {
     }
   }
 
+  _onCollision(obj1, obj2) {
+    if (obj1 === this.player && obj2 instanceof Spike) {
+      this._onLose();
+      this.player.onCollision(obj2);
+    }
+  }
 
 
   update(dt) {
@@ -172,5 +181,9 @@ export class DualModeScene extends GameScene {
     this.player2.update(dt);
     this.sceneUI.update(dt);
     this.sceneOverUI.update(dt);
+    if (this.gameState == GameState.Playing) {
+      this.colliderDetector.checkCollider(this.player1, this.spikes.poolSpikes);
+      this.colliderDetector.checkCollider(this.player2, this.spikes.poolSpikes);
+    }
   }
 }

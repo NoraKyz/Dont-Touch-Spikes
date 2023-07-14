@@ -195,17 +195,29 @@ export class DualModeScene extends GameScene {
     if (obj1 === this.player1 && obj2 instanceof Spike) {
       this._onLose();
       this.player1.onCollision(obj2);
-      this.player2.victory = true;
+      if(this.player2.isDie) {
+        this.sceneOverUI.tmp = 2;
+      } else {
+        this.player2.victory = true;
+        this.sceneOverUI.tmp = 1;
+      }
+
     }
     if (obj1 === this.player2 && obj2 instanceof Spike) {
       this._onLose();
       this.player2.onCollision(obj2);
-      this.player1.victory = true;
+      if(this.player1.isDie) {
+        this.sceneOverUI.tmp = 2;
+      } else {
+        this.player1.victory = true;
+      }
+
     }
     if (obj1 === this.player1 && obj2 === this.player2) {
       //lực player1 > player2
       if(this.player1.movement.velocity.y < this.player2.movement.velocity.y) {
         this.player1.onCollision(this.player2);
+
         //console.log("player2 " + this.player2.movement.velocity.x);
 
       } else if(-obj1.movement.velocity.y < obj2.movement.velocity.y) {

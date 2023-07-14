@@ -1,9 +1,10 @@
-import { Container } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { SkinsList } from "./skinsList";
 import { SkinManager } from "../../../skin/skinManager";
 import { SkinsShopUI } from "./skinsShopUI";
 import { GameConstant } from "../../../../gameConstant";
 import { SkinsShopEffect } from "./skinsShopEffect";
+import { Game } from "../../../../game";
 
 export class SkinsShop extends Container {
     constructor() {
@@ -23,6 +24,14 @@ export class SkinsShop extends Container {
         this._initSkinsList();
         this._initShopUI();
         this._initEffect();
+        this._initFakeRetangleBottom();
+    }
+
+    _initFakeRetangleBottom() {
+        this.retangleBottom = new Graphics();
+        this.retangleBottom.beginFill(0x808080);
+        this.retangleBottom.drawRect(-Game.app.view.width / 2, Game.app.view.height * 2.5 / 7, Game.app.view.width, Game.app.view.height / 7);
+        this.retangleBottom.endFill();
     }
 
     _initSkinManager() {
@@ -58,6 +67,7 @@ export class SkinsShop extends Container {
 
     onStart() {
         this.visible = true;
+        this.parent.addChild(this.retangleBottom);
         this.skinsList.scrollTop();
         this.effect.onStart();
         this.update();

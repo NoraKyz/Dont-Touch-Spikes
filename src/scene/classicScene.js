@@ -1,4 +1,4 @@
-import { Assets } from "pixi.js";
+import { Assets, Graphics } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
@@ -33,6 +33,9 @@ export class ClassicScene extends GameScene {
         this._initGameInfor();
         this._initGameOverUI();
     }
+
+    
+
     // Obj in scene
     _initPlayer() {
         this.player = new Player(this);

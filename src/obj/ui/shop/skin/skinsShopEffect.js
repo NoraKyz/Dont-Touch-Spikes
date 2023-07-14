@@ -64,6 +64,7 @@ export class SkinsShopEffect {
             .to({ y: GameConstant.GAME_HEIGHT * 0.7 }, 500)
             .onComplete(() => {
                 this.skinsShop.visible = false;
+                this.skinsShop.parent.removeChild(this.skinsShop.retangleBottom);
             });
     }
 

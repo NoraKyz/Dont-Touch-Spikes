@@ -121,6 +121,7 @@ export class DualModeOverUI extends OverUI {
     }
 
     _initTitleUI() {
+      this.tmp = 0;
       super._initTitleUI();
       this.titleStyle = new TextStyle({
         ...this.style,
@@ -128,9 +129,21 @@ export class DualModeOverUI extends OverUI {
         fontSize: 70,
         fontWeight: 550,
       });
-      this.gameName.text = "PLAYER1 WIN!";
+      this.gameName.text = "PLAYER 1 WIN";
       this.gameName.style = this.titleStyle;
       this.gameName.position.set(0, -300);
+    }
+
+    Player1Win() {
+
+    }
+
+    Draw() {
+      this.gameName.text = "DRAW !";
+    }
+
+    Player2Win() {
+      this.gameName.text = "PLAYER 2 WIN";
     }
 
     _clickedReplayButton() {
@@ -138,6 +151,11 @@ export class DualModeOverUI extends OverUI {
       this.emit("replay");
     }
     update(dt){
+      if(this.tmp == 1) {
+        this.Player2Win();
+      } else if (this.tmp == 2) {
+        this.Draw();
+      }
       this.elapsed += dt;
       if(this.elapsed >= 50){
         this.blueSprite1.visible = !this.blueSprite1.visible;

@@ -29,6 +29,14 @@ export class AssetsManager {
                 "birdDead": "./assets/images/birdDead.png",
             }
         )
+
+      this._addBundle(
+        "skin", {
+          "blueBird1": "./assets/images/blueBird1.png",
+          "blueBird2": "./assets/images/blueBird2.png",
+          "blueBird3": "./assets/images/blueBird3.png",
+        }
+      )
         
         this._addBundle(
             "UI", {

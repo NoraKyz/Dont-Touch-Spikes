@@ -242,6 +242,7 @@ export class DualModeScene extends GameScene {
         this._onLose();
       } else this._onEndRound();
     }
+    
     if (obj1 === this.player2 && obj2 instanceof Spike) {
       this.player2.onCollision(obj2);
       this.player1.victory = true;

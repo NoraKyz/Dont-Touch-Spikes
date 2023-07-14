@@ -4392,6 +4392,27 @@ class CommonUtils {
     }
     return { color, colorDarker };
   }
+  // luôn luôn có khoảng trống 2 ô trên spikeLine để dễ chơi
+  static randomArray(quantity) {
+    const resultArray = [];
+    const makerArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const num = this.randomInt(1, 7);
+    makerArray[num] = 1;
+    makerArray[num + 1] = 1;
+    const valueArray = [num, num + 1];
+    while (valueArray.length < makerArray.length - quantity) {
+      let newNum = CommonUtils.randomInt(0, 9);
+      if (!valueArray.includes(newNum)) {
+        valueArray.push(newNum);
+        makerArray[newNum] = 1;
+      }
+    }
+    makerArray.forEach((value, index) => {
+      if (value == 0)
+        resultArray.push(index);
+    });
+    return resultArray;
+  }
 }
 
 
@@ -4448,7 +4469,12 @@ class AssetsManager {
         "replayButton": "./assets/images/replayButton.png",
         "shareButton": "./assets/images/shareButton.png",
         "undoButton": "./assets/images/Undo.png",
-        "hardModeButton": "./assets/images/HardMode.png"
+        "hardModeButton": "./assets/images/HardMode.png",
+        "dualModeButton": "./assets/images/DualMode.png",
+        "line": "./assets/images/line.png",
+        "star1": "./assets/images/star1.png",
+        "star2": "./assets/images/star2.png",
+        "skinShopButton": "./assets/images/skinShopButton.png"
       }
     );
     this._addBundle(
@@ -4491,7 +4517,7 @@ class Data {
     this.currentScore = 0;
     this.bestScore = 0;
     this.gamesPlayed = 0;
-    this.itemQuantity = 0;
+    this.itemQuantity = 100;
   }
   static resetScore() {
     this.currentScore = 0;
@@ -4518,6 +4544,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _custom_assetsManager__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./custom/assetsManager */ "./src/custom/assetsManager.js");
 /* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./data */ "./src/data.js");
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _obj_skin_skinStorage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./obj/skin/skinStorage */ "./src/obj/skin/skinStorage.js");
+/* harmony import */ var _obj_skin_skinManager__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./obj/skin/skinManager */ "./src/obj/skin/skinManager.js");
+
+
 
 
 
@@ -4527,33 +4557,33 @@ __webpack_require__.r(__webpack_exports__);
 class Game {
   static init() {
     this.app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({
+      //resolution: window.devicePixelRatio || 1,
       width: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH,
       height: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT,
       backgroundColor: 14736853,
       resolution: 1
     });
     document.body.appendChild(this.app.view);
-    const viewStyle = this.app.view.style;
-    viewStyle.position = "absolute";
-    viewStyle.display = "block";
-    viewStyle.padding = "0px 0px 0px 0px";
-    this.resize(window.innerWidth, window.innerHeight);
     _custom_assetsManager__WEBPACK_IMPORTED_MODULE_3__.AssetsManager._loadAssets().then(() => {
+      _obj_skin_skinStorage__WEBPACK_IMPORTED_MODULE_6__.SkinStorage.init();
+      _obj_skin_skinManager__WEBPACK_IMPORTED_MODULE_7__.SkinManager.init();
       this._initScene();
       this.app.ticker.add((dt) => Game.update(dt));
     });
+    Game.resize();
   }
-  static resize(width, height) {
-    this.style = this.app.view.style;
-    this.ratio = Math.max(_gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / width, _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT / height);
-    this.app.view.width = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH / this.ratio;
-    this.app.view.height = _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT / this.ratio;
-    let vMargin = Math.floor((width - this.app.view.width) / 2);
-    let hMargin = Math.floor((height - this.app.view.height) / 2);
-    this.style.margin = `${hMargin}px ${vMargin}px ${hMargin}px ${vMargin}px`;
-    this.app.resizeTo = this.app.view;
-    this.app.resize();
-    this.sceneManager && this.sceneManager.onResize();
+  static resize() {
+    const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const scale = Math.min(screenWidth / _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH, screenHeight / _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    const enlargedWidth = Math.floor(scale * _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH);
+    const enlargedHeight = Math.floor(scale * _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT);
+    const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+    const verticalMargin = (screenHeight - enlargedHeight) / 2;
+    this.app.view.style.width = `${enlargedWidth}px`;
+    this.app.view.style.height = `${enlargedHeight}px`;
+    this.app.view.style.marginLeft = this.app.view.style.marginRight = `${horizontalMargin}px`;
+    this.app.view.style.marginTop = this.app.view.style.marginBottom = `${verticalMargin}px`;
   }
   static _initScene() {
     this.sceneManager = new _scene_sceneManager__WEBPACK_IMPORTED_MODULE_1__.SceneManager();
@@ -4568,7 +4598,7 @@ window.onload = function() {
   _data__WEBPACK_IMPORTED_MODULE_4__.Data.init();
   Game.init();
   window.onresize = () => {
-    Game.resize(window.innerWidth, window.innerHeight);
+    Game.resize();
   };
 };
 
@@ -4613,7 +4643,7 @@ __webpack_require__.r(__webpack_exports__);
 class LevelController {
   static updateLevel() {
     let minSpikes = 0, maxSpikes = 0;
-    if (_data__WEBPACK_IMPORTED_MODULE_0__.Data.currentScore === 1) {
+    if (_data__WEBPACK_IMPORTED_MODULE_0__.Data.currentScore == 1) {
       minSpikes = 1;
       maxSpikes = 2;
     } else if (_data__WEBPACK_IMPORTED_MODULE_0__.Data.currentScore <= 2) {
@@ -4682,7 +4712,7 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fontFamily: "Courier New",
       fontWeight: "bolder",
-      fontSize: 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
+      fontSize: 65,
       fill: `0x${this.originColor.color}`
     });
   }
@@ -4709,7 +4739,7 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initScore() {
     this.scoreBg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.scoreBg.circleRadius = 200 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
+    this.scoreBg.circleRadius = 200;
     this.scoreBg.beginFill(16777215);
     this.scoreBg.drawCircle(0, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 28, this.scoreBg.circleRadius);
     this.scoreBg.endFill();
@@ -4745,7 +4775,7 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _changeColorEffect() {
     this.alpha = 0.95;
-    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this).to({ alpha: 1 }, 1e3);
+    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this).to({ alpha: 1 }, 2e3);
   }
   changeBgColor() {
     this._newColor();
@@ -4762,6 +4792,120 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   hideScore() {
     this.removeChild(this.scoreText);
+  }
+  hideScoreBackground() {
+    this.scoreBg.visible = false;
+  }
+  showScoreGround() {
+    this.scoreBg.visible = true;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/background/backgroundDual.js":
+/*!**********************************************!*\
+  !*** ./src/obj/background/backgroundDual.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BackgroundDual: () => (/* binding */ BackgroundDual)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../data */ "./src/data.js");
+/* harmony import */ var _background__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./background */ "./src/obj/background/background.js");
+
+
+
+
+class BackgroundDual extends _background__WEBPACK_IMPORTED_MODULE_3__.Background {
+  constructor() {
+    super();
+  }
+  _initProperties() {
+    super._initProperties();
+    this.originColor = { color: "ebebeb", colorDarker: "808080" };
+  }
+  _initBgColor() {
+    this.originColor = { color: "f3f2f5", colorDarker: "c6bfd6" };
+    this._resetBgColor();
+  }
+  _initPlayGround() {
+    this._initFullPlayGround();
+    this._initPlayGroundTop();
+    this._initBgColor();
+  }
+  _initFullPlayGround() {
+    this.fullPlayGround = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.fullPlayGround.beginFill(`0x${this.originColor.color}`);
+    this.fullPlayGround.drawRect(-_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width / 2, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 6 / 7);
+    this.fullPlayGround.endFill();
+    this.addChild(this.fullPlayGround);
+    this.fullPlayGround.visible = false;
+  }
+  _initPlayGroundTop() {
+    this.playGroundTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.playGroundTop.beginFill(`0x${this.originColor.color}`);
+    this.playGroundTop.drawRect(-_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width / 2, -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7);
+    this.playGroundTop.endFill();
+    this.addChild(this.playGroundTop);
+    this.playGroundTop.visible = false;
+  }
+  _initRetangleBottom() {
+    this.retangleBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.retangleBottom.beginFill(`0x${this.originColor.colorDarker}`);
+    this.retangleBottom.drawRect(-_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width / 2, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.width, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 14);
+    this.retangleBottom.endFill();
+    this.addChild(this.retangleBottom);
+  }
+  _initScore() {
+    this._initScoreBgFull();
+    this._initScoreBgTop();
+    this.scoreText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`0${_data__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore}`, this.style);
+    this.scoreText.anchor.set(0.5);
+    this.scoreText.scale.set(4.5);
+  }
+  _initScoreBgFull() {
+    this.scoreBgFull = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.scoreBgFull.circleRadius = 200;
+    this.scoreBgFull.beginFill(16777215);
+    this.scoreBgFull.drawCircle(0, 0, this.scoreBgFull.circleRadius);
+    this.scoreBgFull.endFill();
+    this.addChild(this.scoreBgFull);
+    this.scoreBgFull.visible = false;
+  }
+  _initScoreBgTop() {
+    this.scoreBgTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.scoreBgTop.beginFill(16777215);
+    this.scoreBgTop.arc(0, 0, this.scoreBgFull.circleRadius, Math.PI, 0);
+    this.scoreBgTop.endFill();
+    this.addChild(this.scoreBgTop);
+    this.scoreBgTop.visible = false;
+  }
+  _resetBgColor() {
+    this.playGroundTop.tint = this.originColor.color;
+    this.retangleTop.tint = this.originColor.colorDarker;
+    this.retangleBottom.tint = this.originColor.colorDarker;
+  }
+  _resetScore() {
+    this.scoreText.tint = "E6E1F5";
+    this.scoreText.text = `0${_data__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore}`;
+  }
+  _resetProperties() {
+    super._resetProperties();
+    this.scoreBgTop.visible = false;
+    this.playGroundTop.visible = false;
+  }
+  updateBackground(newScore) {
+    if (newScore < 10)
+      this.scoreText.text = `0${newScore}`;
+    else
+      this.scoreText.text = `${newScore}`;
   }
 }
 
@@ -4806,7 +4950,7 @@ class Candy extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.addChild(this.sprite);
   }
   _initCollider() {
-    const colliderRadious = 18 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
+    const colliderRadious = 18;
     this.collider = new _physics_collider__WEBPACK_IMPORTED_MODULE_2__.Collider(colliderRadious);
     this.addChild(this.collider);
   }
@@ -4865,9 +5009,9 @@ class CandyEffect {
     this._initEffect();
   }
   _initProperties() {
-    this.speed = 1 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
+    this.speed = 1;
     this.direction = 1;
-    this.distance = 20 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
+    this.distance = 20;
   }
   _initEffect() {
     this._spawnEffect();
@@ -4880,7 +5024,7 @@ class CandyEffect {
     this.despawnEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.obj).to({ alpha: 0 }, 2e3);
   }
   _eatingEffect() {
-    this.targetY = this.obj.y - 80 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
+    this.targetY = this.obj.y - 80;
     this.moveAddNumber = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.obj).to({ y: this.targetY, alpha: 0 }, 1e3);
     this.moveAddNumber.start();
   }
@@ -5066,9 +5210,9 @@ class CandySprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fill: "#FF8207",
       fontFamily: "Blissful Thinking",
-      fontSize: 55 * _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
+      fontSize: 55,
       fontWeight: "lighter",
-      letterSpacing: 1 * _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio
+      letterSpacing: 1
     });
   }
   _initSprite() {
@@ -5077,13 +5221,13 @@ class CandySprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _candySprite() {
     this.candy = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("candy"));
-    this.scale.set(1.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.scale.set(1.2);
     this.candy.anchor.set(0.5);
     this.addChild(this.candy);
   }
   _addItemSprite() {
     this.numberAddItem = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("+1", this.style);
-    this.numberAddItem.scale.set(1 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.numberAddItem.scale.set(1);
     this.numberAddItem.anchor.set(0.5);
     this.addChild(this.numberAddItem);
   }
@@ -5236,6 +5380,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _playerSprite__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./playerSprite */ "./src/obj/player/playerSprite.js");
 /* harmony import */ var _playerEffect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./playerEffect */ "./src/obj/player/playerEffect.js");
 /* harmony import */ var _playerMovement__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./playerMovement */ "./src/obj/player/playerMovement.js");
+/* harmony import */ var _playerMovementDual__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./playerMovementDual */ "./src/obj/player/playerMovementDual.js");
+
 
 
 
@@ -5254,7 +5400,7 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initCollider();
   }
   _initCollider() {
-    this.radiousCollider = 40 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
+    this.radiousCollider = 40;
     this.collider = new _physics_collider__WEBPACK_IMPORTED_MODULE_1__.Collider(this.radiousCollider);
     this.addChild(this.collider);
   }
@@ -5262,6 +5408,8 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.isPlaying = false;
     this.isDie = false;
     this.hardModeEnabled = false;
+    this.dualModeEnabled = false;
+    this.rootPos = { x: 0, y: 0 };
   }
   _initSprite() {
     this.sprite = new _playerSprite__WEBPACK_IMPORTED_MODULE_4__.PlayerSprite(this);
@@ -5271,7 +5419,13 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.effect = new _playerEffect__WEBPACK_IMPORTED_MODULE_5__.PlayerEffect(this, this.parent);
   }
   _initMovement() {
-    this.movement = new _playerMovement__WEBPACK_IMPORTED_MODULE_6__.PlayerMovement(this);
+    switch (this.parent.id) {
+      case "dualModeScene":
+        this.movement = new _playerMovementDual__WEBPACK_IMPORTED_MODULE_7__.PlayerMovementDual(this);
+        break;
+      default:
+        this.movement = new _playerMovement__WEBPACK_IMPORTED_MODULE_6__.PlayerMovement(this);
+    }
   }
   onNextLevel() {
     this.sprite.changeDirection();
@@ -5290,16 +5444,21 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.movement.onCollisionSpike();
       this._onLose();
     }
+    if (obj instanceof Player) {
+    }
   }
   _onLose() {
     this.isDie = true;
     this.sprite.onLose();
     this.effect.onLose();
   }
+  hide() {
+    this.alpha = 0;
+  }
   onReset() {
     this.isDie = false;
     this.isPlaying = false;
-    this.position.set(0, 0);
+    this.position = this.rootPos;
     this.sprite.onReset();
     this.effect.onReset();
     this.movement.onReset();
@@ -5329,8 +5488,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/particle-emitter */ "./node_modules/@pixi/particle-emitter/lib/particle-emitter.es.js");
 /* harmony import */ var _assets_aim_emitter_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../assets/aim/emitter.json */ "./assets/aim/emitter.json");
 /* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../game */ "./src/game.js");
-
 
 
 
@@ -5350,15 +5507,9 @@ class PlayerEffect {
   }
   _flyEffect() {
     let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle");
-    let cusConfig = _assets_aim_emitter_json__WEBPACK_IMPORTED_MODULE_2__;
-    cusConfig.scale = {
-      start: 0.5 / _game__WEBPACK_IMPORTED_MODULE_4__.Game.ratio,
-      end: 0.035 / _game__WEBPACK_IMPORTED_MODULE_4__.Game.ratio,
-      minimumScaleMultiplier: 1
-    };
     this.emitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__.Emitter(
       this.obj.parent,
-      (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__.upgradeConfig)(cusConfig, [texture])
+      (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__.upgradeConfig)(_assets_aim_emitter_json__WEBPACK_IMPORTED_MODULE_2__, [texture])
     );
     this.emitter.emit = false;
   }
@@ -5416,9 +5567,9 @@ class PlayerMovement {
     this._initProperties();
   }
   _initProperties() {
-    this.velocity = { x: 0 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio, y: -1.5 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio };
-    this.gravity = 0.5 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio;
-    this.jumpForce = 12 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio;
+    this.velocity = { x: 0, y: -1.5 };
+    this.gravity = 0.5;
+    this.jumpForce = 12;
     this.direction = { x: 1, y: 1 };
     this.topLimit = -_game__WEBPACK_IMPORTED_MODULE_0__.Game.app.view.height / 2 + _game__WEBPACK_IMPORTED_MODULE_0__.Game.app.view.height / 14;
     this.bottomLimit = _game__WEBPACK_IMPORTED_MODULE_0__.Game.app.view.height * 2.5 / 7;
@@ -5454,9 +5605,9 @@ class PlayerMovement {
     if (this.velocity.y <= -this.jumpForce * 0.7) {
       this.velocity.y = -this.jumpForce * 0.7;
     } else {
-      this.velocity.y = -4 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio;
+      this.velocity.y = -4;
       if (this.obj.isDie) {
-        this.velocity.y = 2 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio;
+        this.velocity.y = 2;
       }
     }
   }
@@ -5495,7 +5646,8 @@ class PlayerMovement {
     this.direction = { x: 1, y: 1 };
   }
   onReset() {
-    this.velocity = { x: 0 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio, y: -1.5 / _game__WEBPACK_IMPORTED_MODULE_0__.Game.ratio };
+    this.obj.victory = false;
+    this.velocity = { x: 0, y: -1.5 };
     this.direction = { x: 1, y: 1 };
   }
   onPointerDown() {
@@ -5507,6 +5659,51 @@ class PlayerMovement {
   update(dt) {
     this._move(dt);
     this._moveInMenu(dt);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/player/playerMovementDual.js":
+/*!**********************************************!*\
+  !*** ./src/obj/player/playerMovementDual.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PlayerMovementDual: () => (/* binding */ PlayerMovementDual)
+/* harmony export */ });
+/* harmony import */ var _playerMovement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./playerMovement */ "./src/obj/player/playerMovement.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+
+
+
+class PlayerMovementDual extends _playerMovement__WEBPACK_IMPORTED_MODULE_0__.PlayerMovement {
+  constructor(obj) {
+    super(obj);
+  }
+  _initProperties() {
+    super._initProperties();
+    this.obj.victory = false;
+    this.topLimit = -_game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7;
+    this.bottomLimit = _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height * 3 / 7;
+  }
+  onStart() {
+    if (this.obj.hardModeEnabled) {
+      this.velocity.x = this.jumpForce / 1.2;
+    } else {
+      this.velocity.x = this.jumpForce / 1.7;
+    }
+    this.velocity.y = -this.jumpForce;
+  }
+  update(dt) {
+    if (!this.obj.victory) {
+      this._move(dt);
+    }
   }
 }
 
@@ -5525,19 +5722,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   PlayerSprite: () => (/* binding */ PlayerSprite)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+/* harmony import */ var _skin_skinManager_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../skin/skinManager.js */ "./src/obj/skin/skinManager.js");
 
 
 class PlayerSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor(parent) {
     super();
     this.parent = parent;
-    this._initTexture();
+    this._initSkin();
     this._initSprite();
     this.onReset();
   }
-  _initTexture() {
-    this.flyTextures = [pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"), pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"), pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3")];
+  _initSkin() {
+    this.skin = _skin_skinManager_js__WEBPACK_IMPORTED_MODULE_1__.SkinManager.currentSkin;
   }
   _initSprite() {
     this._initLiveSprite();
@@ -5545,19 +5742,19 @@ class PlayerSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   _initLiveSprite() {
     this.live = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.live.sprite1 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"));
+    this.live.sprite1 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(this.skin.texture1);
     this.live.sprite1.anchor.set(0.5);
-    this.live.sprite1.scale.set(0.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.live.sprite1.scale.set(0.2);
     this.live.addChild(this.live.sprite1);
     this.live.sprite1.visible = true;
-    this.live.sprite2 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"));
+    this.live.sprite2 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(this.skin.texture2);
     this.live.sprite2.anchor.set(0.5);
-    this.live.sprite2.scale.set(0.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.live.sprite2.scale.set(0.2);
     this.live.addChild(this.live.sprite2);
     this.live.sprite2.visible = false;
-    this.live.sprite3 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"));
+    this.live.sprite3 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(this.skin.texture3);
     this.live.sprite3.anchor.set(0.5);
-    this.live.sprite3.scale.set(0.2 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.live.sprite3.scale.set(0.2);
     this.live.addChild(this.live.sprite3);
     this.live.sprite3.visible = false;
     this.addChild(this.live);
@@ -5565,7 +5762,7 @@ class PlayerSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initDeadSprite() {
     this.birdDead = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("birdDead"));
     this.birdDead.anchor.set(0.5);
-    this.birdDead.scale.set(0.5 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.birdDead.scale.set(0.5);
     this.addChild(this.birdDead);
   }
   onPointerDown() {
@@ -5578,9 +5775,16 @@ class PlayerSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.birdDead.visible = true;
   }
   onReset() {
+    this._updateSkin();
     this.live.visible = true;
     this.birdDead.visible = false;
     this.scale.x = 1;
+  }
+  _updateSkin() {
+    this.skin = _skin_skinManager_js__WEBPACK_IMPORTED_MODULE_1__.SkinManager.currentSkin;
+    this.live.sprite1.texture = this.skin.texture1;
+    this.live.sprite2.texture = this.skin.texture2;
+    this.live.sprite3.texture = this.skin.texture3;
   }
   changeDirection() {
     this.scale.x *= -1;
@@ -5609,6 +5813,559 @@ class PlayerSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/obj/skin/skin.js":
+/*!******************************!*\
+  !*** ./src/obj/skin/skin.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Skin: () => (/* binding */ Skin)
+/* harmony export */ });
+class Skin {
+  constructor(data) {
+    this.texture1 = data.texture1;
+    this.texture2 = data.texture2;
+    this.texture3 = data.texture3;
+    this.particle = data.particle;
+    this.cost = data.cost;
+    this.enabled = data.enabled;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/skin/skinManager.js":
+/*!*************************************!*\
+  !*** ./src/obj/skin/skinManager.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinManager: () => (/* binding */ SkinManager)
+/* harmony export */ });
+/* harmony import */ var _skinStorage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./skinStorage.js */ "./src/obj/skin/skinStorage.js");
+/* harmony import */ var _skin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./skin.js */ "./src/obj/skin/skin.js");
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../data.js */ "./src/data.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! events */ "./node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+class SkinManager extends events__WEBPACK_IMPORTED_MODULE_3__.EventEmitter {
+  constructor() {
+    super();
+    this.skinsList = [];
+    this._initSkins();
+  }
+  static init() {
+    this.currentSkin = new _skin_js__WEBPACK_IMPORTED_MODULE_1__.Skin(_skinStorage_js__WEBPACK_IMPORTED_MODULE_0__.SkinStorage.storage[0]);
+  }
+  _initSkins() {
+    _skinStorage_js__WEBPACK_IMPORTED_MODULE_0__.SkinStorage.storage.forEach((objInStorage) => {
+      this.skinsList.push(new _skin_js__WEBPACK_IMPORTED_MODULE_1__.Skin(objInStorage));
+    });
+  }
+  onGetSkin(skinCard) {
+    if (_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.itemQuantity >= skinCard.data.cost.value) {
+      _data_js__WEBPACK_IMPORTED_MODULE_2__.Data.itemQuantity -= skinCard.data.cost.value;
+      this._onUnlockSkin(skinCard.data);
+      this.emit("dataChanged");
+      skinCard.emit("unlockSkin");
+    }
+  }
+  _onUnlockSkin(data) {
+    data.enabled = true;
+  }
+  onSetSkin(skinCard) {
+    if (skinCard.data.enabled == true) {
+      this.emit("setSkin");
+      this.currentSkin = skinCard.data;
+    }
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/skin/skinStorage.js":
+/*!*************************************!*\
+  !*** ./src/obj/skin/skinStorage.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinStorage: () => (/* binding */ SkinStorage),
+/* harmony export */   TypeCurrency: () => (/* binding */ TypeCurrency)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+
+const TypeCurrency = Object.freeze({
+  Candy: "candy",
+  Diamond: "diamond"
+});
+class SkinStorage {
+  static init() {
+    this.storage = [
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 10
+        },
+        enabled: true
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 20
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 20
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 30
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 50
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 50
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 100
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 100
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 100
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 100
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 100
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 125
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 200
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 200
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 200
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 200
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 200
+        },
+        enabled: false
+      },
+      {
+        texture1: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"),
+        texture2: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"),
+        texture3: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"),
+        particle: pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from("circle"),
+        cost: {
+          type: TypeCurrency.Candy,
+          value: 200
+        },
+        enabled: false
+      }
+    ];
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/trap/movementClassic.js":
+/*!*****************************************!*\
+  !*** ./src/obj/trap/movementClassic.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MovementClassic: () => (/* binding */ MovementClassic)
+/* harmony export */ });
+class MovementClassic {
+  constructor(parent) {
+    this.parent = parent;
+    this.spikeLeft = parent.spikeLeft;
+    this.spikeRight = parent.spikeRight;
+    this.distance = parent.distance;
+    this._initProperties();
+  }
+  _initProperties() {
+    this.leftIndexSpikes = [4, 5];
+    this.rightIndexSpikes = [];
+  }
+  moveSpikes(state, limitSpike) {
+    this.state = state;
+    if (this.state == -1) {
+      this.spikeRight.forEach((spike, index) => {
+        if (this.rightIndexSpikes.includes(index)) {
+          const target = { x: this.distance, y: spike.y };
+          spike.movement.enterClassic(target);
+        }
+      });
+      this.spikeLeft.forEach((spike, index) => {
+        if (this.leftIndexSpikes.includes(index)) {
+          const target = { x: 0, y: spike.y };
+          spike.movement.goOutClassic(target);
+        }
+      });
+      this.rightIndexSpikes = this.parent._randomSpike(limitSpike);
+    }
+    if (this.state == 1) {
+      this.spikeRight.forEach((spike, index) => {
+        if (this.rightIndexSpikes.includes(index)) {
+          const target = { x: 0, y: spike.y };
+          spike.movement.goOutClassic(target);
+        }
+      });
+      this.spikeLeft.forEach((spike, index) => {
+        if (this.leftIndexSpikes.includes(index)) {
+          const target = { x: -this.distance, y: spike.y };
+          spike.movement.enterClassic(target);
+        }
+      });
+      this.leftIndexSpikes = this.parent._randomSpike(limitSpike);
+    }
+  }
+  onReset() {
+    this.spikeRight.forEach((spike, index) => {
+      if (this.rightIndexSpikes.includes(index)) {
+        spike.x = this.distance;
+      }
+    });
+    this.spikeLeft.forEach((spike, index) => {
+      if (this.leftIndexSpikes.includes(index)) {
+        spike.x = -this.distance;
+      }
+    });
+    this.leftIndexSpikes = [4, 5];
+    this.rightIndexSpikes = [];
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/trap/movementDuo.js":
+/*!*************************************!*\
+  !*** ./src/obj/trap/movementDuo.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MovementDuo: () => (/* binding */ MovementDuo)
+/* harmony export */ });
+class MovementDuo {
+  constructor(parent) {
+    this.parent = parent;
+    this.spikeLeft = parent.spikeLeft;
+    this.spikeRight = parent.spikeRight;
+    this.distance = parent.distance;
+    this._initProperties();
+  }
+  _initProperties() {
+    this.leftIndexSpikes = [];
+    this.rightIndexSpikes = [];
+  }
+  moveSpikes(state, limitSpike) {
+    this.state = state;
+    this.spikeRight.forEach((spike, index) => {
+      if (this.rightIndexSpikes.includes(index)) {
+        const target = { x: this.distance, y: spike.y };
+        spike.movement.enterClassic(target);
+      }
+    });
+    this.spikeLeft.forEach((spike, index) => {
+      if (this.leftIndexSpikes.includes(index)) {
+        const target = { x: -this.distance, y: spike.y };
+        spike.movement.enterClassic(target);
+      }
+    });
+    this.rightIndexSpikes = this.parent._randomSpike(limitSpike);
+    this.leftIndexSpikes = [...this.rightIndexSpikes];
+    this.spikeLeft.forEach((spike, index) => {
+      if (this.leftIndexSpikes.includes(index)) {
+        const target = { x: 0, y: spike.y };
+        spike.movement.goOutClassic(target);
+      }
+    });
+    this.spikeRight.forEach((spike, index) => {
+      if (this.rightIndexSpikes.includes(index)) {
+        const target = { x: 0, y: spike.y };
+        spike.movement.goOutClassic(target);
+      }
+    });
+  }
+  onReset() {
+    this.spikeRight.forEach((spike, index) => {
+      if (this.rightIndexSpikes.includes(index)) {
+        spike.x = this.distance;
+      }
+    });
+    this.spikeLeft.forEach((spike, index) => {
+      if (this.leftIndexSpikes.includes(index)) {
+        spike.x = -this.distance;
+      }
+    });
+    this.leftIndexSpikes = [];
+    this.rightIndexSpikes = [];
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/trap/movementHardMode.js":
+/*!******************************************!*\
+  !*** ./src/obj/trap/movementHardMode.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MovementHardMode: () => (/* binding */ MovementHardMode)
+/* harmony export */ });
+class MovementHardMode {
+  constructor(parent) {
+    this.parent = parent;
+    this.spikeLeft = parent.spikeLeft;
+    this.spikeRight = parent.spikeRight;
+    this.distance = parent.distance;
+    this._initProperties();
+  }
+  _initProperties() {
+    this.leftIndexSpikes = [4, 5];
+    this.rightIndexSpikes = [];
+    this.constPositionY = [];
+    this.constPositionLeftX = [];
+    this.constPositionRightX = [];
+    this.spikeLeft.forEach((spike) => {
+      spike.x -= this.distance;
+      this.constPositionY.push(spike.y);
+      this.constPositionLeftX.push(spike.x);
+    });
+    this.spikeRight.forEach((spike) => {
+      spike.x += this.distance;
+      this.constPositionRightX.push(spike.x);
+    });
+  }
+  moveSpikes(state, limitSpike) {
+    this.state = state;
+    this.deviatedY = 50;
+    if (this.state == -1) {
+      this.spikeRight.forEach((spike, index) => {
+        if (this.rightIndexSpikes.includes(index)) {
+          const target = { x: this.distance, y: spike.y - this.deviatedY };
+          spike.movement.enterHardMode(target);
+        }
+      });
+      this.spikeLeft.forEach((spike, index) => {
+        spike.x = this.constPositionLeftX[index];
+        spike.y = this.constPositionY[index];
+      });
+      this.spikeLeft.forEach((spike, index) => {
+        if (this.leftIndexSpikes.includes(index)) {
+          const target = { x: 0, y: spike.y - this.deviatedY };
+          spike.movement.goOutHardMode(target);
+        }
+      });
+      this.rightIndexSpikes = this.parent._randomSpike(limitSpike);
+    }
+    if (this.state == 1) {
+      this.spikeRight.forEach((spike, index) => {
+        spike.x = this.constPositionRightX[index];
+        spike.y = this.constPositionY[index];
+      });
+      this.spikeRight.forEach((spike, index) => {
+        if (this.rightIndexSpikes.includes(index)) {
+          const target = { x: 0, y: spike.y + this.deviatedY };
+          spike.movement.goOutHardMode(target);
+        }
+      });
+      this.spikeLeft.forEach((spike, index) => {
+        if (this.leftIndexSpikes.includes(index)) {
+          const target = { x: -this.distance, y: spike.y + this.deviatedY };
+          spike.movement.enterHardMode(target);
+        }
+      });
+      this.leftIndexSpikes = this.parent._randomSpike(limitSpike);
+    }
+  }
+  onReset() {
+    this.spikeRight.forEach((spike, index) => {
+      if (this.rightIndexSpikes.includes(index)) {
+        const target = { x: this.distance, y: spike.y - this.deviatedY };
+        spike.movement.enterHardMode(target);
+        spike.x = this.constPositionRightX[index];
+      }
+    });
+    this.spikeLeft.forEach((spike, index) => {
+      if (this.leftIndexSpikes.includes(index)) {
+        const target = { x: -this.distance, y: spike.y + this.deviatedY };
+        spike.movement.enterHardMode(target);
+        spike.x = this.constPositionLeftX[index];
+      }
+    });
+    this.leftIndexSpikes = [4, 5];
+    this.rightIndexSpikes = [];
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/obj/trap/spike.js":
 /*!*******************************!*\
   !*** ./src/obj/trap/spike.js ***!
@@ -5621,24 +6378,115 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Spike: () => (/* binding */ Spike)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../game */ "./src/game.js");
+/* harmony import */ var _physics_collider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../physics/collider */ "./src/obj/physics/collider.js");
+/* harmony import */ var _spikeSprite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./spikeSprite */ "./src/obj/trap/spikeSprite.js");
+/* harmony import */ var _spikeMovement__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./spikeMovement */ "./src/obj/trap/spikeMovement.js");
+
+
 
 
 class Spike extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
     this._initSprite();
-    this.collider = null;
+    this._initColliders();
+    this._initMovement();
   }
-  _initSprite(color = 8421504) {
-    this.size = 70 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio;
-    this.spike = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("spike"));
-    this.spike.anchor.set(0.5);
-    this.spike.scale.set(1.15 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
-    this.addChild(this.spike);
+  _initSprite() {
+    this.sprite = new _spikeSprite__WEBPACK_IMPORTED_MODULE_2__.SpikeSprite();
+    this.addChild(this.sprite);
+  }
+  _initColliders() {
+    let colliderRadious = 25;
+    let collider = new _physics_collider__WEBPACK_IMPORTED_MODULE_1__.Collider(colliderRadious);
+    this.collider = collider;
+    this.collider.position.y = 10;
+    this.addChild(collider);
+  }
+  _initMovement() {
+    this.target = { x: 0 };
+    this.movement = new _spikeMovement__WEBPACK_IMPORTED_MODULE_3__.SpikeMovement(this, this.target);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/trap/spikeMovement.js":
+/*!***************************************!*\
+  !*** ./src/obj/trap/spikeMovement.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SpikeMovement: () => (/* binding */ SpikeMovement)
+/* harmony export */ });
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+
+class SpikeMovement {
+  constructor(spike) {
+    this.spike = spike;
+  }
+  _moveClassic(target) {
+    this.tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.spike).to(target, 500).start();
+  }
+  _moveHardMode(target, direction) {
+    this.tween1 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.spike).to(target, 300).onComplete(() => {
+      let newtarget;
+      if (direction == 0)
+        newtarget = { x: target.x, y: target.y + 70 };
+      else
+        newtarget = { x: target.x, y: target.y - 70 };
+      this.tween2 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.spike).to(newtarget, 700).yoyo(true).repeat(Infinity);
+      this.tween2.start();
+    }).start();
+  }
+  goOutClassic(target) {
+    this._moveClassic(target);
+  }
+  enterClassic(target) {
+    this._moveClassic(target);
+  }
+  goOutHardMode(target) {
+    this._moveHardMode(target);
+  }
+  enterHardMode(target) {
+    this._moveHardMode(target);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/trap/spikeSprite.js":
+/*!*************************************!*\
+  !*** ./src/obj/trap/spikeSprite.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SpikeSprite: () => (/* binding */ SpikeSprite)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+
+class SpikeSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._initSprite();
+  }
+  _initSprite() {
+    this.size = 70;
+    this.sprite = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("spike"));
+    this.sprite.anchor.set(0.5);
+    this.sprite.scale.set(1.15);
+    this.addChild(this.sprite);
   }
   changeColor(color) {
-    this.spike.tint = color;
+    this.sprite.tint = color;
   }
 }
 
@@ -5659,9 +6507,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _spike__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./spike */ "./src/obj/trap/spike.js");
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../game */ "./src/game.js");
-/* harmony import */ var _physics_collider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../physics/collider */ "./src/obj/physics/collider.js");
-/* harmony import */ var _commonUtils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../commonUtils */ "./src/commonUtils.js");
-/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _commonUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../commonUtils */ "./src/commonUtils.js");
+/* harmony import */ var _movementClassic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./movementClassic */ "./src/obj/trap/movementClassic.js");
+/* harmony import */ var _movementHardMode__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./movementHardMode */ "./src/obj/trap/movementHardMode.js");
+/* harmony import */ var _movementDuo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./movementDuo */ "./src/obj/trap/movementDuo.js");
+
 
 
 
@@ -5669,164 +6519,59 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-  constructor() {
+  constructor(id) {
     super();
+    this.id = id;
     this.state = 0;
-    this.distance = 70 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio * Math.sqrt(3) / 2;
-    this.velocity = this.distance / 30;
+    this.distance = 70 * Math.sqrt(3) / 2;
     this.minSpikes = 2;
     this.maxSpikes = 5;
-    this.leftIndexSpikes = [4, 5];
-    this.rightIndexSpikes = [];
     this.spikeLeft = [];
     this.spikeRight = [];
     this.poolSpikes = [];
     this._initSpikes();
-    this._initColliders();
+    this._initMoveSpikes();
   }
   _randomSpike(limitSpike) {
     this.minSpikes = limitSpike.minSpikes;
     this.maxSpikes = limitSpike.maxSpikes;
-    const arrayIndex = [];
-    let randomQuantitySpikes = _commonUtils__WEBPACK_IMPORTED_MODULE_4__.CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
-    while (arrayIndex.length < randomQuantitySpikes) {
-      let newSpike = _commonUtils__WEBPACK_IMPORTED_MODULE_4__.CommonUtils.randomInt(0, 9);
-      if (!arrayIndex.includes(newSpike))
-        arrayIndex.push(newSpike);
-    }
+    let randomQuantitySpikes = _commonUtils__WEBPACK_IMPORTED_MODULE_3__.CommonUtils.randomInt(this.minSpikes, this.maxSpikes);
+    const arrayIndex = _commonUtils__WEBPACK_IMPORTED_MODULE_3__.CommonUtils.randomArray(randomQuantitySpikes);
     return arrayIndex;
   }
+  _initMoveSpikes() {
+    switch (this.id) {
+      case "ClassicModeScene":
+        this.movement = new _movementClassic__WEBPACK_IMPORTED_MODULE_4__.MovementClassic(this);
+        break;
+      case "HardModeScene":
+        this.movement = new _movementHardMode__WEBPACK_IMPORTED_MODULE_5__.MovementHardMode(this);
+        break;
+      case "dualModeScene":
+        this.movement = new _movementDuo__WEBPACK_IMPORTED_MODULE_6__.MovementDuo(this);
+        break;
+    }
+  }
   moveSpikes(state, limitSpike) {
-    this.state = state;
-    if (this.state == -1) {
-      this.spikeRight.forEach((spike, index) => {
-        if (this.rightIndexSpikes.includes(index)) {
-          const target = { x: this.distance, y: spike.y };
-          this._movebyTween(spike, target);
-        }
-      });
-      this.spikeLeft.forEach((spike, index) => {
-        if (this.leftIndexSpikes.includes(index)) {
-          const target = { x: 0, y: spike.y };
-          this._movebyTween(spike, target);
-        }
-      });
-      this.rightIndexSpikes = this._randomSpike(limitSpike);
-    }
-    if (this.state == 1) {
-      this.spikeRight.forEach((spike, index) => {
-        if (this.rightIndexSpikes.includes(index)) {
-          const target = { x: 0, y: spike.y };
-          this._movebyTween(spike, target);
-        }
-      });
-      this.spikeLeft.forEach((spike, index) => {
-        if (this.leftIndexSpikes.includes(index)) {
-          const target = { x: -this.distance, y: spike.y };
-          this._movebyTween(spike, target);
-        }
-      });
-      this.leftIndexSpikes = this._randomSpike(limitSpike);
-    }
-  }
-  moveSpikesHardMode(state, limitSpike) {
-    this.state = state;
-    this.deviatedY = 50 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
-    if (this.state == -1) {
-      this.spikeRight.forEach((spike, index) => {
-        if (this.rightIndexSpikes.includes(index)) {
-          const target = { x: this.distance, y: spike.y - this.deviatedY };
-          this._hardModeMovebyTween(spike, target);
-        }
-      });
-      this.spikeLeft.forEach((spike, index) => {
-        spike.x = this.constPositionLeftX[index];
-        spike.y = this.constPositionY[index];
-      });
-      this.spikeLeft.forEach((spike, index) => {
-        if (this.leftIndexSpikes.includes(index)) {
-          const target = { x: 0, y: spike.y - this.deviatedY };
-          this._hardModeMovebyTween(spike, target);
-        }
-      });
-      this.rightIndexSpikes = this._randomSpike(limitSpike);
-    }
-    if (this.state == 1) {
-      this.spikeRight.forEach((spike, index) => {
-        spike.x = this.constPositionRightX[index];
-        spike.y = this.constPositionY[index];
-      });
-      this.spikeRight.forEach((spike, index) => {
-        if (this.rightIndexSpikes.includes(index)) {
-          const target = { x: 0, y: spike.y + this.deviatedY };
-          this._hardModeMovebyTween(spike, target);
-        }
-      });
-      this.spikeLeft.forEach((spike, index) => {
-        if (this.leftIndexSpikes.includes(index)) {
-          const target = { x: -this.distance, y: spike.y + this.deviatedY };
-          this._hardModeMovebyTween(spike, target);
-        }
-      });
-      this.leftIndexSpikes = this._randomSpike(limitSpike);
-    }
-  }
-  _movebyTween(spike, position) {
-    this.tween = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__.Tween(spike).to({ x: position.x, y: position.y }, 500);
-    this.tween.start();
-  }
-  _hardModeMovebyTween(spike, target, direction) {
-    spike.tween1 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__.Tween(spike).to(target, 300).onComplete(() => {
-      let newtarget;
-      if (direction == 0)
-        newtarget = { x: target.x, y: target.y + 70 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio };
-      else
-        newtarget = { x: target.x, y: target.y - 70 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio };
-      spike.tween2 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__.Tween(spike).to(newtarget, 700).yoyo(true).repeat(Infinity).start();
-    });
-    spike.tween1.start();
-  }
-  update() {
-    _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__.update();
+    this.movement.moveSpikes(state, limitSpike);
   }
   _initSpikes() {
-    let startY_Top = -525 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
-    let startY_Bottom = 434 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
-    this.spikesTop = this._spawnSpikeLine(-280 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, startY_Top, 7, Math.PI, 1);
-    this.spikesBottom = this._spawnSpikeLine(-280 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, startY_Bottom, 7, 0, 1);
-    this.spikeLeft = this._spawnSpikeLine(-_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2 + 24 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, startY_Top + 80 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, 10, Math.PI / 2, 0);
-    this.spikeRight = this._spawnSpikeLine(_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2 - 24 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, startY_Top + 80 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, 10, -Math.PI / 2, 0);
-    this.constPositionY = [];
-    this.constPositionLeftX = [];
-    this.constPositionRightX = [];
-    this.spikeLeft.forEach((spike) => {
-      spike.x -= this.distance;
-      this.constPositionY.push(spike.y);
-      this.constPositionLeftX.push(spike.x);
-    });
-    this.spikeRight.forEach((spike) => {
-      spike.x += this.distance;
-      this.constPositionRightX.push(spike.x);
-    });
+    let startY_Top = -525;
+    let startY_Bottom = 434;
+    this.spikesTop = this._spawnSpikeLine(-280, startY_Top, 7, Math.PI, 1);
+    this.spikesBottom = this._spawnSpikeLine(-280, startY_Bottom, 7, 0, 1);
+    this.spikeLeft = this._spawnSpikeLine(-_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2 + 24, startY_Top + 80, 10, Math.PI / 2, 0);
+    this.spikeRight = this._spawnSpikeLine(_game__WEBPACK_IMPORTED_MODULE_2__.Game.app.view.width / 2 - 24, startY_Top + 80, 10, -Math.PI / 2, 0);
+    this.spikeLeft.forEach((spike) => spike.x -= this.distance);
+    this.spikeRight.forEach((spike) => spike.x += this.distance);
   }
   _addPoolSpike(array) {
-    array.forEach((spike) => {
-      this.poolSpikes.push(spike);
-    });
-  }
-  _initColliders() {
-    let colliderRadious = 25 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
-    this.poolSpikes.forEach((spike) => {
-      let collider = new _physics_collider__WEBPACK_IMPORTED_MODULE_3__.Collider(colliderRadious);
-      spike.collider = collider;
-      spike.collider.position.y = 10 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
-      spike.addChild(collider);
-    });
+    array.forEach((spike) => this.poolSpikes.push(spike));
   }
   _spawnSpikeLine(startX, startY, numbers, rotation, dir) {
     let spikeLine = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     let spikes = [];
-    const spikeSpacing = 70 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio * 4 / 3;
+    const spikeSpacing = 70 * 4 / 3;
     for (let i = 0; i < numbers; i++) {
       let spike = new _spike__WEBPACK_IMPORTED_MODULE_1__.Spike();
       if (dir === 1) {
@@ -5846,37 +6591,14 @@ class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._addPoolSpike(spikes);
     return spikes;
   }
-  _changeColorEffect() {
-    this.alpha = 0.9;
-    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_5__.Tween(this).to({ alpha: 1 }, 1e3);
-  }
   changeColor(color) {
     this.poolSpikes.forEach((spike) => {
-      spike.changeColor(color);
+      spike.sprite.changeColor(color);
     });
   }
   onReset() {
     this.changeColor("FFFFFF");
-    this.spikeLeft.forEach((spike, index) => {
-      if (this.leftIndexSpikes.includes(index)) {
-        if (spike.tween1) {
-          const target = { x: -this.distance, y: spike.y + this.deviatedY };
-          this._hardModeMovebyTween(spike, target);
-        }
-        spike.x = this.constPositionLeftX[index];
-      }
-    });
-    this.spikeRight.forEach((spike, index) => {
-      if (this.rightIndexSpikes.includes(index)) {
-        if (spike.tween1) {
-          const target = { x: this.distance, y: spike.y - this.deviatedY };
-          this._hardModeMovebyTween(spike, target);
-        }
-        spike.x = this.constPositionRightX[index];
-      }
-    });
-    this.leftIndexSpikes = [4, 5];
-    this.rightIndexSpikes = [];
+    this.movement.onReset();
   }
 }
 
@@ -5925,38 +6647,38 @@ class GameInfor extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initTextStyle();
     this._initGameInfor();
     this._initItemQuantity();
-    this.displayGameInfor();
+    this.display();
   }
   _initTextStyle() {
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fill: "#808080",
       fontFamily: "Blissful Thinking",
-      fontSize: 60 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
+      fontSize: 60,
       fontWeight: "lighter",
-      letterSpacing: 1 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio
+      letterSpacing: 1
     });
   }
   _initItemQuantity() {
     this.itemImage = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("candy"));
     this.itemQuantity = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(` ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.itemQuantity}`, __spreadProps(__spreadValues({}, this.style), {
-      fontSize: 80 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
+      fontSize: 80,
       fill: "#FF8207"
     }));
     this.itemImage.anchor.set(0.5);
-    this.itemImage.scale.set(1.5 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.itemImage.scale.set(1.5);
     this.itemQuantity.anchor.set(0.5);
-    this.itemImage.position.set(-40 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
-    this.itemQuantity.position.set(40 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.itemImage.position.set(-40, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65);
+    this.itemQuantity.position.set(this.itemQuantity.width * 0.3 + this.itemImage.width * 0.5, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 65);
     this.addChild(this.itemImage);
     this.addChild(this.itemQuantity);
   }
   _initGameInfor() {
     this.gameInforTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`BEST SCORE : ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.bestScore}`, this.style);
     this.gameInforTop.anchor.set(0.5);
-    this.gameInforTop.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 140 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.gameInforTop.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 140);
     this.gameInforBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`GAMES PLAYED : ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.gamesPlayed}`, this.style);
     this.gameInforBottom.anchor.set(0.5);
-    this.gameInforBottom.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 195 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.gameInforBottom.position.set(0, _game__WEBPACK_IMPORTED_MODULE_1__.Game.app.view.height / 7 + 195);
     this.addChild(this.gameInforTop);
     this.addChild(this.gameInforBottom);
   }
@@ -5977,14 +6699,15 @@ class GameInfor extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._updateItemQuantity();
   }
   onReset() {
+    this.display();
     this.gameInforTop.text = `BEST SCORE : ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.bestScore}`;
     this.gameInforBottom.text = `GAMES PLAYED : ${_data__WEBPACK_IMPORTED_MODULE_2__.Data.gamesPlayed}`;
     this.itemQuantity.text = `${_data__WEBPACK_IMPORTED_MODULE_2__.Data.itemQuantity}`;
   }
-  displayGameInfor() {
+  display() {
     this.visible = true;
   }
-  hideGameInfor() {
+  hide() {
     this.visible = false;
   }
 }
@@ -6005,8 +6728,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _mainUI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mainUI */ "./src/obj/ui/main/mainUI.js");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../game */ "./src/game.js");
-
 
 
 class ClassicUI extends _mainUI__WEBPACK_IMPORTED_MODULE_1__.MainUI {
@@ -6016,6 +6737,8 @@ class ClassicUI extends _mainUI__WEBPACK_IMPORTED_MODULE_1__.MainUI {
   _initComponent() {
     super._initComponent();
     this._initHardModeSwitch();
+    this._initDualModeSwitch();
+    this._initShopSkinButton();
   }
   _initTitleUI() {
     super._initTitleUI();
@@ -6023,17 +6746,240 @@ class ClassicUI extends _mainUI__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     this.gameName.style = this.titleStyle;
   }
   _initHardModeSwitch() {
+    console.log("init hard mode switch");
     this.hardModeSwitch = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("hardModeButton"));
     this.hardModeSwitch.anchor.set(0.5);
-    this.hardModeSwitch.scale.set(0.15 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio);
-    this.hardModeSwitch.position.set(-290 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio, -230 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio);
+    this.hardModeSwitch.scale.set(0.18);
+    this.hardModeSwitch.position.set(-290, -230);
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = "static";
-    this.hardModeSwitch.on("pointerdown", () => this._toHardModeScene());
+    this.hardModeSwitch.on("pointertap", () => this._toHardModeScene());
     this.addChild(this.hardModeSwitch);
+  }
+  _initDualModeSwitch() {
+    this.dualModeSwitch = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("dualModeButton"));
+    this.dualModeSwitch.anchor.set(0.5);
+    this.dualModeSwitch.scale.set(0.18);
+    this.dualModeSwitch.position.set(-290, -120);
+    this.dualModeSwitch.cursor = "pointer";
+    this.dualModeSwitch.eventMode = "static";
+    this.dualModeSwitch.on("pointerdown", () => this._toDualModeScene());
+    this.addChild(this.dualModeSwitch);
+  }
+  _initShopSkinButton() {
+    this.skinShopButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("skinShopButton"));
+    this.skinShopButton.anchor.set(0.5);
+    this.skinShopButton.scale.set(0.15);
+    this.skinShopButton.position.set(290, -230);
+    this.skinShopButton.cursor = "pointer";
+    this.skinShopButton.eventMode = "static";
+    this.skinShopButton.on("pointertap", () => this._startSkinsShopUI());
+    this.addChild(this.skinShopButton);
   }
   _toHardModeScene() {
     this.emit("toHardModeScene");
+  }
+  _toDualModeScene() {
+    this.emit("toDualModeScene");
+  }
+  _startSkinsShopUI() {
+    this.emit("startSkinsShopUI");
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/main/dualModeUI.js":
+/*!***************************************!*\
+  !*** ./src/obj/ui/main/dualModeUI.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DualModeUI: () => (/* binding */ DualModeUI)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _mainUI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mainUI.js */ "./src/obj/ui/main/mainUI.js");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+
+
+
+class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
+  constructor() {
+    super();
+  }
+  _initComponent() {
+    this._initProperties();
+    this._initBackButton();
+    this._initGameTutol();
+    this._initStarTop();
+    this._initStarBottom();
+    this._initLine();
+    this._initEffect();
+    this._UIEffect();
+    this._onPlayer1Win();
+    this._onPlayer1Win();
+    this._onPlayer2Win();
+  }
+  _initProperties() {
+    this.styleBig = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fill: "#FF3464",
+      fontFamily: "Blissful Thinking",
+      fontSize: 52,
+      fontWeight: "lighter",
+      letterSpacing: 1
+    });
+    this.styleSmall = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fill: "#FF3464",
+      fontFamily: "Blissful Thinking",
+      fontSize: 44,
+      fontWeight: 550,
+      letterSpacing: 1
+    });
+    this.stateStarTop = [false, false, false];
+    this.stateStarBottom = [false, false, false];
+    this.gameState = {
+      player1: this.stateStarBottom,
+      player2: this.stateStarTop
+    };
+  }
+  _initGameTutol() {
+    this.playerTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 2", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#309cfe" }));
+    this.playerTop.anchor.set(0.5);
+    this.playerTop.position.set(0, -280);
+    this.playerTop.scale.set(-1);
+    this.tutorTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("touch here to jump", __spreadProps(__spreadValues({}, this.styleSmall), { fill: "#309cfe" }));
+    this.tutorTop.anchor.set(0.5);
+    this.tutorTop.position.set(0, -330);
+    this.tutorTop.scale.set(-1);
+    this.playerBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1", this.styleBig);
+    this.playerBottom.anchor.set(0.5);
+    this.playerBottom.position.set(0, 280);
+    this.tutorBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("touch here to jump", this.styleSmall);
+    this.tutorBottom.anchor.set(0.5);
+    this.tutorBottom.position.set(0, 330);
+    this.gameTutor = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.gameTutor.addChild(this.playerTop);
+    this.gameTutor.addChild(this.playerBottom);
+    this.gameTutor.addChild(this.tutorTop);
+    this.gameTutor.addChild(this.tutorBottom);
+    this.addChild(this.gameTutor);
+  }
+  _initLine() {
+    this.line = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("line"));
+    this.line.anchor.set(0.5);
+    this.line.scale.set(0.3);
+    this.line.position.set(0, 0);
+    this.addChild(this.line);
+  }
+  _initBackButton() {
+    this.backButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("undoButton"));
+    this.backButton.anchor.set(0.5);
+    this.backButton.scale.set(0.15);
+    this.backButton.position.set(-290, -420);
+    this.backButton.cursor = "pointer";
+    this.backButton.eventMode = "static";
+    this.backButton.on("pointerdown", () => this._toClassicModeScene());
+    this.addChild(this.backButton);
+  }
+  _initStar(position) {
+    const star = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    star.loseStar = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("star1"));
+    star.loseStar.position.set(position.x, position.y);
+    star.loseStar.anchor.set(0.5);
+    star.loseStar.scale.set(1.2);
+    star.winStar = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("star2"));
+    star.winStar.position.set(position.x, position.y);
+    star.winStar.anchor.set(0.5);
+    star.winStar.scale.set(1.2);
+    star.addChild(star.loseStar);
+    star.addChild(star.winStar);
+    star.winStar.visible = false;
+    return star;
+  }
+  _initStarTop() {
+    this.topStar1 = this._initStar({ x: -60, y: 140 });
+    this.topStar2 = this._initStar({ x: 0, y: 138 });
+    this.topStar3 = this._initStar({ x: 60, y: 140 });
+    this.topStar1.scale.set(-1);
+    this.topStar2.scale.set(-1);
+    this.topStar3.scale.set(-1);
+    this.addChild(this.topStar1);
+    this.addChild(this.topStar2);
+    this.addChild(this.topStar3);
+  }
+  _initStarBottom() {
+    this.bottomStar1 = this._initStar({ x: -60, y: 140 });
+    this.bottomStar2 = this._initStar({ x: 0, y: 138 });
+    this.bottomStar3 = this._initStar({ x: 60, y: 140 });
+    this.addChild(this.bottomStar1);
+    this.addChild(this.bottomStar2);
+    this.addChild(this.bottomStar3);
+  }
+  _onPlayer1Win() {
+    if (this.bottomStar1.winStar.visible === false)
+      this.bottomStar1.winStar.visible = true;
+    else if (this.bottomStar2.winStar.visible === false)
+      this.bottomStar2.winStar.visible = true;
+    else if (this.bottomStar3.winStar.visible === false)
+      this.bottomStar3.winStar.visible = true;
+    this.gameState.player1 = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
+  }
+  _onPlayer2Win() {
+    if (this.topStar1.winStar.visible === false)
+      this.topStar1.winStar.visible = true;
+    else if (this.topStar2.winStar.visible === false)
+      this.topStar2.winStar.visible = true;
+    else if (this.topStar3.winStar.visible === false)
+      this.topStar3.winStar.visible = true;
+    this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
+  }
+  _toClassicModeScene() {
+    this.emit("toClassicModeScene");
+  }
+  _initEffect() {
+    this.elapsed = 0;
+    this.tween1 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.Tween(this.gameTutor).to({ alpha: 0 }, 1e3);
+    this.tween2 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_2__.Tween(this.gameTutor).to({ alpha: 1 }, 1e3);
+  }
+  onReset() {
+    super.onReset();
+    this.stateStarTop = [false, false, false];
+    this.stateStarBottom = [false, false, false];
+  }
+  _UIEffect() {
+    this.tween1.start().onComplete(() => {
+      this.tween2.start();
+    });
+  }
+  update(dt) {
+    this.elapsed += dt;
+    if (this.elapsed >= 150) {
+      this._UIEffect();
+      this.elapsed = 0;
+    }
   }
 }
 
@@ -6052,12 +6998,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   HardModeUI: () => (/* binding */ HardModeUI)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../game */ "./src/game.js");
-/* harmony import */ var _mainUI_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mainUI.js */ "./src/obj/ui/main/mainUI.js");
+/* harmony import */ var _mainUI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mainUI.js */ "./src/obj/ui/main/mainUI.js");
 
 
-
-class HardModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_2__.MainUI {
+class HardModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
   constructor() {
     super();
   }
@@ -6073,11 +7017,11 @@ class HardModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_2__.MainUI {
   _initBackButton() {
     this.backButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("undoButton"));
     this.backButton.anchor.set(0.5);
-    this.backButton.scale.set(0.15 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
-    this.backButton.position.set(-290 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio, -420 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.backButton.scale.set(0.15);
+    this.backButton.position.set(-290, -420);
     this.backButton.cursor = "pointer";
     this.backButton.eventMode = "static";
-    this.backButton.on("pointerdown", () => this._toClassicModeScene());
+    this.backButton.on("pointertap", () => this._toClassicModeScene());
     this.addChild(this.backButton);
   }
   _toClassicModeScene() {
@@ -6136,26 +7080,26 @@ class MainUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fill: "#FF3464",
       fontFamily: "Blissful Thinking",
-      fontSize: 55 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
+      fontSize: 55,
       fontWeight: "lighter",
-      letterSpacing: 1 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio
+      letterSpacing: 1
     });
   }
   _initTitleUI() {
     this.titleStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle(__spreadProps(__spreadValues({}, this.style), {
       fill: "#808080",
-      fontSize: 92 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio,
+      fontSize: 92,
       fontWeight: 550
     }));
     this.gameName = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text();
     this.gameName.anchor.set(0.5);
-    this.gameName.position.set(0, -400 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.gameName.position.set(0, -400);
     this.addChild(this.gameName);
   }
   _initGameTutol() {
     this.gameTutorial = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("    TAP \nTO JUMP", this.style);
     this.gameTutorial.anchor.set(0.5);
-    this.gameTutorial.position.set(0, -165 / _game__WEBPACK_IMPORTED_MODULE_1__.Game.ratio);
+    this.gameTutorial.position.set(0, -165);
     this.addChild(this.gameTutorial);
   }
   onReset() {
@@ -6199,6 +7143,196 @@ class ClassicOverUI extends _overUI__WEBPACK_IMPORTED_MODULE_1__.OverUI {
   _clickedReplayButton() {
     pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("replayButtonSound").play();
     this.emit("replay");
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/over/dualModeOverUI.js":
+/*!*******************************************!*\
+  !*** ./src/obj/ui/over/dualModeOverUI.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DualModeOverUI: () => (/* binding */ DualModeOverUI)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _overUI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./overUI */ "./src/obj/ui/over/overUI.js");
+/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../data */ "./src/data.js");
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+
+
+
+class DualModeOverUI extends _overUI__WEBPACK_IMPORTED_MODULE_1__.OverUI {
+  constructor() {
+    super();
+    this.elapsed = 0;
+  }
+  _initPointButton() {
+    this.pointsButton = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.pointsButton.beginFill("808080");
+    this.pointsButton.drawRoundedRect(-256, -200, 256 * 2, 200, 20);
+    this.pointsButton.endFill();
+    this.addChild(this.pointsButton);
+    this.leftBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.leftBlock.beginFill("192018");
+    this.leftBlock.drawRoundedRect(-232, -180, 140, 140, 20);
+    this.leftBlock.endFill();
+    this.addChild(this.leftBlock);
+    this.pointNumber = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_data__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore, this.style);
+    this.pointNumber.anchor.set(0.5);
+    this.pointNumber.position.y = -150;
+    this.rightBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.rightBlock.beginFill("fc741a");
+    this.rightBlock.drawRoundedRect(94, -180, 140, 140, 20);
+    this.rightBlock.endFill();
+    this.addChild(this.rightBlock);
+    this._initStarLeft();
+    this._initStarRight();
+    this._initBluePlayer();
+    this._initRedPlayer();
+  }
+  _initBluePlayer() {
+    this.blueSprite1 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"));
+    this.blueSprite1.anchor.set(0.5);
+    this.blueSprite1.position.set(-162, -115);
+    this.blueSprite1.scale.set(0.2);
+    this.addChild(this.blueSprite1);
+    this.blueSprite1.visible = false;
+    this.blueSprite2 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird2"));
+    this.blueSprite2.anchor.set(0.5);
+    this.blueSprite2.position.set(-162, -115);
+    this.blueSprite2.scale.set(0.2);
+    this.addChild(this.blueSprite2);
+  }
+  _initRedPlayer() {
+    this.redSprite1 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird1"));
+    this.redSprite1.anchor.set(0.5);
+    this.redSprite1.position.set(162, -115);
+    this.redSprite1.scale.set(0.2);
+    this.redSprite1.scale.x *= -1;
+    this.addChild(this.redSprite1);
+    this.redSprite2 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("bird3"));
+    this.redSprite2.anchor.set(0.5);
+    this.redSprite2.position.set(162, -115);
+    this.redSprite2.scale.set(0.2);
+    this.redSprite2.scale.x *= -1;
+    this.addChild(this.redSprite2);
+    this.redSprite2.visible = false;
+  }
+  _initStar(position) {
+    const star = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    star.loseStar = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("star1"));
+    star.loseStar.position.set(position.x, position.y);
+    star.loseStar.anchor.set(0.5);
+    star.winStar = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("star2"));
+    star.winStar.position.set(position.x, position.y);
+    star.winStar.anchor.set(0.5);
+    star.addChild(star.loseStar);
+    star.addChild(star.winStar);
+    star.winStar.visible = false;
+    return star;
+  }
+  _initStarLeft() {
+    this.leftStar1 = this._initStar({ x: -207, y: -37 });
+    this.leftStar2 = this._initStar({ x: -162, y: -37 });
+    this.leftStar3 = this._initStar({ x: -116, y: -37 });
+    this.addChild(this.leftStar1);
+    this.addChild(this.leftStar2);
+    this.addChild(this.leftStar3);
+  }
+  _initStarRight() {
+    this.rightStar1 = this._initStar({ x: 207, y: -37 });
+    this.rightStar2 = this._initStar({ x: 162, y: -37 });
+    this.rightStar3 = this._initStar({ x: 116, y: -37 });
+    this.addChild(this.rightStar1);
+    this.addChild(this.rightStar2);
+    this.addChild(this.rightStar3);
+  }
+  _onResetStar(gameState) {
+    this.stateStarLeft = gameState.player2;
+    this.stateStarRight = gameState.player1;
+    if (this.stateStarLeft[0])
+      this.leftStar1.winStar.visible = true;
+    if (this.stateStarLeft[1])
+      this.leftStar2.winStar.visible = true;
+    if (this.stateStarLeft[2])
+      this.leftStar3.winStar.visible = true;
+    if (this.stateStarRight[2])
+      this.rightStar1.winStar.visible = true;
+    if (this.stateStarRight[1])
+      this.rightStar2.winStar.visible = true;
+    if (this.stateStarRight[0])
+      this.rightStar3.winStar.visible = true;
+  }
+  _initReplayButton() {
+    super._initReplayButton();
+    this.replayButton.position.y = 56;
+  }
+  _initShareButton() {
+    super._initShareButton();
+    this.shareButton.position.y = 150;
+  }
+  _initTitleUI() {
+    this.tmp = 0;
+    super._initTitleUI();
+    this.titleStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle(__spreadProps(__spreadValues({}, this.style), {
+      fill: "#6C6381",
+      fontSize: 70,
+      fontWeight: 550
+    }));
+    this.gameName.text = "PLAYER 1 WIN";
+    this.gameName.style = this.titleStyle;
+    this.gameName.position.set(0, -300);
+  }
+  Player1Win() {
+  }
+  Draw() {
+    this.gameName.text = "DRAW !";
+  }
+  Player2Win() {
+    this.gameName.text = "PLAYER 2 WIN";
+  }
+  _clickedReplayButton() {
+    pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("replayButtonSound").play();
+    this.emit("replay");
+  }
+  update(dt) {
+    if (this.tmp == 1) {
+      this.Player2Win();
+    } else if (this.tmp == 2) {
+      this.Draw();
+    }
+    this.elapsed += dt;
+    if (this.elapsed >= 50) {
+      this.blueSprite1.visible = !this.blueSprite1.visible;
+      this.blueSprite2.visible = !this.blueSprite2.visible;
+      this.redSprite1.visible = !this.redSprite1.visible;
+      this.redSprite2.visible = !this.redSprite2.visible;
+      this.elapsed = 0;
+    }
   }
 }
 
@@ -6251,7 +7385,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../data */ "./src/data.js");
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../game */ "./src/game.js");
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;
 var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
@@ -6274,7 +7407,6 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 
 
 
-
 class OverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
@@ -6290,31 +7422,31 @@ class OverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
       fill: "#FFFFFF",
       fontFamily: "Blissful Thinking",
-      fontSize: 85 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio,
+      fontSize: 85,
       fontWeight: "lighter",
-      letterSpacing: 1 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio
+      letterSpacing: 1
     });
   }
   _initTitleUI() {
     this.titleStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle(__spreadProps(__spreadValues({}, this.style), {
       fill: "#808080",
-      fontSize: 92 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio,
+      fontSize: 92,
       fontWeight: 550
     }));
     this.gameName = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text();
     this.gameName.anchor.set(0.5);
-    this.gameName.position.set(0, -400 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio);
+    this.gameName.position.set(0, -400);
     this.addChild(this.gameName);
   }
   _initPointButton() {
     this.pointsUI = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.pointsButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("pointsUI"));
     this.pointsButton.anchor.set(0.5);
-    this.pointsButton.scale.set(1 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio);
-    this.pointsButton.position.y = -130 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
+    this.pointsButton.scale.set(1);
+    this.pointsButton.position.y = -130;
     this.pointNumber = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore, this.style);
     this.pointNumber.anchor.set(0.5);
-    this.pointNumber.position.y = -150 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
+    this.pointNumber.position.y = -150;
     this.pointsUI.cursor = "pointer";
     this.pointsUI.addChild(this.pointsButton);
     this.pointsUI.addChild(this.pointNumber);
@@ -6323,11 +7455,11 @@ class OverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initReplayButton() {
     this.replayButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("replayButton"));
     this.replayButton.anchor.set(0.5);
-    this.replayButton.scale.set(1 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio);
-    this.replayButton.position.y = 10 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
+    this.replayButton.scale.set(1);
+    this.replayButton.position.y = 10;
     this.replayButton.cursor = "pointer";
     this.replayButton.eventMode = "static";
-    this.replayButton.on("pointerdown", () => this._clickedReplayButton());
+    this.replayButton.on("pointertap", () => this._clickedReplayButton());
     this.addChild(this.replayButton);
   }
   // abstract
@@ -6336,10 +7468,10 @@ class OverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   _initShareButton() {
     this.shareButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("shareButton"));
     this.shareButton.anchor.set(0.5);
-    this.shareButton.scale.set(1 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio);
-    this.shareButton.position.y = 105 / _game__WEBPACK_IMPORTED_MODULE_2__.Game.ratio;
+    this.shareButton.scale.set(1);
+    this.shareButton.position.y = 105;
     this.shareButton.cursor = "pointer";
-    this.shareButton.on("pointerdown", () => {
+    this.shareButton.on("pointertap", () => {
     });
     this.addChild(this.shareButton);
   }
@@ -6347,11 +7479,422 @@ class OverUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.hideGameOverUI();
   }
   showGameOverUI() {
-    this.pointNumber.text = _data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore;
     this.visible = true;
   }
   hideGameOverUI() {
     this.visible = false;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/shop/skin/skinCard.js":
+/*!******************************************!*\
+  !*** ./src/obj/ui/shop/skin/skinCard.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinCard: () => (/* binding */ SkinCard)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+
+class SkinCard extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor(skin) {
+    super();
+    this._initProperties(skin);
+    this._initSprite();
+    this._initEvents();
+  }
+  _initProperties(skin) {
+    this.data = skin;
+  }
+  _initEvents() {
+    this.on("unlockSkin", () => this.onUnlocked());
+  }
+  _initSprite() {
+    this._spriteLocked();
+    this._spriteUnlocked();
+    if (this.data.enabled) {
+      this.unlocked.visible = true;
+      this.locked.visible = false;
+    } else {
+      this.unlocked.visible = false;
+      this.locked.visible = true;
+    }
+  }
+  _spriteUnlocked() {
+    this.unlocked = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.unlocked.cursor = "pointer";
+    this.unlocked.eventMode = "static";
+    this.unlocked.on("pointertap", () => this.onSetSkin());
+    this.bg1 = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.bg1.beginFill(16777215);
+    this.bg1.drawRoundedRect(-160, -55, 320, 110, 18);
+    this.bg1.endFill();
+    this.unlocked.addChild(this.bg1);
+    this.skin = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(this.data.texture1);
+    this.skin.anchor.set(0.5);
+    this.skin.scale.set(0.2);
+    this.unlocked.addChild(this.skin);
+    this.addChild(this.unlocked);
+  }
+  _spriteLocked() {
+    this.locked = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.locked.cursor = "pointer";
+    this.locked.eventMode = "static";
+    this.locked.on("pointertap", () => this.onGetSkin());
+    this.bg2 = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.bg2.beginFill(16744967);
+    this.bg2.drawRoundedRect(-160, -55, 320, 110, 18);
+    this.bg2.endFill();
+    this.locked.addChild(this.bg2);
+    this.icon = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("candy"));
+    this.icon.anchor.set(0.5);
+    this.icon.scale.set(1.5);
+    this.icon.position.set(-80, 0);
+    this.locked.addChild(this.icon);
+    this.price = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.data.cost.value, {
+      fill: "#FFFFFF",
+      fontFamily: "Blissful Thinking",
+      fontSize: 70,
+      fontWeight: "lighter",
+      letterSpacing: 1
+    });
+    this.price.anchor.set(0.5);
+    this.price.position.set(this.price.width * 0.45, 0);
+    this.locked.addChild(this.price);
+    this.addChild(this.locked);
+  }
+  onUnlocked() {
+    this.unlocked.visible = true;
+    this.locked.visible = false;
+  }
+  onGetSkin() {
+    this.emit("getSkin", this);
+  }
+  onSetSkin() {
+    this.emit("setSkin", this);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/shop/skin/skinsList.js":
+/*!*******************************************!*\
+  !*** ./src/obj/ui/shop/skin/skinsList.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinsList: () => (/* binding */ SkinsList)
+/* harmony export */ });
+/* harmony import */ var _pixi_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pixi/ui */ "./node_modules/@pixi/ui/lib/ScrollBox.mjs");
+/* harmony import */ var _skinCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./skinCard */ "./src/obj/ui/shop/skin/skinCard.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../gameConstant */ "./src/gameConstant.js");
+
+
+
+class SkinsList extends _pixi_ui__WEBPACK_IMPORTED_MODULE_2__.ScrollBox {
+  constructor() {
+    super({
+      width: _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_WIDTH,
+      height: _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT * 0.624,
+      background: 16777215,
+      elementsMargin: 12,
+      vertPadding: 75
+    });
+    this._initProperties();
+  }
+  _initProperties() {
+    this.background.alpha = 0;
+    this.position.set(-360, -340);
+  }
+  initSkinCards(skinManager) {
+    skinManager.skinsList.forEach((skin) => {
+      let skinCard = new _skinCard__WEBPACK_IMPORTED_MODULE_0__.SkinCard(skin);
+      skinCard.on("getSkin", (skin2) => {
+        skinManager.onGetSkin(skin2);
+      });
+      skinCard.on("setSkin", (skin2) => {
+        skinManager.onSetSkin(skin2);
+      });
+      this.addItem(skinCard);
+    });
+    this.items.forEach((item) => {
+      item.x += 195;
+    });
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/shop/skin/skinsShop.js":
+/*!*******************************************!*\
+  !*** ./src/obj/ui/shop/skin/skinsShop.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinsShop: () => (/* binding */ SkinsShop)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _skinsList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./skinsList */ "./src/obj/ui/shop/skin/skinsList.js");
+/* harmony import */ var _skin_skinManager__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../skin/skinManager */ "./src/obj/skin/skinManager.js");
+/* harmony import */ var _skinsShopUI__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./skinsShopUI */ "./src/obj/ui/shop/skin/skinsShopUI.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../gameConstant */ "./src/gameConstant.js");
+/* harmony import */ var _skinsShopEffect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./skinsShopEffect */ "./src/obj/ui/shop/skin/skinsShopEffect.js");
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../game */ "./src/game.js");
+
+
+
+
+
+
+
+class SkinsShop extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._initProperties();
+    this._initComponents();
+    this._initEventUI();
+  }
+  _initProperties() {
+    this.visible = false;
+    this.y = _gameConstant__WEBPACK_IMPORTED_MODULE_4__.GameConstant.GAME_HEIGHT * 0.7;
+  }
+  _initComponents() {
+    this._initSkinManager();
+    this._initSkinsList();
+    this._initShopUI();
+    this._initEffect();
+    this._initFakeRetangleBottom();
+  }
+  _initFakeRetangleBottom() {
+    this.retangleBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.retangleBottom.beginFill(8421504);
+    this.retangleBottom.drawRect(-_game__WEBPACK_IMPORTED_MODULE_6__.Game.app.view.width / 2, _game__WEBPACK_IMPORTED_MODULE_6__.Game.app.view.height * 2.5 / 7, _game__WEBPACK_IMPORTED_MODULE_6__.Game.app.view.width, _game__WEBPACK_IMPORTED_MODULE_6__.Game.app.view.height / 7);
+    this.retangleBottom.endFill();
+  }
+  _initSkinManager() {
+    this.skinManager = new _skin_skinManager__WEBPACK_IMPORTED_MODULE_2__.SkinManager();
+  }
+  _initShopUI() {
+    this.shopUI = new _skinsShopUI__WEBPACK_IMPORTED_MODULE_3__.SkinsShopUI();
+    this.addChild(this.shopUI);
+  }
+  _initSkinsList() {
+    this.skinsList = new _skinsList__WEBPACK_IMPORTED_MODULE_1__.SkinsList();
+    this.skinsList.initSkinCards(this.skinManager);
+    this.addChild(this.skinsList);
+  }
+  _initEventUI() {
+    this.shopUI.on("close", () => {
+      this.emit("close");
+    });
+    this.skinManager.on("setSkin", () => {
+      this.emit("close");
+    }).on("dataChanged", () => this.update());
+  }
+  _initEffect() {
+    this.effect = new _skinsShopEffect__WEBPACK_IMPORTED_MODULE_5__.SkinsShopEffect(this);
+  }
+  onStart() {
+    this.visible = true;
+    this.parent.addChild(this.retangleBottom);
+    this.skinsList.scrollTop();
+    this.effect.onStart();
+    this.update();
+  }
+  onClose() {
+    this.effect.onClose();
+  }
+  update() {
+    this.shopUI.updateData();
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/shop/skin/skinsShopEffect.js":
+/*!*************************************************!*\
+  !*** ./src/obj/ui/shop/skin/skinsShopEffect.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinsShopEffect: () => (/* binding */ SkinsShopEffect)
+/* harmony export */ });
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _gameConstant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../gameConstant */ "./src/gameConstant.js");
+
+
+class SkinsShopEffect {
+  constructor(skinsShop) {
+    this._initProperties(skinsShop);
+    this._initEffect();
+  }
+  _initProperties(skinsShop) {
+    this.skinsShop = skinsShop;
+    this.skinsShopUI = skinsShop.shopUI;
+  }
+  _initEffect() {
+    this._initUIEffect();
+    this._initShopEffect();
+  }
+  _initUIEffect() {
+    this._spawnInforEffect();
+    this._despawnInforEffect();
+  }
+  _spawnInforEffect() {
+    this.spawnInforEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.skinsShopUI.shopInfor).to({ alpha: 1 }, 1500).onComplete(() => {
+      this.despawnInforEffect.start();
+    });
+  }
+  _despawnInforEffect() {
+    this.despawnInforEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.skinsShopUI.shopInfor).to({ alpha: 0 }, 1500).onComplete(() => {
+      this.spawnInforEffect.start();
+    });
+  }
+  _initShopEffect() {
+    this._spawnShopEffect();
+    this._despawnShopEffect();
+  }
+  _spawnShopEffect() {
+    this.spawnShopEffect1 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.skinsShop).to({ y: 0 }, 500).onComplete(() => {
+      this.spawnShopEffect2.start();
+    });
+    this.spawnShopEffect2 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.skinsShop).to({ y: 80 }, 200).onComplete(() => {
+      this.spawnShopEffect3.start();
+    });
+    this.spawnShopEffect3 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.skinsShop).to({ y: 0 }, 250);
+  }
+  _despawnShopEffect() {
+    this.despawnShopEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_0__.Tween(this.skinsShop).to({ y: _gameConstant__WEBPACK_IMPORTED_MODULE_1__.GameConstant.GAME_HEIGHT * 0.7 }, 500).onComplete(() => {
+      this.skinsShop.visible = false;
+      this.skinsShop.parent.removeChild(this.skinsShop.retangleBottom);
+    });
+  }
+  onStart() {
+    this.despawnInforEffect.start();
+    this.spawnShopEffect1.start();
+  }
+  onClose() {
+    this.despawnShopEffect.start();
+    this.despawnInforEffect.stop();
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/obj/ui/shop/skin/skinsShopUI.js":
+/*!*********************************************!*\
+  !*** ./src/obj/ui/shop/skin/skinsShopUI.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SkinsShopUI: () => (/* binding */ SkinsShopUI)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../data */ "./src/data.js");
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+
+
+class SkinsShopUI extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor() {
+    super();
+    this._initProperties();
+    this._initComponents();
+  }
+  _initProperties() {
+    this.position.set(-280, -400);
+  }
+  _initComponents() {
+    this._initTextStyle();
+    this._initBackButton();
+    this._initTitle();
+    this._initInfor();
+  }
+  _initTextStyle() {
+    this.style = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fill: "#808080",
+      fontFamily: "Blissful Thinking",
+      fontSize: 100,
+      fontWeight: "lighter",
+      letterSpacing: 1
+    });
+  }
+  _initBackButton() {
+    this.backButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("undoButton"));
+    this.backButton.anchor.set(0.5);
+    this.backButton.scale.set(0.2);
+    this.backButton.cursor = "pointer";
+    this.backButton.eventMode = "static";
+    this.backButton.on("pointertap", () => this._onClose());
+    this.addChild(this.backButton);
+  }
+  _onClose() {
+    this.emit("close");
+    this.shopInfor.alpha = 1;
+  }
+  _initTitle() {
+    this.shopName = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("BIRDS", this.style);
+    this.shopName.anchor.set(0.5);
+    this.shopName.position.set(190, 0);
+    this.addChild(this.shopName);
+  }
+  _initInfor() {
+    this.shopInfor = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.shopInfor.position.set(380, 0);
+    this.itemImage = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("candy"));
+    this.itemImage.anchor.set(0.5);
+    this.itemImage.scale.set(1.5);
+    this.shopInfor.addChild(this.itemImage);
+    this.itemQuantity = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(` ${_data__WEBPACK_IMPORTED_MODULE_1__.Data.itemQuantity}`, __spreadProps(__spreadValues({}, this.style), {
+      fontSize: 80,
+      fill: "#FF8207"
+    }));
+    this.itemQuantity.anchor.set(0.5);
+    this.itemQuantity.position.set(this.itemImage.width * 0.6 + this.itemQuantity.width * 0.4, 0);
+    this.shopInfor.addChild(this.itemQuantity);
+    this.addChild(this.shopInfor);
+  }
+  updateData() {
+    this.itemQuantity.text = ` ${_data__WEBPACK_IMPORTED_MODULE_1__.Data.itemQuantity}`;
   }
 }
 
@@ -6382,6 +7925,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _obj_ui_over_classicOverUI_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../obj/ui/over/classicOverUI.js */ "./src/obj/ui/over/classicOverUI.js");
 /* harmony import */ var _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../obj/trap/spike.js */ "./src/obj/trap/spike.js");
 /* harmony import */ var _levelController_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../levelController.js */ "./src/levelController.js");
+/* harmony import */ var _obj_ui_shop_skin_skinsShop_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../obj/ui/shop/skin/skinsShop.js */ "./src/obj/ui/shop/skin/skinsShop.js");
+
 
 
 
@@ -6401,11 +7946,12 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
   }
   _initProperties() {
     super._initProperties();
-    this.id = "classicModeScene";
+    this.id = "ClassicModeScene";
   }
   _initGameplay() {
     this._initBackground();
     this._initPlayer();
+    this._initSkinsShop();
     this._initSpikes();
     this._initSceneUI();
     this._initCandies();
@@ -6416,10 +7962,11 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
   _initPlayer() {
     this.player = new _obj_player_player_js__WEBPACK_IMPORTED_MODULE_8__.Player(this);
     this.player.hardModeEnabled = false;
+    this.player.dualModeEnabled = false;
     this.addChild(this.player);
   }
   _initSpikes() {
-    this.spikes = new _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_9__.SpikesManager();
+    this.spikes = new _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_9__.SpikesManager(this.id);
     this.addChild(this.spikes);
   }
   _initCandies() {
@@ -6443,6 +7990,10 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
     this.addChild(this.gameOverUI);
     this.gameOverUI.hideGameOverUI();
   }
+  _initSkinsShop() {
+    this.skinsShop = new _obj_ui_shop_skin_skinsShop_js__WEBPACK_IMPORTED_MODULE_13__.SkinsShop();
+    this.addChild(this.skinsShop);
+  }
   _onCollision(obj1, obj2) {
     if (obj1 === this.player && obj2 instanceof _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_11__.Spike) {
       this._onLose();
@@ -6458,19 +8009,41 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
   _initSceneEvent() {
     this.on("nextLevel", this._onNextLevel.bind(this));
     this.on("lose", this._onLose.bind(this));
-    this.gameOverUI.on("replay", this._onResetScene.bind(this));
+    this.gameOverUI.on("replay", this.onResetScene.bind(this));
     this.sceneUI.on("toHardModeScene", () => {
-      this.parent.onStartScene("hardModeScene");
+      this.parent.onStartScene("HardModeScene");
+    });
+    this.sceneUI.on("startSkinsShopUI", () => {
+      this._onStartSkinsShop();
+    });
+    this.skinsShop.on("close", () => {
+      this._onCloseSkinsShop();
+    });
+    this.sceneUI.on("toDualModeScene", () => {
+      this.parent.onStartScene("dualModeScene");
     });
     this.background.on("pointerdown", () => {
       this._onPointerDown();
     });
   }
+  _onStartSkinsShop() {
+    this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.PlayDisabled;
+    this.skinsShop.onStart();
+    this.sceneUI.hideMainUI();
+    this.gameInfor.hide();
+    this.player.hide();
+    this.background.hideScoreBackground();
+  }
+  _onCloseSkinsShop() {
+    this.background.showScoreGround();
+    this.skinsShop.onClose();
+    this.onResetScene();
+  }
   _onPointerDown() {
-    if (this.gameState != _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
+    if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready || this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing) {
       if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready) {
         this.sceneUI.hideMainUI();
-        this.gameInfor.hideGameInfor();
+        this.gameInfor.hide();
         this.background.displayScore();
       }
       this.player.onPointerDown();
@@ -6478,7 +8051,7 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
       pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("flyingSound").play();
     }
   }
-  _onResetScene() {
+  onResetScene() {
     _data_js__WEBPACK_IMPORTED_MODULE_2__.Data.resetScore();
     this.gameInfor.onReset();
     this.player.onReset();
@@ -6500,7 +8073,7 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
     this.candies.onLose();
     setTimeout(() => {
       this.gameOverUI.showGameOverUI();
-      this.gameInfor.displayGameInfor();
+      this.gameInfor.onReset();
       this.background.hideScore();
     }, 1e3);
   }
@@ -6522,8 +8095,240 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
     if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing) {
       this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);
       this.colliderDetector.checkCollider(this.player, this.candies.children);
-      this.spikes.update();
       this.candies.update(dt);
+    }
+  }
+}
+
+
+/***/ }),
+
+/***/ "./src/scene/dualModeScene.js":
+/*!************************************!*\
+  !*** ./src/scene/dualModeScene.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DualModeScene: () => (/* binding */ DualModeScene)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _gameScene_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameScene.js */ "./src/scene/gameScene.js");
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data.js */ "./src/data.js");
+/* harmony import */ var _obj_player_player_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../obj/player/player.js */ "./src/obj/player/player.js");
+/* harmony import */ var _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../obj/trap/spikesManager.js */ "./src/obj/trap/spikesManager.js");
+/* harmony import */ var _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../obj/trap/spike.js */ "./src/obj/trap/spike.js");
+/* harmony import */ var _levelController_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../levelController.js */ "./src/levelController.js");
+/* harmony import */ var _obj_background_backgroundDual__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../obj/background/backgroundDual */ "./src/obj/background/backgroundDual.js");
+/* harmony import */ var _obj_ui_over_dualModeOverUI_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../obj/ui/over/dualModeOverUI.js */ "./src/obj/ui/over/dualModeOverUI.js");
+/* harmony import */ var _obj_ui_main_dualModeUI_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../obj/ui/main/dualModeUI.js */ "./src/obj/ui/main/dualModeUI.js");
+
+
+
+
+
+
+
+
+
+
+class DualModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene {
+  constructor() {
+    super();
+  }
+  _initProperties() {
+    super._initProperties();
+    this.id = "dualModeScene";
+  }
+  _initGameplay() {
+    this.flag = false;
+    this._initBackground();
+    this._initPlayer();
+    this._initSceneUI();
+    this._initSceneOverUI();
+    this._initSpikes();
+  }
+  _initPlayer() {
+    this.player1 = new _obj_player_player_js__WEBPACK_IMPORTED_MODULE_3__.Player(this);
+    this.player1.dualModeEnabled = true;
+    this.player1.rootPos = { x: 0, y: 50 };
+    this.player1.position = this.player1.rootPos;
+    this.player1.victory = false;
+    this.direction1 = 1;
+    this.addChild(this.player1);
+    this.player2 = new _obj_player_player_js__WEBPACK_IMPORTED_MODULE_3__.Player(this);
+    this.player2.dualModeEnabled = true;
+    this.player2.rootPos = { x: 0, y: -50 };
+    this.player2.position = this.player2.rootPos;
+    this.player2.victory = false;
+    this.player2.scale.set(-1);
+    this.player2.movement.direction = { x: -1, y: -1 };
+    this.direction2 = -1;
+    this.addChild(this.player2);
+  }
+  _initSpikes() {
+    this.movedSpikes = false;
+    this.spikes = new _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_4__.SpikesManager(this.id);
+    this.spikes.spikesBottom.forEach((spike) => spike.y = 91);
+    this.spikes.changeColor(this.background1.originColor.colorDarker);
+    this.addChild(this.spikes);
+  }
+  _initBackground() {
+    this._initBackgroundFull();
+    this._initBackgroundTop();
+  }
+  _initBackgroundFull() {
+    this.background1 = new _obj_background_backgroundDual__WEBPACK_IMPORTED_MODULE_7__.BackgroundDual();
+    this.background1.fullPlayGround.visible = true;
+    this.background1.scoreBgFull.visible = true;
+    this.addChild(this.background1);
+  }
+  _initBackgroundTop() {
+    this.background2 = new _obj_background_backgroundDual__WEBPACK_IMPORTED_MODULE_7__.BackgroundDual();
+    this.background2.alpha = 0;
+    this.addChild(this.background2);
+  }
+  _initSceneUI() {
+    this.sceneUI = new _obj_ui_main_dualModeUI_js__WEBPACK_IMPORTED_MODULE_9__.DualModeUI();
+    this.addChild(this.sceneUI);
+  }
+  _initSceneOverUI() {
+    this.sceneOverUI = new _obj_ui_over_dualModeOverUI_js__WEBPACK_IMPORTED_MODULE_8__.DualModeOverUI();
+    this.addChild(this.sceneOverUI);
+    this.sceneOverUI._onResetStar(this.sceneUI.gameState);
+    this.sceneOverUI.hideGameOverUI();
+  }
+  _onResetScene() {
+    _data_js__WEBPACK_IMPORTED_MODULE_2__.Data.resetScore();
+    this.sceneOverUI.onReset();
+    this.sceneUI.onReset();
+    this.player1.onReset();
+    this.player2.onReset();
+    this.player2.scale.set(-1);
+    this.player2.movement.direction = { x: -1, y: -1 };
+    this.direction1 = 1;
+    this.direction2 = -1;
+    this.spikes.onReset();
+    this.spikes.changeColor(this.background1.originColor.colorDarker);
+    this.background1.onReset();
+    this.background2.onReset();
+    console.log(this.background2.playGroundTop.visible);
+    this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready;
+  }
+  _initSceneEvent() {
+    this.on("nextLevel", this._onNextLevel.bind(this));
+    this.sceneOverUI.on("replay", this._onResetScene.bind(this));
+    this.on("lose", this._onLose.bind(this));
+    this.sceneUI.on("toClassicModeScene", () => {
+      this.parent.onStartScene("ClassicModeScene");
+    });
+    this.background1.on("pointerdown", () => {
+      this._onPointerDownBackground1();
+    });
+    this.background2.on("pointerdown", () => {
+      this._onPointerDownBackground2();
+    });
+  }
+  _onPointerDownBackground1() {
+    if (this.gameState != _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
+      if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready) {
+        this.sceneUI.hideMainUI();
+        this.player2.onPointerDown();
+        this.background1.displayScore();
+      }
+      this.player1.onPointerDown();
+      this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing;
+      this.background2.playGroundTop.visible = true;
+      this.background2.scoreBgTop.visible = true;
+      pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("flyingSound").play();
+    }
+  }
+  _onPointerDownBackground2() {
+    if (this.gameState != _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
+      this.player2.onPointerDown();
+      this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing;
+      pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("flyingSound").play();
+    }
+  }
+  _onLose() {
+    if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
+      return;
+    }
+    this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End;
+    pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("loseSound").play();
+    setTimeout(() => {
+      this.sceneOverUI._onResetStar(this.sceneUI.gameState);
+      this.sceneOverUI.showGameOverUI();
+      this.background2.hideScore();
+    }, 1e3);
+  }
+  _onNextLevel(direction) {
+    if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
+      return;
+    }
+    if (this.player1.movement.direction.x == this.direction1 * -1) {
+      this.player1.onNextLevel();
+      this.direction1 *= -1;
+      if (!this.movedSpikes) {
+        this.background1.updateBackground(++_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore);
+        let limitSpike = _levelController_js__WEBPACK_IMPORTED_MODULE_6__.LevelController.updateLevel();
+        this.spikes.moveSpikes(direction, limitSpike);
+        this.movedSpikes = true;
+      } else {
+        this.movedSpikes = false;
+      }
+    }
+    if (this.player2.movement.direction.x == this.direction2 * -1) {
+      this.player2.onNextLevel();
+      this.direction2 *= -1;
+      if (!this.movedSpikes) {
+        this.background1.updateBackground(++_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore);
+        let limitSpike = _levelController_js__WEBPACK_IMPORTED_MODULE_6__.LevelController.updateLevel();
+        this.spikes.moveSpikes(direction, limitSpike);
+        this.movedSpikes = true;
+      } else {
+        this.movedSpikes = false;
+      }
+    }
+  }
+  _onCollision(obj1, obj2) {
+    if (obj1 === this.player1 && obj2 instanceof _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_5__.Spike) {
+      this._onLose();
+      this.player1.onCollision(obj2);
+      if (this.player2.isDie) {
+        this.sceneOverUI.tmp = 2;
+      } else {
+        this.player2.victory = true;
+        this.sceneOverUI.tmp = 1;
+      }
+    }
+    if (obj1 === this.player2 && obj2 instanceof _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_5__.Spike) {
+      this._onLose();
+      this.player2.onCollision(obj2);
+      if (this.player1.isDie) {
+        this.sceneOverUI.tmp = 2;
+      } else {
+        this.player1.victory = true;
+      }
+    }
+    if (obj1 === this.player1 && obj2 === this.player2) {
+      if (this.player1.movement.velocity.y < this.player2.movement.velocity.y) {
+        this.player1.onCollision(this.player2);
+      } else if (-obj1.movement.velocity.y < obj2.movement.velocity.y) {
+      } else {
+      }
+    }
+  }
+  update(dt) {
+    this.player1.update(dt);
+    this.player2.update(dt);
+    this.sceneUI.update(dt);
+    this.sceneOverUI.update(dt);
+    if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing) {
+      this.colliderDetector.checkCollider(this.player1, this.spikes.poolSpikes);
+      this.colliderDetector.checkCollider(this.player2, this.spikes.poolSpikes);
     }
   }
 }
@@ -6552,7 +8357,8 @@ __webpack_require__.r(__webpack_exports__);
 const GameState = Object.freeze({
   Ready: "ready",
   Playing: "playing",
-  End: "end"
+  End: "end",
+  PlayDisabled: "playDisabled"
 });
 class GameScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
@@ -6587,7 +8393,7 @@ class GameScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   // Đăng kí các sự kiện cho scene
   // abstract
-  _onResetScene() {
+  onResetScene() {
   }
   // Reset lại scene
   onResize() {
@@ -6622,11 +8428,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _obj_items_candyManager_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../obj/items/candyManager.js */ "./src/obj/items/candyManager.js");
 /* harmony import */ var _obj_items_candy_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../obj/items/candy.js */ "./src/obj/items/candy.js");
 /* harmony import */ var _obj_player_player_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../obj/player/player.js */ "./src/obj/player/player.js");
-/* harmony import */ var _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../obj/trap/spikesManager.js */ "./src/obj/trap/spikesManager.js");
-/* harmony import */ var _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../obj/trap/spike.js */ "./src/obj/trap/spike.js");
-/* harmony import */ var _levelController_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../levelController.js */ "./src/levelController.js");
-/* harmony import */ var _obj_ui_main_hardModeUI_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../obj/ui/main/hardModeUI.js */ "./src/obj/ui/main/hardModeUI.js");
-/* harmony import */ var _obj_ui_over_hardModeOverUI_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../obj/ui/over/hardModeOverUI.js */ "./src/obj/ui/over/hardModeOverUI.js");
+/* harmony import */ var _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../obj/trap/spike.js */ "./src/obj/trap/spike.js");
+/* harmony import */ var _levelController_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../levelController.js */ "./src/levelController.js");
+/* harmony import */ var _obj_ui_main_hardModeUI_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../obj/ui/main/hardModeUI.js */ "./src/obj/ui/main/hardModeUI.js");
+/* harmony import */ var _obj_ui_over_hardModeOverUI_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../obj/ui/over/hardModeOverUI.js */ "./src/obj/ui/over/hardModeOverUI.js");
+/* harmony import */ var _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../obj/trap/spikesManager.js */ "./src/obj/trap/spikesManager.js");
 
 
 
@@ -6646,7 +8452,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
   }
   _initProperties() {
     super._initProperties();
-    this.id = "hardModeScene";
+    this.id = "HardModeScene";
   }
   _initGameplay() {
     this._initBackground();
@@ -6663,7 +8469,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.addChild(this.player);
   }
   _initSpikes() {
-    this.spikes = new _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_8__.SpikesManager();
+    this.spikes = new _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_12__.SpikesManager(this.id);
     this.addChild(this.spikes);
   }
   _initCandies() {
@@ -6675,7 +8481,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.addChild(this.background);
   }
   _initSceneUI() {
-    this.sceneUI = new _obj_ui_main_hardModeUI_js__WEBPACK_IMPORTED_MODULE_11__.HardModeUI();
+    this.sceneUI = new _obj_ui_main_hardModeUI_js__WEBPACK_IMPORTED_MODULE_10__.HardModeUI();
     this.addChild(this.sceneUI);
   }
   _initGameInfor() {
@@ -6683,13 +8489,13 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.addChild(this.gameInfor);
   }
   _initGameOverUI() {
-    this.gameOverUI = new _obj_ui_over_hardModeOverUI_js__WEBPACK_IMPORTED_MODULE_12__.HardModeOverUI();
+    this.gameOverUI = new _obj_ui_over_hardModeOverUI_js__WEBPACK_IMPORTED_MODULE_11__.HardModeOverUI();
     this.addChild(this.gameOverUI);
     this.gameOverUI.hideGameOverUI();
   }
   _onCollision(obj1, obj2) {
     super._onCollision();
-    if (obj1 === this.player && obj2 instanceof _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_9__.Spike) {
+    if (obj1 === this.player && obj2 instanceof _obj_trap_spike_js__WEBPACK_IMPORTED_MODULE_8__.Spike) {
       this._onLose();
       this.player.onCollision(obj2);
     }
@@ -6703,19 +8509,19 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
   _initSceneEvent() {
     this.on("nextLevel", this._onNextLevel.bind(this));
     this.on("lose", this._onLose.bind(this));
-    this.gameOverUI.on("replay", this._onResetScene.bind(this));
+    this.gameOverUI.on("replay", this.onResetScene.bind(this));
     this.sceneUI.on("toClassicModeScene", () => {
-      this.parent.onStartScene("classicModeScene");
+      this.parent.onStartScene("ClassicModeScene");
     });
     this.background.on("pointerdown", () => {
       this._onPointerDown();
     });
   }
   _onPointerDown() {
-    if (this.gameState != _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
+    if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready || this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing) {
       if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready) {
         this.sceneUI.hideMainUI();
-        this.gameInfor.hideGameInfor();
+        this.gameInfor.hide();
         this.background.displayScore();
       }
       this.player.onPointerDown();
@@ -6723,7 +8529,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
       pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("flyingSound").play();
     }
   }
-  _onResetScene() {
+  onResetScene() {
     _data_js__WEBPACK_IMPORTED_MODULE_2__.Data.resetScore();
     this.gameInfor.onReset();
     this.player.onReset();
@@ -6744,7 +8550,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.candies.onLose();
     setTimeout(() => {
       this.gameOverUI.showGameOverUI();
-      this.gameInfor.displayGameInfor();
+      this.gameInfor.display();
       this.background.hideScore();
     }, 1e3);
   }
@@ -6755,8 +8561,8 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.candies.onNextLevel(this.player.movement.direction.x);
     this.player.onNextLevel();
     this.background.updateBackground(++_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore);
-    let limitSpike = _levelController_js__WEBPACK_IMPORTED_MODULE_10__.LevelController.updateLevel();
-    this.spikes.moveSpikesHardMode(direction, limitSpike);
+    let limitSpike = _levelController_js__WEBPACK_IMPORTED_MODULE_9__.LevelController.updateLevel();
+    this.spikes.moveSpikes(direction, limitSpike);
     if (_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore >= 5) {
       this.spikes.changeColor(this.background.originColor.colorDarker);
     }
@@ -6766,7 +8572,6 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Playing) {
       this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);
       this.colliderDetector.checkCollider(this.player, this.candies.children);
-      this.spikes.update();
       this.candies.update(dt);
     }
   }
@@ -6789,6 +8594,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _classicScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classicScene */ "./src/scene/classicScene.js");
 /* harmony import */ var _hardModeScene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hardModeScene */ "./src/scene/hardModeScene.js");
+/* harmony import */ var _dualModeScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dualModeScene */ "./src/scene/dualModeScene.js");
+
 
 
 
@@ -6797,7 +8604,7 @@ class SceneManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     super();
     this._initProperties();
     this._initScenes();
-    this.onStartScene("classicModeScene");
+    this.onStartScene("ClassicModeScene");
   }
   _initProperties() {
     this.scenes = [];
@@ -6809,6 +8616,8 @@ class SceneManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.scenes.push(this.mainScene);
     this.hardmodeScene = new _hardModeScene__WEBPACK_IMPORTED_MODULE_2__.HardModeScene(this);
     this.scenes.push(this.hardmodeScene);
+    this.dualmodeScene = new _dualModeScene__WEBPACK_IMPORTED_MODULE_3__.DualModeScene(this);
+    this.scenes.push(this.dualmodeScene);
   }
   // Gọi id trong scene để chạy scene đó
   onStartScene(id) {
@@ -6818,7 +8627,7 @@ class SceneManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.scenes.forEach((scene) => {
       if (scene.id === id) {
         this.enabledScene = scene;
-        this.enabledScene._onResetScene();
+        this.enabledScene.onResetScene();
         this.addChild(scene);
       }
     });
@@ -44251,6 +46060,939 @@ Object.defineProperties(_pixi_settings__WEBPACK_IMPORTED_MODULE_0__.settings, {
 
 /***/ }),
 
+/***/ "./node_modules/@pixi/ui/lib/List.mjs":
+/*!********************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/List.mjs ***!
+  \********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   List: () => (/* binding */ List)
+/* harmony export */ });
+/* harmony import */ var _pixi_display__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/display */ "./node_modules/@pixi/display/lib/index.mjs");
+
+
+class List extends _pixi_display__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor(options) {
+    super();
+    /** Returns all arranged elements. */
+    this.children = [];
+    if (options) {
+      this.init(options);
+    }
+    options?.items?.forEach((item) => this.addChild(item));
+    this.on("added", () => this.arrangeChildren());
+    this.on("childAdded", () => this.arrangeChildren());
+  }
+  /**
+   * Initiates list component.
+   * @param options
+   */
+  init(options) {
+    this.options = options;
+    if (options?.type) {
+      this.type = options.type;
+    }
+    if (options?.children) {
+      options.children.forEach((child) => this.addChild(child));
+    }
+  }
+  /**
+   * Set items arrange direction.
+   * @param type - Arrange direction.
+   */
+  set type(type) {
+    this._type = type;
+    this.arrangeChildren();
+  }
+  /**
+   * Get items arrange direction.
+   * @returns Arrange direction.
+   */
+  get type() {
+    return this._type;
+  }
+  /**
+   * Set element margin.
+   * @param margin - Margin between elements.
+   */
+  set elementsMargin(margin) {
+    this.options.elementsMargin = margin;
+    this.arrangeChildren();
+  }
+  /**
+   * Get element margin.
+   * @returns Margin between elements.
+   */
+  get elementsMargin() {
+    return this.options.elementsMargin;
+  }
+  /**
+   * Set vertical padding.
+   * @param padding - Vertical padding between list border and its elements.
+   */
+  set vertPadding(padding) {
+    this.options.vertPadding = padding;
+    this.arrangeChildren();
+  }
+  /**
+   * Get vertical padding.
+   * @returns Vertical padding between list border and its elements.
+   */
+  get vertPadding() {
+    return this.options.vertPadding;
+  }
+  /**
+   * Set horizontal padding.
+   * @param padding - Horizontal padding between list border and its elements.
+   */
+  set horPadding(padding) {
+    this.options.horPadding = padding;
+    this.arrangeChildren();
+  }
+  /**
+   * Get horizontal padding.
+   * @returns Horizontal padding between list border and its elements.
+   */
+  get horPadding() {
+    return this.options.horPadding;
+  }
+  /**
+   * Arrange all elements basing in their sizes and component options.
+   * Can be arranged vertically, horizontally or bidirectional.
+   */
+  arrangeChildren() {
+    let x = this.options?.horPadding ?? 0;
+    let y = this.options?.vertPadding ?? 0;
+    const elementsMargin = this.options?.elementsMargin ?? 0;
+    let maxWidth = this.parent?.width;
+    if (this.options?.horPadding) {
+      maxWidth -= this.options.horPadding;
+    }
+    this.children.forEach((child, id) => {
+      switch (this.type) {
+        case "vertical":
+          child.y = y;
+          child.x = x;
+          y += elementsMargin + child.height;
+          break;
+        case "horizontal":
+          child.x = x;
+          child.y = y;
+          x += elementsMargin + child.width;
+          break;
+        default:
+          child.x = x;
+          child.y = y;
+          if (child.x + child.width >= maxWidth && id > 0) {
+            y += elementsMargin + child.height;
+            x = this.options?.horPadding ?? 0;
+            child.x = x;
+            child.y = y;
+          }
+          x += elementsMargin + child.width;
+          break;
+      }
+    });
+  }
+}
+
+
+//# sourceMappingURL=List.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/ScrollBox.mjs":
+/*!*************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/ScrollBox.mjs ***!
+  \*************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollBox: () => (/* binding */ ScrollBox)
+/* harmony export */ });
+/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/core */ "./node_modules/@pixi/core/lib/index.mjs");
+/* harmony import */ var _pixi_display__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/display */ "./node_modules/@pixi/display/lib/index.mjs");
+/* harmony import */ var _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pixi/graphics */ "./node_modules/@pixi/graphics/lib/index.mjs");
+/* harmony import */ var _pixi_sprite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @pixi/sprite */ "./node_modules/@pixi/sprite/lib/index.mjs");
+/* harmony import */ var _List_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./List.mjs */ "./node_modules/@pixi/ui/lib/List.mjs");
+/* harmony import */ var _utils_trackpad_Trackpad_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/trackpad/Trackpad.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/Trackpad.mjs");
+
+
+
+
+
+
+
+class ScrollBox extends _pixi_display__WEBPACK_IMPORTED_MODULE_1__.Container {
+  /**
+   * @param options
+   * @param {number} options.background - background color of the ScrollBox.
+   * @param {number} options.width - width of the ScrollBox.
+   * @param {number} options.height - height of the ScrollBox.
+   * @param {number} options.radius - radius of the ScrollBox and its masks corners.
+   * @param {number} options.elementsMargin - margin between elements.
+   * @param {number} options.vertPadding - vertical padding of the ScrollBox.
+   * @param {number} options.horPadding - horizontal padding of the ScrollBox.
+   * @param {number} options.padding - padding of the ScrollBox (same horizontal and vertical).
+   * @param {boolean} options.disableDynamicRendering - disables dynamic rendering of the ScrollBox,
+   * so even elements the are not visible will be rendered. Be careful with this options as it can impact performance.
+   */
+  constructor(options) {
+    super();
+    this.__width = 0;
+    this.__height = 0;
+    this.isDragging = 0;
+    this.interactiveStorage = [];
+    this.visibleItems = [];
+    this.ticker = _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Ticker.shared;
+    if (options) {
+      this.init(options);
+    }
+    this.ticker.add(this.update, this);
+    this.onMouseScrollBinded = this.onMouseScroll.bind(this);
+  }
+  /**
+   * Initiates ScrollBox.
+   * @param options
+   * @param {number} options.background - background color of the ScrollBox.
+   * @param {number} options.width - width of the ScrollBox.
+   * @param {number} options.height - height of the ScrollBox.
+   * @param {number} options.radius - radius of the ScrollBox and its masks corners.
+   * @param {number} options.elementsMargin - margin between elements.
+   * @param {number} options.vertPadding - vertical padding of the ScrollBox.
+   * @param {number} options.horPadding - horizontal padding of the ScrollBox.
+   * @param {number} options.padding - padding of the ScrollBox (same horizontal and vertical).
+   * @param {boolean} options.disableDynamicRendering - disables dynamic rendering of the ScrollBox,
+   * so even elements the are not visible will be rendered. Be careful with this options as it can impact performance.
+   */
+  init(options) {
+    this.options = options;
+    this.setBackground(options.background);
+    this.__width = options.width | this.background.width;
+    this.__height = options.height | this.background.height;
+    options.vertPadding = options.vertPadding ?? options.padding ?? 0;
+    options.horPadding = options.horPadding ?? options.padding ?? 0;
+    if (!this.list) {
+      this.list = new _List_mjs__WEBPACK_IMPORTED_MODULE_4__.List();
+      super.addChild(this.list);
+    }
+    this.list.init({
+      type: options.type,
+      elementsMargin: options.elementsMargin,
+      vertPadding: options.vertPadding,
+      horPadding: options.horPadding
+    });
+    this.addItems(options.items);
+    if (this.hasBounds) {
+      this.addMask();
+      this.makeScrollable();
+    }
+    this._trackpad.xAxis.value = 0;
+    this._trackpad.yAxis.value = 0;
+    this.resize();
+  }
+  get hasBounds() {
+    return !!this.__width || !!this.__height;
+  }
+  onChildrenChange() {
+  }
+  /**
+   *  Adds array of items to a scrollable list.
+   * @param {Container[]} items - items to add.
+   */
+  addItems(items) {
+    if (!items?.length)
+      return;
+    items.forEach((item) => this.addItem(item));
+  }
+  /** Remove all items from a scrollable list. */
+  removeItems() {
+    this.list.removeChildren();
+  }
+  /**
+   * Adds one or more items to a scrollable list.
+   * @param {Container} items - one or more items to add.
+   */
+  addItem(...items) {
+    if (items.length > 1) {
+      items.forEach((item) => this.addItem(item));
+    } else {
+      const child = items[0];
+      if (!child.width || !child.height) {
+        console.error("ScrollBox item should have size");
+      }
+      child.eventMode = "static";
+      this.list.addChild(child);
+      if (!this.options.disableDynamicRendering) {
+        child.renderable = this.isItemVisible(child);
+      }
+    }
+    this.resize();
+    return items[0];
+  }
+  /**
+   * Removes an item from a scrollable list.
+   * @param {number} itemID - id of the item to remove.
+   */
+  removeItem(itemID) {
+    const child = this.list.children[itemID];
+    if (!child) {
+      return;
+    }
+    this.list.removeChild(child);
+    this.resize();
+  }
+  /**
+   * Checks if the item is visible or scrolled out of the visible part of the view.* Adds an item to a scrollable list.
+   * @param {Container} item - item to check.
+   */
+  isItemVisible(item) {
+    const isVertical = this.options.type === "vertical" || !this.options.type;
+    let isVisible = false;
+    const list = this.list;
+    if (isVertical) {
+      const posY = item.y + list.y;
+      if (posY + item.height + this.options.vertPadding >= 0 && posY - this.options.vertPadding - this.options.elementsMargin <= this.options.height) {
+        isVisible = true;
+      }
+    } else {
+      const posX = item.x + list.x;
+      if (posX + item.width >= 0 && posX <= this.options.width) {
+        isVisible = true;
+      }
+    }
+    return isVisible;
+  }
+  /**
+   * Returns all inner items in a list.
+   * @returns {Array<Container> | Array} - list of items.
+   */
+  get items() {
+    return this.list?.children ?? [];
+  }
+  /**
+   * Set ScrollBox background.
+   * @param {number | string} background - background color or texture.
+   */
+  setBackground(background) {
+    if (this.background) {
+      this.removeChild(this.background);
+      if (this.background instanceof _pixi_sprite__WEBPACK_IMPORTED_MODULE_3__.Sprite) {
+        this.background.destroy();
+      }
+    }
+    this.options.background = background;
+    this.background = background !== void 0 && typeof background === "string" ? _pixi_sprite__WEBPACK_IMPORTED_MODULE_3__.Sprite.from(background) : new _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__.Graphics();
+    this.addChildAt(this.background, 0);
+    this.resize();
+  }
+  addMask() {
+    if (!this.borderMask) {
+      this.borderMask = new _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__.Graphics();
+      super.addChild(this.borderMask);
+      this.mask = this.borderMask;
+    }
+    this.resize();
+  }
+  makeScrollable() {
+    if (!this._trackpad) {
+      this._trackpad = new _utils_trackpad_Trackpad_mjs__WEBPACK_IMPORTED_MODULE_5__.Trackpad({
+        disableEasing: this.options.disableEasing
+      });
+    }
+    this.on("pointerdown", (e) => {
+      this.isDragging = 1;
+      const touchPoint = this.worldTransform.applyInverse(e.global);
+      this._trackpad.pointerDown(touchPoint);
+      const listTouchPoint = this.list.worldTransform.applyInverse(e.global);
+      this.visibleItems.forEach((item) => {
+        if (item.x < listTouchPoint.x && item.x + item.width > listTouchPoint.x && item.y < listTouchPoint.y && item.y + item.height > listTouchPoint.y) {
+          this.pressedChild = item;
+        }
+      });
+    });
+    this.on("pointerup", () => {
+      this.isDragging = 0;
+      this._trackpad.pointerUp();
+      this.restoreItemsInteractivity();
+      this.pressedChild = null;
+    });
+    this.on("pointerupoutside", () => {
+      this.isDragging = 0;
+      this._trackpad.pointerUp();
+      this.restoreItemsInteractivity();
+      this.pressedChild = null;
+    });
+    this.on("globalpointermove", (e) => {
+      const touchPoint = this.worldTransform.applyInverse(e.global);
+      this._trackpad.pointerMove(touchPoint);
+      if (!this.isDragging)
+        return;
+      if (this.pressedChild) {
+        this.revertClick(this.pressedChild);
+        this.pressedChild = null;
+      }
+    });
+    const { onMouseHover, onMouseOut } = this;
+    this.on("mouseover", onMouseHover, this).on("mouseout", onMouseOut, this);
+  }
+  setInteractive(interactive) {
+    this.eventMode = interactive ? "static" : "auto";
+  }
+  get listHeight() {
+    return this.list.height + this.options.vertPadding * 2;
+  }
+  get listWidth() {
+    return this.list.width + this.options.horPadding * 2;
+  }
+  /** Controls item positions and visibility. */
+  resize() {
+    if (!this.hasBounds)
+      return;
+    this.renderAllItems();
+    if (this.borderMask && (this.lastWidth !== this.listWidth || this.lastHeight !== this.listHeight)) {
+      const verPadding = this.options.vertPadding;
+      const horPadding = this.options.horPadding;
+      if (!this.options.width) {
+        this.__width += this.listWidth;
+      }
+      if (!this.options.height) {
+        this.__height += this.listHeight;
+      }
+      this.borderMask.clear().lineStyle(0).beginFill(16777215).drawRoundedRect(
+        0,
+        0,
+        this.__width,
+        this.__height,
+        this.options.radius | 0
+      );
+      this.borderMask.eventMode = "none";
+      if (this.background instanceof _pixi_graphics__WEBPACK_IMPORTED_MODULE_2__.Graphics) {
+        this.background.clear().lineStyle(0);
+        const color = this.options.background;
+        this.background.beginFill(
+          color ?? 0,
+          color ? 1 : 1e-7
+          // if color is not set, set alpha to 0 to be able to drag by click on bg
+        );
+        this.background.drawRect(
+          0,
+          0,
+          this.__width + horPadding,
+          this.__height + verPadding
+        );
+      }
+      if (this.options.type === "horizontal") {
+        this.setInteractive(this.listWidth > this.__width);
+      } else {
+        this.setInteractive(this.listHeight > this.__height);
+      }
+      this.lastWidth = this.listWidth;
+      this.lastHeight = this.listHeight;
+    }
+    if (this._trackpad) {
+      const maxWidth = this.borderMask.width - this.list.width - this.options.horPadding * 2;
+      const maxHeight = this.borderMask.height - this.list.height - this.options.vertPadding * 2;
+      if (this.options.type === "vertical") {
+        this._trackpad.yAxis.max = -Math.abs(maxHeight);
+      } else if (this.options.type === "horizontal") {
+        this._trackpad.xAxis.max = -Math.abs(maxWidth);
+      } else {
+        this._trackpad.yAxis.max = -Math.abs(maxHeight);
+        this._trackpad.xAxis.max = -Math.abs(maxWidth);
+      }
+    }
+    this.stopRenderHiddenItems();
+  }
+  onMouseHover() {
+    this.renderAllItems();
+    document.addEventListener("mousewheel", this.onMouseScrollBinded);
+    document.addEventListener("DOMMouseScroll", this.onMouseScrollBinded);
+  }
+  onMouseOut() {
+    this.stopRenderHiddenItems();
+    document.removeEventListener("mousewheel", this.onMouseScrollBinded);
+    document.removeEventListener(
+      "DOMMouseScroll",
+      this.onMouseScrollBinded
+    );
+  }
+  onMouseScroll(event) {
+    this.renderAllItems();
+    if (this.options.type === "horizontal" && (typeof event.deltaX !== "undefined" || typeof event.deltaY !== "undefined")) {
+      const targetPos = event.deltaY ? this.list.x - event.deltaY : this.list.x - event.deltaX;
+      if (targetPos < 0 && targetPos + this.listWidth + this.options.horPadding < this.__width) {
+        this._trackpad.xAxis.value = this.__width - this.listWidth;
+      } else if (targetPos > this.options.horPadding) {
+        this._trackpad.xAxis.value = 0;
+      } else {
+        this._trackpad.xAxis.value = targetPos;
+      }
+    } else if (typeof event.deltaY !== "undefined") {
+      const targetPos = this.list.y - event.deltaY;
+      if (targetPos < 0 && targetPos + this.listHeight + this.options.vertPadding < this.__height) {
+        this._trackpad.yAxis.value = this.__height - this.listHeight;
+      } else if (targetPos > this.options.vertPadding) {
+        this._trackpad.yAxis.value = 0;
+      } else {
+        this._trackpad.yAxis.value = targetPos;
+      }
+    }
+    this.stopRenderHiddenItems();
+  }
+  /** Makes it scroll down to the last element. */
+  scrollBottom() {
+    if (!this.interactive) {
+      this.scrollTop();
+    } else {
+      this.scrollTo(this.list.children.length - 1);
+    }
+  }
+  /** Makes it scroll up to the first element. */
+  scrollTop() {
+    this._trackpad.xAxis.value = 0;
+    this._trackpad.yAxis.value = 0;
+  }
+  renderAllItems() {
+    if (this.options.disableDynamicRendering) {
+      return;
+    }
+    this.items.forEach((child) => {
+      child.renderable = true;
+    });
+  }
+  stopRenderHiddenItems() {
+    if (this.options.disableDynamicRendering) {
+      return;
+    }
+    this.visibleItems.length = 0;
+    this.items.forEach((child) => {
+      child.renderable = this.isItemVisible(child);
+      this.visibleItems.push(child);
+    });
+  }
+  /**
+   * Scrolls to the element with the given ID.
+   * @param elementID
+   */
+  scrollTo(elementID) {
+    if (!this.interactive) {
+      return;
+    }
+    const target = this.list.children[elementID];
+    if (!target) {
+      return;
+    }
+    this._trackpad.xAxis.value = this.options.type === "horizontal" ? this.__width - target.x - target.width - this.options.horPadding : 0;
+    this._trackpad.yAxis.value = !this.options.type || this.options.type === "vertical" ? this.__height - target.y - target.height - this.options.vertPadding : 0;
+  }
+  /** Gets component height. */
+  get height() {
+    return this.__height;
+  }
+  /** Gets component width. */
+  get width() {
+    return this.__width;
+  }
+  update() {
+    if (!this.list)
+      return;
+    this._trackpad.update();
+    const type = this.options.type === "horizontal" ? "x" : "y";
+    if (this.list[type] !== this._trackpad[type]) {
+      this.list[type] = this._trackpad[type];
+    }
+  }
+  /** Destroys the component. */
+  destroy() {
+    this.ticker.remove(this.update, this);
+    this.background.destroy();
+    this.list.destroy();
+    super.destroy();
+  }
+  restoreItemsInteractivity() {
+    this.interactiveStorage.forEach((element) => {
+      element.item.eventMode = element.eventMode;
+    });
+    this.interactiveStorage.length = 0;
+  }
+  revertClick(item) {
+    if (item.eventMode !== "auto") {
+      _pixi_core__WEBPACK_IMPORTED_MODULE_0__.utils.isMobile.any ? item.emit("pointerupoutside", null) : item.emit("mouseupoutside", null);
+      this.interactiveStorage.push({
+        item,
+        eventMode: item.eventMode
+      });
+      item.eventMode = "auto";
+    }
+    if (item instanceof _pixi_display__WEBPACK_IMPORTED_MODULE_1__.Container && item.children) {
+      item.children.forEach((child) => this.revertClick(child));
+    }
+  }
+}
+
+
+//# sourceMappingURL=ScrollBox.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/ScrollSpring.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/ScrollSpring.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ScrollSpring)
+/* harmony export */ });
+/* harmony import */ var _Spring_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Spring.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/Spring.mjs");
+
+
+class ScrollSpring {
+  constructor() {
+    this._spring = new _Spring_mjs__WEBPACK_IMPORTED_MODULE_0__.Spring();
+    this._pos = 0;
+    this.to = 0;
+  }
+  start(speed, pos, to) {
+    this._speed = speed;
+    this._pos = pos;
+    this.to = to;
+    this.done = false;
+    this._spring.x = this._pos;
+    this._spring.tx = this.to;
+    const diff = this.to - this._pos;
+    const toDirection = Math.abs(diff) / diff;
+    const currentDirection = Math.abs(this._speed) / this._speed;
+    if (toDirection !== currentDirection) {
+      this._correctSpeed = true;
+    } else {
+      this._correctSpeed = false;
+    }
+  }
+  update() {
+    if (this._correctSpeed) {
+      this._speed *= 0.6;
+      if (Math.abs(this._speed) < 2) {
+        this._correctSpeed = false;
+      }
+      this._pos += this._speed;
+      this._spring.x = this._pos;
+    } else {
+      const diff = this.to - this._pos;
+      if (Math.abs(diff) < 0.05) {
+        this._pos = this.to;
+        this.done = true;
+      } else {
+        this._spring.tx = this.to;
+        this._spring.update();
+        this._pos = this._spring.x;
+      }
+    }
+    return this._pos;
+  }
+  cancel() {
+  }
+}
+
+
+//# sourceMappingURL=ScrollSpring.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/SlidingNumber.mjs":
+/*!********************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/SlidingNumber.mjs ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SlidingNumber: () => (/* binding */ SlidingNumber)
+/* harmony export */ });
+/* harmony import */ var _ScrollSpring_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ScrollSpring.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/ScrollSpring.mjs");
+
+
+class SlidingNumber {
+  constructor(options = {}) {
+    this.position = 0;
+    this.constrain = true;
+    this.min = 0;
+    // the window width of the drag
+    this.max = 0;
+    // the window width of the drag
+    this.maxSpeed = 400;
+    this._offset = 0;
+    this._prev = 0;
+    this._speed = 0;
+    this._targetSpeed = 0;
+    this._speedChecker = 0;
+    this._grab = 0;
+    this.constrain = options.constrain ?? true;
+    this.maxSpeed = options.maxSpeed ?? 400;
+    this._ease = options.ease ?? new _ScrollSpring_mjs__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  }
+  set value(n) {
+    this._speed = 0;
+    this.position = n;
+  }
+  get value() {
+    return this.position;
+  }
+  grab(offset) {
+    this._grab = offset;
+    this._offset = this.position - offset;
+    this._speedChecker = 0;
+    this._targetSpeed = this._speed = 0;
+    this._hasStopped = false;
+  }
+  hold(newPosition) {
+    this._speedChecker++;
+    this.position = newPosition + this._offset;
+    if (this._speedChecker > 1) {
+      this._targetSpeed = this.position - this._prev;
+    }
+    this._speed += (this._targetSpeed - this._speed) / 2;
+    if (this._speed > this.maxSpeed)
+      this._speed = this.maxSpeed;
+    else if (this._speed < -this.maxSpeed)
+      this._speed = -this.maxSpeed;
+    this._prev = this.position;
+    if (this.constrain) {
+      this._activeEase = null;
+      if (this.position > this.min) {
+        this.position -= (this.position - this.min) / 1.5;
+      } else if (this.position < this.max) {
+        this.position += (this.max - this.position) / 1.5;
+      }
+    }
+  }
+  slide(instant = false) {
+    if (this._hasStopped)
+      return;
+    if (this.constrain) {
+      this._updateConstrain(instant);
+    } else {
+      this._updateDefault();
+    }
+  }
+  get moveAmount() {
+    return -(this.position - this._offset - this._grab);
+  }
+  _updateDefault() {
+    this._speed *= 0.9;
+    this.position += this._speed;
+    if ((this._speed < 0 ? this._speed * -1 : this._speed) < 0.01) {
+      this._hasStopped = true;
+    }
+  }
+  _updateConstrain(instant = false) {
+    const max = this.max;
+    if (instant) {
+      if (this.value > 0) {
+        this.value = 0;
+      }
+      if (this.value > 0) {
+        this.value = 0;
+      }
+      if (this.value < this.max) {
+        this.value = this.max;
+      }
+      if (this.value < this.max) {
+        this.value = this.max;
+      }
+    } else if (this.position > this.min || this.position < max || this._activeEase) {
+      if (!this._activeEase) {
+        this._activeEase = this._ease;
+        if (this.position > this.min) {
+          this._activeEase.start(this._speed, this.position, this.min);
+        } else {
+          this._activeEase.start(this._speed, this.position, max);
+        }
+      }
+      this.position = this._activeEase.update();
+      if (this._activeEase.done) {
+        this.position = this._activeEase.to;
+        this._speed = 0;
+        this._activeEase = null;
+      }
+    } else {
+      this._updateDefault();
+    }
+  }
+}
+
+
+//# sourceMappingURL=SlidingNumber.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/Spring.mjs":
+/*!*************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/Spring.mjs ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Spring: () => (/* binding */ Spring)
+/* harmony export */ });
+class Spring {
+  constructor(options = {}) {
+    this.x = 0;
+    this.ax = 0;
+    this.dx = 0;
+    this.tx = 0;
+    this._options = options;
+    this._options.max = options.max || 160;
+    this._options.damp = options.damp || 0.8;
+    this._options.springiness = options.springiness || 0.1;
+  }
+  update() {
+    this.ax = (this.tx - this.x) * this._options.springiness;
+    this.dx += this.ax;
+    this.dx *= this._options.damp;
+    if (this.dx < -this._options.max)
+      this.dx = -this._options.max;
+    else if (this.dx > this._options.max)
+      this.dx = this._options.max;
+    this.x += this.dx;
+  }
+  reset() {
+    this.x = 0;
+    this.ax = 0;
+    this.dx = 0;
+    this.tx = 0;
+  }
+  get max() {
+    return this._options.max;
+  }
+  set max(value) {
+    this._options.max = value;
+  }
+  get damp() {
+    return this._options.damp;
+  }
+  set damp(value) {
+    this._options.damp = value;
+  }
+  get springiness() {
+    return this._options.springiness;
+  }
+  set springiness(value) {
+    this._options.springiness = value;
+  }
+}
+
+
+//# sourceMappingURL=Spring.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@pixi/ui/lib/utils/trackpad/Trackpad.mjs":
+/*!***************************************************************!*\
+  !*** ./node_modules/@pixi/ui/lib/utils/trackpad/Trackpad.mjs ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Trackpad: () => (/* binding */ Trackpad)
+/* harmony export */ });
+/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pixi/core */ "./node_modules/@pixi/core/lib/index.mjs");
+/* harmony import */ var _SlidingNumber_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SlidingNumber.mjs */ "./node_modules/@pixi/ui/lib/utils/trackpad/SlidingNumber.mjs");
+
+
+
+class Trackpad {
+  constructor(options) {
+    this.disableEasing = false;
+    this.xAxis = new _SlidingNumber_mjs__WEBPACK_IMPORTED_MODULE_1__.SlidingNumber({
+      ease: options.xEase,
+      maxSpeed: options.maxSpeed,
+      constrain: options.constrain
+    });
+    this.yAxis = new _SlidingNumber_mjs__WEBPACK_IMPORTED_MODULE_1__.SlidingNumber({
+      ease: options.yEase,
+      maxSpeed: options.maxSpeed,
+      constrain: options.constrain
+    });
+    this.disableEasing = options.disableEasing ?? false;
+    this._frame = new _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Rectangle();
+    this._bounds = new _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Rectangle();
+    this._globalPosition = new _pixi_core__WEBPACK_IMPORTED_MODULE_0__.Point();
+  }
+  pointerDown(pos) {
+    this._globalPosition = pos;
+    this.xAxis.grab(pos.x);
+    this.yAxis.grab(pos.y);
+    this._isDown = true;
+  }
+  pointerUp() {
+    this._isDown = false;
+  }
+  pointerMove(pos) {
+    this._globalPosition = pos;
+  }
+  update() {
+    if (this._dirty) {
+      this._dirty = false;
+      this.xAxis.min = this._bounds.left;
+      this.xAxis.min = this._bounds.right - this._frame.width;
+      this.xAxis.min = this._bounds.top;
+      this.xAxis.min = this._bounds.bottom - this._frame.height;
+    }
+    if (this._isDown) {
+      this.xAxis.hold(this._globalPosition.x);
+      this.yAxis.hold(this._globalPosition.y);
+    } else {
+      this.xAxis.slide(this.disableEasing);
+      this.yAxis.slide(this.disableEasing);
+    }
+  }
+  resize(w, h) {
+    this._frame.x = 0;
+    this._frame.width = w;
+    this._frame.y = 0;
+    this._frame.height = h;
+    this._dirty = true;
+  }
+  setBounds(minX, maxX, minY, maxY) {
+    this._bounds.x = minX;
+    this._bounds.width = maxX - minX;
+    this._bounds.y = minY;
+    this._bounds.height = maxY - minY;
+    this._dirty = true;
+  }
+  get x() {
+    return this.xAxis.value;
+  }
+  get y() {
+    return this.yAxis.value;
+  }
+}
+
+
+//# sourceMappingURL=Trackpad.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@pixi/utils/lib/browser/hello.mjs":
 /*!********************************************************!*\
   !*** ./node_modules/@pixi/utils/lib/browser/hello.mjs ***!
@@ -46961,7 +49703,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"alpha":{"start":1,"end":1},"scale":{"start":0.3,"end":0.02,"minimumScaleMultiplier":1},"color":{"start":"#ff3464","end":"#ff3464"},"speed":{"start":0,"end":0,"minimumSpeedMultiplier":2},"acceleration":{"x":0,"y":0},"maxSpeed":20,"startRotation":{"min":0,"max":0},"noRotation":true,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":2,"max":2},"blendMode":"normal","frequency":0.5,"emitterLifetime":2.5,"maxParticles":6,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"point"}');
+module.exports = JSON.parse('{"alpha":{"start":1,"end":1},"scale":{"start":0.5,"end":0.035,"minimumScaleMultiplier":1},"color":{"start":"#ff3464","end":"#ff3464"},"speed":{"start":0,"end":0,"minimumSpeedMultiplier":2},"acceleration":{"x":0,"y":0},"maxSpeed":20,"startRotation":{"min":0,"max":0},"noRotation":true,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":2,"max":2},"blendMode":"normal","frequency":0.5,"emitterLifetime":2.5,"maxParticles":6,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"point"}');
 
 /***/ })
 

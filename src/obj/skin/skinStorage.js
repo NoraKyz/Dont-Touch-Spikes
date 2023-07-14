@@ -27,18 +27,18 @@ export class SkinStorage {
                 particle: Texture.from("circle"), 
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 10
+                    value: 0
                 },
                 enabled: true
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
+                texture1: Assets.get("birdBlue1"),
+                texture2: Assets.get("birdBlue2"),
+                texture3: Assets.get("birdBlue3"),
                 particle: Texture.from("circle"), 
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 20
+                    value: 10
                 },
                 enabled: false
             },

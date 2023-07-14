@@ -32,9 +32,9 @@ export class AssetsManager {
 
       this._addBundle(
         "skin", {
-          "blueBird1": "./assets/images/blueBird1.png",
-          "blueBird2": "./assets/images/blueBird2.png",
-          "blueBird3": "./assets/images/blueBird3.png",
+          "birdBlue1": "./assets/images/birdBlue1.png",
+          "birdBlue2": "./assets/images/birdBlue1.png",
+          "birdBlue3": "./assets/images/birdBlue1.png",
         }
       )
         

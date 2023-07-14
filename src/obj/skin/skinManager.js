@@ -35,8 +35,12 @@ export class SkinManager extends EventEmitter {
 
     onSetSkin(skinCard) {
         if(skinCard.data.enabled == true) {
-            this.emit("setSkin");
-            this.currentSkin = skinCard.data;
+            SkinManager.setSkin(skinCard.data);  
+            this.emit("setSkin");                      
         }
+    }
+
+    static setSkin(data) {
+        this.currentSkin = data;
     }
 }

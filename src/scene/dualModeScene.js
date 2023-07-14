@@ -35,15 +35,16 @@ export class DualModeScene extends GameScene {
     this.player1.rootPos = {x: 0, y: 50};
     this.player1.position = this.player1.rootPos;
     this.player1.victory = false;
+    this.direction1 = 1;
     this.addChild(this.player1);
-    this.direction1 = this.player1.movement.direction.x;
     //player2
     this.player2 = new Player(this);
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
     this.player2.victory = false;
-    this.direction2 = this.player2.movement.direction.x;
+    this.direction2 = -1;
+    this.player2.scale.set(-1);
     this.player2.movement.direction = {x: -1,y: -1};
     this.addChild(this.player2);
   }
@@ -171,6 +172,7 @@ export class DualModeScene extends GameScene {
       }
     }
     if(this.player2.movement.direction.x == this.direction2 * -1) {
+      console.log("next level");
       this.player2.onNextLevel();
       this.direction2 *= -1;
       if(!this.movedSpikes) {
@@ -196,21 +198,15 @@ export class DualModeScene extends GameScene {
       this.player1.victory = true;
     }
     if (obj1 === this.player1 && obj2 === this.player2) {
-
-      if(-this.player1.movement.velocity.y > this.player2.movement.velocity.y) {
+      //lực player1 > player2
+      if(this.player1.movement.velocity.y < this.player2.movement.velocity.y) {
         this.player1.onCollision(this.player2);
-        this.cnt = 0;
         //console.log("player2 " + this.player2.movement.velocity.x);
 
-        console.log(this.cnt++);
-        //console.log("player1 win");
       } else if(-obj1.movement.velocity.y < obj2.movement.velocity.y) {
         //this.player1.onCollision(obj1);
-       // console.log("player2 win");
       } else {
        // console.log("draw");
-        //this.player1.onCollision(obj2);
-        //this.player2.onCollision(obj1);
       }
     }
   }
@@ -221,9 +217,9 @@ export class DualModeScene extends GameScene {
     this.sceneUI.update(dt);
     this.sceneOverUI.update(dt);
     if (this.gameState == GameState.Playing) {
-      //this.colliderDetector.checkCollider(this.player1, this.spikes.poolSpikes);
-      //this.colliderDetector.checkCollider(this.player2, this.spikes.poolSpikes);
-      this.colliderDetector.checkCollider(this.player1, this.player2);
+      this.colliderDetector.checkCollider(this.player1, this.spikes.poolSpikes);
+      this.colliderDetector.checkCollider(this.player2, this.spikes.poolSpikes);
+      //this.colliderDetector.checkCollider(this.player1, this.player2);
     }
   }
 }

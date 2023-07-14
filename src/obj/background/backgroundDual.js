@@ -92,11 +92,11 @@ export class BackgroundDual extends Background {
     this.scoreText.text = `0${Data.currentScore}`;
   }
 
-  onReset() {
-    this._resetProperties();
-    this._resetBgColor();
-    this._resetScore();
-}
+  _resetProperties() {
+    super._resetProperties();
+    this.scoreBgTop.visible = false;
+    this.playGroundTop.visible = false;
+  }
 
   updateBackground(newScore) {
     if (newScore < 10) this.scoreText.text = `0${newScore}`;

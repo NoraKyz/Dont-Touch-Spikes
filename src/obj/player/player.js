@@ -94,7 +94,7 @@ export class Player extends Container {
     onReset() {
         this.isDie = false;
         this.isPlaying = false;
-        console.log(this.rootPos);
+
         this.position = this.rootPos;
 
         this.sprite.onReset();

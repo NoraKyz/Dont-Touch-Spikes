@@ -43,9 +43,9 @@ export class DualModeScene extends GameScene {
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
     this.player2.victory = false;
-    this.direction2 = -1;
     this.player2.scale.set(-1);
     this.player2.movement.direction = {x: -1,y: -1};
+    this.direction2 = -1;
     this.addChild(this.player2);
   }
 
@@ -93,13 +93,19 @@ export class DualModeScene extends GameScene {
 
     // this.gameInfor.onReset();
     this.player1.onReset();
-    this.player2.onReset(); // vị trí
+    this.player2.onReset();
+    this.player2.scale.set(-1);
+    this.player2.movement.direction = {x: -1, y: -1};// vị trí
+    this.direction1 = 1;
+    this.direction2 = -1;
     this.spikes.onReset(); // màu
     this.spikes.changeColor(this.background1.originColor.colorDarker);  
     this.background1.onReset();
     this.background2.onReset();
+    console.log(this.background2.playGroundTop.visible);
     this.gameState = GameState.Ready;
   }
+
 
   _initSceneEvent() {
     this.on("nextLevel", this._onNextLevel.bind(this));
@@ -171,8 +177,7 @@ export class DualModeScene extends GameScene {
         this.movedSpikes = false;
       }
     }
-    if(this.player2.movement.direction.x == this.direction2 * -1) {
-      console.log("next level");
+    if(this.player2.movement.direction.x == this.direction2 * (-1)) {
       this.player2.onNextLevel();
       this.direction2 *= -1;
       if(!this.movedSpikes) {

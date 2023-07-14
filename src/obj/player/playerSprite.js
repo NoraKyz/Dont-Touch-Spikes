@@ -62,8 +62,7 @@ export class PlayerSprite extends Container {
 
     onReset() {
         this.live.visible = true;
-        this.birdDead.visible = false;      
-       
+        this.birdDead.visible = false;
         this.scale.x = 1;    
     }
 

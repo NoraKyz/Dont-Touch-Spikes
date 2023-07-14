@@ -9,6 +9,7 @@ export class PlayerMovementDual extends PlayerMovement {
 
   _initProperties() {
     super._initProperties();
+
     this.obj.victory = false;
     this.topLimit = -Game.app.view.height * 3 / 7;
     this.bottomLimit = Game.app.view.height * 3 / 7;

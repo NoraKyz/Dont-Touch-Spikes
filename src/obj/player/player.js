@@ -76,9 +76,20 @@ export class Player extends Container {
         }
 
         if (obj instanceof Player) {
-            this.movement.velocity.y = -this.movement.jumpForce * 0.7;
-            this.movement.velocity.x *= -1;
-
+            if( obj.position.x - obj.radiousCollider >= this.position.x && obj.movement.direction.x == 1) {
+                obj.movement.direction.x = -1;
+                obj.movement.velocity.x = 0.7;
+            } else if (obj.position.x + 2*obj.radiousCollider <= this.position.x && obj.movement.direction.x == -1) {
+                obj.movement.direction.x = 1;
+                obj.movement.velocity.x = 0.7;
+            }
+            //
+            // if (obj.movement.velocity.y <= -obj.movement.jumpForce * 0.7) {
+            //     obj.movement.velocity.y = -obj.movement.jumpForce * 0.7;
+            // } else {
+            //     obj.movement.velocity.y = -4;
+            // }
+            // if(obj.movement.position.y + obj.radiousCollider )
         }
     }
 

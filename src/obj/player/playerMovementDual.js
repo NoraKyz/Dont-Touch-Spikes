@@ -1,5 +1,6 @@
 import {PlayerMovement} from "./playerMovement";
 import {Game} from "../../game";
+import {Assets} from "pixi.js";
 
 export class PlayerMovementDual extends PlayerMovement {
   constructor(obj) {
@@ -11,6 +12,15 @@ export class PlayerMovementDual extends PlayerMovement {
     this.obj.victory = false;
     this.topLimit = -Game.app.view.height * 3 / 7;
     this.bottomLimit = Game.app.view.height * 3 / 7;
+  }
+
+  onStart() {
+    if(this.obj.hardModeEnabled) {
+      this.velocity.x = this.jumpForce / 1.2;
+    } else {
+      this.velocity.x = this.jumpForce / 1.7;
+    }
+    this.velocity.y = -this.jumpForce;
   }
 
   update(dt) {

@@ -127,4 +127,12 @@ export class Background extends Container {
     hideScore() {
         this.removeChild(this.scoreText);
     }
+
+    hideScoreBackground() {
+        this.scoreBg.visible = false;
+    }
+
+    showScoreGround() {
+        this.scoreBg.visible = true;
+    }
 }

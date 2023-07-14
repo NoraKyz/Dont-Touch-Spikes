@@ -1,6 +1,5 @@
-import { Assets, Graphics, Sprite } from "pixi.js";
+import { Assets, Sprite } from "pixi.js";
 import { MainUI } from "./mainUI";
-import { Game } from "../../../game";
 
 export class ClassicUI extends MainUI {
   constructor() {
@@ -11,6 +10,7 @@ export class ClassicUI extends MainUI {
     super._initComponent();
     this._initHardModeSwitch();
     this._initDualModeSwitch();
+    this._initShopSkinButton();
   }
 
   _initTitleUI() {
@@ -27,7 +27,8 @@ export class ClassicUI extends MainUI {
 
     this.hardModeSwitch.cursor = "pointer";
     this.hardModeSwitch.eventMode = 'static';
-    this.hardModeSwitch.on("pointerdown", () => this._toHardModeScene());
+    this.hardModeSwitch.on("pointertap", () => this._toHardModeScene());
+
     this.addChild(this.hardModeSwitch);
   }
 
@@ -43,6 +44,18 @@ export class ClassicUI extends MainUI {
     this.addChild(this.dualModeSwitch);
   }
 
+  _initShopSkinButton(){
+    this.skinShopButton = Sprite.from(Assets.get("skinShopButton"));
+    this.skinShopButton.anchor.set(0.5);
+    this.skinShopButton.scale.set(0.15);
+    this.skinShopButton.position.set(290, -230);
+
+    this.skinShopButton.cursor = "pointer";
+    this.skinShopButton.eventMode = 'static';
+    this.skinShopButton.on("pointertap", () => this._startSkinsShopUI());
+    this.addChild(this.skinShopButton);
+  }
+
   _toHardModeScene() {
     this.emit("toHardModeScene");
   }
@@ -50,4 +63,9 @@ export class ClassicUI extends MainUI {
   _toDualModeScene() {
     this.emit("toDualModeScene");
   }
+  
+  _startSkinsShopUI() {
+    this.emit("startSkinsShopUI");
+  }
+
 }

@@ -6,6 +6,7 @@ export const GameState = Object.freeze({
     Ready: "ready",
     Playing: "playing",
     End: "end",
+    PlayDisabled: "playDisabled"
 });
 
 export class GameScene extends Container {

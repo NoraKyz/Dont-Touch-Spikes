@@ -97,10 +97,10 @@ export class HardModeScene extends GameScene {
     }
 
     _onPointerDown() {
-        if (this.gameState != GameState.End) {
+        if (this.gameState == GameState.Ready || this.gameState == GameState.Playing) {
             if (this.gameState == GameState.Ready) {
                 this.sceneUI.hideMainUI();
-                this.gameInfor.hideGameInfor();
+                this.gameInfor.hide();
                 this.background.displayScore();
             }
             this.player.onPointerDown();
@@ -132,7 +132,7 @@ export class HardModeScene extends GameScene {
         this.candies.onLose();
         setTimeout(() => {
             this.gameOverUI.showGameOverUI();
-            this.gameInfor.displayGameInfor();
+            this.gameInfor.display();
             this.background.hideScore();
         }, 1000);
     }

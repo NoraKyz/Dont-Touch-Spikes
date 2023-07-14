@@ -29,6 +29,14 @@ export class AssetsManager {
                 "birdDead": "./assets/images/birdDead.png",
             }
         )
+
+      this._addBundle(
+        "skin", {
+          "birdBlue1": "./assets/images/birdBlue1.png",
+          "birdBlue2": "./assets/images/birdBlue1.png",
+          "birdBlue3": "./assets/images/birdBlue1.png",
+        }
+      )
         
         this._addBundle(
             "UI", {
@@ -41,6 +49,7 @@ export class AssetsManager {
                 "line": "./assets/images/line.png",
                 "star1": "./assets/images/star1.png",
                 "star2": "./assets/images/star2.png",
+                "skinShopButton": "./assets/images/skinShopButton.png",
             }
         )
 

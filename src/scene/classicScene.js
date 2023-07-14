@@ -125,6 +125,7 @@ export class ClassicScene extends GameScene {
     }
 
     _onCloseSkinsShop() {
+        this.background.showScoreGround();
         this.skinsShop.onClose();
         this.onResetScene();
     }

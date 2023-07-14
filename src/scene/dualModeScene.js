@@ -255,6 +255,7 @@ export class DualModeScene extends GameScene {
       //lực player1 > player2
       if(this.player1.movement.velocity.y < this.player2.movement.velocity.y) {
         this.player1.onCollision(this.player2);
+
         //console.log("player2 " + this.player2.movement.velocity.x);
 
       } else if(-obj1.movement.velocity.y < obj2.movement.velocity.y) {

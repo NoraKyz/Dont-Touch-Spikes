@@ -96,7 +96,7 @@ export class DualModeOverUI extends OverUI {
       this.addChild(this.rightStar3);
     }
 
-    _onResetStar(gameState){
+    onResetStar(gameState){
       this.stateStarLeft = gameState.player2;
       this.stateStarRight = gameState.player1;
       this.leftStar1.winStar.visible = this.stateStarLeft[0];
@@ -112,7 +112,7 @@ export class DualModeOverUI extends OverUI {
         player1: [false, false, false],
         player2: [false, false, false],
       }
-      this._onResetStar(gameState);
+      this.onResetStar(gameState);
     }
 
     _initReplayButton(){
@@ -136,6 +136,10 @@ export class DualModeOverUI extends OverUI {
       this.gameName.text = "PLAYER1 WIN!";
       this.gameName.style = this.titleStyle;
       this.gameName.position.set(0, -300);
+    }
+    winTitle(winPlayer){
+      if(winPlayer == "player1") this.gameName.text = "PLAYER1 WIN!";
+      else this.gameName.text = "PLAYER2 WIN!";
     }
 
     _clickedReplayButton() {

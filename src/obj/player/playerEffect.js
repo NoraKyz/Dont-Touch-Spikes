@@ -55,6 +55,10 @@ export class PlayerEffect {
         this.despawnEffect.start();
         this.emitter.emit = false;
     }
+    onWin(){
+        this.despawnEffect.start();
+        this.emitter.emit = false;
+    }
 
     onReset() {
         this.enableDeadEffect = false;

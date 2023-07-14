@@ -11,6 +11,7 @@ export class DualModeUI extends MainUI {
     this._initProperties();
     this._initBackButton();
     this._initGameTutol();
+    this._initResult();
     this._initStarTop();
     this._initStarBottom();
     this._initLine();
@@ -19,6 +20,10 @@ export class DualModeUI extends MainUI {
   }
   
   _initProperties() {
+    this.readyUI = new Container();
+    this.resultUI = new Container();
+    this.addChild(this.readyUI);
+    this.addChild(this.resultUI);
     this.styleBig = new TextStyle({
         fill: "#FF3464",
         fontFamily: "Blissful Thinking",
@@ -39,6 +44,22 @@ export class DualModeUI extends MainUI {
     }
   } 
 
+  _initResult(){
+    this.resultTop = new Text("PLAYER1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
+    this.resultTop.anchor.set(0.5);
+    this.resultTop.position.set(0, - 300);
+    this.resultTop.scale.set(-1);
+
+    this.resultBottom = new Text("PLAYER1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
+    this.resultBottom.anchor.set(0.5);
+    this.resultBottom.position.set(0, 300);
+
+    this.resultUI.addChild(this.resultTop);
+    this.resultUI.addChild(this.resultBottom);
+    this.resultUI.visible = false;
+    this.resultUI.alpha = 0;
+  }
+
   _initGameTutol() {
     this.playerTop = new Text("PLAYER 2", {...this.styleBig, fill: "#309cfe"});
     this.playerTop.anchor.set(0.5);
@@ -56,12 +77,12 @@ export class DualModeUI extends MainUI {
     this.tutorBottom.anchor.set(0.5);
     this.tutorBottom.position.set(0, 330);
 
-    this.gameTutor = new Container();
-    this.gameTutor.addChild(this.playerTop);
-    this.gameTutor.addChild(this.playerBottom);
-    this.gameTutor.addChild(this.tutorTop);
-    this.gameTutor.addChild(this.tutorBottom);
-    this.addChild(this.gameTutor);
+    this.gameTutorial = new Container();
+    this.gameTutorial.addChild(this.playerTop);
+    this.gameTutorial.addChild(this.playerBottom);
+    this.gameTutorial.addChild(this.tutorTop);
+    this.gameTutorial.addChild(this.tutorBottom);
+    this.readyUI.addChild(this.gameTutorial);
   }
 
   _initLine(){
@@ -70,7 +91,7 @@ export class DualModeUI extends MainUI {
     this.line.anchor.set(0.5);
     this.line.scale.set(0.3);
     this.line.position.set(0, 0);
-    this.addChild(this.line);
+    this.readyUI.addChild(this.line);
   }
   _initBackButton() {
     this.backButton = Sprite.from(Assets.get("undoButton"));
@@ -82,7 +103,7 @@ export class DualModeUI extends MainUI {
     this.backButton.eventMode = 'static';
     this.backButton.on("pointerdown", () => this._toClassicModeScene());
 
-    this.addChild(this.backButton);
+    this.readyUI.addChild(this.backButton);
   }
 
   _initStar(position){
@@ -108,17 +129,17 @@ export class DualModeUI extends MainUI {
     this.topStar1.scale.set(-1); 
     this.topStar2.scale.set(-1);
     this.topStar3.scale.set(-1);
-    this.addChild(this.topStar1);
-    this.addChild(this.topStar2);
-    this.addChild(this.topStar3);
+    this.readyUI.addChild(this.topStar1);
+    this.readyUI.addChild(this.topStar2);
+    this.readyUI.addChild(this.topStar3);
   }
   _initStarBottom(){
     this.bottomStar1 = this._initStar({x: -60, y: 140});
     this.bottomStar2 = this._initStar({x: 0, y: 138});
     this.bottomStar3 = this._initStar({x: 60, y: 140});
-    this.addChild(this.bottomStar1);
-    this.addChild(this.bottomStar2);
-    this.addChild(this.bottomStar3);
+    this.readyUI.addChild(this.bottomStar1);
+    this.readyUI.addChild(this.bottomStar2);
+    this.readyUI.addChild(this.bottomStar3);
   }
 
   _onPlayer1Win(){
@@ -140,9 +161,11 @@ export class DualModeUI extends MainUI {
 
   _initEffect(){
     this.elapsed = 0;
-    this.tween1 = new TWEEN.Tween(this.gameTutor)
-      .to({alpha: 0}, 1000)
-    this.tween2 = new TWEEN.Tween(this.gameTutor)
+    this.tween1 = new TWEEN.Tween(this.gameTutorial)
+      .to({alpha: 0}, 1000);
+    this.tween2 = new TWEEN.Tween(this.gameTutorial)
+      .to({alpha: 1}, 1000);
+    this.tweenResult = new TWEEN.Tween(this.resultUI)
       .to({alpha: 1}, 1000);
   }
 
@@ -161,6 +184,28 @@ export class DualModeUI extends MainUI {
     this.tween1.start().onComplete(() => {
       this.tween2.start();
     });
+  }
+  _resetResultUI(winPlayer){
+    if(winPlayer == "player1") {
+      this.resultTop.text = "PLAYER1 WIN!";
+      this.resultBottom.text = "PLAYER1 WIN!";
+    }
+    else {
+      this.resultTop.text = "PLAYER2 WIN!";
+      this.resultBottom.text = "PLAYER2 WIN!";
+    }
+  }
+
+  _showResultUI(winPlayer){
+    this._resetResultUI(winPlayer);
+    this.resultUI.visible = true;
+    this.tweenResult.start();
+    this.readyUI.visible = false;
+  }
+  _showReadyUI(){
+    this.resultUI.visible = false;
+    this.readyUI.visible = true;
+    this.resultUI.alpha = 0;
   }
   
   update(dt){

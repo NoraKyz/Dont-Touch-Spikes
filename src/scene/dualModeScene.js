@@ -52,6 +52,7 @@ export class DualModeScene extends GameScene {
 
     this.player1Point = 0;
     this.player2Point = 0;
+    this.winPlayer = "";
   }
 
   _initSpikes() {
@@ -179,9 +180,24 @@ export class DualModeScene extends GameScene {
     this.gameState = GameState.End;
     Assets.get("loseSound").play();
     setTimeout(() => {
-        this.sceneOverUI._onResetStar(this.sceneUI.gameState);
+        this.sceneOverUI.onResetStar(this.sceneUI.gameState);
+        this.sceneOverUI.winTitle(this.winPlayer);
         this.sceneOverUI.showGameOverUI();
         this.background2.hideScore();
+    }, 1000);
+  }
+  _onEndRound(){
+    if (this.gameState == GameState.End) {
+      return;
+    }
+    this.gameState = GameState.End;
+    Assets.get("loseSound").play();
+    setTimeout(() => {
+        this._onResetScene(); 
+        this.sceneUI._showResultUI(this.winPlayer);
+        setTimeout(() => {
+          this.sceneUI._showReadyUI();
+        }, 2000);
     }, 1000);
   }
 
@@ -221,19 +237,20 @@ export class DualModeScene extends GameScene {
       this.player1.onCollision(obj2);
       this.player2.victory = true;
       this.player2Point++;
-      if(this.player1Point === 3 || this.player2Point === 3){
+      this.winPlayer = "player2";
+      if(this.player2Point === 3){
         this._onLose();
-      } else this._onResetScene();
+      } else this._onEndRound();
     }
     if (obj1 === this.player2 && obj2 instanceof Spike) {
       this.player2.onCollision(obj2);
       this.player1.victory = true;
-        console.log(123);
         this.sceneUI._onPlayer1Win();
         this.player1Point++;
-        if(this.player1Point === 3 || this.player2Point === 3){
+        this.winPlayer = "player1";
+        if(this.player1Point === 3){
           this._onLose();
-        } else this._onResetScene();
+        } else this._onEndRound();
     }
     if (obj1 === this.player1 && obj2 === this.player2) {
 

@@ -29,6 +29,14 @@ export class AssetsManager {
                 "birdDead": "./assets/images/birdDead.png",
             }
         )
+
+        this._addBundle(
+            "dualBird", {
+                "dualBird1": "./assets/images/dualBird1.png",
+                "dualBird2": "./assets/images/dualBird2.png",
+                "dualBird3": "./assets/images/dualBird3.png",
+            }
+        )
         
         this._addBundle(
             "UI", {

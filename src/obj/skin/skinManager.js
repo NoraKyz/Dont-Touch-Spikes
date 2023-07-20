@@ -1,5 +1,4 @@
 import { SkinStorage } from "./skinStorage.js";
-import { Skin } from "./skin.js";
 import { Data } from "../../data.js"
 import { EventEmitter } from "events";
 
@@ -23,7 +22,7 @@ export class SkinManager extends EventEmitter {
 
     _initSkins() {
         SkinStorage.storage.forEach(objInStorage => {
-            this.skinsList.push(new Skin(objInStorage));
+            this.skinsList.push(objInStorage);
         });
     }
 

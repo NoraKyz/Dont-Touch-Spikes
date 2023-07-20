@@ -2,14 +2,15 @@ import { Assets, Container, Graphics, Sprite, Text } from "pixi.js";
 import { SkinManager } from "../../../skin/skinManager";
 
 export class SkinCard extends Container {
-    constructor(skin) {
+    constructor(skin, index) {
         super();
-        this._initProperties(skin);
+        this._initProperties(skin, index);
         this._initSprite();
         this._initEvents();
     }
 
-    _initProperties(skin) {
+    _initProperties(skin, index) {
+        this.index = index
         this.data = skin;
         this.skinManager = SkinManager.instance;
     }
@@ -84,6 +85,7 @@ export class SkinCard extends Container {
     }
 
     onUnlocked() {
+        //console.log('log');
         this.unlocked.visible = true;
         this.locked.visible = false;
     }

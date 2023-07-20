@@ -164,6 +164,7 @@ export class ClassicScene extends GameScene {
         }
 
         this.gameState = GameState.End;
+        Data.pushData();
         Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();
         this.candies.onLose();

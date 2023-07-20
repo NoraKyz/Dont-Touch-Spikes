@@ -18,7 +18,6 @@ export class Game {
 
 
         AssetsManager._loadAssets().then(() => {
-            SkinStorage.init();
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
         });
@@ -61,6 +60,7 @@ export class Game {
 }
 
 window.onload = function () {
+    SkinStorage.init();
     Data.init();
     Game.init();
     window.onresize = () => {

@@ -34,6 +34,7 @@ export class Player extends Container {
         this.hardModeEnabled = false;
         this.dualModeEnabled = false;
         this.rootPos = {x: 0, y: 0};
+        this.victory = false;
     }
 
     _initSprite() {

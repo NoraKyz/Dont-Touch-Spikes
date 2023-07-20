@@ -8,6 +8,7 @@ export class DualModeUI extends MainUI {
   }
 
   _initComponent() {
+    this._initUI();
     this._initProperties();
     this._initBackButton();
     this._initGameTutol();
@@ -18,25 +19,26 @@ export class DualModeUI extends MainUI {
     this._initEffect();
     this._UIEffect();
   }
-  
-  _initProperties() {
+
+  _initUI(){
     this.readyUI = new Container();
     this.resultUI = new Container();
     this.addChild(this.readyUI);
     this.addChild(this.resultUI);
+  }
+  
+  _initProperties() {
     this.styleBig = new TextStyle({
         fill: "#FF3464",
         fontFamily: "Blissful Thinking",
+        letterSpacing: 1,
         fontSize: 52,
         fontWeight: "lighter",
-        letterSpacing: 1,
     });
     this.styleSmall = new TextStyle({
-        fill: "#FF3464",
-        fontFamily: "Blissful Thinking",
+        ...this.styleBig,
         fontSize: 44,
         fontWeight: 550,
-        letterSpacing: 1,
     });
     this.gameState = {
       player1: [false, false, false],
@@ -60,39 +62,42 @@ export class DualModeUI extends MainUI {
     this.resultUI.alpha = 0;
   }
 
+  _createGameTutoriral(id, positionPlayer, positionTutorial, direction, color){
+    if(typeof color === 'undefined') color = "#FF3464";
+    const gameTutorial = new Container();
+    gameTutorial.player = new Text(`PLAYER ${id}`, {...this.styleBig, fill: color});
+    gameTutorial.player.anchor.set(0.5);
+    gameTutorial.player.position.set(positionPlayer.x, positionPlayer.y);
+    gameTutorial.player.scale.set(direction);
+    gameTutorial.tutor = new Text("touch here to jump", {...this.styleSmall, fill: color});
+    gameTutorial.tutor.anchor.set(0.5);
+    gameTutorial.tutor.position.set(positionTutorial.x, positionTutorial.y);
+    gameTutorial.tutor.scale.set(direction);
+    gameTutorial.addChild(gameTutorial.player, gameTutorial.tutor);
+    return gameTutorial;
+  }
+
   _initGameTutol() {
-    this.playerTop = new Text("PLAYER 2", {...this.styleBig, fill: "#309cfe"});
-    this.playerTop.anchor.set(0.5);
-    this.playerTop.position.set(0, - 280);
-    this.playerTop.scale.set(-1);
-    this.tutorTop = new Text("touch here to jump", {...this.styleSmall, fill: "#309cfe"});
-    this.tutorTop.anchor.set(0.5);
-    this.tutorTop.position.set(0, - 330);
-    this.tutorTop.scale.set(-1);
-
-    this.playerBottom = new Text("PLAYER 1", this.styleBig);
-    this.playerBottom.anchor.set(0.5);
-    this.playerBottom.position.set(0, 280);
-    this.tutorBottom = new Text("touch here to jump", this.styleSmall);
-    this.tutorBottom.anchor.set(0.5);
-    this.tutorBottom.position.set(0, 330);
-
     this.gameTutorial = new Container();
-    this.gameTutorial.addChild(this.playerTop);
-    this.gameTutorial.addChild(this.playerBottom);
-    this.gameTutorial.addChild(this.tutorTop);
-    this.gameTutorial.addChild(this.tutorBottom);
+    this.gameTutorialTop = this._createGameTutoriral(2, {x: 0, y: -280}, {x: 0, y: -330}, -1, "#309cfe");
+    this.gameTutorialBottom = this._createGameTutoriral(1, {x: 0, y: 280}, {x: 0, y: 330}, 1);
+    this.gameTutorial.addChild(this.gameTutorialTop);
+    this.gameTutorial.addChild(this.gameTutorialBottom);
     this.readyUI.addChild(this.gameTutorial);
   }
 
   _initLine(){
-    // Làm cái line chuẩn tí nữa là được
-    this.line = Sprite.from(Assets.get("line"));
-    this.line.anchor.set(0.5);
-    this.line.scale.set(0.3);
-    this.line.position.set(0, 0);
-    this.readyUI.addChild(this.line);
+    const spacing = 76;
+    const number = 4;
+    for(let i = -number; i <= number; i++){
+      this.line = Sprite.from(Assets.get("line"));
+      this.line.anchor.set(0.5);
+      this.line.scale.set(2.3);
+      this.line.position.set(i * spacing, 0);
+      this.readyUI.addChild(this.line);
+    }
   }
+
   _initBackButton() {
     this.backButton = Sprite.from(Assets.get("undoButton"));
     this.backButton.anchor.set(0.5);
@@ -106,40 +111,35 @@ export class DualModeUI extends MainUI {
     this.readyUI.addChild(this.backButton);
   }
 
-  _initStar(position){
-    const star = new Container();
-    star.loseStar = Sprite.from(Assets.get("star1"));
-    star.loseStar.position.set(position.x, position.y);
-    star.loseStar.anchor.set(0.5);
-    star.loseStar.scale.set(1.2);
-    star.winStar = Sprite.from(Assets.get("star2"));
-    star.winStar.position.set(position.x, position.y);
-    star.winStar.anchor.set(0.5);
-    star.winStar.scale.set(1.2);
-    star.addChild(star.loseStar);
-    star.addChild(star.winStar);
-    star.winStar.visible = false;
+  _createStar(type, position){
+    const star = Sprite.from(Assets.get(type));
+    star.position.set(position.x, position.y);
+    star.anchor.set(0.5);
+    star.scale.set(1.2);
     return star;
   }
-
+ 
+  _generateStars(position, direction){
+    const stars = new Container();
+    stars.loseStar = this._createStar("star1", position);
+    stars.winStar = this._createStar("star2", position);
+    stars.addChild(stars.loseStar);
+    stars.addChild(stars.winStar);
+    stars.winStar.visible = false;
+    stars.scale.set(direction);
+    this.readyUI.addChild(stars);
+    return stars;
+  }
+ 
   _initStarTop(){
-    this.topStar1 = this._initStar({x: -60, y: 140});
-    this.topStar2 = this._initStar({x: 0, y: 138});
-    this.topStar3 = this._initStar({x: 60, y: 140});
-    this.topStar1.scale.set(-1); 
-    this.topStar2.scale.set(-1);
-    this.topStar3.scale.set(-1);
-    this.readyUI.addChild(this.topStar1);
-    this.readyUI.addChild(this.topStar2);
-    this.readyUI.addChild(this.topStar3);
+    this.topStar1 = this._generateStars({x: -60, y: 140}, -1);
+    this.topStar2 = this._generateStars({x: 0, y: 138}, -1);
+    this.topStar3 = this._generateStars({x: 60, y: 140}, -1);
   }
   _initStarBottom(){
-    this.bottomStar1 = this._initStar({x: -60, y: 140});
-    this.bottomStar2 = this._initStar({x: 0, y: 138});
-    this.bottomStar3 = this._initStar({x: 60, y: 140});
-    this.readyUI.addChild(this.bottomStar1);
-    this.readyUI.addChild(this.bottomStar2);
-    this.readyUI.addChild(this.bottomStar3);
+    this.bottomStar1 = this._generateStars({x: -60, y: 140}, 1);
+    this.bottomStar2 = this._generateStars({x: 0, y: 138}, 1);
+    this.bottomStar3 = this._generateStars({x: 60, y: 140}, 1);
   }
 
   _onPlayer1Win(){
@@ -152,6 +152,12 @@ export class DualModeUI extends MainUI {
     if(this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
     else if (this.topStar2.winStar.visible === false) this.topStar2.winStar.visible = true;
     else if (this.topStar3.winStar.visible === false) this.topStar3.winStar.visible = true;
+    this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
+  }
+  _onDraw(){
+    if(this.topStar3.winStar.visible === true) this.topStar3.winStar.visible = false;
+    else if (this.topStar2.winStar.visible === true) this.topStar2.winStar.visible = false;
+    else if (this.topStar1.winStar.visible === true) this.topStar1.winStar.visible = false;
     this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
   }
 
@@ -190,9 +196,12 @@ export class DualModeUI extends MainUI {
       this.resultTop.text = "PLAYER1 WIN!";
       this.resultBottom.text = "PLAYER1 WIN!";
     }
-    else {
+    else if(winPlayer == "player2") {
       this.resultTop.text = "PLAYER2 WIN!";
       this.resultBottom.text = "PLAYER2 WIN!";
+    } else {
+      this.resultTop.text = "Draw!";
+      this.resultBottom.text = "Draw!";
     }
   }
 

@@ -20,7 +20,6 @@ export class DualModeScene extends GameScene {
   }
 
   _initGameplay() {
-    this.flag = false;
     this._initBackground();
     this._initPlayer();
     this._initSceneUI();
@@ -88,20 +87,18 @@ export class DualModeScene extends GameScene {
     this.addChild(this.sceneOverUI);
     this.sceneOverUI.hideGameOverUI();
   }
-
-  _onResetScene(){
-    this.sceneUI.backButton.visible = false;
+  onResetScene(){
+    console.log('asdfasdf');
     if(this.player1Point === 3 || this.player2Point === 3){
       this.player1Point = 0;
       this.player2Point = 0;
       this.sceneUI.onAllReSet();
       this.sceneOverUI.onAllReset();
-      this.sceneUI.backButton.visible = true;
     }
     this.gameState = GameState.Ready;
+    console.log('reset scene dual');
     Data.resetScore();
-    this.background1.onReset();
-    this.background2.onReset();
+
     this.background2.playGroundTop.visible = false;
     this.background2.scoreBgTop.visible = false;
     this.spikes.onReset(); // màu
@@ -111,29 +108,37 @@ export class DualModeScene extends GameScene {
     this.sceneUI.onReset();
 
     this.player1.onReset();
-    this.player2.onReset(); // vị trí
+    this.player2.onReset();
 
     this.player1.dualModeEnabled = true;
     this.player1.rootPos = {x: 0, y: 50};
     this.player1.position = this.player1.rootPos;
     this.player1.victory = false;
     this.direction1 = this.player1.movement.direction.x;
-    //player2
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = {x: 0, y: -50};
     this.player2.position = this.player2.rootPos;
     this.player2.victory = false;
-    this.direction2 = this.player2.movement.direction.x;
+    
     this.player2.scale.set(-1);
-
+    this.player2.movement.direction = {x: -1,y: -1};
+    this.direction2 = -1;
+    this.winPlayer = "";
   }
 
 
   _initSceneEvent() {
     this.on("nextLevel", this._onNextLevel.bind(this));
-    this.sceneOverUI.on("replay", this._onResetScene.bind(this));
+    this.sceneOverUI.on("replay", () => {
+      this.onResetScene();
+      // this.player1.visible = true;
+      // this.player2.visible = true;
+    }
+    );
     this.on("lose", this._onLose.bind(this));
     this.sceneUI.on("toClassicModeScene", () => {
+      this.sceneUI.onAllReSet();
+      this.sceneOverUI.onAllReset();
       this.parent.onStartScene("ClassicModeScene")
     });
     this.background1.on("pointerdown", () => {
@@ -183,6 +188,8 @@ export class DualModeScene extends GameScene {
         this.sceneOverUI.winTitle(this.winPlayer);
         this.sceneOverUI.showGameOverUI();
         this.background2.hideScore();
+        // this.player1.visible = false;
+        // this.player2.visible = false;
     }, 1000);
   }
   _onEndRound(){
@@ -191,11 +198,25 @@ export class DualModeScene extends GameScene {
     }
     this.gameState = GameState.End;
     Assets.get("loseSound").play();
+    console.log('emd');
     setTimeout(() => {
-        this._onResetScene(); 
+        if(this.player1Point === 3 || this.player2Point === 3){
+          this.gameState = GameState.Ready;
+          this._onLose();
+          return;
+        }
         this.sceneUI._showResultUI(this.winPlayer);
+        this.onResetScene(); 
+        this.player1.visible = false;
+        this.player2.visible = false;
+        this.gameState = GameState.End;
         setTimeout(() => {
           this.sceneUI._showReadyUI();
+          this.player1.visible = true;
+          this.player2.visible = true;
+          this.background1.onReset();
+          this.background2.onReset();
+          this.gameState = GameState.Ready;
         }, 2000);
     }, 1000);
   }
@@ -231,26 +252,24 @@ export class DualModeScene extends GameScene {
   }
 
   _onCollision(obj1, obj2) {
+    if(!this.parent) return;
     if (obj1 === this.player1 && obj2 instanceof Spike) {
-      this.sceneUI._onPlayer2Win();
       this.player1.onCollision(obj2);
       this.player2.victory = true;
-      this.player2Point++;
       this.winPlayer = "player2";
-      if(this.player2Point === 3){
-        this._onLose();
-      } else this._onEndRound();
     }
     if (obj1 === this.player2 && obj2 instanceof Spike) {
       this.player2.onCollision(obj2);
       this.player1.victory = true;
-        this.sceneUI._onPlayer1Win();
-        this.player1Point++;
-        this.winPlayer = "player1";
-        if(this.player1Point === 3){
-          this._onLose();
-        } else this._onEndRound();
+      if(this.winPlayer == "player2") this.winPlayer = "draw";
+      else this.winPlayer = "player1";
     }
+
+    if(this.winPlayer == "player2") this.sceneUI._onPlayer2Win(), this.player2Point++;
+    else if(this.winPlayer == "player1") this.sceneUI._onPlayer1Win(), this.player1Point++;
+    else this.sceneUI._onDraw(), this.player2Point--;
+    this._onEndRound();
+
     if (obj1 === this.player1 && obj2 === this.player2) {
       //lực player1 > player2
       if(this.player1.movement.velocity.y < this.player2.movement.velocity.y) {

@@ -71,6 +71,7 @@ export class HardModeScene extends GameScene {
 
     _onCollision(obj1, obj2) {
         super._onCollision();
+        if(!this.parent) return;
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
             this.player.onCollision(obj2);
@@ -110,6 +111,7 @@ export class HardModeScene extends GameScene {
     }
 
     onResetScene() {
+        console.log('reset scene hardmode');
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();
@@ -153,6 +155,7 @@ export class HardModeScene extends GameScene {
     }
 
     update(dt) {
+        
         this.player.update(dt);
         if (this.gameState == GameState.Playing) {
             this.colliderDetector.checkCollider(this.player, this.spikes.poolSpikes);

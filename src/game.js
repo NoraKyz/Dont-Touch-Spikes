@@ -74,5 +74,8 @@ window.onload = function () {
     window.onresize = () => {
         Game.resize();
     }
+    window.onunload = () => {
+        Data.pushData();
+    }
 }
 

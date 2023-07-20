@@ -81,6 +81,7 @@ export class ClassicScene extends GameScene {
     }
 
     _onCollision(obj1, obj2) {
+        if(!this.parent) return;
         if (obj1 === this.player && obj2 instanceof Spike) {
             this._onLose();
             this.player.onCollision(obj2);
@@ -98,21 +99,21 @@ export class ClassicScene extends GameScene {
         this.on("nextLevel", this._onNextLevel.bind(this));
         this.on("lose", this._onLose.bind(this));
         this.gameOverUI.on("replay", this.onResetScene.bind(this));
-        this.sceneUI.on("toHardModeScene", () => {
-            this.parent.onStartScene("HardModeScene");
-        });
         this.sceneUI.on("startSkinsShopUI", () => {
             this._onStartSkinsShop();
         });
         this.skinsShop.on("close", () => {
-            this._onCloseSkinsShop()
+            this._onCloseSkinsShop();
+        });
+        this.background.on("pointerdown", () => {
+            this._onPointerDown();
+        });
+        this.sceneUI.on("toHardModeScene", () => {
+            this.parent.onStartScene("HardModeScene");
         });
         this.sceneUI.on("toDualModeScene", () => {
             this.parent.onStartScene("dualModeScene");
         })
-        this.background.on("pointerdown", () => {
-            this._onPointerDown();
-        });
     }
 
     _onStartSkinsShop() {
@@ -144,6 +145,7 @@ export class ClassicScene extends GameScene {
     }
 
     onResetScene() {
+        //console.log('reset scene');
        // console.log(Data.currentScore);
         Data.resetScore();
         this.gameInfor.onReset();
@@ -167,7 +169,6 @@ export class ClassicScene extends GameScene {
         this.gameInfor.updateGameInfor();
         this.candies.onLose();
         setTimeout(() => {
-            console.log(Data.currentScore);
             this.gameOverUI.showGameOverUI();
             this.gameInfor.onReset();
             this.background.hideScore();
@@ -178,7 +179,6 @@ export class ClassicScene extends GameScene {
         if (this.gameState == GameState.End) {
             return;
         }
-
         this.candies.onNextLevel(this.player.movement.direction.x);
         this.player.onNextLevel();
         this.background.updateBackground(++Data.currentScore);

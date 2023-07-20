@@ -1,5 +1,5 @@
-import {Assets, Container, Graphics, Sprite, Text, TextStyle} from "pixi.js";
-import {MainUI} from "./mainUI.js";
+import { Assets, Container, Sprite, Text, TextStyle } from "pixi.js";
+import { MainUI } from "./mainUI.js";
 import * as TWEEN from '@tweenjs/tween.js'
 
 export class DualModeUI extends MainUI {
@@ -26,7 +26,7 @@ export class DualModeUI extends MainUI {
     this.addChild(this.readyUI);
     this.addChild(this.resultUI);
   }
-  
+
   _initProperties() {
     this.styleBig = new TextStyle({
         fill: "#FF3464",
@@ -44,7 +44,7 @@ export class DualModeUI extends MainUI {
       player1: [false, false, false],
       player2: [false, false, false],
     }
-  } 
+  }
 
   _initResult(){
     this.resultTop = new Text("PLAYER1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
@@ -99,7 +99,7 @@ export class DualModeUI extends MainUI {
   }
 
   _initBackButton() {
-    this.backButton = Sprite.from(Assets.get("undoButton"));
+    this.backButton = Sprite.from(Assets.get("undo"));
     this.backButton.anchor.set(0.5);
     this.backButton.scale.set(0.15);
     this.backButton.position.set(-290, -420);
@@ -142,14 +142,14 @@ export class DualModeUI extends MainUI {
     this.bottomStar3 = this._generateStars({x: 60, y: 140}, 1);
   }
 
-  _onPlayer1Win(){
-    if(this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
+  _onPlayer1Win() {
+    if (this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
     else if (this.bottomStar2.winStar.visible === false) this.bottomStar2.winStar.visible = true;
     else if (this.bottomStar3.winStar.visible === false) this.bottomStar3.winStar.visible = true;
     this.gameState.player1 = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
   }
-  _onPlayer2Win(){
-    if(this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
+  _onPlayer2Win() {
+    if (this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
     else if (this.topStar2.winStar.visible === false) this.topStar2.winStar.visible = true;
     else if (this.topStar3.winStar.visible === false) this.topStar3.winStar.visible = true;
     this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
@@ -165,7 +165,7 @@ export class DualModeUI extends MainUI {
     this.emit("toClassicModeScene")
   }
 
-  _initEffect(){
+  _initEffect() {
     this.elapsed = 0;
     this.tween1 = new TWEEN.Tween(this.gameTutorial)
       .to({alpha: 0}, 1000);
@@ -186,7 +186,7 @@ export class DualModeUI extends MainUI {
     this.bottomStar3.winStar.visible = false;
   }
 
-  _UIEffect(){ 
+  _UIEffect() {
     this.tween1.start().onComplete(() => {
       this.tween2.start();
     });
@@ -219,7 +219,7 @@ export class DualModeUI extends MainUI {
   
   update(dt){
     this.elapsed += dt;
-    if(this.elapsed >= 150){
+    if (this.elapsed >= 150) {
       this._UIEffect();
       this.elapsed = 0;
     }

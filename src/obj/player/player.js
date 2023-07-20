@@ -1,11 +1,10 @@
 import { Container } from "pixi.js";
 import { Collider } from "../physics/collider";
-import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";
 import { PlayerMovement } from "./playerMovement";
-import {PlayerMovementDual} from "./playerMovementDual";
+import { PlayerMovementDual } from "./playerMovementDual";
 
 /*
     Class tổng của player
@@ -15,9 +14,9 @@ export class Player extends Container {
     constructor(parent) {
         super();
         this.parent = parent;
-        this._initEffect();
-        this._initMovement();
         this._initSprite();
+        this._initEffect();
+        this._initMovement();     
         this._initProperties();
         this._initCollider();
     }
@@ -33,6 +32,7 @@ export class Player extends Container {
         this.isDie = false;
         this.hardModeEnabled = false;
         this.dualModeEnabled = false;
+        this.rootPos = { x: 0, y: 0 };
         this.rootPos = {x: 0, y: 0};
         this.victory = false;
     }
@@ -81,6 +81,9 @@ export class Player extends Container {
         }
     }
 
+    updateSkin() {
+        this.sprite.updateSkin();
+    }
 
     _onLose() {
         this.isDie = true;

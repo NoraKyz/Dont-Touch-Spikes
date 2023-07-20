@@ -11,7 +11,8 @@ export class PlayerSprite extends Container {
     }
 
     _initSkin() {
-        this.skin = SkinManager.currentSkin;
+        this.skinManager = SkinManager.instance;
+        this.skin = this.skinManager.currentSkin;
     }
 
     _initSprite() {
@@ -60,15 +61,14 @@ export class PlayerSprite extends Container {
     }
 
     onReset() {
-        this._updateSkin();
         this.live.visible = true;
         this.birdDead.visible = false;
 
         this.scale.x = 1;
     }
 
-    _updateSkin() {
-        this.skin = SkinManager.currentSkin;
+    updateSkin() {
+        this.skin = this.skinManager.currentSkin;
         this.live.sprite1.texture = this.skin.texture1;
         this.live.sprite2.texture = this.skin.texture2;
         this.live.sprite3.texture = this.skin.texture3;

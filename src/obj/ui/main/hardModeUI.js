@@ -18,7 +18,7 @@ export class HardModeUI extends MainUI {
   }
 
   _initBackButton() {
-    this.backButton = Sprite.from(Assets.get("undoButton"));
+    this.backButton = Sprite.from(Assets.get("undo"));
     this.backButton.anchor.set(0.5);
     this.backButton.scale.set(0.15 );
     this.backButton.position.set(-290 , -420 );

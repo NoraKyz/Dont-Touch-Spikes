@@ -34,18 +34,17 @@ export class SkinsShop extends Container {
         this.retangleBottom.endFill();
     }
 
-    _initSkinManager() {
-        this.skinManager = new SkinManager();
-    }
-
     _initShopUI() {
         this.shopUI = new SkinsShopUI();
         this.addChild(this.shopUI);
     }
 
+    _initSkinManager() {
+        this.skinManager = SkinManager.instance;
+    }
+
     _initSkinsList() {
         this.skinsList = new SkinsList();
-        this.skinsList.initSkinCards(this.skinManager);
         this.addChild(this.skinsList);
     }
 

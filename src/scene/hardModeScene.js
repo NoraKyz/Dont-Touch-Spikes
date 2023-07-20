@@ -115,6 +115,7 @@ export class HardModeScene extends GameScene {
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();
+        this.player.updateSkin();
         this.spikes.onReset();
         this.background.onReset();
         this.sceneUI.onReset();

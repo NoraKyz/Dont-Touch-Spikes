@@ -1,32 +1,24 @@
-import { Application  } from "pixi.js";
+import { Application } from "pixi.js";
 import { SceneManager } from "./scene/sceneManager";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";
 import * as TWEEN from "@tweenjs/tween.js";
 import { SkinStorage } from "./obj/skin/skinStorage";
-import { SkinManager } from "./obj/skin/skinManager";
 
 export class Game {
     static init() {
         this.app = new Application({
-            //resolution: window.devicePixelRatio || 1,
             width: GameConstant.GAME_WIDTH,
             height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0xe0ddd5,
             resolution: 1,
         });
         document.body.appendChild(this.app.view);
-        
-        // const viewStyle = this.app.view.style;
-        // viewStyle.position = "absolute";
-        // viewStyle.display = "block";
-        // viewStyle.padding = "0px 0px 0px 0px";
-        // this.resizef(window.innerWidth, window.innerHeight);
+
 
         AssetsManager._loadAssets().then(() => {
             SkinStorage.init();
-            SkinManager.init();
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
         });
@@ -34,7 +26,7 @@ export class Game {
         Game.resize();
     }
 
-    static resize(){
+    static resize() {
         // current screen size
         const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -70,7 +62,7 @@ export class Game {
 
 window.onload = function () {
     Data.init();
-    Game.init();  
+    Game.init();
     window.onresize = () => {
         Game.resize();
     }

@@ -20,7 +20,8 @@ export class ClassicUI extends MainUI {
   }
 
   _initHardModeSwitch() {
-    this.hardModeSwitch = Sprite.from(Assets.get("hardModeButton"));
+    console.log("init hard mode switch");
+    this.hardModeSwitch = Sprite.from(Assets.get("hardMode"));
     this.hardModeSwitch.anchor.set(0.5);
     this.hardModeSwitch.scale.set(0.18);
     this.hardModeSwitch.position.set(-290, -230);
@@ -33,7 +34,7 @@ export class ClassicUI extends MainUI {
   }
 
   _initDualModeSwitch() {
-    this.dualModeSwitch = Sprite.from(Assets.get("dualModeButton"));
+    this.dualModeSwitch = Sprite.from(Assets.get("dualMode"));
     this.dualModeSwitch.anchor.set(0.5);
     this.dualModeSwitch.scale.set(0.18);
     this.dualModeSwitch.position.set(-290, -120);
@@ -45,7 +46,7 @@ export class ClassicUI extends MainUI {
   }
 
   _initShopSkinButton(){
-    this.skinShopButton = Sprite.from(Assets.get("skinShopButton"));
+    this.skinShopButton = Sprite.from(Assets.get("skinShop"));
     this.skinShopButton.anchor.set(0.5);
     this.skinShopButton.scale.set(0.15);
     this.skinShopButton.position.set(290, -230);

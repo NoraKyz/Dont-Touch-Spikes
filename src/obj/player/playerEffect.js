@@ -1,6 +1,6 @@
-import { Assets, Texture } from "pixi.js";
+import { Texture } from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
-import config from "../../../assets/aim/emitter.json";
+import config from "../../../assets/aim/flyParticle.json";
 import * as TWEEN from "@tweenjs/tween.js";
 
 export class PlayerEffect {
@@ -43,6 +43,7 @@ export class PlayerEffect {
         }
         this.obj.rotation += 0.8 * dt;
     }
+
     onLose() {
         this.enableDeadEffect = true;
         this.despawnEffect.start();
@@ -58,6 +59,11 @@ export class PlayerEffect {
         this.despawnEffect.stop();
         this.obj.alpha = 1;
         this.obj.rotation = 0;
+    }
+
+    updateSkin() {
+        let texture = Texture.from("circle");
+        this.emitter.config = upgradeConfig(config, [texture]);
     }
 
     update(dt) {

@@ -1,6 +1,5 @@
 import {PlayerMovement} from "./playerMovement";
 import {Game} from "../../game";
-import {Assets} from "pixi.js";
 
 export class PlayerMovementDual extends PlayerMovement {
   constructor(obj) {

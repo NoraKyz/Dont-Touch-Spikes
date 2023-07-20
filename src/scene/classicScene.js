@@ -1,4 +1,4 @@
-import { Assets, Graphics } from "pixi.js";
+import { Assets } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";
@@ -32,9 +32,7 @@ export class ClassicScene extends GameScene {
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
-    }
-
-    
+    }   
 
     // Obj in scene
     _initPlayer() {
@@ -104,6 +102,7 @@ export class ClassicScene extends GameScene {
         });
         this.skinsShop.on("close", () => {
             this._onCloseSkinsShop();
+            this.player.updateSkin();
         });
         this.background.on("pointerdown", () => {
             this._onPointerDown();

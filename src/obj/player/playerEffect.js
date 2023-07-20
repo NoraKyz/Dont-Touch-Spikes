@@ -2,14 +2,20 @@ import { Texture } from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import config from "../../../assets/aim/flyParticle.json";
 import * as TWEEN from "@tweenjs/tween.js";
+import { SkinManager } from "../skin/skinManager";
 
 export class PlayerEffect {
     constructor(obj) {
         this.obj = obj;
+        this._initSkin();
         this._initEffect();
         this.onReset();
     }
 
+    _initSkin() {
+        this.skinManager = SkinManager.instance;
+        this.skin = this.skinManager.currentSkin;
+    }
 
     _initEffect() {
         this._despawnEffect();
@@ -21,7 +27,8 @@ export class PlayerEffect {
     }
 
     _flyEffect() {
-        let texture = Texture.from("circle");
+        let texture = this.skin.particleImage;
+        
         this.emitter = new Emitter(
             this.obj.parent,
             upgradeConfig(config, [texture])

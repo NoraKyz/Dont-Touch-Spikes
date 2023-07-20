@@ -5,6 +5,7 @@ import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";
 import { PlayerMovement } from "./playerMovement";
 import { PlayerMovementDual } from "./playerMovementDual";
+import { SkinManager } from "../skin/skinManager";
 
 /*
     Class tổng của player
@@ -81,12 +82,7 @@ export class Player extends Container {
         }
     }
 
-    updateSkin() {
-        this.sprite.updateSkin();
-        this.effect.updateSkin();
-    }
-
-    updateSkin(skin) {
+    updateSkin(skin = SkinManager.instance.currentSkin) {
         this.sprite.updateSkin(skin);
         this.effect.updateSkin(skin);
     }

@@ -72,21 +72,7 @@ export class PlayerEffect {
         this.obj.rotation = 0;
     }
 
-    updateSkin() {
-        this.skin = this.skinManager.currentSkin;
-        let texture = Texture.from(this.skin.particleImage);
-
-        this.cusConfig = config;
-        this.cusConfig.color = this.skin.particleColor; 
-        
-        this.emitter = new Emitter(
-            this.obj.parent,
-            upgradeConfig(this.cusConfig, [texture])
-        );
-        this.emitter.emit = false;
-    }
-
-    updateSkin(skin) {
+    updateSkin(skin = this.skinManager.currentSkin) {
         this.skin = skin;
         let texture = Texture.from(this.skin.particleImage);
 

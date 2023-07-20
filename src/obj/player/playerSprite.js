@@ -68,14 +68,7 @@ export class PlayerSprite extends Container {
         this.scale.x = 1;
     }
 
-    updateSkin() {       
-        this.skin = this.skinManager.currentSkin;
-        this.live.sprite1.texture = Assets.get(this.skin.texture1);
-        this.live.sprite2.texture = Assets.get(this.skin.texture2);
-        this.live.sprite3.texture = Assets.get(this.skin.texture3);
-    }
-
-    updateSkin(skin) {       
+    updateSkin(skin = this.skinManager.currentSkin) {       
         this.skin = skin;
         this.live.sprite1.texture = Assets.get(this.skin.texture1);
         this.live.sprite2.texture = Assets.get(this.skin.texture2);

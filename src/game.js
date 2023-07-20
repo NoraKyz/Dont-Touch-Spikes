@@ -1,4 +1,4 @@
-import { Application  } from "pixi.js";
+import { Application } from "pixi.js";
 import { SceneManager } from "./scene/sceneManager";
 import { GameConstant } from "./gameConstant";
 import { AssetsManager } from "./custom/assetsManager";
@@ -15,7 +15,7 @@ export class Game {
             resolution: 1,
         });
         document.body.appendChild(this.app.view);
-        
+
 
         AssetsManager._loadAssets().then(() => {
             SkinStorage.init();
@@ -26,7 +26,7 @@ export class Game {
         Game.resize();
     }
 
-    static resize(){
+    static resize() {
         // current screen size
         const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -62,7 +62,7 @@ export class Game {
 
 window.onload = function () {
     Data.init();
-    Game.init();  
+    Game.init();
     window.onresize = () => {
         Game.resize();
     }

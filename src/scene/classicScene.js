@@ -1,4 +1,4 @@
-import { Assets, Graphics } from "pixi.js";
+import { Assets } from "pixi.js";
 import { GameScene, GameState } from "./gameScene.js";
 import { Data } from "../data.js";
 import { Background } from "../obj/background/background.js";

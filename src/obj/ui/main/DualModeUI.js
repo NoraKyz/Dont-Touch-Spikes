@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics, Sprite, Text, TextStyle } from "pixi.js";
+import { Assets, Container, Sprite, Text, TextStyle } from "pixi.js";
 import { MainUI } from "./mainUI.js";
 import * as TWEEN from '@tweenjs/tween.js'
 

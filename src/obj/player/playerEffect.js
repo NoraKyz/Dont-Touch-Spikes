@@ -1,4 +1,4 @@
-import { Assets, Texture } from "pixi.js";
+import { Texture } from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import config from "../../../assets/aim/emitter.json";
 import * as TWEEN from "@tweenjs/tween.js";
@@ -21,7 +21,7 @@ export class PlayerEffect {
     }
 
     _flyEffect() {
-        let texture = Assets.get("hardCircle");
+        let texture = Texture.from("circle");;
         this.emitter = new Emitter(
             this.obj.parent,
             upgradeConfig(config, [texture])

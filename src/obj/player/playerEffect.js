@@ -28,7 +28,11 @@ export class PlayerEffect {
 
     _flyEffect() {
         let texture = this.skin.particleImage;
-        
+
+        this.cusConfig = config;
+        this.cusConfig.color
+       
+
         this.emitter = new Emitter(
             this.obj.parent,
             upgradeConfig(config, [texture])

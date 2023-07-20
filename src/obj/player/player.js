@@ -83,6 +83,7 @@ export class Player extends Container {
 
     updateSkin() {
         this.sprite.updateSkin();
+        this.effect.updateSkin();
     }
 
     _onLose() {

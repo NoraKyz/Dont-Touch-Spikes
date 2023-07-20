@@ -43,7 +43,7 @@ export class SkinCard extends Container {
         this.bg1.endFill();
         this.unlocked.addChild(this.bg1);
 
-        this.skin = new Sprite(this.data.texture1);
+        this.skin = new Sprite(Assets.get(this.data.texture1));
         this.skin.anchor.set(0.5);
         this.skin.scale.set(0.2);
         this.unlocked.addChild(this.skin);

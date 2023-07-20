@@ -27,15 +27,14 @@ export class PlayerEffect {
     }
 
     _flyEffect() {
-        let texture = this.skin.particleImage;
+        let texture = Texture.from(this.skin.particleImage);
 
         this.cusConfig = config;
-        this.cusConfig.color
-       
+        this.cusConfig.color = this.skin.particleColor;      
 
         this.emitter = new Emitter(
             this.obj.parent,
-            upgradeConfig(config, [texture])
+            upgradeConfig(this.cusConfig, [texture])
         );
         this.emitter.emit = false;
     }
@@ -60,6 +59,7 @@ export class PlayerEffect {
         this.despawnEffect.start();
         this.emitter.emit = false;
     }
+
     onWin(){
         this.despawnEffect.start();
         this.emitter.emit = false;
@@ -73,8 +73,18 @@ export class PlayerEffect {
     }
 
     updateSkin() {
-        let texture = Texture.from("circle");
-        this.emitter.config = upgradeConfig(config, [texture]);
+        this.skin = this.skinManager.currentSkin;
+        
+        let texture = Texture.from(this.skin.particleImage);
+
+        this.cusConfig = config;
+        this.cusConfig.color = this.skin.particleColor; 
+        
+        this.emitter = new Emitter(
+            this.obj.parent,
+            upgradeConfig(this.cusConfig, [texture])
+        );
+        this.emitter.emit = false;
     }
 
     update(dt) {

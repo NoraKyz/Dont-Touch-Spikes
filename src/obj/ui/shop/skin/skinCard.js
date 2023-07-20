@@ -1,4 +1,5 @@
 import { Assets, Container, Graphics, Sprite, Text } from "pixi.js";
+import { SkinManager } from "../../../skin/skinManager";
 
 export class SkinCard extends Container {
     constructor(skin) {
@@ -10,6 +11,7 @@ export class SkinCard extends Container {
 
     _initProperties(skin) {
         this.data = skin;
+        this.skinManager = SkinManager.instance;
     }
 
     _initEvents() {
@@ -87,10 +89,10 @@ export class SkinCard extends Container {
     }
 
     onGetSkin() {
-        this.emit("getSkin", this);
+        this.skinManager.onGetSkin(this);
     }
 
     onSetSkin() {
-        this.emit("setSkin", this);
+        this.skinManager.onSetSkin(this);
     }
 }

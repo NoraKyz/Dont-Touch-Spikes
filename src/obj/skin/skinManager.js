@@ -4,14 +4,21 @@ import { Data } from "../../data.js"
 import { EventEmitter } from "events";
 
 export class SkinManager extends EventEmitter {
-    constructor() {
-        super();
-        this.skinsList = [];
-        this._initSkins();
+    static _instance;
+
+    static get instance() {
+        if (!this._instance) {
+            this._instance = new SkinManager();
+        }
+
+        return this._instance;
     }
 
-    static init() {
-        this.currentSkin = new Skin(SkinStorage.storage[0]);
+    constructor() {
+        super();
+        this.skinsList = [];        
+        this._initSkins();
+        this.currentSkin = this.skinsList[0];
     }
 
     _initSkins() {

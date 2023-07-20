@@ -21,6 +21,7 @@ export class SkinStorage {
     static init() {
         this.storage = [
             {
+                
                 texture1: Assets.get("bird1"),
                 texture2: Assets.get("bird2"),
                 texture3: Assets.get("bird3"),

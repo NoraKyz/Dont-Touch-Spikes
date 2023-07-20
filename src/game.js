@@ -26,7 +26,6 @@ export class Game {
 
         AssetsManager._loadAssets().then(() => {
             SkinStorage.init();
-            SkinManager.init();
             this._initScene();
             this.app.ticker.add((dt) => Game.update(dt));
         });

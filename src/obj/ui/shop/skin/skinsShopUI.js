@@ -31,7 +31,7 @@ export class SkinsShopUI extends Container {
     }
 
     _initBackButton() {
-        this.backButton = Sprite.from(Assets.get("undoButton"));
+        this.backButton = Sprite.from(Assets.get("undo"));
         this.backButton.anchor.set(0.5);
         this.backButton.scale.set(0.2);
 

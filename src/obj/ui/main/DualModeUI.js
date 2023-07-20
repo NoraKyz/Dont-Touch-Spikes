@@ -1,5 +1,5 @@
-import {Assets, Container, Graphics, Sprite, Text, TextStyle} from "pixi.js";
-import {MainUI} from "./mainUI.js";
+import { Assets, Container, Graphics, Sprite, Text, TextStyle } from "pixi.js";
+import { MainUI } from "./mainUI.js";
 import * as TWEEN from '@tweenjs/tween.js'
 
 export class DualModeUI extends MainUI {
@@ -21,21 +21,21 @@ export class DualModeUI extends MainUI {
     this._onPlayer1Win();
     this._onPlayer2Win();
   }
-  
+
   _initProperties() {
     this.styleBig = new TextStyle({
-        fill: "#FF3464",
-        fontFamily: "Blissful Thinking",
-        fontSize: 52,
-        fontWeight: "lighter",
-        letterSpacing: 1,
+      fill: "#FF3464",
+      fontFamily: "Blissful Thinking",
+      fontSize: 52,
+      fontWeight: "lighter",
+      letterSpacing: 1,
     });
     this.styleSmall = new TextStyle({
-        fill: "#FF3464",
-        fontFamily: "Blissful Thinking",
-        fontSize: 44,
-        fontWeight: 550,
-        letterSpacing: 1,
+      fill: "#FF3464",
+      fontFamily: "Blissful Thinking",
+      fontSize: 44,
+      fontWeight: 550,
+      letterSpacing: 1,
     });
     this.stateStarTop = [false, false, false];
     this.stateStarBottom = [false, false, false];
@@ -43,14 +43,14 @@ export class DualModeUI extends MainUI {
       player1: this.stateStarBottom,
       player2: this.stateStarTop,
     }
-  } 
+  }
 
   _initGameTutol() {
-    this.playerTop = new Text("PLAYER 2", {...this.styleBig, fill: "#309cfe"});
+    this.playerTop = new Text("PLAYER 2", { ...this.styleBig, fill: "#309cfe" });
     this.playerTop.anchor.set(0.5);
     this.playerTop.position.set(0, - 280);
     this.playerTop.scale.set(-1);
-    this.tutorTop = new Text("touch here to jump", {...this.styleSmall, fill: "#309cfe"});
+    this.tutorTop = new Text("touch here to jump", { ...this.styleSmall, fill: "#309cfe" });
     this.tutorTop.anchor.set(0.5);
     this.tutorTop.position.set(0, - 330);
     this.tutorTop.scale.set(-1);
@@ -70,7 +70,7 @@ export class DualModeUI extends MainUI {
     this.addChild(this.gameTutor);
   }
 
-  _initLine(){
+  _initLine() {
     // Làm cái line chuẩn tí nữa là được
     this.line = Sprite.from(Assets.get("line"));
     this.line.anchor.set(0.5);
@@ -79,7 +79,7 @@ export class DualModeUI extends MainUI {
     this.addChild(this.line);
   }
   _initBackButton() {
-    this.backButton = Sprite.from(Assets.get("undoButton"));
+    this.backButton = Sprite.from(Assets.get("undo"));
     this.backButton.anchor.set(0.5);
     this.backButton.scale.set(0.15);
     this.backButton.position.set(-290, -420);
@@ -91,7 +91,7 @@ export class DualModeUI extends MainUI {
     this.addChild(this.backButton);
   }
 
-  _initStar(position){
+  _initStar(position) {
     const star = new Container();
     star.loseStar = Sprite.from(Assets.get("star1"));
     star.loseStar.position.set(position.x, position.y);
@@ -107,34 +107,34 @@ export class DualModeUI extends MainUI {
     return star;
   }
 
-  _initStarTop(){
-    this.topStar1 = this._initStar({x: -60, y: 140});
-    this.topStar2 = this._initStar({x: 0, y: 138});
-    this.topStar3 = this._initStar({x: 60, y: 140});
-    this.topStar1.scale.set(-1); 
+  _initStarTop() {
+    this.topStar1 = this._initStar({ x: -60, y: 140 });
+    this.topStar2 = this._initStar({ x: 0, y: 138 });
+    this.topStar3 = this._initStar({ x: 60, y: 140 });
+    this.topStar1.scale.set(-1);
     this.topStar2.scale.set(-1);
     this.topStar3.scale.set(-1);
     this.addChild(this.topStar1);
     this.addChild(this.topStar2);
     this.addChild(this.topStar3);
   }
-  _initStarBottom(){
-    this.bottomStar1 = this._initStar({x: -60, y: 140});
-    this.bottomStar2 = this._initStar({x: 0, y: 138});
-    this.bottomStar3 = this._initStar({x: 60, y: 140});
+  _initStarBottom() {
+    this.bottomStar1 = this._initStar({ x: -60, y: 140 });
+    this.bottomStar2 = this._initStar({ x: 0, y: 138 });
+    this.bottomStar3 = this._initStar({ x: 60, y: 140 });
     this.addChild(this.bottomStar1);
     this.addChild(this.bottomStar2);
     this.addChild(this.bottomStar3);
   }
 
-  _onPlayer1Win(){
-    if(this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
+  _onPlayer1Win() {
+    if (this.bottomStar1.winStar.visible === false) this.bottomStar1.winStar.visible = true;
     else if (this.bottomStar2.winStar.visible === false) this.bottomStar2.winStar.visible = true;
     else if (this.bottomStar3.winStar.visible === false) this.bottomStar3.winStar.visible = true;
     this.gameState.player1 = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
   }
-  _onPlayer2Win(){
-    if(this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
+  _onPlayer2Win() {
+    if (this.topStar1.winStar.visible === false) this.topStar1.winStar.visible = true;
     else if (this.topStar2.winStar.visible === false) this.topStar2.winStar.visible = true;
     else if (this.topStar3.winStar.visible === false) this.topStar3.winStar.visible = true;
     this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
@@ -144,29 +144,29 @@ export class DualModeUI extends MainUI {
     this.emit("toClassicModeScene")
   }
 
-  _initEffect(){
+  _initEffect() {
     this.elapsed = 0;
     this.tween1 = new TWEEN.Tween(this.gameTutor)
-      .to({alpha: 0}, 1000)
+      .to({ alpha: 0 }, 1000)
     this.tween2 = new TWEEN.Tween(this.gameTutor)
-      .to({alpha: 1}, 1000);
+      .to({ alpha: 1 }, 1000);
   }
 
-  onReset(){
+  onReset() {
     super.onReset();
     this.stateStarTop = [false, false, false];
     this.stateStarBottom = [false, false, false];
   }
 
-  _UIEffect(){ 
+  _UIEffect() {
     this.tween1.start().onComplete(() => {
       this.tween2.start();
     });
   }
-  
-  update(dt){
+
+  update(dt) {
     this.elapsed += dt;
-    if(this.elapsed >= 150){
+    if (this.elapsed >= 150) {
       this._UIEffect();
       this.elapsed = 0;
     }

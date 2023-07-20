@@ -42,7 +42,7 @@ export class OverUI extends PIXI.Container {
     _initPointButton() {
         this.pointsUI = new Container();
 
-        this.pointsButton = Sprite.from(Assets.get("pointsUI"));
+        this.pointsButton = Sprite.from(Assets.get("points"));
         this.pointsButton.anchor.set(0.5);
         this.pointsButton.scale.set(1 );
         this.pointsButton.position.y = -130 ;
@@ -58,7 +58,7 @@ export class OverUI extends PIXI.Container {
     }
 
     _initReplayButton() {
-        this.replayButton = Sprite.from(Assets.get("replayButton"));
+        this.replayButton = Sprite.from(Assets.get("replay"));
         this.replayButton.anchor.set(0.5);
         this.replayButton.scale.set(1 );
         this.replayButton.position.y = 10 ;
@@ -72,7 +72,7 @@ export class OverUI extends PIXI.Container {
     _clickedReplayButton() { }
 
     _initShareButton() {
-        this.shareButton = Sprite.from(Assets.get("shareButton"));
+        this.shareButton = Sprite.from(Assets.get("share"));
         this.shareButton.anchor.set(0.5);
         this.shareButton.scale.set(1 );
         this.shareButton.position.y = 105 ;
@@ -87,10 +87,13 @@ export class OverUI extends PIXI.Container {
 
     showGameOverUI() {
         this.visible = true;
+        this.pointNumber.text = Data.currentScore;
     }
 
     hideGameOverUI() {
         this.visible = false;
     }
+
+
 
 }

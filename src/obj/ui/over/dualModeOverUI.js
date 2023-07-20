@@ -37,28 +37,29 @@ export class DualModeOverUI extends OverUI {
       this._initRedPlayer();
     }
     _initBluePlayer(){
-      this.blueSprite1 = Sprite.from(Assets.get("bird1"));
+      this.blueSprite1 = Sprite.from(Assets.get("birdBlue1"));
       this.blueSprite1.anchor.set(0.5);
       this.blueSprite1.position.set(-162, -115);
       this.blueSprite1.scale.set(0.2);
       this.addChild(this.blueSprite1);
       this.blueSprite1.visible = false;
 
-      this.blueSprite2 = Sprite.from(Assets.get("bird2"));
+      this.blueSprite2 = Sprite.from(Assets.get("birdBlue3"));
       this.blueSprite2.anchor.set(0.5);
       this.blueSprite2.position.set(-162, -115);
       this.blueSprite2.scale.set(0.2);
       this.addChild(this.blueSprite2);
     }
+
     _initRedPlayer(){
-      this.redSprite1 = Sprite.from(Assets.get("bird1"));
+      this.redSprite1 = Sprite.from(Assets.get("birdDefault1"));
       this.redSprite1.anchor.set(0.5);
       this.redSprite1.position.set(162, -115);
       this.redSprite1.scale.set(0.2);
       this.redSprite1.scale.x *= -1;
       this.addChild(this.redSprite1);
 
-      this.redSprite2 = Sprite.from(Assets.get("bird3"));
+      this.redSprite2 = Sprite.from(Assets.get("birdDefault3"));
       this.redSprite2.anchor.set(0.5);
       this.redSprite2.position.set(162, -115);
       this.redSprite2.scale.set(0.2);
@@ -66,6 +67,7 @@ export class DualModeOverUI extends OverUI {
       this.addChild(this.redSprite2);
       this.redSprite2.visible = false;
     }
+
     _initStar(position){
       const star = new Container();
       star.loseStar = Sprite.from(Assets.get("star1"));

@@ -21,7 +21,7 @@ export class PlayerEffect {
     }
 
     _flyEffect() {
-        let texture = Texture.from("circle");
+        let texture = Assets.get("hardCircle");
         this.emitter = new Emitter(
             this.obj.parent,
             upgradeConfig(config, [texture])

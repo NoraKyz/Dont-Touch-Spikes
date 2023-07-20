@@ -6,9 +6,9 @@ export const TypeCurrency = Object.freeze({
 });
 
 // Default : {
-//     texture1: Assets.get("bird1"),
-//     texture2: Assets.get("bird2"),
-//     texture3: Assets.get("bird3"),
+//     texture1: Assets.get("birdDefault1"),
+//     texture2: Assets.get("birdDefault2"),
+//     texture3: Assets.get("birdDefault3"),
 //     particle: Texture.from("circle"), 
 //     cost: {
 //         type: TypeCurrency.Candy,
@@ -21,22 +21,32 @@ export class SkinStorage {
     static init() {
         this.storage = [
             {
-                
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 10
+                    value: 0
                 },
                 enabled: true
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdBlue1"),
+                texture2: Assets.get("birdBlue2"),
+                texture3: Assets.get("birdBlue3"),
+                particle: Texture.from("circle"),
+                cost: {
+                    type: TypeCurrency.Candy,
+                    value: 10
+                },
+                enabled: false
+            },
+            {
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 20
@@ -44,10 +54,10 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 20
@@ -55,21 +65,32 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 30
+                    value: 40
                 },
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
+                cost: {
+                    type: TypeCurrency.Candy,
+                    value: 40
+                },
+                enabled: false
+            },
+            {
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 50
@@ -77,21 +98,10 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
-                cost: {
-                    type: TypeCurrency.Candy,
-                    value: 50
-                },
-                enabled: false
-            },
-            {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 100
@@ -99,10 +109,10 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 100
@@ -110,10 +120,10 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 100
@@ -121,43 +131,21 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 100
+                    value: 150
                 },
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
-                cost: {
-                    type: TypeCurrency.Candy,
-                    value: 100
-                },
-                enabled: false
-            },
-            {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
-                cost: {
-                    type: TypeCurrency.Candy,
-                    value: 125
-                },
-                enabled: false
-            },
-            {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 200
@@ -165,10 +153,10 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
                     value: 200
@@ -176,49 +164,94 @@ export class SkinStorage {
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 200
+                    value: 400
                 },
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 200
+                    value: 500
                 },
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 200
+                    value: 500
                 },
                 enabled: false
             },
             {
-                texture1: Assets.get("bird1"),
-                texture2: Assets.get("bird2"),
-                texture3: Assets.get("bird3"),
-                particle: Texture.from("circle"), 
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
                 cost: {
                     type: TypeCurrency.Candy,
-                    value: 200
+                    value: 500
                 },
                 enabled: false
             },
+            {
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
+                cost: {
+                    type: TypeCurrency.Candy,
+                    value: 1000
+                },
+                enabled: false
+            },
+            {
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
+                cost: {
+                    type: TypeCurrency.Candy,
+                    value: 1000
+                },
+                enabled: false
+            },
+            {
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
+                cost: {
+                    type: TypeCurrency.Candy,
+                    value: 1200
+                },
+                enabled: false
+            },
+            {
+                texture1: Assets.get("birdDefault1"),
+                texture2: Assets.get("birdDefault2"),
+                texture3: Assets.get("birdDefault3"),
+                particle: Texture.from("circle"),
+                cost: {
+                    type: TypeCurrency.Candy,
+                    value: 1200
+                },
+                enabled: false
+            },
+
         ];
     }
 }

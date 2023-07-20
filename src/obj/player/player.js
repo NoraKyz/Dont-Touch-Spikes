@@ -79,6 +79,9 @@ export class Player extends Container {
         }
     }
 
+    updateSkin() {
+        this.sprite.updateSkin();
+    }
 
     _onLose() {
         this.isDie = true;

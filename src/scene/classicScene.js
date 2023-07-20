@@ -32,9 +32,7 @@ export class ClassicScene extends GameScene {
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
-    }
-
-    
+    }   
 
     // Obj in scene
     _initPlayer() {
@@ -104,8 +102,9 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("startSkinsShopUI", () => {
             this._onStartSkinsShop();
         });
-        this.skinsShop.on("close", () => {
-            this._onCloseSkinsShop()
+        this.skinsShop.on("close", () => {;
+            this._onCloseSkinsShop();
+            this.player.updateSkin();
         });
         this.sceneUI.on("toDualModeScene", () => {
             this.parent.onStartScene("dualModeScene");

@@ -21,8 +21,8 @@ export class SkinManager extends EventEmitter {
     }
 
     _initSkins() {
-        SkinStorage.storage.forEach(objInStorage => {
-            this.skinsList.push(objInStorage);
+        SkinStorage.storage.forEach(skin => {
+            this.skinsList.push(skin);
         });
     }
 

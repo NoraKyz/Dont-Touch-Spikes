@@ -93,7 +93,4 @@ export class OverUI extends PIXI.Container {
     hideGameOverUI() {
         this.visible = false;
     }
-
-
-
 }

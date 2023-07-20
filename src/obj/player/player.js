@@ -1,6 +1,5 @@
 import { Container } from "pixi.js";
 import { Collider } from "../physics/collider";
-import { Game } from "../../game";
 import { Spike } from "../trap/spike";
 import { PlayerSprite } from "./playerSprite";
 import { PlayerEffect } from "./playerEffect";

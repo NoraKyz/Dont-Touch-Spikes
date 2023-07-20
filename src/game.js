@@ -5,12 +5,10 @@ import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";
 import * as TWEEN from "@tweenjs/tween.js";
 import { SkinStorage } from "./obj/skin/skinStorage";
-import { SkinManager } from "./obj/skin/skinManager";
 
 export class Game {
     static init() {
         this.app = new Application({
-            //resolution: window.devicePixelRatio || 1,
             width: GameConstant.GAME_WIDTH,
             height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0xe0ddd5,
@@ -18,11 +16,6 @@ export class Game {
         });
         document.body.appendChild(this.app.view);
         
-        // const viewStyle = this.app.view.style;
-        // viewStyle.position = "absolute";
-        // viewStyle.display = "block";
-        // viewStyle.padding = "0px 0px 0px 0px";
-        // this.resizef(window.innerWidth, window.innerHeight);
 
         AssetsManager._loadAssets().then(() => {
             SkinStorage.init();

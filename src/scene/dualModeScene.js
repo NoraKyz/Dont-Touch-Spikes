@@ -17,6 +17,7 @@ export class DualModeScene extends GameScene {
 
   _initProperties() {
     super._initProperties();
+    this.skinManager = SkinManager.instance;
     this.id = "dualModeScene";
   }
 
@@ -31,8 +32,6 @@ export class DualModeScene extends GameScene {
   _initPlayer() {
     //player1
     this.player1 = new Player(this);
-    this.player1.sprite.skin = SkinManager.instance.skinsList[0];
-    this.player1.updateSkin();
     this.player1.dualModeEnabled = true;
     this.player1.rootPos = { x: 0, y: 50 };
     this.player1.position = this.player1.rootPos;
@@ -41,8 +40,7 @@ export class DualModeScene extends GameScene {
     this.addChild(this.player1);
     //player2
     this.player2 = new Player(this);
-    this.player2.sprite.skin = SkinManager.instance.skinsList[1];
-    this.player2.updateSkin();
+    this.player2.updateSkin(this.skinManager.skinsList[1]);
     this.player2.dualModeEnabled = true;
     this.player2.rootPos = { x: 0, y: -50 };
     this.player2.position = this.player2.rootPos;

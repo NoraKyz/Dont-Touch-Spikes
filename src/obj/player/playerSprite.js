@@ -49,6 +49,7 @@ export class PlayerSprite extends Container {
         this.birdDead.scale.set(0.5);
         this.addChild(this.birdDead);
     }
+
     onPointerDown() {
         this.live.sprite1.visible = false;
         this.live.sprite2.visible = false;
@@ -67,8 +68,15 @@ export class PlayerSprite extends Container {
         this.scale.x = 1;
     }
 
-    updateSkin() {
+    updateSkin() {       
         this.skin = this.skinManager.currentSkin;
+        this.live.sprite1.texture = Assets.get(this.skin.texture1);
+        this.live.sprite2.texture = Assets.get(this.skin.texture2);
+        this.live.sprite3.texture = Assets.get(this.skin.texture3);
+    }
+
+    updateSkin(skin) {       
+        this.skin = skin;
         this.live.sprite1.texture = Assets.get(this.skin.texture1);
         this.live.sprite2.texture = Assets.get(this.skin.texture2);
         this.live.sprite3.texture = Assets.get(this.skin.texture3);

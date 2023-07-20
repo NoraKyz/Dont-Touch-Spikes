@@ -31,8 +31,8 @@ export class DualModeOverUI extends OverUI {
       this.rightBlock.endFill();
       this.addChild(this.rightBlock);
 
-      this.bluePlayer = this._createPlayer("bird1", "bird2", {x: -162, y: -115}, 1);
-      this.redPlayer = this._createPlayer("bird1", "bird3", {x: 162, y: -115}, -1);
+      this.bluePlayer = this._createPlayer("birdBlue1", "birdBlue2", {x: -162, y: -115}, 1);
+      this.redPlayer = this._createPlayer("birdDefault1", "birdDefault3", {x: 162, y: -115}, -1);
       this._initStarLeft();
       this._initStarRight();
     }

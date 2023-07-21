@@ -62,7 +62,8 @@ export class AssetsManager {
             "skinShop": "./assets/images/ui/button/skinShop.png",
             "tick": "./assets/images/ui/button/tick.png",
             "tree": "./assets/images/ui/button/tree.png",
-            "undo": "./assets/images/ui/button/undo.png"
+            "undo": "./assets/images/ui/button/undo.png",
+            "dualGameOver": "./assets/images/ui/button/dualGameOver.png"
         })
 
         this._addBundle(

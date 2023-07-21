@@ -13,6 +13,7 @@ export class SkinManager extends EventEmitter {
         return this._instance;
     }
 
+    
     constructor() {
         super();
         this.skinsList = [];        
@@ -29,14 +30,15 @@ export class SkinManager extends EventEmitter {
     onGetSkin(skinCard) {
         if(Data.itemQuantity >= skinCard.data.cost.value) {
             Data.itemQuantity -= skinCard.data.cost.value;
-            this._onUnlockSkin(skinCard.data);
+            this._onUnlockSkin(skinCard);
             this.emit("dataChanged");
             skinCard.emit("unlockSkin");      
         }
     }
 
-    _onUnlockSkin(data) {
-        data.enabled = true;
+    _onUnlockSkin(skinCard) {
+        SkinStorage.storage[skinCard.index].enabled = true;
+        skinCard.data.enabled = true;
     }
 
     onSetSkin(skinCard) {

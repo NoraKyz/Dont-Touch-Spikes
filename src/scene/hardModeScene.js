@@ -11,6 +11,7 @@ import { LevelController } from "../levelController.js";
 import { HardModeUI } from "../obj/ui/main/hardModeUI.js";
 import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js"
 import { SpikesManager } from "../obj/trap/spikesManager.js";
+import { SkinStorage } from "../obj/skin/skinStorage.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -98,6 +99,7 @@ export class HardModeScene extends GameScene {
     }
 
     _onPointerDown() {
+        console.log(SkinStorage.storage);
         if (this.gameState == GameState.Ready || this.gameState == GameState.Playing) {
             if (this.gameState == GameState.Ready) {
                 this.sceneUI.hideMainUI();

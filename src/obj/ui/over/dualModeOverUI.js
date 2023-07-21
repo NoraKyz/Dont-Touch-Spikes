@@ -9,10 +9,10 @@ export class DualModeOverUI extends OverUI {
       this.elapsed = 0;
     }
     _initPointButton(){
-      this.pointsButton = new Graphics();
-      this.pointsButton.beginFill('808080'); 
-      this.pointsButton.drawRoundedRect(-256, -200, 256 * 2, 200, 20); 
-      this.pointsButton.endFill();
+      this.pointsButton = Sprite.from(Assets.get("dualGameOver"));
+      this.pointsButton.anchor.set(0.5);
+      this.pointsButton.scale.set(2);
+      this.pointsButton.position.y = -110;
       this.addChild(this.pointsButton);
 
       this.leftBlock = new Graphics();
@@ -21,15 +21,16 @@ export class DualModeOverUI extends OverUI {
       this.leftBlock.endFill();
       this.addChild(this.leftBlock);
 
-      this.pointNumber = new Text(Data.currentScore, this.style);
-      this.pointNumber.anchor.set(0.5);
-      this.pointNumber.position.y = -150 ;
-
+      
       this.rightBlock = new Graphics();
       this.rightBlock.beginFill('fc741a'); 
       this.rightBlock.drawRoundedRect(94, -180, 140, 140, 20); 
       this.rightBlock.endFill();
       this.addChild(this.rightBlock);
+
+      this.pointNumber = new Text(Data.currentScore, this.style);
+      this.pointNumber.anchor.set(0.5);
+      this.pointNumber.position.y = -150 ;
 
       this.bluePlayer = this._createPlayer("birdBlue1", "birdBlue2", {x: -162, y: -115}, 1);
       this.redPlayer = this._createPlayer("birdDefault1", "birdDefault3", {x: 162, y: -115}, -1);
@@ -79,14 +80,14 @@ export class DualModeOverUI extends OverUI {
     }
  
     _initStarLeft(){
-      this.leftStar1 = this._generateStars({x: -207, y: -37});
-      this.leftStar2 = this._generateStars({x: -162, y: -37}); 
-      this.leftStar3 = this._generateStars({x: -116, y: -37});
+      this.leftStar1 = this._generateStars({x: -207, y: -44});
+      this.leftStar2 = this._generateStars({x: -162, y: -44}); 
+      this.leftStar3 = this._generateStars({x: -116, y: -44});
     }
     _initStarRight(){
-      this.rightStar1 = this._generateStars({x: 207, y: -37});
-      this.rightStar2 = this._generateStars({x: 162, y: -37});
-      this.rightStar3 = this._generateStars({x: 116, y: -37});
+      this.rightStar1 = this._generateStars({x: 207, y: -44});
+      this.rightStar2 = this._generateStars({x: 162, y: -44});
+      this.rightStar3 = this._generateStars({x: 116, y: -44});
     }
 
     onResetStar(gameState){

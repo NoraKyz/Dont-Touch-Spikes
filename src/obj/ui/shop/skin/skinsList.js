@@ -24,8 +24,8 @@ export class SkinsList extends ScrollBox {
     }
 
     _initSkinCards() {
-        this.skinManager.skinsList.forEach(skin => {
-            let skinCard = new SkinCard(skin);
+        this.skinManager.skinsList.forEach((skin, index) => {
+            let skinCard = new SkinCard(skin, index);
             this.addItem(skinCard);
         });
 

@@ -1,3 +1,6 @@
+import { SkinManager } from "./obj/skin/skinManager";
+import { SkinStorage } from "./obj/skin/skinStorage";
+
 export class Data {
     static init() {
         this.currentScore = 0;
@@ -17,6 +20,8 @@ export class Data {
             bestScore: this.bestScore,
             gamesPlayed: this.gamesPlayed,
             itemQuantity: this.itemQuantity,
+            skin: SkinStorage.storage,
+            currentSkin: SkinManager.instance.currentSkin,
         }
         localStorage.setItem("savedGameData", JSON.stringify(this.data));
     }
@@ -28,6 +33,8 @@ export class Data {
             this.bestScore = this.data.bestScore;
             this.gamesPlayed = this.data.gamesPlayed;
             this.itemQuantity = this.data.itemQuantity;
+            if(this.data.skin) SkinStorage.storage = this.data.skin;
+            if(this.data.currentSkin) SkinManager.instance.currentSkin = this.data.currentSkin;
         }
     }
 }

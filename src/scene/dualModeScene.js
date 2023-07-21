@@ -32,6 +32,7 @@ export class DualModeScene extends GameScene {
   _initPlayer() {
     //player1
     this.player1 = new Player(this);
+    this.player1.updateSkin(this.skinManager.skinsList[0]);
     this.player1.dualModeEnabled = true;
     this.player1.rootPos = { x: 0, y: 50 };
     this.player1.position = this.player1.rootPos;
@@ -91,7 +92,6 @@ export class DualModeScene extends GameScene {
     this.sceneOverUI.hideGameOverUI();
   }
   onResetScene(){
-    console.log('asdfasdf');
     if(this.player1Point === 3 || this.player2Point === 3){
       this.player1Point = 0;
       this.player2Point = 0;
@@ -99,7 +99,6 @@ export class DualModeScene extends GameScene {
       this.sceneOverUI.onAllReset();
     }
     this.gameState = GameState.Ready;
-    console.log('reset scene dual');
     Data.resetScore();
 
     this.background2.playGroundTop.visible = false;
@@ -134,8 +133,8 @@ export class DualModeScene extends GameScene {
     this.on("nextLevel", this._onNextLevel.bind(this));
     this.sceneOverUI.on("replay", () => {
       this.onResetScene();
-      // this.player1.visible = true;
-      // this.player2.visible = true;
+      this.player1.visible = true;
+      this.player2.visible = true;
     }
     );
     this.on("lose", this._onLose.bind(this));
@@ -191,8 +190,8 @@ export class DualModeScene extends GameScene {
         this.sceneOverUI.winTitle(this.winPlayer);
         this.sceneOverUI.showGameOverUI();
         this.background2.hideScore();
-        // this.player1.visible = false;
-        // this.player2.visible = false;
+        this.player1.visible = false;
+        this.player2.visible = false;
     }, 1000);
   }
   _onEndRound(){
@@ -201,7 +200,6 @@ export class DualModeScene extends GameScene {
     }
     this.gameState = GameState.End;
     Assets.get("loseSound").play();
-    console.log('emd');
     setTimeout(() => {
         if(this.player1Point === 3 || this.player2Point === 3){
           this.gameState = GameState.Ready;

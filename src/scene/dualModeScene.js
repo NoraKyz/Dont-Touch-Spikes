@@ -133,8 +133,8 @@ export class DualModeScene extends GameScene {
     this.on("nextLevel", this._onNextLevel.bind(this));
     this.sceneOverUI.on("replay", () => {
       this.onResetScene();
-      // this.player1.visible = true;
-      // this.player2.visible = true;
+      this.player1.visible = true;
+      this.player2.visible = true;
     }
     );
     this.on("lose", this._onLose.bind(this));
@@ -190,8 +190,8 @@ export class DualModeScene extends GameScene {
         this.sceneOverUI.winTitle(this.winPlayer);
         this.sceneOverUI.showGameOverUI();
         this.background2.hideScore();
-        // this.player1.visible = false;
-        // this.player2.visible = false;
+        this.player1.visible = false;
+        this.player2.visible = false;
     }, 1000);
   }
   _onEndRound(){

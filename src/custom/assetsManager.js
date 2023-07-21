@@ -26,9 +26,27 @@ export class AssetsManager {
             "birdBlue1": "./assets/images/skin/birdBlue/birdBlue1.png",
             "birdBlue2": "./assets/images/skin/birdBlue/birdBlue2.png",
             "birdBlue3": "./assets/images/skin/birdBlue/birdBlue3.png",
+
             "birdDefault1": "./assets/images/skin/birdDefault/birdDefault1.png",
             "birdDefault2": "./assets/images/skin/birdDefault/birdDefault2.png",
             "birdDefault3": "./assets/images/skin/birdDefault/birdDefault3.png",
+
+            "birdNinja1": "./assets/images/skin/birdNinja/birdNinja1.png",
+            "birdNinja2": "./assets/images/skin/birdNinja/birdNinja2.png",
+            "birdNinja3": "./assets/images/skin/birdNinja/birdNinja3.png",
+
+            "birdDarkBlue1": "./assets/images/skin/birdDarkBlue/birdDarkBlue1.png",
+            "birdDarkBlue2": "./assets/images/skin/birdDarkBlue/birdDarkBlue2.png",
+            "birdDarkBlue3": "./assets/images/skin/birdDarkBlue/birdDarkBlue3.png",
+
+            "birdYellow1": "./assets/images/skin/birdYellow/birdYellow1.png",
+            "birdYellow2": "./assets/images/skin/birdYellow/birdYellow2.png",
+            "birdYellow3": "./assets/images/skin/birdYellow/birdYellow3.png",
+
+            "birdBrown1": "./assets/images/skin/birdBrown/birdBrown1.png",
+            "birdBrown2": "./assets/images/skin/birdBrown/birdBrown2.png",
+            "birdBrown3": "./assets/images/skin/birdBrown/birdBrown3.png",
+            
             "birdDead": "./assets/images/skin/birdDead.png"
         })
 

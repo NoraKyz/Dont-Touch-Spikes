@@ -1,46 +1,65 @@
 {
-    "other": {
-        "hardCircle": "./assets/images/other/hardCircle.png"
-    },
-    "skin": {
-        "birdDead": "./assets/images/skin/birdDead.png"
-    },
-    "money": {
-        "candy": "./assets/images/item/money/candy.png"
-    },
-    "spikes": {
-        "spike": "./assets/images/item/spikes/spike.png",
-        "SpikeBottom": "./assets/images/item/spikes/SpikeBottom.png",
-        "SpikeLeft": "./assets/images/item/spikes/SpikeLeft.png",
-        "SpikeRight": "./assets/images/item/spikes/SpikeRight.png",
-        "SpikeTop": "./assets/images/item/spikes/SpikeTop.png"
-    },
-    "birdBlue": {
-        "birdBlue1": "./assets/images/skin/birdBlue/birdBlue1.png",
-        "birdBlue2": "./assets/images/skin/birdBlue/birdBlue2.png",
-        "birdBlue3": "./assets/images/skin/birdBlue/birdBlue3.png"
-    },
-    "birdDefault": {
-        "birdDefault1": "./assets/images/skin/birdDefault/birdDefault1.png",
-        "birdDefault2": "./assets/images/skin/birdDefault/birdDefault2.png",
-        "birdDefault3": "./assets/images/skin/birdDefault/birdDefault3.png"
-    },
-    "button": {
-        "cave": "./assets/images/ui/button/cave.png",
-        "dualMode": "./assets/images/ui/button/dualMode.png",
-        "hardMode": "./assets/images/ui/button/hardMode.png",
-        "highScore": "./assets/images/ui/button/highScore.png",
-        "points": "./assets/images/ui/button/points.png",
-        "replay": "./assets/images/ui/button/replay.png",
-        "share": "./assets/images/ui/button/share.png",
-        "skinShop": "./assets/images/ui/button/skinShop.png",
-        "tick": "./assets/images/ui/button/tick.png",
-        "tree": "./assets/images/ui/button/tree.png",
-        "undo": "./assets/images/ui/button/undo.png"
-    },
-    "dual": {
-        "line": "./assets/images/ui/dual/line.png",
-        "star1": "./assets/images/ui/dual/star1.png",
-        "star2": "./assets/images/ui/dual/star2.png"
-    }
+  "": {
+    "birdBlue1": "./assets/images/birdBlue1.png",
+    "birdBlue2": "./assets/images/birdBlue2.png",
+    "birdBlueFly": "./assets/images/birdBlueFly.png"
+  },
+  "skin": { "birdDead": "./assets/images/skin/birdDead.png" },
+  "other": { "circle": "./assets/images/other/circle.png" },
+  "money": { "candy": "./assets/images/item/money/candy.png" },
+  "spikes": {
+    "spike": "./assets/images/item/spikes/spike.png",
+    "SpikeBottom": "./assets/images/item/spikes/SpikeBottom.png",
+    "SpikeLeft": "./assets/images/item/spikes/SpikeLeft.png",
+    "SpikeRight": "./assets/images/item/spikes/SpikeRight.png",
+    "SpikeTop": "./assets/images/item/spikes/SpikeTop.png"
+  },
+  "button": {
+    "cave": "./assets/images/ui/button/cave.png",
+    "dualMode": "./assets/images/ui/button/dualMode.png",
+    "hardMode": "./assets/images/ui/button/hardMode.png",
+    "highScore": "./assets/images/ui/button/highScore.png",
+    "points": "./assets/images/ui/button/points.png",
+    "replay": "./assets/images/ui/button/replay.png",
+    "share": "./assets/images/ui/button/share.png",
+    "skinShop": "./assets/images/ui/button/skinShop.png",
+    "tick": "./assets/images/ui/button/tick.png",
+    "tree": "./assets/images/ui/button/tree.png",
+    "undo": "./assets/images/ui/button/undo.png"
+  },
+  "dual": {
+    "line": "./assets/images/ui/dual/line.png",
+    "star1": "./assets/images/ui/dual/star1.png",
+    "star2": "./assets/images/ui/dual/star2.png"
+  },
+  "birdBlue": {
+    "birdBlue1": "./assets/images/skin/birdBlue/birdBlue1.png",
+    "birdBlue2": "./assets/images/skin/birdBlue/birdBlue2.png",
+    "birdBlue3": "./assets/images/skin/birdBlue/birdBlue3.png"
+  },
+  "birdBrown": {
+    "birdBrown1": "./assets/images/skin/birdBrown/birdBrown1.png",
+    "birdBrown2": "./assets/images/skin/birdBrown/birdBrown2.png",
+    "birdBrown3": "./assets/images/skin/birdBrown/birdBrown3.png"
+  },
+  "birdDarkBlue": {
+    "birdDarkBlue1": "./assets/images/skin/birdDarkBlue/birdDarkBlue1.png",
+    "birdDarkBlue2": "./assets/images/skin/birdDarkBlue/birdDarkBlue2.png",
+    "birdDarkBlue3": "./assets/images/skin/birdDarkBlue/birdDarkBlue3.png"
+  },
+  "birdDefault": {
+    "birdDefault1": "./assets/images/skin/birdDefault/birdDefault1.png",
+    "birdDefault2": "./assets/images/skin/birdDefault/birdDefault2.png",
+    "birdDefault3": "./assets/images/skin/birdDefault/birdDefault3.png"
+  },
+  "birdNinja": {
+    "birdNinja1": "./assets/images/skin/birdNinja/birdNinja1.png",
+    "birdNinja2": "./assets/images/skin/birdNinja/birdNinja2.png",
+    "birdNinja3": "./assets/images/skin/birdNinja/birdNinja3.png"
+  },
+  "birdYellow": {
+    "birdYellow1": "./assets/images/skin/birdYellow/birdYellow1.png",
+    "birdYellow2": "./assets/images/skin/birdYellow/birdYellow2.png",
+    "birdYellow3": "./assets/images/skin/birdYellow/birdYellow3.png"
+  }
 }

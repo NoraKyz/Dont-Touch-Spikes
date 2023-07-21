@@ -11,17 +11,17 @@ import { SkinManager } from "../../../skin/skinManager";
 
 export class SkinCard extends Container {
   constructor(skin, index) {
-        super();
-        this._initProperties(skin, index);
-        this._initSprite();
-        this._initEvents();
-    }
+    super();
+    this._initProperties(skin, index);
+    this._initSprite();
+    this._initEvents();
+  }
 
   _initProperties(skin, index) {
-        this.index = index
-        this.data = skin;
-        this.skinManager = SkinManager.instance;
-    }
+    this.index = index
+    this.data = skin;
+    this.skinManager = SkinManager.instance;
+  }
 
   _initEvents() {
     this.on("unlockSkin", () => this.onUnlocked());
@@ -37,7 +37,8 @@ export class SkinCard extends Container {
     } else {
       this.unlocked.visible = false;
       this.locked.visible = true;
-    
+
+    }
   }
 
   _spriteUnlocked() {
@@ -45,11 +46,6 @@ export class SkinCard extends Container {
     this.unlocked.cursor = "pointer";
     this.unlocked.eventMode = "static";
     this.unlocked.on("pointertap", () => this.onSetSkin());
-    _initProperties(skin, index) {
-        this.index = index
-        this.data = skin;
-        this.skinManager = SkinManager.instance;
-    }
 
     this.bg1 = new Graphics();
     this.bg1.beginFill(0xffffff);
@@ -102,6 +98,7 @@ export class SkinCard extends Container {
     this.addChild(this.locked);
   }
 
+
   onUnlocked() {
     this.unlocked.visible = true;
     this.locked.visible = false;
@@ -114,32 +111,20 @@ export class SkinCard extends Container {
   onSetSkin() {
     this.skinManager.onSetSkin(this);
   }
-}
-        this.price = new Text(this.data.cost.value, {
-            fill: "#FFFFFF",
-            fontFamily: "Blissful Thinking",
-            fontSize: 70,
-            fontWeight: "lighter",
-            letterSpacing: 1,
-        });
-        this.price.anchor.set(0.5);
-        this.price.position.set(this.price.width * 0.45, 0);
-        this.locked.addChild(this.price);
 
-        this.addChild(this.locked);
-    }
 
-    onUnlocked() {
-        //console.log('log');
-        this.unlocked.visible = true;
-        this.locked.visible = false;
-    }
 
-    onGetSkin() {
-        this.skinManager.onGetSkin(this);
-    }
+  onUnlocked() {
+    //console.log('log');
+    this.unlocked.visible = true;
+    this.locked.visible = false;
+  }
 
-    onSetSkin() {
-        this.skinManager.onSetSkin(this);
-    }
+  onGetSkin() {
+    this.skinManager.onGetSkin(this);
+  }
+
+  onSetSkin() {
+    this.skinManager.onSetSkin(this);
+  }
 }

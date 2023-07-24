@@ -113,6 +113,9 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toDualModeScene", () => {
             this.parent.onStartScene("dualModeScene");
         })
+        this.sceneUI.on("toChallengesScene", () => {
+            this.parent.onStartScene("ChallengesScene");
+        })
     }
 
     _onStartSkinsShop() {

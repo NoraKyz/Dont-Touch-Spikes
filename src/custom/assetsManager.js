@@ -77,7 +77,12 @@ export class AssetsManager {
             "line": "./assets/images/ui/dual/line.png",
             "star1": "./assets/images/ui/dual/star1.png",
             "star2": "./assets/images/ui/dual/star2.png"
-        })
+        });
+
+        this._addBundle(
+            "challenges", {
+            "tickImage": "./assets/images/ui/challenges/tickImage.png"
+        });
 
         return Assets.loadBundle(this.keys);
     }

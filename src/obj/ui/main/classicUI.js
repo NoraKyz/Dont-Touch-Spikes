@@ -11,6 +11,7 @@ export class ClassicUI extends MainUI {
     this._initHardModeSwitch();
     this._initDualModeSwitch();
     this._initShopSkinButton();
+    this._initChallengesButton();
   }
 
   _initTitleUI() {
@@ -56,6 +57,18 @@ export class ClassicUI extends MainUI {
     this.addChild(this.skinShopButton);
   }
 
+  _initChallengesButton() {
+    this.challengesButton = Sprite.from(Assets.get("tick"));
+    this.challengesButton.anchor.set(0.5);
+    this.challengesButton.scale.set(0.18);
+    this.challengesButton.position.set(290, -120);
+
+    this.challengesButton.cursor = "pointer";
+    this.challengesButton.eventMode = 'static';
+    this.challengesButton.on("pointertap", () => this._toChallengesScene());
+    this.addChild(this.challengesButton);
+  }
+
   _toHardModeScene() {
     this.emit("toHardModeScene");
   }
@@ -66,6 +79,10 @@ export class ClassicUI extends MainUI {
   
   _startSkinsShopUI() {
     this.emit("startSkinsShopUI");
+  }
+
+  _toChallengesScene() {
+    this.emit("toChallengesScene");
   }
 
 }

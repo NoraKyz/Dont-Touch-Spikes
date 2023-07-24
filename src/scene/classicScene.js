@@ -78,6 +78,10 @@ export class ClassicScene extends GameScene {
         this.addChild(this.skinsShop);
     }
 
+    _initChallenge() {
+        this.challenge = new Challenge();
+    }
+
     _onCollision(obj1, obj2) {
         if(!this.parent) return;
         if (obj1 === this.player && obj2 instanceof Spike) {
@@ -116,6 +120,15 @@ export class ClassicScene extends GameScene {
         this.sceneUI.on("toChallengesScene", () => {
             this.parent.onStartScene("ChallengesScene");
         })
+    }
+
+    _onStartChallenge() {
+        this.gameState = GameState.PlayDisabled;
+        
+        this.sceneUI.hideMainUI();
+        this.gameInfor.hide();
+        this.player.hide();
+        this.background.hideScoreBackground();
     }
 
     _onStartSkinsShop() {

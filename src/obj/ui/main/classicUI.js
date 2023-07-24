@@ -16,7 +16,7 @@ export class ClassicUI extends MainUI {
 
   _initTitleUI() {
     super._initTitleUI();
-    this.gameName.text = "DON\'T TOUCH\n   THE SPIKES";
+    this.gameName.text = "DON'T TOUCH\n   THE SPIKES";
     this.gameName.style = this.titleStyle;
   }
 
@@ -27,7 +27,7 @@ export class ClassicUI extends MainUI {
     this.hardModeSwitch.position.set(-290, -230);
 
     this.hardModeSwitch.cursor = "pointer";
-    this.hardModeSwitch.eventMode = 'static';
+    this.hardModeSwitch.eventMode = "static";
     this.hardModeSwitch.on("pointertap", () => this._toHardModeScene());
 
     this.addChild(this.hardModeSwitch);
@@ -40,19 +40,19 @@ export class ClassicUI extends MainUI {
     this.dualModeSwitch.position.set(-290, -120);
 
     this.dualModeSwitch.cursor = "pointer";
-    this.dualModeSwitch.eventMode = 'static';
+    this.dualModeSwitch.eventMode = "static";
     this.dualModeSwitch.on("pointerdown", () => this._toDualModeScene());
     this.addChild(this.dualModeSwitch);
   }
 
-  _initShopSkinButton(){
+  _initShopSkinButton() {
     this.skinShopButton = Sprite.from(Assets.get("skinShop"));
     this.skinShopButton.anchor.set(0.5);
     this.skinShopButton.scale.set(0.18);
     this.skinShopButton.position.set(290, -230);
 
     this.skinShopButton.cursor = "pointer";
-    this.skinShopButton.eventMode = 'static';
+    this.skinShopButton.eventMode = "static";
     this.skinShopButton.on("pointertap", () => this._startSkinsShopUI());
     this.addChild(this.skinShopButton);
   }
@@ -76,11 +76,13 @@ export class ClassicUI extends MainUI {
   _toDualModeScene() {
     this.emit("toDualModeScene");
   }
-  
+
+  _toDailyChallengeScene() {}
+
   _startSkinsShopUI() {
     this.emit("startSkinsShopUI");
   }
-
+  
   _toChallengesScene() {
     this.emit("toChallengesScene");
   }

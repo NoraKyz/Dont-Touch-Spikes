@@ -81,7 +81,7 @@ export class ChallengesUI extends MainUI {
         this.completeChallenges.text.position.set(325, 40);
         this.completeChallenges.addChild(this.completeChallenges.text);
 
-        this.completeChallenges.number = new Text("000/100", this.completeChallengesTextStyle);
+        this.completeChallenges.number = new Text("000/120", this.completeChallengesTextStyle);
         this.completeChallenges.number.scale.set(1.2);
         this.completeChallenges.number.anchor.set(0.5);
         this.completeChallenges.number.position.set(325, 100);

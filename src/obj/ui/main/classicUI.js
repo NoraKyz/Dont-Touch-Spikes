@@ -11,7 +11,7 @@ export class ClassicUI extends MainUI {
     this._initHardModeSwitch();
     this._initDualModeSwitch();
     this._initShopSkinButton();
-    this._initChallengeButton();
+    this._initChallengesButton();
   }
 
   _initTitleUI() {
@@ -57,17 +57,16 @@ export class ClassicUI extends MainUI {
     this.addChild(this.skinShopButton);
   }
 
-  _initChallengeButton() {
-    this.challengeButton = Sprite.from(Assets.get("tick"));
-    this.challengeButton.anchor.set(0.5);
-    this.challengeButton.scale.set(0.18);
-    this.challengeButton.position.set(290, -120);
+  _initChallengesButton() {
+    this.challengesButton = Sprite.from(Assets.get("tick"));
+    this.challengesButton.anchor.set(0.5);
+    this.challengesButton.scale.set(0.18);
+    this.challengesButton.position.set(290, -120);
 
-    this.challengeButton.cursor = "pointer";
-    this.challengeButton.eventMode = "static";
-    this.challengeButton.on("pointertap", () => this._toDailyChallengeScene());
-    console.log("daily challenge button");
-    this.addChild(this.challengeButton);
+    this.challengesButton.cursor = "pointer";
+    this.challengesButton.eventMode = 'static';
+    this.challengesButton.on("pointertap", () => this._toChallengesScene());
+    this.addChild(this.challengesButton);
   }
 
   _toHardModeScene() {
@@ -83,4 +82,9 @@ export class ClassicUI extends MainUI {
   _startSkinsShopUI() {
     this.emit("startSkinsShopUI");
   }
+  
+  _toChallengesScene() {
+    this.emit("toChallengesScene");
+  }
+
 }

@@ -6,7 +6,7 @@ export class Data {
         this.currentScore = 0;
         this.bestScore = 0;
         this.gamesPlayed = 0;
-        this.itemQuantity = 100;
+        this.itemQuantity = 0;
         this.pullData();
     }
 
@@ -25,6 +25,7 @@ export class Data {
         }
         localStorage.setItem("savedGameData", JSON.stringify(this.data));
     }
+
     static pullData(){
         const savedGameData = localStorage.getItem("savedGameData");
         if (savedGameData) {

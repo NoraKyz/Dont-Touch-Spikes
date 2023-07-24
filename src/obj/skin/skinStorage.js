@@ -49,7 +49,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 20,
         },
         enabled: false,
       },
@@ -64,7 +64,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 20,
         },
         enabled: false,
       },
@@ -79,7 +79,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 50,
         },
         enabled: false,
       },
@@ -94,7 +94,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 100,
         },
         enabled: false,
       },
@@ -109,7 +109,7 @@ export class SkinStorage {
         },
         cost: {
           type: TypeCurrency.Candy,
-          value: 10,
+          value: 200,
         },
         enabled: false,
       },
@@ -124,7 +124,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 200,
         },
         enabled: false,
       },
@@ -139,7 +139,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 250,
         },
         enabled: false,
       },
@@ -154,7 +154,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 300,
         },
         enabled: false,
       },
@@ -169,7 +169,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 300,
         },
         enabled: false,
       },
@@ -184,7 +184,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 400,
         },
         enabled: false,
       },
@@ -199,7 +199,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 400,
         },
         enabled: false,
       },
@@ -214,7 +214,7 @@ export class SkinStorage {
         },
         cost: {
           type: TypeCurrency.Candy,
-          value: 10,
+          value: 500,
         },
         enabled: false,
       },
@@ -229,7 +229,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 500,
         },
         enabled: false,
       },
@@ -244,7 +244,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 550,
         },
         enabled: false,
       },
@@ -259,7 +259,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 600,
         },
         enabled: false,
       },
@@ -274,7 +274,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 700,
         },
         enabled: false,
       },
@@ -289,7 +289,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 750,
         },
         enabled: false,
       },
@@ -304,7 +304,7 @@ export class SkinStorage {
         },
         cost: {
           type: TypeCurrency.Candy,
-          value: 10,
+          value: 800,
         },
         enabled: false,
       },
@@ -319,7 +319,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 800,
         },
         enabled: false,
       },
@@ -334,7 +334,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 1000,
         },
         enabled: false,
       },
@@ -349,7 +349,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 1000,
         },
         enabled: false,
       },
@@ -364,7 +364,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 2000,
         },
         enabled: false,
       },
@@ -379,7 +379,7 @@ export class SkinStorage {
         },
         cost: {
           typee: TypeCurrency.Candy,
-          value: 10,
+          value: 2500,
         },
         enabled: false,
       },

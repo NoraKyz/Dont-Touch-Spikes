@@ -11,7 +11,7 @@ export class SceneManager extends Container {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("ChallengesScene");
+        this.onStartScene("ClassicModeScene");
     }
 
     _initProperties() {

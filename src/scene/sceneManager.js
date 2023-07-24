@@ -2,6 +2,7 @@ import { Container } from "pixi.js";
 import { ClassicScene } from "./classicScene";
 import { HardModeScene } from "./hardModeScene";
 import { DualModeScene } from "./dualModeScene";
+import { ChallengesScene } from "./challengesScene";
 
 
 export class SceneManager extends Container {
@@ -10,7 +11,7 @@ export class SceneManager extends Container {
         super();
         this._initProperties();
         this._initScenes();
-        this.onStartScene("ClassicModeScene");
+        this.onStartScene("ChallengesScene");
     }
 
     _initProperties() {
@@ -27,6 +28,9 @@ export class SceneManager extends Container {
 
         this.dualmodeScene = new DualModeScene(this);
         this.scenes.push(this.dualmodeScene);
+
+        this.challengesScene = new ChallengesScene(this);
+        this.scenes.push(this.challengesScene);
     }
     // Gọi id trong scene để chạy scene đó
     onStartScene(id) {

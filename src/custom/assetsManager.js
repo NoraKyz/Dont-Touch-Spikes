@@ -63,7 +63,8 @@ export class AssetsManager {
             "tick": "./assets/images/ui/button/tick.png",
             "tree": "./assets/images/ui/button/tree.png",
             "undo": "./assets/images/ui/button/undo.png",
-            "dualGameOver": "./assets/images/ui/button/dualGameOver.png"
+            "dualGameOver": "./assets/images/ui/button/dualGameOver.png",
+            "challengeMission": "./assets/images/ui/button/challengeMission.png"
         })
 
         this._addBundle(

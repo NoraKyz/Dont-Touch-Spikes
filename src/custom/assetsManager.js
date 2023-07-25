@@ -63,8 +63,7 @@ export class AssetsManager {
             "tick": "./assets/images/ui/button/tick.png",
             "tree": "./assets/images/ui/button/tree.png",
             "undo": "./assets/images/ui/button/undo.png",
-            "dualGameOver": "./assets/images/ui/button/dualGameOver.png",
-            "challengeMission": "./assets/images/ui/button/challengeMission.png"
+            "dualGameOver": "./assets/images/ui/button/dualGameOver.png"
         })
 
         this._addBundle(
@@ -82,7 +81,9 @@ export class AssetsManager {
 
         this._addBundle(
             "challenges", {
-            "tickImage": "./assets/images/ui/challenges/tickImage.png"
+            "tickImage": "./assets/images/ui/challenges/tickImage.png",
+            "challengeMission": "./assets/images/ui/challenges/challengeMission.png",
+            "challengeBackground": "./assets/images/ui/challenges/ChallengeBg.png",
         });
 
         return Assets.loadBundle(this.keys);

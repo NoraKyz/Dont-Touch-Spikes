@@ -6,7 +6,7 @@ export class ChallengesManager extends EventEmitter {
     static _instance;
 
     static get instance() {
-        if(!this._instance) {
+        if (!this._instance) {
             this._instance = new ChallengesManager();
         }
 
@@ -19,32 +19,35 @@ export class ChallengesManager extends EventEmitter {
         this.completedChallenges = 0;
         this._initChallenges();
         this._initChecker();
-        this._initEvent();
         this.currentChallenge = this.challengesList[0];
+        this._initEvent();
     }
 
-    _initEvent(){
-        this.on("completeChallenge", this.onCompleteChallenge());
+    _initEvent() {
+        this.on("completeChallenge", () => {
+            this.onCompleteChallenge();
+        });
     }
 
-    onCompleteChallenge(){
+    onCompleteChallenge() {
+        console.log("fsd");
         this.currentChallenge = this.challengesList[this.currentChallenge.id];
     }
 
     _initChallenges() {
         ChallengesStorage.storage.forEach(challenge => {
             this.challengesList.push(challenge);
-            if(challenge.completed) {
+            if (challenge.completed) {
                 this.completedChallenges++;
             }
         });
     }
 
-    _initChecker(){
+    _initChecker() {
         this.checker = new ChallengeChecker();
     }
 
-    update(sceneId){
+    update(sceneId) {
         this.currentChallenge = this.checker.update(this.currentChallenge, sceneId);
     }
 }

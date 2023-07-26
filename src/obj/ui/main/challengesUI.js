@@ -1,12 +1,18 @@
 import { Assets, Container, Graphics, Sprite, Text, TextStyle } from "pixi.js";
 import { MainUI } from "./mainUI";
+import { ChallengesManager } from "../../challenges/challengesManager";
 
 export class ChallengesUI extends MainUI {
     constructor() {
         super();
     }
 
+    _initProperties() {
+        this.challengesManager = ChallengesManager.instance;
+    }
+
     _initComponent() {
+        this._initProperties();
         super._initTextStyle();
         this._initTitleUI();
         this._initBackButton();
@@ -81,7 +87,7 @@ export class ChallengesUI extends MainUI {
         this.completeChallenges.text.position.set(325, 40);
         this.completeChallenges.addChild(this.completeChallenges.text);
 
-        this.completeChallenges.number = new Text("000/120", this.completeChallengesTextStyle); // TODO: add data
+        this.completeChallenges.number = new Text(this.challengesManager.completedChallenges + "/" + this.challengesManager.challengesList.length, this.completeChallengesTextStyle); 
         this.completeChallenges.number.scale.set(1.2);
         this.completeChallenges.number.anchor.set(0.5);
         this.completeChallenges.number.position.set(325, 100);

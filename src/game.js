@@ -5,6 +5,7 @@ import { AssetsManager } from "./custom/assetsManager";
 import { Data } from "./data";
 import * as TWEEN from "@tweenjs/tween.js";
 import { SkinStorage } from "./obj/skin/skinStorage";
+import { ChallengesStorage } from "./obj/challenges/challengesStorage";
 
 export class Game {
     static init() {
@@ -61,6 +62,7 @@ export class Game {
 
 window.onload = function () {
     SkinStorage.init();
+    ChallengesStorage.init();
     Data.init();
     Game.init();
     window.onresize = () => {

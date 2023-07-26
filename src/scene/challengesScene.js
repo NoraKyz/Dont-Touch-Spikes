@@ -23,6 +23,7 @@ export class ChallengesScene extends Container {
     this._initSpikes();
     this._initBackground();
     this._initSceneUI();
+    this._initChallengeCard();
   }
 
   _initSpikes() {
@@ -38,6 +39,11 @@ export class ChallengesScene extends Container {
   _initSceneUI() {
     this.sceneUI = new ChallengesUI();
     this.addChild(this.sceneUI);
+  }
+
+  _initChallengeCard() {
+    this.ChallengeCard = new ChallengeCard();
+    this.addChild(this.ChallengeCard);
   }
 
   _initEvent() {

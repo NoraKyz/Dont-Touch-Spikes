@@ -1,4 +1,3 @@
-import { Assets, Texture } from "pixi.js";
 
 export const TypeCurrency = Object.freeze({
   Candy: "candy",

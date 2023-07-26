@@ -7,7 +7,6 @@ import {
   Text,
   TextStyle,
 } from "pixi.js";
-import { Game } from "../../../game";
 
 export class ChallengeCard extends Container {
   constructor(challenge) {
@@ -78,7 +77,7 @@ export class ChallengeCard extends Container {
   }
 
   _initTitle() {
-    this.challengeName = new Text("CHALLENGE ", this.nameStyle); // Need Data
+    this.challengeName = new Text("CHALLENGE ", this.nameStyle); // TODO: Số thứ tự
     this.challengeName.anchor.set(0.5);
     this.challengeName.position.set(0, 60);
     this.addChild(this.challengeName);
@@ -102,5 +101,5 @@ export class ChallengeCard extends Container {
     //TODO: Thêm event
   }
 
-  update() {}
+  update() { }
 }

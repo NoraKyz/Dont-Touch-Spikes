@@ -14,7 +14,15 @@ export class ChallengeChecker extends EventEmitter {
     this.score = 0;
     this.gamePlayed = 0;
   }
+  _resetData(){
+    this.lastCandies = Data.itemQuantity;
+    this.lastGamePlayed = Data.gamesPlayed;
+    this.candies = 0;
+    this.score = 0;
+    this.gamePlayed = 0;
+  }
   update(currentChallenge, sceneId){
+    this._resetData();
     switch(currentChallenge.type){
       case "candy": 
         currentChallenge = this._updateCandy(currentChallenge, sceneId);

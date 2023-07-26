@@ -102,7 +102,6 @@ export class ChallengeCard extends Container {
   }
 
   update(challenge) {
-    console.log(challenge);
     this.challenge = challenge;
 
     this._reset();

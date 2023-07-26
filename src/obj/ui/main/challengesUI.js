@@ -101,7 +101,6 @@ export class ChallengesUI extends MainUI {
     }
 
     update() {
-        console.log(this.challengesManager);
         this.completeChallenges.number.text = this.challengesManager.completedChallenges + "/" + this.challengesManager.challengesList.length;
     }
 }

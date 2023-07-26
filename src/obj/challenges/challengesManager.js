@@ -19,7 +19,16 @@ export class ChallengesManager extends EventEmitter {
         this.completedChallenges = 0;
         this._initChallenges();
         this._initChecker();
+        this._initEvent();
         this.currentChallenge = this.challengesList[0];
+    }
+
+    _initEvent(){
+        this.on("completeChallenge", this.onCompleteChallenge());
+    }
+
+    onCompleteChallenge(){
+        this.currentChallenge = this.challengesList[this.currentChallenge.id];
     }
 
     _initChallenges() {
@@ -36,6 +45,6 @@ export class ChallengesManager extends EventEmitter {
     }
 
     update(sceneId){
-        this.checker.update(this.currentChallenge, sceneId);
+        this.currentChallenge = this.checker.update(this.currentChallenge, sceneId);
     }
 }

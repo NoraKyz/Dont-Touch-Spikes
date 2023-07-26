@@ -9,56 +9,103 @@ export class ChallengeChecker extends EventEmitter {
 
   _initProperties(){
     this.lastCandies = Data.itemQuantity;
-    this.currentScore = 0;
+    this.lastGamePlayed = Data.gamesPlayed;
+    this.candies = 0;
+    this.score = 0;
     this.gamePlayed = 0;
   }
   update(currentChallenge, sceneId){
     switch(currentChallenge.type){
       case "candy": 
-        switch(currentChallenge.scene){
-          case "any":
-            break;
-          case "classicMode":
-            break;  
-          case "hardMode":
-            break;
-        }
-        currentChallenge.progress = Data.itemQuantity - this.lastCandies;
+        currentChallenge = this._updateCandy(currentChallenge, sceneId);
         break;
       case "score":
-        switch(currentChallenge.scene){
-          case "any":
-            break;
-          case "classicMode":
-            break;  
-          case "hardMode":
-            break;
-        } 
-        this.currentScore = Data.currentScore;
+        currentChallenge = this._updateScore(currentChallenge, sceneId);
         break;
       case "gamesPlayed":
-        switch(currentChallenge.scene){
-          case "any":
-            break;
-          case "classicMode":
-            break;  
-          case "hardMode":
-            break;
+        currentChallenge = this._updateGamePlayed(currentChallenge, sceneId);
+        break;
+    }
+    this._checker(currentChallenge);
+    return currentChallenge;
+  }
+
+  _updateCandy(currentChallenge, sceneId){
+    switch(currentChallenge.scene){
+      case "any":
+        this.candies = Data.itemQuantity - this.lastCandies;
+        currentChallenge.progress += this.candies;
+        this.lastCandies = Data.itemQuantity;
+        break;
+      case "classicMode":
+        if(sceneId === "ClassicModeScene"){
+          this.candies = Data.itemQuantity - this.lastCandies;
+          currentChallenge.progress += this.candies;
+        } 
+        this.lastCandies = Data.itemQuantity;
+        break;  
+      case "hardMode":
+        if(sceneId === "HardModeScene"){
+          this.candies = Data.itemQuantity - this.lastCandies;
+          currentChallenge.progress += this.candies;
+        }
+        this.lastCandies = Data.itemQuantity;
+        break;
+    }
+    return currentChallenge;
+  }
+
+  _updateScore(currentChallenge, sceneId){
+    switch(currentChallenge.scene){
+      case "any":
+        this.score = Data.currentScore;
+        currentChallenge.progress = this.score;
+        break;
+      case "classicMode":
+        if(sceneId === "ClassicModeScene"){
+          this.score = Data.currentScore;
+          currentChallenge.progress = this.score;
+        }
+        break;  
+      case "hardMode":
+        if(sceneId === "HardModeScene"){
+          this.score = Data.currentScore;
+          currentChallenge.progress = this.score;
         }
         break;
-    }
+    } 
+    return currentChallenge;
   }
-  checker(currentChallenge){
-    switch(currentChallenge.type){
-      case "candy": 
+  _updateGamePlayed(currentChallenge, sceneId){
+    switch(currentChallenge.scene){
+      case "any":
+        this.gamePlayed = Data.gamesPlayed - this.lastGamePlayed;
+        currentChallenge.progress += this.candies;
+        this.lastGamePlayed = Data.gamesPlayed;
         break;
-      case "score": 
+      case "classicMode":
+        if(sceneId === "ClassicModeScene"){
+          this.gamePlayed = Data.gamesPlayed - this.lastGamePlayed;
+          currentChallenge.progress += this.gamePlayed;
+        }
+        this.lastGamePlayed = Data.gamesPlayed;
+        break;  
+      case "hardMode":
+        if(sceneId === "HardModeScene"){
+          this.gamePlayed = Data.gamesPlayed - this.lastGamePlayed;
+          currentChallenge.progress += this.gamePlayed;
+        }
+        this.lastGamePlayed = Data.gamesPlayed;
         break;
-      case "gamesPlayed":
-        break;
-    }
+    } 
+    return currentChallenge;
   }
-  complete(){
 
+  _checker(currentChallenge){
+    if(currentChallenge.progress >= currentChallenge.goal) this._complete();
+  }
+
+  _complete(){
+    this.emit("completeChallenge");
   }
 }

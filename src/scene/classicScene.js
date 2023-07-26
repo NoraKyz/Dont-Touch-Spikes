@@ -172,6 +172,7 @@ export class ClassicScene extends GameScene {
         this.gameOverUI.onReset();
         this.candies.onReset();
         this.gameState = GameState.Ready;
+        this.challengesManager.checker._resetData();
     }
 
     // Mở rộng thêm để xử lý scene

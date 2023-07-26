@@ -99,7 +99,6 @@ export class HardModeScene extends GameScene {
     }
 
     _onPointerDown() {
-        console.log(SkinStorage.storage);
         if (this.gameState == GameState.Ready || this.gameState == GameState.Playing) {
             if (this.gameState == GameState.Ready) {
                 this.sceneUI.hideMainUI();
@@ -113,7 +112,6 @@ export class HardModeScene extends GameScene {
     }
 
     onResetScene() {
-        console.log('reset scene hardmode');
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();
@@ -122,8 +120,10 @@ export class HardModeScene extends GameScene {
         this.background.onReset();
         this.sceneUI.onReset();
         this.gameOverUI.onReset();
-        this.candies.onReset();
+        this.candies.onReset(); 
         this.gameState = GameState.Ready;
+
+        this.challengesManager.checker._resetData();
     }
 
     _onLose() {
@@ -132,6 +132,7 @@ export class HardModeScene extends GameScene {
         }
 
         this.gameState = GameState.End;
+        this.challengesManager.update(this.id);
         Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();
         this.candies.onLose();

@@ -126,8 +126,9 @@ export class DualModeScene extends GameScene {
     this.player2.movement.direction = {x: -1,y: -1};
     this.direction2 = -1;
     this.winPlayer = "";
-  }
 
+    this.challengesManager.checker._resetData();
+  }
 
   _initSceneEvent() {
     this.on("nextLevel", this._onNextLevel.bind(this));
@@ -184,6 +185,7 @@ export class DualModeScene extends GameScene {
       return;
     }
     this.gameState = GameState.End;
+    this.challengesManager.update(this.id);
     Assets.get("loseSound").play();
     setTimeout(() => {
         this.sceneOverUI.onResetStar(this.sceneUI.gameState);

@@ -1,3 +1,5 @@
+import { ChallengesManager } from "./obj/challenges/challengesManager";
+import { ChallengesStorage } from "./obj/challenges/challengesStorage";
 import { SkinManager } from "./obj/skin/skinManager";
 import { SkinStorage } from "./obj/skin/skinStorage";
 
@@ -6,8 +8,8 @@ export class Data {
         this.currentScore = 0;
         this.bestScore = 0;
         this.gamesPlayed = 0;
-        this.itemQuantity = 0;
-        this.pullData();
+        this.itemQuantity = 100;
+        this.pullData();  
     }
 
     static resetScore() {
@@ -22,6 +24,8 @@ export class Data {
             itemQuantity: this.itemQuantity,
             skin: SkinStorage.storage,
             currentSkin: SkinManager.instance.currentSkin,
+            challenge: ChallengesStorage.storage,
+            currentChallenge: ChallengesManager.instance.currentChallenge,
         }
         localStorage.setItem("savedGameData", JSON.stringify(this.data));
     }
@@ -36,6 +40,9 @@ export class Data {
             this.itemQuantity = this.data.itemQuantity;
             if(this.data.skin) SkinStorage.storage = this.data.skin;
             if(this.data.currentSkin) SkinManager.instance.currentSkin = this.data.currentSkin;
+            if(this.data.challenge) ChallengesStorage.storage = this.data.challenge;
+            if(this.data.currentChallenge) ChallengesManager.instance.currentChallenge = this.data.currentChallenge;
+            ChallengesManager.instance.completedChallenges = ChallengesManager.instance.currentChallenge.id - 1;
         }
     }
 }

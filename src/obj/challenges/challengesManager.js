@@ -30,8 +30,8 @@ export class ChallengesManager extends EventEmitter {
     }
 
     onCompleteChallenge() {
+        this.completedChallenges++;
         this.currentChallenge = this.challengesList[this.currentChallenge.id];
-        //console.log(this.currentChallenge);
     }
 
     _initChallenges() {
@@ -49,6 +49,6 @@ export class ChallengesManager extends EventEmitter {
 
     update(sceneId) {     
         this.currentChallenge = this.checker.update(this.currentChallenge, sceneId);
-        this.checker._checker(this.currentChallenge);
+        this.checker.checker(this.currentChallenge);
     }
 }

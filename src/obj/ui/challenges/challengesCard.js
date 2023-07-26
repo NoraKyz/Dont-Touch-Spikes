@@ -96,19 +96,19 @@ export class ChallengeCard extends Container {
     this.challengeBg.addChild(this.challengeAchievedTitle);
   }
 
+  _reset(){
+    this.challengeAchievedBg.beginFill(0x1c2933);
+    this.challengeAchievedBg.drawRoundedRect(0, 0, 400, 72, 12);
+  }
+
   update(challenge) {
+    console.log(challenge);
     this.challenge = challenge;
 
+    this._reset();
     this.challengeAchievedBg.beginFill(0x5bab16);
-    this.challengeAchievedBg.position.set(-200, 187);
     this.challengeAchievedPercentage = this.challenge.progress / this.challenge.goal * 100;
-    this.challengeAchievedBg.drawRoundedRect(
-      0,
-      0,
-      (400 * this.challengeAchievedPercentage) / 100,
-      72,
-      12
-    );
+    this.challengeAchievedBg.drawRoundedRect(0, 0, (400 * this.challengeAchievedPercentage) / 100, 72, 12);
 
     this.challengeName.text = "CHALLENGE " + this.challenge.id;
     this.challengeMissionTitle.text = this.challenge.descriptsion;

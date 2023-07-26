@@ -48,7 +48,6 @@ export class ChallengesScene extends Container {
   }
 
   _updateUI() {
-    console.log(ChallengesManager.instance.currentChallenge);
     this.sceneUI.update();
     this.challengeCard.update(this.challengesManager.currentChallenge);
   }

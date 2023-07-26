@@ -20,15 +20,9 @@ export class ChallengesScene extends Container {
   }
 
   _initComponents() {
-    this._initSpikes();
     this._initBackground();
     this._initSceneUI();
     this._initChallengeCard();
-  }
-
-  _initSpikes() {
-    this.spikes = new SpikesManager(this.id);
-    this.addChild(this.spikes);
   }
 
   _initBackground() {

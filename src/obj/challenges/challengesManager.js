@@ -24,14 +24,14 @@ export class ChallengesManager extends EventEmitter {
     }
 
     _initEvent() {
-        this.on("completeChallenge", () => {
+        this.checker.on("completeChallenge", () => {
             this.onCompleteChallenge();
         });
     }
 
     onCompleteChallenge() {
-        console.log("fsd");
         this.currentChallenge = this.challengesList[this.currentChallenge.id];
+        //console.log(this.currentChallenge);
     }
 
     _initChallenges() {
@@ -47,7 +47,8 @@ export class ChallengesManager extends EventEmitter {
         this.checker = new ChallengeChecker();
     }
 
-    update(sceneId) {
+    update(sceneId) {     
         this.currentChallenge = this.checker.update(this.currentChallenge, sceneId);
+        this.checker._checker(this.currentChallenge);
     }
 }

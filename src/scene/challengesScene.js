@@ -48,6 +48,7 @@ export class ChallengesScene extends Container {
   }
 
   _updateUI() {
+    console.log(ChallengesManager.instance.currentChallenge);
     this.sceneUI.update();
     this.challengeCard.update(this.challengesManager.currentChallenge);
   }
@@ -61,5 +62,7 @@ export class ChallengesScene extends Container {
     this.y = Game.app.screen.height / 2;
   }
 
-  update(dt) { }
+  update(dt) {
+
+  }
 }

@@ -16,7 +16,7 @@ export class ChallengesStorage {
     static init() {
         this.storage = [
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,
@@ -40,7 +40,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,
@@ -48,7 +48,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,
@@ -56,7 +56,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,
@@ -64,7 +64,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,
@@ -72,7 +72,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,
@@ -80,7 +80,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
-                type: TypeChallenge.Collection,
+                type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
                 goal: 10,

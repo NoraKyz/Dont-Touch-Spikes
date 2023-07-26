@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { ChallengesStorage } from "./challengesStorage";
+import { ChallengeChecker } from "./challengeChecker";
 
 export class ChallengesManager extends EventEmitter {
     static _instance;
@@ -14,16 +15,23 @@ export class ChallengesManager extends EventEmitter {
 
     constructor() {
         super();
-        challengesList = [];
+        this.challengesList = [];
         this._initChallenges();
+        this._initChecker();
         this.currentChallenge = this.challengesList[0];
     }
 
     _initChallenges() {
         ChallengesStorage.storage.forEach(challenge => {
-            challengesList.push(challenge);
+            this.challengesList.push(challenge);
         });
     }
 
-    
+    _initChecker(){
+        this.checker = new ChallengeChecker();
+    }
+
+    update(sceneId){
+        this.checker.update(this.currentChallenge, sceneId);
+    }
 }

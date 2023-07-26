@@ -1,9 +1,9 @@
 import { Container } from "pixi.js";
-import { SpikesManager } from "../obj/trap/spikesManager";
 import { GameConstant } from "../gameConstant";
 import { BackgroundChallenges } from "../obj/background/backgroundChallenges";
 import { ChallengesUI } from "../obj/ui/main/challengesUI";
 import { ChallengeCard } from "../obj/ui/challenges/challengesCard";
+import { ChallengesManager } from "../obj/challenges/challengesManager";
 
 export class ChallengesScene extends Container {
   constructor() {
@@ -17,6 +17,7 @@ export class ChallengesScene extends Container {
     this.id = "ChallengesScene";
     this.x = GameConstant.GAME_WIDTH / 2;
     this.y = GameConstant.GAME_HEIGHT / 2;
+    this.challengesManager = ChallengesManager.instance;
   }
 
   _initComponents() {
@@ -36,7 +37,7 @@ export class ChallengesScene extends Container {
   }
 
   _initChallengeCard() {
-    this.ChallengeCard = new ChallengeCard();
+    this.ChallengeCard = new ChallengeCard(this.challengesManager.currentChallenge);
     this.addChild(this.ChallengeCard);
   }
 

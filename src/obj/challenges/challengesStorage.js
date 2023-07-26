@@ -16,6 +16,7 @@ export class ChallengesStorage {
     static init() {
         this.storage = [
             {
+                id: 1,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
@@ -24,6 +25,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 2,
                 type: TypeChallenge.BestScore,
                 descriptsion: "Get 20 points in hard mode",
                 progress: 0,
@@ -32,6 +34,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 3,
                 type: TypeChallenge.GamesPlayed,
                 descriptsion: "Play 5 times in classic mode",
                 progress: 0,
@@ -40,6 +43,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 4,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
@@ -48,6 +52,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 5,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
@@ -56,6 +61,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 6,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
@@ -64,6 +70,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 7,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
@@ -72,6 +79,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 8,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,
@@ -80,6 +88,7 @@ export class ChallengesStorage {
                 completed: false,
             },
             {
+                id: 9,
                 type: TypeChallenge.CollectCandy,
                 descriptsion: "Collect 10 candies",
                 progress: 0,

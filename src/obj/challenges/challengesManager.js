@@ -16,6 +16,7 @@ export class ChallengesManager extends EventEmitter {
     constructor() {
         super();
         this.challengesList = [];
+        this.completedChallenges = 0;
         this._initChallenges();
         this._initChecker();
         this.currentChallenge = this.challengesList[0];
@@ -24,6 +25,9 @@ export class ChallengesManager extends EventEmitter {
     _initChallenges() {
         ChallengesStorage.storage.forEach(challenge => {
             this.challengesList.push(challenge);
+            if(challenge.completed) {
+                this.completedChallenges++;
+            }
         });
     }
 

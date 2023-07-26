@@ -9,15 +9,14 @@ import {
 } from "pixi.js";
 
 export class ChallengeCard extends Container {
-  constructor() {
-    //TODO: Truyền challenge từ Data vào constructor
+  constructor(challenge) {
     super();
-    this._initProperties();
+    this._initProperties(challenge);
     this._initComponent();
   }
 
-  _initProperties() {
-    //this.challenge = challenge; //TODO: Truyền challenge từ Data vào
+  _initProperties(challenge) {
+    this.challenge = challenge;
   }
 
   _initComponent() {
@@ -43,7 +42,7 @@ export class ChallengeCard extends Container {
     this.challengeAchievedBg = new Graphics();
     this.challengeAchievedBg.beginFill(0x5bab16);
     this.challengeAchievedBg.position.set(-200, 187);
-    this.challengeAchievedPercentage = 0; //TODO: Phần trăm hoàn thành, thêm Data
+    this.challengeAchievedPercentage = this.challenge.progress / this.challenge.goal * 100;
     this.challengeAchievedBg.drawRoundedRect(
       0,
       0,
@@ -78,20 +77,20 @@ export class ChallengeCard extends Container {
   }
 
   _initTitle() {
-    this.challengeName = new Text("CHALLENGE ", this.nameStyle); // TODO: Số thứ tự
+    this.challengeName = new Text("CHALLENGE " + this.challenge.id, this.nameStyle); 
     this.challengeName.anchor.set(0.5);
     this.challengeName.position.set(0, 60);
     this.challengeBg.addChild(this.challengeName);
 
     this.challengeMissionTitle = new Text();
-    this.challengeMissionTitle.text = ""; //TODO: Nội dung nhiệm vụ, thêm Data
+    this.challengeMissionTitle.text = this.challenge.descriptsion; 
     this.challengeMissionTitle.style = this.MissionStyle;
     this.challengeMissionTitle.anchor.set(0.5);
     this.challengeMissionTitle.position.set(0, 140);
     this.challengeBg.addChild(this.challengeMissionTitle);
 
     this.challengeAchievedTitle = new Text();
-    this.challengeAchievedTitle.text = ""; //TODO: Số lượng hoàn thành, thêm Data
+    this.challengeAchievedTitle.text = this.challenge.progress.toString();
     this.challengeAchievedTitle.style = this.nameStyle;
     this.challengeAchievedTitle.anchor.set(0.5);
     this.challengeAchievedTitle.position.set(0, 225);

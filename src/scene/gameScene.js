@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import { Game } from "../game";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
+import { ChallengesManager } from "../obj/challenges/challengesManager";
 
 export const GameState = Object.freeze({
     Ready: "ready",
@@ -16,6 +17,7 @@ export class GameScene extends Container {
         this._initGameplay();
         this._initColliderDetector();
         this._initSceneEvent();
+        this._initChallengesManager();
     }
     // Khởi tạo các thuộc tính cơ bản của scene
     _initProperties() {
@@ -41,6 +43,10 @@ export class GameScene extends Container {
 
     // abstract
     onResetScene() { } // Reset lại scene
+
+    _initChallengesManager(){
+        this.challengesManager = ChallengesManager.instance;
+    }
 
     onResize() {
         this.x = Game.app.screen.width / 2;

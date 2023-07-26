@@ -12,6 +12,7 @@ import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { SkinsShop } from "../obj/ui/shop/skin/skinsShop.js";
+import { ChallengesManager } from "../obj/challenges/challengesManager.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -180,6 +181,7 @@ export class ClassicScene extends GameScene {
         }
 
         this.gameState = GameState.End;
+        this.challengesManager.update(this.id);
         Data.pushData();
         Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();

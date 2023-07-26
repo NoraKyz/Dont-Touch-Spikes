@@ -3,63 +3,77 @@ import { ClassicScene } from "./classicScene";
 import { HardModeScene } from "./hardModeScene";
 import { DualModeScene } from "./dualModeScene";
 import { ChallengesScene } from "./challengesScene";
-
+import * as TWEEN from "@tweenjs/tween.js";
 
 export class SceneManager extends Container {
+  constructor() {
+    super();
+    this._initProperties();
+    this._initScenes();
+    this.onStartScene("ClassicModeScene");
+    this._initEffect();
+  }
 
-    constructor() {
-        super();
-        this._initProperties();
-        this._initScenes();
-        this.onStartScene("ClassicModeScene");
+  _initProperties() {
+    this.scenes = []; // Danh sách các scene
+    this.enabledScene = null; // Scene đang chạy
+  }
+  // Khởi tạo hết các scene trong game và push vô mảng scenes
+  _initScenes() {
+    this.mainScene = new ClassicScene(this);
+    this.scenes.push(this.mainScene);
+
+    this.hardmodeScene = new HardModeScene(this);
+    this.scenes.push(this.hardmodeScene);
+
+    this.dualmodeScene = new DualModeScene(this);
+    this.scenes.push(this.dualmodeScene);
+
+    this.challengesScene = new ChallengesScene(this);
+    this.scenes.push(this.challengesScene);
+  }
+
+  _initEffect() {
+    this.scenes.forEach((scene) => {
+      scene.spawnEffect = new TWEEN.Tween(scene).to({ alpha: 1 }, 1000);
+    });
+  }
+
+  // Gọi id trong scene để chạy scene đó
+  onStartScene(id) {
+    if (this.enabledScene !== null) {
+      this._onEndScene();
+      this.enabledSpawn = true;
     }
-
-    _initProperties() {
-        this.scenes = []; // Danh sách các scene
-        this.enabledScene = null; // Scene đang chạy
-    }
-    // Khởi tạo hết các scene trong game và push vô mảng scenes
-    _initScenes() {
-        this.mainScene = new ClassicScene(this);
-        this.scenes.push(this.mainScene);
-
-        this.hardmodeScene = new HardModeScene(this);
-        this.scenes.push(this.hardmodeScene);
-
-        this.dualmodeScene = new DualModeScene(this);
-        this.scenes.push(this.dualmodeScene);
-
-        this.challengesScene = new ChallengesScene(this);
-        this.scenes.push(this.challengesScene);
-    }
-    // Gọi id trong scene để chạy scene đó
-    onStartScene(id) {
-        if(this.enabledScene !== null){
-            this._onEndScene();
+    this.scenes.forEach((scene) => {
+      if (scene.id === id) {
+        this.enabledScene = scene;
+        this.enabledDespawn = true;
+        if (this.enabledSpawn) {
+          this.enabledScene.alpha = 0;
+          this.enabledScene.spawnEffect.start();
+          this.enabledSpawn = false;
         }
+        this.enabledScene.onResetScene();
+        this.addChild(scene);
+      }
+    });
+  }
 
-        this.scenes.forEach(scene => {
-            if (scene.id === id) {
-                this.enabledScene = scene;
-                this.enabledScene.onResetScene();
-                this.addChild(scene);            
-            }
-        });
-    }
-    // Reset scene hiện tại rồi loại bỏ nó
-    _onEndScene() {     
-        this.scenes.forEach(scene => {
-            if (scene.id === this.enabledScene.id) {
-                this.removeChild(scene);            
-            }
-        });  
-    }
+  // Reset scene hiện tại rồi loại bỏ nó
+  _onEndScene() {
+    this.scenes.forEach((scene) => {
+      if (scene.id === this.enabledScene.id) {
+        this.removeChild(scene);
+      }
+    });
+  }
 
-    onResize() {
-        this.enabledScene.onResize();
-    }
+  onResize() {
+    this.enabledScene.onResize();
+  }
 
-    update(dt) {
-        this.enabledScene.update(dt);
-    }
+  update(dt) {
+    this.enabledScene.update(dt);
+  }
 }

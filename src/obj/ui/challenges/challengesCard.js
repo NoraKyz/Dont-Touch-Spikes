@@ -9,15 +9,15 @@ import {
 } from "pixi.js";
 
 export class ChallengeCard extends Container {
-  constructor(challenge) {
-    //TODO: Truyền challenge từ Data vào
+  constructor() {
+    //TODO: Truyền challenge từ Data vào constructor
     super();
     this._initProperties();
     this._initComponent();
   }
 
   _initProperties() {
-    this.challenge = challenge;
+    //this.challenge = challenge; //TODO: Truyền challenge từ Data vào
   }
 
   _initComponent() {
@@ -32,22 +32,23 @@ export class ChallengeCard extends Container {
 
   _initBackground() {
     this.challengeBg = new Container();
+    this.challengeBg.position.set(0, 55);
 
     this.challengeMissionBg = Sprite.from(Assets.get("challengeMission"));
     this.challengeMissionBg.anchor.set(0.5);
     this.challengeMissionBg.position.set(0, 150);
-    this.challengeMissionBg.scale.set(0.77);
+    this.challengeMissionBg.scale.set(0.752);
     this.challengeBg.addChild(this.challengeMissionBg);
 
     this.challengeAchievedBg = new Graphics();
     this.challengeAchievedBg.beginFill(0x5bab16);
-    this.challengeAchievedBg.position.set(-200, 188);
+    this.challengeAchievedBg.position.set(-200, 187);
     this.challengeAchievedPercentage = 0; //TODO: Phần trăm hoàn thành, thêm Data
     this.challengeAchievedBg.drawRoundedRect(
       0,
       0,
       (400 * this.challengeAchievedPercentage) / 100,
-      74,
+      72,
       12
     );
     this.challengeBg.addChild(this.challengeAchievedBg);
@@ -80,21 +81,21 @@ export class ChallengeCard extends Container {
     this.challengeName = new Text("CHALLENGE ", this.nameStyle); // TODO: Số thứ tự
     this.challengeName.anchor.set(0.5);
     this.challengeName.position.set(0, 60);
-    this.addChild(this.challengeName);
+    this.challengeBg.addChild(this.challengeName);
 
     this.challengeMissionTitle = new Text();
     this.challengeMissionTitle.text = ""; //TODO: Nội dung nhiệm vụ, thêm Data
     this.challengeMissionTitle.style = this.MissionStyle;
     this.challengeMissionTitle.anchor.set(0.5);
     this.challengeMissionTitle.position.set(0, 140);
-    this.addChild(this.challengeMissionTitle);
+    this.challengeBg.addChild(this.challengeMissionTitle);
 
     this.challengeAchievedTitle = new Text();
     this.challengeAchievedTitle.text = ""; //TODO: Số lượng hoàn thành, thêm Data
     this.challengeAchievedTitle.style = this.nameStyle;
     this.challengeAchievedTitle.anchor.set(0.5);
     this.challengeAchievedTitle.position.set(0, 225);
-    this.addChild(this.challengeAchievedTitle);
+    this.challengeBg.addChild(this.challengeAchievedTitle);
   }
 
   _initEvent() {

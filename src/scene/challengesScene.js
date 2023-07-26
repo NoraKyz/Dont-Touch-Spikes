@@ -37,8 +37,8 @@ export class ChallengesScene extends Container {
   }
 
   _initChallengeCard() {
-    this.ChallengeCard = new ChallengeCard(this.challengesManager.currentChallenge);
-    this.addChild(this.ChallengeCard);
+    this.challengeCard = new ChallengeCard(this.challengesManager.currentChallenge);
+    this.addChild(this.challengeCard);
   }
 
   _initEvent() {
@@ -47,9 +47,19 @@ export class ChallengesScene extends Container {
     });
   }
 
-  onResetScene() {}
+  _updateUI() {
+    this.sceneUI.update();
+    this.challengeCard.update(this.challengesManager.currentChallenge);
+  }
 
-  onResize() {}
+  onResetScene() {
+    this._updateUI();
+  }
 
-  update(dt) {}
+  onResize() {
+    this.x = Game.app.screen.width / 2;
+    this.y = Game.app.screen.height / 2;
+  }
+
+  update(dt) { }
 }

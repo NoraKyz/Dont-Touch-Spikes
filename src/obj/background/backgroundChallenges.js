@@ -8,7 +8,6 @@ export class BackgroundChallenges extends Container {
 
   _initComponent() {
     this._initSprite();
-    console.log("backgroundChallenges");
   }
 
   _initSprite() {

@@ -99,4 +99,8 @@ export class ChallengesUI extends MainUI {
     _toClassicModeScene() {
         this.emit("toClassicModeScene")
     }
+
+    update() {
+        this.completeChallenges.number.text = this.challengesManager.completedChallenges + "/" + this.challengesManager.challengesList.length;
+    }
 }

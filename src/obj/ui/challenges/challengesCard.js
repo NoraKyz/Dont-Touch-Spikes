@@ -21,7 +21,6 @@ export class ChallengeCard extends Container {
 
   _initComponent() {
     this._initSprite();
-    this._initEvent();
   }
 
   _initSprite() {
@@ -77,13 +76,13 @@ export class ChallengeCard extends Container {
   }
 
   _initTitle() {
-    this.challengeName = new Text("CHALLENGE " + this.challenge.id, this.nameStyle); 
+    this.challengeName = new Text("CHALLENGE " + this.challenge.id, this.nameStyle);
     this.challengeName.anchor.set(0.5);
     this.challengeName.position.set(0, 60);
     this.challengeBg.addChild(this.challengeName);
 
     this.challengeMissionTitle = new Text();
-    this.challengeMissionTitle.text = this.challenge.descriptsion; 
+    this.challengeMissionTitle.text = this.challenge.descriptsion;
     this.challengeMissionTitle.style = this.MissionStyle;
     this.challengeMissionTitle.anchor.set(0.5);
     this.challengeMissionTitle.position.set(0, 140);
@@ -97,9 +96,22 @@ export class ChallengeCard extends Container {
     this.challengeBg.addChild(this.challengeAchievedTitle);
   }
 
-  _initEvent() {
-    //TODO: Thêm event
-  }
+  update(challenge) {
+    this.challenge = challenge;
 
-  update() { }
+    this.challengeAchievedBg.beginFill(0x5bab16);
+    this.challengeAchievedBg.position.set(-200, 187);
+    this.challengeAchievedPercentage = this.challenge.progress / this.challenge.goal * 100;
+    this.challengeAchievedBg.drawRoundedRect(
+      0,
+      0,
+      (400 * this.challengeAchievedPercentage) / 100,
+      72,
+      12
+    );
+
+    this.challengeName.text = "CHALLENGE " + this.challenge.id;
+    this.challengeMissionTitle.text = this.challenge.descriptsion;
+    this.challengeAchievedTitle.text = this.challenge.progress.toString();
+  }
 }

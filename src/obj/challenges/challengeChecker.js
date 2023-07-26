@@ -26,7 +26,6 @@ export class ChallengeChecker extends EventEmitter {
         currentChallenge = this._updateGamePlayed(currentChallenge, sceneId);
         break;
     }
-    this._checker(currentChallenge);
     return currentChallenge;
   }
 

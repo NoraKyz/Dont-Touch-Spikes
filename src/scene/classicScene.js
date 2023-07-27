@@ -161,8 +161,6 @@ export class ClassicScene extends GameScene {
     }
 
     onResetScene() {
-        //console.log('reset scene');
-       // console.log(Data.currentScore);
         Data.resetScore();
         this.gameInfor.onReset();
         this.player.onReset();

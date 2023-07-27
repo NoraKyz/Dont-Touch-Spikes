@@ -1,6 +1,7 @@
 import { Texture } from "pixi.js";
 import { Emitter, upgradeConfig } from "@pixi/particle-emitter";
 import config from "../../../assets/aim/flyParticle.json";
+import winConfig from "../../../assets/aim/winParticle.json";
 import * as TWEEN from "@tweenjs/tween.js";
 import { SkinManager } from "../skin/skinManager";
 
@@ -20,6 +21,20 @@ export class PlayerEffect {
     _initEffect() {
         this._despawnEffect();
         this._flyEffect();
+        this._winEffect();
+    }
+
+    _winEffect() {
+        let texture = Texture.from(this.skin.particleImage);
+
+        this.cusWinConfig = winConfig;
+        this.cusWinConfig.color = this.skin.particleColor;      
+
+        this.winEmitter = new Emitter(
+            this.obj,
+            upgradeConfig(this.cusWinConfig, [texture])
+        );
+        this.winEmitter.emit = false;
     }
 
     _despawnEffect() {
@@ -89,6 +104,7 @@ export class PlayerEffect {
     update(dt) {
         this._deadEffect(dt);
         this.emitter.update(dt * 0.1);
+        this.winEmitter.update(dt * 0.1);
         this._updateParticles();
     }
 }

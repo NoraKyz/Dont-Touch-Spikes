@@ -3,7 +3,6 @@ import {
   Container,
   Sprite,
   Assets,
-  Texture,
   Text,
   TextStyle,
 } from "pixi.js";
@@ -28,6 +27,15 @@ export class ChallengeCard extends Container {
     this._initText();
   }
 
+  _createProgress(){
+    const challengeAchievedBg = new Graphics();
+    challengeAchievedBg.beginFill(0x5bab16);
+    challengeAchievedBg.position.set(-200, 187);
+    const challengeAchievedPercentage = this.challenge.progress / this.challenge.goal * 100;
+    challengeAchievedBg.drawRoundedRect(0, 0, (400 * challengeAchievedPercentage) / 100, 72, 12);
+    return challengeAchievedBg;
+  }
+
   _initBackground() {
     this.challengeBg = new Container();
     this.challengeBg.position.set(0, 55);
@@ -38,17 +46,7 @@ export class ChallengeCard extends Container {
     this.challengeMissionBg.scale.set(0.752);
     this.challengeBg.addChild(this.challengeMissionBg);
 
-    this.challengeAchievedBg = new Graphics();
-    this.challengeAchievedBg.beginFill(0x5bab16);
-    this.challengeAchievedBg.position.set(-200, 187);
-    this.challengeAchievedPercentage = this.challenge.progress / this.challenge.goal * 100;
-    this.challengeAchievedBg.drawRoundedRect(
-      0,
-      0,
-      (400 * this.challengeAchievedPercentage) / 100,
-      72,
-      12
-    );
+    this.challengeAchievedBg = this._createProgress();
     this.challengeBg.addChild(this.challengeAchievedBg);
 
     this.addChild(this.challengeBg);
@@ -90,6 +88,7 @@ export class ChallengeCard extends Container {
 
     this.challengeAchievedTitle = new Text();
     this.challengeAchievedTitle.text = this.challenge.progress.toString();
+    this.challengeAchievedTitle.zIndex = 100;
     this.challengeAchievedTitle.style = this.nameStyle;
     this.challengeAchievedTitle.anchor.set(0.5);
     this.challengeAchievedTitle.position.set(0, 225);
@@ -97,20 +96,20 @@ export class ChallengeCard extends Container {
   }
 
   _reset(){
-    this.challengeAchievedBg.beginFill(0x1c2933);
-    this.challengeAchievedBg.drawRoundedRect(0, 0, 400, 72, 12);
+    this.challengeBg.removeChild(this.challengeAchievedBg);
+    this.challengeBg.removeChild(this.challengeAchievedTitle);
   }
 
   update(challenge) {
     this.challenge = challenge;
 
     this._reset();
-    this.challengeAchievedBg.beginFill(0x5bab16);
-    this.challengeAchievedPercentage = this.challenge.progress / this.challenge.goal * 100;
-    this.challengeAchievedBg.drawRoundedRect(0, 0, (400 * this.challengeAchievedPercentage) / 100, 72, 12);
+    this.challengeAchievedBg = this._createProgress();
+    this.challengeBg.addChild(this.challengeAchievedBg);
 
     this.challengeName.text = "CHALLENGE " + this.challenge.id;
     this.challengeMissionTitle.text = this.challenge.descriptsion;
     this.challengeAchievedTitle.text = this.challenge.progress.toString();
+    this.challengeBg.addChild(this.challengeAchievedTitle);
   }
 }

@@ -11,7 +11,7 @@ import { LevelController } from "../levelController.js";
 import { HardModeUI } from "../obj/ui/main/hardModeUI.js";
 import { HardModeOverUI } from "../obj/ui/over/hardModeOverUI.js"
 import { SpikesManager } from "../obj/trap/spikesManager.js";
-import { SkinStorage } from "../obj/skin/skinStorage.js";
+import { NotifyChallenge } from "../obj/ui/challenges/notifyChallenge.js";
 
 export class HardModeScene extends GameScene {
     constructor() {
@@ -31,6 +31,7 @@ export class HardModeScene extends GameScene {
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
+        this._initNotifyChallenge();
     }
 
     _initPlayer(){
@@ -68,6 +69,12 @@ export class HardModeScene extends GameScene {
         this.gameOverUI = new HardModeOverUI();
         this.addChild(this.gameOverUI);
         this.gameOverUI.hideGameOverUI();
+    }
+
+    _initNotifyChallenge(){
+        this.notifyChallenge = new NotifyChallenge(this.challengesManager.currentChallenge);
+        this.lastChallenge = this.challengesManager.currentChallenge;
+        this.addChild(this.notifyChallenge);
     }
 
     _onCollision(obj1, obj2) {
@@ -132,7 +139,13 @@ export class HardModeScene extends GameScene {
         }
 
         this.gameState = GameState.End;
-        this.challengesManager.update(this.id);
+        let addTime = 0;
+        this.lastChallenge = this.challengesManager.currentChallenge;
+        this.completeChallenge = this.challengesManager.update(this.id);
+        if(this.completeChallenge) {
+            this.notifyChallenge.runEffect(this.lastChallenge, this.challengesManager.currentChallenge);
+            addTime = 4500;
+        }
         Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();
         this.candies.onLose();
@@ -140,7 +153,7 @@ export class HardModeScene extends GameScene {
             this.gameOverUI.showGameOverUI();
             this.gameInfor.display();
             this.background.hideScore();
-        }, 1000);
+        }, 1000 + addTime);
     }
 
     _onNextLevel(direction) {

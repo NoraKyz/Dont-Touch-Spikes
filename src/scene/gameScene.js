@@ -15,10 +15,10 @@ export class GameScene extends Container {
     constructor() {
         super();
         this._initProperties();
+        this._initChallengesManager();
         this._initGameplay();
         this._initColliderDetector();
         this._initSceneEvent();
-        this._initChallengesManager();
     }
     // Khởi tạo các thuộc tính cơ bản của scene
     _initProperties() {

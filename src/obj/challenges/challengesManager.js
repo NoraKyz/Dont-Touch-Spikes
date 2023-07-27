@@ -50,5 +50,7 @@ export class ChallengesManager extends EventEmitter {
     update(sceneId) {     
         this.currentChallenge = this.checker.update(this.currentChallenge, sceneId);
         this.checker.checker(this.currentChallenge);
+
+        return this.checker.completedChallenge;
     }
 }

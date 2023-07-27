@@ -82,6 +82,7 @@ export class AssetsManager {
         this._addBundle(
             "challenges", {
             "tickImage": "./assets/images/ui/challenges/tickImage.png",
+            "tickComplete": "./assets/images/ui/challenges/tickComplete.png",
             "challengeMission": "./assets/images/ui/challenges/challengeMission.png",
             "challengeBackground": "./assets/images/ui/challenges/ChallengeBg.png",
         });

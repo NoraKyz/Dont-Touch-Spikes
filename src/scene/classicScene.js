@@ -13,6 +13,7 @@ import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { SkinsShop } from "../obj/ui/shop/skin/skinsShop.js";
 import { SoundOptionUI } from "../obj/ui/option/soundOptionUI.js";
+import { NotifyChallenge } from "../obj/ui/challenges/notifyChallenge.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -34,6 +35,7 @@ export class ClassicScene extends GameScene {
         this._initGameInfor();
         this._initGameOverUI();
         this._initSoundOption();
+        this._initNotifyChallenge();
     }   
 
     // Obj in scene
@@ -78,6 +80,12 @@ export class ClassicScene extends GameScene {
     _initSkinsShop() {
         this.skinsShop = new SkinsShop();
         this.addChild(this.skinsShop);
+    }
+
+    _initNotifyChallenge(){
+        this.notifyChallenge = new NotifyChallenge(this.challengesManager.currentChallenge);
+        this.lastChallenge = this.challengesManager.currentChallenge;
+        this.addChild(this.notifyChallenge);
     }
 
     _initSoundOption() {
@@ -182,7 +190,13 @@ export class ClassicScene extends GameScene {
         }
 
         this.gameState = GameState.End;
-        this.challengesManager.update(this.id);
+        let addTime = 0;
+        this.lastChallenge = this.challengesManager.currentChallenge;
+        this.completeChallenge = this.challengesManager.update(this.id);
+        if(this.completeChallenge) {
+            this.notifyChallenge.runEffect(this.lastChallenge, this.challengesManager.currentChallenge);
+            addTime = 4500;
+        }
         Data.pushData();
         Assets.get("loseSound").play();
         this.gameInfor.updateGameInfor();
@@ -191,7 +205,7 @@ export class ClassicScene extends GameScene {
             this.gameOverUI.showGameOverUI();
             this.gameInfor.onReset();
             this.background.hideScore();
-        }, 1000);
+        }, 1000 + addTime);
     }
 
     _onNextLevel(direction) {

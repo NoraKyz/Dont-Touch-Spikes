@@ -11,6 +11,7 @@ export class ChallengeChecker extends EventEmitter {
     this.lastCandies = Data.itemQuantity;
     this.candies = 0;
     this.score = 0;
+    this.completedChallenge = false;
   }
   _resetData(){
     this.lastCandies = Data.itemQuantity;
@@ -61,25 +62,24 @@ export class ChallengeChecker extends EventEmitter {
     switch(currentChallenge.scene){
       case "any":
         this.score = Data.currentScore;
-        currentChallenge.progress += this.score;
+        if(this.score > currentChallenge.progress) currentChallenge.progress = this.score;
         break;
       case "classicMode":
         if(sceneId === "ClassicModeScene"){
           this.score = Data.currentScore;
-          currentChallenge.progress += this.score;
+          if(this.score > currentChallenge.progress) currentChallenge.progress = this.score;
         }
         break;  
       case "hardMode":
         if(sceneId === "HardModeScene"){
           this.score = Data.currentScore;
-          currentChallenge.progress += this.score;
+          if(this.score > currentChallenge.progress) currentChallenge.progress = this.score;
         }
         break;
     } 
     return currentChallenge;
   }
   _updateGamePlayed(currentChallenge, sceneId){
-    console.log('gplayed', sceneId);
     switch(currentChallenge.scene){
       case "any":
         currentChallenge.progress ++;
@@ -99,7 +99,10 @@ export class ChallengeChecker extends EventEmitter {
   }
 
   checker(currentChallenge){
-    if(currentChallenge.progress >= currentChallenge.goal) this._complete();
+    if(currentChallenge.progress >= currentChallenge.goal) {
+      this._complete();
+      this.completedChallenge = true;
+    } else this.completedChallenge = false;
   }
 
   _complete(){

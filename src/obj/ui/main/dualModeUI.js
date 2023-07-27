@@ -191,6 +191,7 @@ export class DualModeUI extends MainUI {
       this.tween2.start();
     });
   }
+  
   _resetResultUI(winPlayer){
     if(winPlayer == "player1") {
       this.resultTop.text = "PLAYER 1 WIN!";

@@ -4340,7 +4340,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   CommonUtils: () => (/* binding */ CommonUtils)
 /* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 var __pow = Math.pow;
+
 class CommonUtils {
   static normalizeVector(vector) {
     const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
@@ -4413,6 +4415,15 @@ class CommonUtils {
     });
     return resultArray;
   }
+  static lerpColor(colorStart, colorEnd, ratio) {
+    const start = pixi_js__WEBPACK_IMPORTED_MODULE_0__.utils.string2hex(colorStart);
+    const end = pixi_js__WEBPACK_IMPORTED_MODULE_0__.utils.string2hex(colorEnd);
+    const r = (1 - ratio) * (start >> 16 & 255) + ratio * (end >> 16 & 255);
+    const g = (1 - ratio) * (start >> 8 & 255) + ratio * (end >> 8 & 255);
+    const b = (1 - ratio) * (start & 255) + ratio * (end & 255);
+    const rgb = (r << 16) + (g << 8) + b;
+    return pixi_js__WEBPACK_IMPORTED_MODULE_0__.utils.hex2string(rgb);
+  }
 }
 
 
@@ -4436,89 +4447,69 @@ __webpack_require__.r(__webpack_exports__);
 class AssetsManager {
   static _loadAssets() {
     this.keys = [];
-    this._addBundle(
-      "sound",
-      {
-        "flyingSound": "./assets/sound/flyingSound.mp3",
-        "eatingSound": "./assets/sound/eatingSound.mp3",
-        "replayButtonSound": "./assets/sound/replay.mp3",
-        "touchWallSound": "./assets/sound/touchWall.mp3",
-        "loseSound": "./assets/sound/gameOver.mp3"
-      }
-    );
-    this._addBundle(
-      "item",
-      {
-        "candy": "./assets/images/item/money/candy.png",
-        "circle": "./assets/images/other/circle.png",
-        "spike": "./assets/images/item/spikes/spike.png"
-      }
-    );
-    this._addBundle(
-      "skin",
-      {
-        "birdBlue1": "./assets/images/skin/birdBlue/birdBlue1.png",
-        "birdBlue2": "./assets/images/skin/birdBlue/birdBlue2.png",
-        "birdBlue3": "./assets/images/skin/birdBlue/birdBlue3.png",
-        "birdDefault1": "./assets/images/skin/birdDefault/birdDefault1.png",
-        "birdDefault2": "./assets/images/skin/birdDefault/birdDefault2.png",
-        "birdDefault3": "./assets/images/skin/birdDefault/birdDefault3.png",
-        "birdNinja1": "./assets/images/skin/birdNinja/birdNinja1.png",
-        "birdNinja2": "./assets/images/skin/birdNinja/birdNinja2.png",
-        "birdNinja3": "./assets/images/skin/birdNinja/birdNinja3.png",
-        "birdDarkBlue1": "./assets/images/skin/birdDarkBlue/birdDarkBlue1.png",
-        "birdDarkBlue2": "./assets/images/skin/birdDarkBlue/birdDarkBlue2.png",
-        "birdDarkBlue3": "./assets/images/skin/birdDarkBlue/birdDarkBlue3.png",
-        "birdYellow1": "./assets/images/skin/birdYellow/birdYellow1.png",
-        "birdYellow2": "./assets/images/skin/birdYellow/birdYellow2.png",
-        "birdYellow3": "./assets/images/skin/birdYellow/birdYellow3.png",
-        "birdBrown1": "./assets/images/skin/birdBrown/birdBrown1.png",
-        "birdBrown2": "./assets/images/skin/birdBrown/birdBrown2.png",
-        "birdBrown3": "./assets/images/skin/birdBrown/birdBrown3.png",
-        "birdDead": "./assets/images/skin/birdDead.png"
-      }
-    );
-    this._addBundle(
-      "button",
-      {
-        "cave": "./assets/images/ui/button/cave.png",
-        "dualMode": "./assets/images/ui/button/dualMode.png",
-        "hardMode": "./assets/images/ui/button/hardMode.png",
-        "highScore": "./assets/images/ui/button/highScore.png",
-        "points": "./assets/images/ui/button/points.png",
-        "replay": "./assets/images/ui/button/replay.png",
-        "share": "./assets/images/ui/button/share.png",
-        "skinShop": "./assets/images/ui/button/skinShop.png",
-        "tick": "./assets/images/ui/button/tick.png",
-        "tree": "./assets/images/ui/button/tree.png",
-        "undo": "./assets/images/ui/button/undo.png",
-        "dualGameOver": "./assets/images/ui/button/dualGameOver.png"
-      }
-    );
-    this._addBundle(
-      "font",
-      {
-        "Blissful Thinking": "./assets/fonts/Blissful Thinking.otf",
-        "5Identification Mono": "./assets/fonts/5Identification-Mono.otf"
-      }
-    );
-    this._addBundle(
-      "dual",
-      {
-        "line": "./assets/images/ui/dual/line.png",
-        "star1": "./assets/images/ui/dual/star1.png",
-        "star2": "./assets/images/ui/dual/star2.png"
-      }
-    );
-    this._addBundle(
-      "challenges",
-      {
-        "tickImage": "./assets/images/ui/challenges/tickImage.png",
-        "tickComplete": "./assets/images/ui/challenges/tickComplete.png",
-        "challengeMission": "./assets/images/ui/challenges/challengeMission.png",
-        "challengeBackground": "./assets/images/ui/challenges/ChallengeBg.png"
-      }
-    );
+    this._addBundle("sound", {
+      flyingSound: "./assets/sound/flyingSound.mp3",
+      eatingSound: "./assets/sound/eatingSound.mp3",
+      replayButtonSound: "./assets/sound/replay.mp3",
+      touchWallSound: "./assets/sound/touchWall.mp3",
+      loseSound: "./assets/sound/gameOver.mp3"
+    });
+    this._addBundle("item", {
+      candy: "./assets/images/item/money/candy.png",
+      circle: "./assets/images/other/circle.png",
+      spike: "./assets/images/item/spikes/spike.png"
+    });
+    this._addBundle("skin", {
+      birdBlue1: "./assets/images/skin/birdBlue/birdBlue1.png",
+      birdBlue2: "./assets/images/skin/birdBlue/birdBlue2.png",
+      birdBlue3: "./assets/images/skin/birdBlue/birdBlue3.png",
+      birdDefault1: "./assets/images/skin/birdDefault/birdDefault1.png",
+      birdDefault2: "./assets/images/skin/birdDefault/birdDefault2.png",
+      birdDefault3: "./assets/images/skin/birdDefault/birdDefault3.png",
+      birdNinja1: "./assets/images/skin/birdNinja/birdNinja1.png",
+      birdNinja2: "./assets/images/skin/birdNinja/birdNinja2.png",
+      birdNinja3: "./assets/images/skin/birdNinja/birdNinja3.png",
+      birdDarkBlue1: "./assets/images/skin/birdDarkBlue/birdDarkBlue1.png",
+      birdDarkBlue2: "./assets/images/skin/birdDarkBlue/birdDarkBlue2.png",
+      birdDarkBlue3: "./assets/images/skin/birdDarkBlue/birdDarkBlue3.png",
+      birdYellow1: "./assets/images/skin/birdYellow/birdYellow1.png",
+      birdYellow2: "./assets/images/skin/birdYellow/birdYellow2.png",
+      birdYellow3: "./assets/images/skin/birdYellow/birdYellow3.png",
+      birdBrown1: "./assets/images/skin/birdBrown/birdBrown1.png",
+      birdBrown2: "./assets/images/skin/birdBrown/birdBrown2.png",
+      birdBrown3: "./assets/images/skin/birdBrown/birdBrown3.png",
+      birdDead: "./assets/images/skin/birdDead.png"
+    });
+    this._addBundle("button", {
+      cave: "./assets/images/ui/button/cave.png",
+      dualMode: "./assets/images/ui/button/dualMode.png",
+      hardMode: "./assets/images/ui/button/hardMode.png",
+      highScore: "./assets/images/ui/button/highScore.png",
+      points: "./assets/images/ui/button/points.png",
+      replay: "./assets/images/ui/button/replay.png",
+      share: "./assets/images/ui/button/share.png",
+      skinShop: "./assets/images/ui/button/skinShop.png",
+      tick: "./assets/images/ui/button/tick.png",
+      tree: "./assets/images/ui/button/tree.png",
+      undo: "./assets/images/ui/button/undo.png",
+      dualGameOver1: "./assets/images/ui/button/dualGameOver1.png",
+      dualGameOver2: "./assets/images/ui/button/dualGameOver2.png"
+    });
+    this._addBundle("font", {
+      "Blissful Thinking": "./assets/fonts/Blissful Thinking.otf",
+      "5Identification Mono": "./assets/fonts/5Identification-Mono.otf"
+    });
+    this._addBundle("dual", {
+      line: "./assets/images/ui/dual/line.png",
+      star1: "./assets/images/ui/dual/star1.png",
+      star2: "./assets/images/ui/dual/star2.png"
+    });
+    this._addBundle("challenges", {
+      tickImage: "./assets/images/ui/challenges/tickImage.png",
+      tickComplete: "./assets/images/ui/challenges/tickComplete.png",
+      challengeMission: "./assets/images/ui/challenges/challengeMission.png",
+      challengeBackground: "./assets/images/ui/challenges/ChallengeBg.png"
+    });
     return pixi_js__WEBPACK_IMPORTED_MODULE_1__.Assets.loadBundle(this.keys);
   }
   static _addBundle(key, bundle) {
@@ -4769,10 +4760,10 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this._initComponent();
   }
   _initProperties() {
+    this.alpha = 0.95;
     this.eventMode = "static";
     this.originColor = { color: "ebebeb", colorDarker: "808080" };
     this._initTextStyle();
-    this._changeColorEffect();
   }
   _initComponent() {
     this._initRetangleTop();
@@ -4830,7 +4821,7 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
       this.changeBgColor();
   }
   _newColor() {
-    this.originColor = _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.randomColorBackground();
+    return _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.randomColorBackground();
   }
   _resetProperties() {
     this.originColor = { color: "FFFFFF", colorDarker: "FFFFFF" };
@@ -4845,14 +4836,21 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.scoreText.tint = "ebebeb";
     this.scoreText.text = `0${_data__WEBPACK_IMPORTED_MODULE_3__.Data.currentScore}`;
   }
-  _changeColorEffect() {
-    this.alpha = 0.95;
-    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this).to({ alpha: 1 }, 2e3);
+  _changeColorEffect(targetColor) {
+    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween({ ratio: 0 }).to({ ratio: 1 }, 1500).onUpdate((val) => {
+      let nextColor = _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.lerpColor(this.originColor.color, targetColor.color, val.ratio);
+      let nextColorDarker = _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.lerpColor(this.originColor.colorDarker, targetColor.colorDarker, val.ratio);
+      this.scoreText.style.fill = nextColor;
+      this.playGround.tint = nextColor;
+      this.retangleTop.tint = nextColorDarker;
+      this.retangleBottom.tint = nextColorDarker;
+    }).onComplete(() => {
+      this.originColor = targetColor;
+    }).start();
   }
   changeBgColor() {
-    this._newColor();
-    this._resetBgColor();
-    this.changeColorEffect.start();
+    this.targetColor = this._newColor();
+    this._changeColorEffect(this.targetColor);
   }
   onReset() {
     this._resetProperties();
@@ -5260,9 +5258,9 @@ class ChallengesStorage {
       {
         id: 2,
         type: TypeChallenge.BestScore,
-        descriptsion: "Get 20 points in hard mode",
+        descriptsion: "Get 10 points in hard mode",
         progress: 0,
-        goal: 20,
+        goal: 10,
         scene: AvailableScene.HardMode,
         completed: false
       },
@@ -5287,9 +5285,9 @@ class ChallengesStorage {
       {
         id: 5,
         type: TypeChallenge.BestScore,
-        descriptsion: "Get 40 points in hard mode",
+        descriptsion: "Get 25 points in hard mode",
         progress: 0,
-        goal: 40,
+        goal: 25,
         scene: AvailableScene.HardMode,
         completed: false
       },
@@ -5314,18 +5312,18 @@ class ChallengesStorage {
       {
         id: 8,
         type: TypeChallenge.BestScore,
-        descriptsion: "Get 100 points in hard mode",
+        descriptsion: "Get 50 points in hard mode",
         progress: 0,
-        goal: 100,
+        goal: 50,
         scene: AvailableScene.HardMode,
         completed: false
       },
       {
         id: 9,
         type: TypeChallenge.BestScore,
-        descriptsion: "Get 200 points in classic mode",
+        descriptsion: "Get 100 points in classic mode",
         progress: 0,
-        goal: 200,
+        goal: 100,
         scene: AvailableScene.ClassicMode,
         completed: false
       }
@@ -5869,8 +5867,6 @@ class Player extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     if (obj instanceof _trap_spike__WEBPACK_IMPORTED_MODULE_2__.Spike) {
       this.movement.onCollisionSpike();
       this._onLose();
-    }
-    if (obj instanceof Player) {
     }
   }
   updateSkin(skin = _skin_skinManager__WEBPACK_IMPORTED_MODULE_7__.SkinManager.instance.currentSkin) {
@@ -7099,6 +7095,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SpikeSprite: () => (/* binding */ SpikeSprite)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _commonUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../commonUtils */ "./src/commonUtils.js");
+
+
 
 class SpikeSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
@@ -7111,6 +7111,13 @@ class SpikeSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.sprite.anchor.set(0.5);
     this.sprite.scale.set(1.15);
     this.addChild(this.sprite);
+  }
+  changeColorEffect(targetColor) {
+    let startColor = this.sprite.tint;
+    this.effect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween({ ratio: 0 }).to({ ratio: 1 }, 1500).onUpdate((val) => {
+      let nextColor = _commonUtils__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.lerpColor(startColor, targetColor, val.ratio);
+      this.sprite.tint = nextColor;
+    }).start();
   }
   changeColor(color) {
     this.sprite.tint = color;
@@ -7220,11 +7227,16 @@ class SpikesManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   changeColor(color) {
     this.poolSpikes.forEach((spike) => {
+      spike.sprite.changeColorEffect(color);
+    });
+  }
+  setColor(color) {
+    this.poolSpikes.forEach((spike) => {
       spike.sprite.changeColor(color);
     });
   }
   onReset() {
-    this.changeColor("FFFFFF");
+    this.setColor("FFFFFF");
     this.movement.onReset();
   }
 }
@@ -7858,11 +7870,17 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     };
   }
   _initResult() {
-    this.resultTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#666666", fontSize: 70 }));
+    this.resultTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), {
+      fill: "#666666",
+      fontSize: 70
+    }));
     this.resultTop.anchor.set(0.5);
     this.resultTop.position.set(0, -300);
     this.resultTop.scale.set(-1);
-    this.resultBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#666666", fontSize: 70 }));
+    this.resultBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), {
+      fill: "#666666",
+      fontSize: 70
+    }));
     this.resultBottom.anchor.set(0.5);
     this.resultBottom.position.set(0, 300);
     this.resultUI.addChild(this.resultTop);
@@ -7874,11 +7892,15 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     if (typeof color === "undefined")
       color = "#FF3464";
     const gameTutorial = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    gameTutorial.player = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`PLAYER ${id}`, __spreadProps(__spreadValues({}, this.styleBig), { fill: color }));
+    gameTutorial.player = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(`PLAYER ${id}`, __spreadProps(__spreadValues({}, this.styleBig), {
+      fill: color
+    }));
     gameTutorial.player.anchor.set(0.5);
     gameTutorial.player.position.set(positionPlayer.x, positionPlayer.y);
     gameTutorial.player.scale.set(direction);
-    gameTutorial.tutor = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("touch here to jump", __spreadProps(__spreadValues({}, this.styleSmall), { fill: color }));
+    gameTutorial.tutor = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("touch here to jump", __spreadProps(__spreadValues({}, this.styleSmall), {
+      fill: color
+    }));
     gameTutorial.tutor.anchor.set(0.5);
     gameTutorial.tutor.position.set(positionTutorial.x, positionTutorial.y);
     gameTutorial.tutor.scale.set(direction);
@@ -7887,8 +7909,19 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
   }
   _initGameTutol() {
     this.gameTutorial = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
-    this.gameTutorialTop = this._createGameTutoriral(2, { x: 0, y: -280 }, { x: 0, y: -330 }, -1, "#309cfe");
-    this.gameTutorialBottom = this._createGameTutoriral(1, { x: 0, y: 280 }, { x: 0, y: 330 }, 1);
+    this.gameTutorialTop = this._createGameTutoriral(
+      2,
+      { x: 0, y: -280 },
+      { x: 0, y: -330 },
+      -1,
+      "#309cfe"
+    );
+    this.gameTutorialBottom = this._createGameTutoriral(
+      1,
+      { x: 0, y: 280 },
+      { x: 0, y: 330 },
+      1
+    );
     this.gameTutorial.addChild(this.gameTutorialTop);
     this.gameTutorial.addChild(this.gameTutorialBottom);
     this.readyUI.addChild(this.gameTutorial);
@@ -7949,7 +7982,11 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
       this.bottomStar2.winStar.visible = true;
     else if (this.bottomStar3.winStar.visible === false)
       this.bottomStar3.winStar.visible = true;
-    this.gameState.player1 = [this.bottomStar1.winStar.visible, this.bottomStar2.winStar.visible, this.bottomStar3.winStar.visible];
+    this.gameState.player1 = [
+      this.bottomStar1.winStar.visible,
+      this.bottomStar2.winStar.visible,
+      this.bottomStar3.winStar.visible
+    ];
   }
   _onPlayer2Win() {
     if (this.topStar1.winStar.visible === false)
@@ -7958,7 +7995,11 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
       this.topStar2.winStar.visible = true;
     else if (this.topStar3.winStar.visible === false)
       this.topStar3.winStar.visible = true;
-    this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
+    this.gameState.player2 = [
+      this.topStar1.winStar.visible,
+      this.topStar2.winStar.visible,
+      this.topStar3.winStar.visible
+    ];
   }
   _onDraw() {
     if (this.topStar3.winStar.visible === true)
@@ -7967,7 +8008,11 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
       this.topStar2.winStar.visible = false;
     else if (this.topStar1.winStar.visible === true)
       this.topStar1.winStar.visible = false;
-    this.gameState.player2 = [this.topStar1.winStar.visible, this.topStar2.winStar.visible, this.topStar3.winStar.visible];
+    this.gameState.player2 = [
+      this.topStar1.winStar.visible,
+      this.topStar2.winStar.visible,
+      this.topStar3.winStar.visible
+    ];
   }
   _toClassicModeScene() {
     this.emit("toClassicModeScene");
@@ -7995,14 +8040,14 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
   }
   _resetResultUI(winPlayer) {
     if (winPlayer == "player1") {
-      this.resultTop.text = "PLAYER 1 WIN!";
-      this.resultBottom.text = "PLAYER 1 WIN!";
+      this.resultTop.text = "PLAYER 1 WINS!";
+      this.resultBottom.text = "PLAYER 1 WINS!";
     } else if (winPlayer == "player2") {
-      this.resultTop.text = "PLAYER 2 WIN!";
-      this.resultBottom.text = "PLAYER 2 WIN!";
+      this.resultTop.text = "PLAYER 2 WINS!";
+      this.resultBottom.text = "PLAYER 2 WINS!";
     } else {
-      this.resultTop.text = "Draw!";
-      this.resultBottom.text = "Draw!";
+      this.resultTop.text = "DRAW!";
+      this.resultBottom.text = "DRAW!";
     }
   }
   _showResultUI(winPlayer) {
@@ -8345,26 +8390,49 @@ class DualModeOverUI extends _overUI__WEBPACK_IMPORTED_MODULE_1__.OverUI {
     this.elapsed = 0;
   }
   _initPointButton() {
-    this.pointsButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("dualGameOver"));
-    this.pointsButton.anchor.set(0.5);
-    this.pointsButton.scale.set(2);
-    this.pointsButton.position.y = -110;
-    this.addChild(this.pointsButton);
-    this.leftBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.leftBlock.beginFill("192018");
-    this.leftBlock.drawRoundedRect(-232, -180, 140, 140, 20);
-    this.leftBlock.endFill();
+    this.pointsButton1 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("dualGameOver1"));
+    this.pointsButton1.anchor.set(0.5);
+    this.pointsButton1.scale.set(2);
+    this.pointsButton1.position.y = -110;
+    this.pointsButton1.zIndex = 1;
+    this.pointsButton2 = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("dualGameOver2"));
+    this.pointsButton2.anchor.set(0.5);
+    this.pointsButton2.scale.set(2);
+    this.pointsButton2.position.y = -110;
+    this.pointsButton1.zIndex = 1;
+    this.leftBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.leftBlock.position.set(-232, -180);
+    this.leftBlock.zIndex = 2;
+    this.rightBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.rightBlock.position.set(94, -180);
+    this.rightBlock.zIndex = 2;
+    this.loseBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.loseBlock.beginFill("192018");
+    this.loseBlock.drawRoundedRect(0, 0, 140, 140, 20);
+    this.loseBlock.endFill();
+    this.winBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.winBlock.beginFill("fc741a");
+    this.winBlock.drawRoundedRect(0, 0, 140, 140, 20);
+    this.winBlock.endFill();
     this.addChild(this.leftBlock);
-    this.rightBlock = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
-    this.rightBlock.beginFill("fc741a");
-    this.rightBlock.drawRoundedRect(94, -180, 140, 140, 20);
-    this.rightBlock.endFill();
     this.addChild(this.rightBlock);
     this.pointNumber = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(_data__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore, this.style);
     this.pointNumber.anchor.set(0.5);
     this.pointNumber.position.y = -150;
-    this.bluePlayer = this._createPlayer("birdBlue1", "birdBlue2", { x: -162, y: -115 }, 1);
-    this.redPlayer = this._createPlayer("birdDefault1", "birdDefault3", { x: 162, y: -115 }, -1);
+    this.bluePlayer = this._createPlayer(
+      "birdBlue1",
+      "birdBlue2",
+      { x: -162, y: -115 },
+      1
+    );
+    this.bluePlayer.zIndex = 3;
+    this.redPlayer = this._createPlayer(
+      "birdDefault1",
+      "birdDefault3",
+      { x: 162, y: -115 },
+      -1
+    );
+    this.redPlayer.zIndex = 3;
     this._initStarLeft();
     this._initStarRight();
   }
@@ -8404,14 +8472,26 @@ class DualModeOverUI extends _overUI__WEBPACK_IMPORTED_MODULE_1__.OverUI {
     return stars;
   }
   _initStarLeft() {
+    this.leftStar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.leftStar1 = this._generateStars({ x: -207, y: -44 });
     this.leftStar2 = this._generateStars({ x: -162, y: -44 });
     this.leftStar3 = this._generateStars({ x: -116, y: -44 });
+    this.leftStar.addChild(this.leftStar1);
+    this.leftStar.addChild(this.leftStar2);
+    this.leftStar.addChild(this.leftStar3);
+    this.leftStar.zIndex = 4;
+    this.addChild(this.leftStar);
   }
   _initStarRight() {
+    this.rightStar = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     this.rightStar1 = this._generateStars({ x: 207, y: -44 });
     this.rightStar2 = this._generateStars({ x: 162, y: -44 });
     this.rightStar3 = this._generateStars({ x: 116, y: -44 });
+    this.rightStar.addChild(this.rightStar1);
+    this.rightStar.addChild(this.rightStar2);
+    this.rightStar.addChild(this.rightStar3);
+    this.rightStar.zIndex = 4;
+    this.addChild(this.rightStar);
   }
   onResetStar(gameState) {
     this.stateStarLeft = gameState.player2;
@@ -8445,17 +8525,24 @@ class DualModeOverUI extends _overUI__WEBPACK_IMPORTED_MODULE_1__.OverUI {
       fontSize: 70,
       fontWeight: 550
     }));
-    this.gameName.text = "PLAYER 1 WIN!";
+    this.gameName.text = "PLAYER 1 WINS!";
     this.gameName.style = this.titleStyle;
     this.gameName.position.set(0, -300);
   }
   winTitle(winPlayer) {
-    if (winPlayer == "player1")
-      this.gameName.text = "PLAYER 1 WIN!";
-    else if (winPlayer == "player2")
-      this.gameName.text = "PLAYER 2 WIN!";
-    else
-      this.gameName.text = "DRAW !";
+    if (winPlayer == "player1") {
+      this.gameName.text = "PLAYER 1 WINS!";
+      this.addChild(this.pointsButton1);
+      this.leftBlock.addChild(this.loseBlock);
+      this.rightBlock.addChild(this.winBlock);
+      this.sortChildren();
+    } else if (winPlayer == "player2") {
+      this.addChild(this.pointsButton2);
+      this.leftBlock.addChild(this.winBlock);
+      this.rightBlock.addChild(this.loseBlock);
+      this.sortChildren();
+      this.gameName.text = "PLAYER 2 WINS!";
+    }
   }
   _clickedReplayButton() {
     pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("replayButtonSound").play();
@@ -9355,7 +9442,7 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
     let limitSpike = _levelController_js__WEBPACK_IMPORTED_MODULE_12__.LevelController.updateLevel();
     this.spikes.moveSpikes(direction, limitSpike);
     if (_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore >= 5) {
-      this.spikes.changeColor(this.background.originColor.colorDarker);
+      this.spikes.changeColor(this.background.targetColor.colorDarker);
     }
   }
   update(dt) {
@@ -9447,7 +9534,7 @@ class DualModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.movedSpikes = false;
     this.spikes = new _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_4__.SpikesManager(this.id);
     this.spikes.spikesBottom.forEach((spike) => spike.y = 91);
-    this.spikes.changeColor(this.background1.originColor.colorDarker);
+    this.spikes.setColor(this.background1.originColor.colorDarker);
     this.addChild(this.spikes);
   }
   _initBackground() {
@@ -9486,7 +9573,7 @@ class DualModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.background2.playGroundTop.visible = false;
     this.background2.scoreBgTop.visible = false;
     this.spikes.onReset();
-    this.spikes.changeColor(this.background1.originColor.colorDarker);
+    this.spikes.setColor(this.background1.originColor.colorDarker);
     this.sceneOverUI.onReset();
     this.sceneUI.onReset();
     this.player1.onReset();
@@ -9650,13 +9737,6 @@ class DualModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     else
       this.sceneUI._onDraw(), this.player2Point--;
     this._onEndRound();
-    if (obj1 === this.player1 && obj2 === this.player2) {
-      if (this.player1.movement.velocity.y < this.player2.movement.velocity.y) {
-        this.player1.onCollision(this.player2);
-      } else if (-obj1.movement.velocity.y < obj2.movement.velocity.y) {
-      } else {
-      }
-    }
   }
   update(dt) {
     this.player1.update(dt);
@@ -9926,7 +10006,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     let limitSpike = _levelController_js__WEBPACK_IMPORTED_MODULE_9__.LevelController.updateLevel();
     this.spikes.moveSpikes(direction, limitSpike);
     if (_data_js__WEBPACK_IMPORTED_MODULE_2__.Data.currentScore >= 5) {
-      this.spikes.changeColor(this.background.originColor.colorDarker);
+      this.spikes.changeColor(this.background.targetColor.colorDarker);
     }
   }
   update(dt) {
@@ -10002,16 +10082,19 @@ class SceneManager extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.scenes.forEach((scene) => {
       if (scene.id === id) {
         this.enabledScene = scene;
-        this.enabledDespawn = true;
-        if (this.enabledSpawn) {
-          this.enabledScene.alpha = 0;
-          this.enabledScene.spawnEffect.start();
-          this.enabledSpawn = false;
-        }
+        this.onSpawnEffect(this.enabledScene);
         this.enabledScene.onResetScene();
         this.addChild(scene);
       }
     });
+  }
+  //Scene xuất hiện
+  onSpawnEffect(scene) {
+    if (this.enabledSpawn) {
+      scene.alpha = 0;
+      scene.spawnEffect.start();
+      this.enabledSpawn = false;
+    }
   }
   // Reset scene hiện tại rồi loại bỏ nó
   _onEndScene() {

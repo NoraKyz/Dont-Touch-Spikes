@@ -4514,6 +4514,7 @@ class AssetsManager {
       "challenges",
       {
         "tickImage": "./assets/images/ui/challenges/tickImage.png",
+        "tickComplete": "./assets/images/ui/challenges/tickComplete.png",
         "challengeMission": "./assets/images/ui/challenges/challengeMission.png",
         "challengeBackground": "./assets/images/ui/challenges/ChallengeBg.png"
       }
@@ -5046,6 +5047,7 @@ class ChallengeChecker extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter 
     this.lastCandies = _data__WEBPACK_IMPORTED_MODULE_1__.Data.itemQuantity;
     this.candies = 0;
     this.score = 0;
+    this.completedChallenge = false;
   }
   _resetData() {
     this.lastCandies = _data__WEBPACK_IMPORTED_MODULE_1__.Data.itemQuantity;
@@ -5094,25 +5096,27 @@ class ChallengeChecker extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter 
     switch (currentChallenge.scene) {
       case "any":
         this.score = _data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore;
-        currentChallenge.progress += this.score;
+        if (this.score > currentChallenge.progress)
+          currentChallenge.progress = this.score;
         break;
       case "classicMode":
         if (sceneId === "ClassicModeScene") {
           this.score = _data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore;
-          currentChallenge.progress += this.score;
+          if (this.score > currentChallenge.progress)
+            currentChallenge.progress = this.score;
         }
         break;
       case "hardMode":
         if (sceneId === "HardModeScene") {
           this.score = _data__WEBPACK_IMPORTED_MODULE_1__.Data.currentScore;
-          currentChallenge.progress += this.score;
+          if (this.score > currentChallenge.progress)
+            currentChallenge.progress = this.score;
         }
         break;
     }
     return currentChallenge;
   }
   _updateGamePlayed(currentChallenge, sceneId) {
-    console.log("gplayed", sceneId);
     switch (currentChallenge.scene) {
       case "any":
         currentChallenge.progress++;
@@ -5131,8 +5135,11 @@ class ChallengeChecker extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter 
     return currentChallenge;
   }
   checker(currentChallenge) {
-    if (currentChallenge.progress >= currentChallenge.goal)
+    if (currentChallenge.progress >= currentChallenge.goal) {
       this._complete();
+      this.completedChallenge = true;
+    } else
+      this.completedChallenge = false;
   }
   _complete() {
     this.emit("completeChallenge");
@@ -5205,6 +5212,7 @@ const _ChallengesManager = class extends events__WEBPACK_IMPORTED_MODULE_0__.Eve
   update(sceneId) {
     this.currentChallenge = this.checker.update(this.currentChallenge, sceneId);
     this.checker.checker(this.currentChallenge);
+    return this.checker.completedChallenge;
   }
 };
 let ChallengesManager = _ChallengesManager;
@@ -5270,55 +5278,55 @@ class ChallengesStorage {
       {
         id: 4,
         type: TypeChallenge.CollectCandy,
-        descriptsion: "Collect 10 candies",
+        descriptsion: "Collect 50 candies",
         progress: 0,
-        goal: 10,
+        goal: 50,
         scene: AvailableScene.Any,
         completed: false
       },
       {
         id: 5,
-        type: TypeChallenge.CollectCandy,
-        descriptsion: "Collect 10 candies",
+        type: TypeChallenge.BestScore,
+        descriptsion: "Get 40 points in hard mode",
         progress: 0,
-        goal: 10,
-        scene: AvailableScene.Any,
+        goal: 40,
+        scene: AvailableScene.HardMode,
         completed: false
       },
       {
         id: 6,
-        type: TypeChallenge.CollectCandy,
-        descriptsion: "Collect 10 candies",
+        type: TypeChallenge.GamesPlayed,
+        descriptsion: "Play 5 times in dual mode",
         progress: 0,
-        goal: 10,
-        scene: AvailableScene.Any,
+        goal: 5,
+        scene: AvailableScene.DualMode,
         completed: false
       },
       {
         id: 7,
         type: TypeChallenge.CollectCandy,
-        descriptsion: "Collect 10 candies",
+        descriptsion: "Collect 100 candies",
         progress: 0,
-        goal: 10,
+        goal: 100,
         scene: AvailableScene.Any,
         completed: false
       },
       {
         id: 8,
-        type: TypeChallenge.CollectCandy,
-        descriptsion: "Collect 10 candies",
+        type: TypeChallenge.BestScore,
+        descriptsion: "Get 100 points in hard mode",
         progress: 0,
-        goal: 10,
-        scene: AvailableScene.Any,
+        goal: 100,
+        scene: AvailableScene.HardMode,
         completed: false
       },
       {
         id: 9,
-        type: TypeChallenge.CollectCandy,
-        descriptsion: "Collect 10 candies",
+        type: TypeChallenge.BestScore,
+        descriptsion: "Get 200 points in classic mode",
         progress: 0,
-        goal: 10,
-        scene: AvailableScene.Any,
+        goal: 200,
+        scene: AvailableScene.ClassicMode,
         completed: false
       }
     ];
@@ -5909,8 +5917,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
 /* harmony import */ var _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/particle-emitter */ "./node_modules/@pixi/particle-emitter/lib/particle-emitter.es.js");
 /* harmony import */ var _assets_aim_flyParticle_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../assets/aim/flyParticle.json */ "./assets/aim/flyParticle.json");
-/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
-/* harmony import */ var _skin_skinManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../skin/skinManager */ "./src/obj/skin/skinManager.js");
+/* harmony import */ var _assets_aim_winParticle_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../assets/aim/winParticle.json */ "./assets/aim/winParticle.json");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+/* harmony import */ var _skin_skinManager__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../skin/skinManager */ "./src/obj/skin/skinManager.js");
+
 
 
 
@@ -5924,15 +5934,26 @@ class PlayerEffect {
     this.onReset();
   }
   _initSkin() {
-    this.skinManager = _skin_skinManager__WEBPACK_IMPORTED_MODULE_4__.SkinManager.instance;
+    this.skinManager = _skin_skinManager__WEBPACK_IMPORTED_MODULE_5__.SkinManager.instance;
     this.skin = this.skinManager.currentSkin;
   }
   _initEffect() {
     this._despawnEffect();
     this._flyEffect();
+    this._winEffect();
+  }
+  _winEffect() {
+    let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(this.skin.particleImage);
+    this.cusWinConfig = _assets_aim_winParticle_json__WEBPACK_IMPORTED_MODULE_3__;
+    this.cusWinConfig.color = this.skin.particleColor;
+    this.winEmitter = new _pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__.Emitter(
+      this.obj,
+      (0,_pixi_particle_emitter__WEBPACK_IMPORTED_MODULE_1__.upgradeConfig)(this.cusWinConfig, [texture])
+    );
+    this.winEmitter.emit = false;
   }
   _despawnEffect() {
-    this.despawnEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_3__.Tween(this.obj).to({ alpha: 0 }, 2e3);
+    this.despawnEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween(this.obj).to({ alpha: 0 }, 2e3);
   }
   _flyEffect() {
     let texture = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(this.skin.particleImage);
@@ -5985,6 +6006,7 @@ class PlayerEffect {
   update(dt) {
     this._deadEffect(dt);
     this.emitter.update(dt * 0.1);
+    this.winEmitter.update(dt * 0.1);
     this._updateParticles();
   }
 }
@@ -7315,6 +7337,131 @@ class ChallengeCard extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
+/***/ "./src/obj/ui/challenges/notifyChallenge.js":
+/*!**************************************************!*\
+  !*** ./src/obj/ui/challenges/notifyChallenge.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NotifyChallenge: () => (/* binding */ NotifyChallenge)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/lib/index.mjs");
+/* harmony import */ var _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tweenjs/tween.js */ "./node_modules/@tweenjs/tween.js/dist/tween.esm.js");
+
+
+class NotifyChallenge extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+  constructor(challenge) {
+    super();
+    this.challenge = challenge;
+    this._initComponent();
+  }
+  _initComponent() {
+    this._initBackground();
+    this._initText();
+    this._initEffect();
+  }
+  _initBackground() {
+    this.challengeBg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+    this.addChild(this.challengeBg);
+    this.challengeMissionBg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.challengeMissionBgTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.challengeMissionBgMid = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+    this.tick = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("tickComplete"));
+    this.challengeMissionBg.beginFill(16777215);
+    this.challengeMissionBg.position.set(0, -100);
+    this.challengeMissionBg.drawRoundedRect(-330, -100, 656, 260, 15);
+    this.challengeMissionBgTop.beginFill(6007574);
+    this.challengeMissionBgTop.position.set(0, -100);
+    this.challengeMissionBgTop.drawRoundedRect(-330, -100, 656, 100, 15);
+    this.challengeMissionBgMid.beginFill(6007574);
+    this.challengeMissionBgMid.position.set(0, -100);
+    this.challengeMissionBgMid.drawRect(-330, -50, 656, 50);
+    this.tick.anchor.set(0.5);
+    this.tick.position.set(0, 10);
+    this.challengeBg.addChild(this.challengeMissionBg);
+    this.challengeBg.addChild(this.challengeMissionBgTop);
+    this.challengeBg.addChild(this.challengeMissionBgMid);
+    this.challengeBg.addChild(this.tick);
+    this.challengeBg.visible = true;
+    this.challengeBg.alpha = 0;
+  }
+  _initEffect() {
+    this.tween1 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween(this.challengeBg).to({ alpha: 1 }, 300);
+    this.tween2 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween(this.challengeBg).to({ alpha: 0, x: 0, y: -130 }, 500);
+    this.tween3 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween(this.challengeBg).to({ alpha: 1, x: 0, y: 0 }, 600);
+    this.tween4 = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween(this.challengeBg).to({ alpha: 0, x: 0, y: 0 }, 500);
+  }
+  runEffect(lastChallenge, newChallenge) {
+    this._update(lastChallenge);
+    this.challengeMissionBgTop.tint = "5bab16";
+    this.challengeMissionBgMid.tint = "5bab16";
+    this.tick.visible = true;
+    this.tween1.start().onComplete(() => {
+      setTimeout(() => {
+        this.tween2.start().onComplete(() => {
+          this.challengeBg.position.set(0, 80);
+          this.challengeMissionBgTop.tint = "1c2933";
+          this.challengeMissionBgMid.tint = "1c2933";
+          this._update(newChallenge);
+          this.lastChallenge = newChallenge;
+          this.tick.visible = false;
+          setTimeout(() => {
+            this.tween3.start().onComplete(() => {
+              setTimeout(() => {
+                this.tween4.start();
+              }, 1700);
+            });
+          }, 300);
+        });
+      }, 1300);
+    });
+  }
+  _initText() {
+    this._initTextStyle();
+    this._initTitle();
+  }
+  _initTextStyle() {
+    this.nameStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fill: "#FFFFFF",
+      fontFamily: "Blissful Thinking",
+      fontSize: 44,
+      fontWeight: "lighter",
+      letterSpacing: 1
+    });
+    this.MissionStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+      fill: "#1d2434",
+      fontFamily: "Blissful Thinking",
+      fontSize: 38
+    });
+  }
+  _initTitle() {
+    this.challengeName = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("CHALLENGE " + this.challenge.id, this.nameStyle);
+    this.challengeName.anchor.set(0.5);
+    this.challengeName.position.set(0, -150);
+    this.challengeMissionTitle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text();
+    this.challengeMissionTitle.text = this.challenge.descriptsion;
+    this.challengeMissionTitle.style = this.MissionStyle;
+    this.challengeMissionTitle.anchor.set(0.5);
+    this.challengeMissionTitle.position.set(0, -60);
+    this.challengeBg.addChild(this.challengeName);
+    this.challengeBg.addChild(this.challengeMissionTitle);
+  }
+  _update(challenge) {
+    this.challenge = challenge;
+    this._newTitle();
+  }
+  _newTitle() {
+    this.challengeName.text = `CHALLENGE ${this.challenge.id}`;
+    this.challengeMissionTitle.text = this.challenge.descriptsion;
+  }
+}
+
+
+/***/ }),
+
 /***/ "./src/obj/ui/gameInfor.js":
 /*!*********************************!*\
   !*** ./src/obj/ui/gameInfor.js ***!
@@ -7711,11 +7858,11 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     };
   }
   _initResult() {
-    this.resultTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#666666", fontSize: 70 }));
+    this.resultTop = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#666666", fontSize: 70 }));
     this.resultTop.anchor.set(0.5);
     this.resultTop.position.set(0, -300);
     this.resultTop.scale.set(-1);
-    this.resultBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#666666", fontSize: 70 }));
+    this.resultBottom = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text("PLAYER 1 WIN!", __spreadProps(__spreadValues({}, this.styleBig), { fill: "#666666", fontSize: 70 }));
     this.resultBottom.anchor.set(0.5);
     this.resultBottom.position.set(0, 300);
     this.resultUI.addChild(this.resultTop);
@@ -7848,11 +7995,11 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
   }
   _resetResultUI(winPlayer) {
     if (winPlayer == "player1") {
-      this.resultTop.text = "PLAYER1 WIN!";
-      this.resultBottom.text = "PLAYER1 WIN!";
+      this.resultTop.text = "PLAYER 1 WIN!";
+      this.resultBottom.text = "PLAYER 1 WIN!";
     } else if (winPlayer == "player2") {
-      this.resultTop.text = "PLAYER2 WIN!";
-      this.resultBottom.text = "PLAYER2 WIN!";
+      this.resultTop.text = "PLAYER 2 WIN!";
+      this.resultBottom.text = "PLAYER 2 WIN!";
     } else {
       this.resultTop.text = "Draw!";
       this.resultBottom.text = "Draw!";
@@ -8304,9 +8451,9 @@ class DualModeOverUI extends _overUI__WEBPACK_IMPORTED_MODULE_1__.OverUI {
   }
   winTitle(winPlayer) {
     if (winPlayer == "player1")
-      this.gameName.text = "PLAYER1 WIN!";
+      this.gameName.text = "PLAYER 1 WIN!";
     else if (winPlayer == "player2")
-      this.gameName.text = "PLAYER2 WIN!";
+      this.gameName.text = "PLAYER 2 WIN!";
     else
       this.gameName.text = "DRAW !";
   }
@@ -9011,6 +9158,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _levelController_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../levelController.js */ "./src/levelController.js");
 /* harmony import */ var _obj_ui_shop_skin_skinsShop_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../obj/ui/shop/skin/skinsShop.js */ "./src/obj/ui/shop/skin/skinsShop.js");
 /* harmony import */ var _obj_ui_option_soundOptionUI_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../obj/ui/option/soundOptionUI.js */ "./src/obj/ui/option/soundOptionUI.js");
+/* harmony import */ var _obj_ui_challenges_notifyChallenge_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../obj/ui/challenges/notifyChallenge.js */ "./src/obj/ui/challenges/notifyChallenge.js");
+
 
 
 
@@ -9043,6 +9192,8 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
     this._initCandies();
     this._initGameInfor();
     this._initGameOverUI();
+    this._initSoundOption();
+    this._initNotifyChallenge();
   }
   // Obj in scene
   _initPlayer() {
@@ -9079,6 +9230,15 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
   _initSkinsShop() {
     this.skinsShop = new _obj_ui_shop_skin_skinsShop_js__WEBPACK_IMPORTED_MODULE_13__.SkinsShop();
     this.addChild(this.skinsShop);
+  }
+  _initNotifyChallenge() {
+    this.notifyChallenge = new _obj_ui_challenges_notifyChallenge_js__WEBPACK_IMPORTED_MODULE_15__.NotifyChallenge(this.challengesManager.currentChallenge);
+    this.lastChallenge = this.challengesManager.currentChallenge;
+    this.addChild(this.notifyChallenge);
+  }
+  _initSoundOption() {
+    this.soundOptionUI = new _obj_ui_option_soundOptionUI_js__WEBPACK_IMPORTED_MODULE_14__.SoundOptionUI();
+    this.addChild(this.soundOptionUI);
   }
   _onCollision(obj1, obj2) {
     if (!this.parent)
@@ -9168,7 +9328,13 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
       return;
     }
     this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End;
-    this.challengesManager.update(this.id);
+    let addTime = 0;
+    this.lastChallenge = this.challengesManager.currentChallenge;
+    this.completeChallenge = this.challengesManager.update(this.id);
+    if (this.completeChallenge) {
+      this.notifyChallenge.runEffect(this.lastChallenge, this.challengesManager.currentChallenge);
+      addTime = 4500;
+    }
     _data_js__WEBPACK_IMPORTED_MODULE_2__.Data.pushData();
     pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("loseSound").play();
     this.gameInfor.updateGameInfor();
@@ -9177,7 +9343,7 @@ class ClassicScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene 
       this.gameOverUI.showGameOverUI();
       this.gameInfor.onReset();
       this.background.hideScore();
-    }, 1e3);
+    }, 1e3 + addTime);
   }
   _onNextLevel(direction) {
     if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
@@ -9537,10 +9703,10 @@ class GameScene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   constructor() {
     super();
     this._initProperties();
+    this._initChallengesManager();
     this._initGameplay();
     this._initColliderDetector();
     this._initSceneEvent();
-    this._initChallengesManager();
   }
   // Khởi tạo các thuộc tính cơ bản của scene
   _initProperties() {
@@ -9610,7 +9776,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _obj_ui_main_hardModeUI_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../obj/ui/main/hardModeUI.js */ "./src/obj/ui/main/hardModeUI.js");
 /* harmony import */ var _obj_ui_over_hardModeOverUI_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../obj/ui/over/hardModeOverUI.js */ "./src/obj/ui/over/hardModeOverUI.js");
 /* harmony import */ var _obj_trap_spikesManager_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../obj/trap/spikesManager.js */ "./src/obj/trap/spikesManager.js");
-/* harmony import */ var _obj_skin_skinStorage_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../obj/skin/skinStorage.js */ "./src/obj/skin/skinStorage.js");
+/* harmony import */ var _obj_ui_challenges_notifyChallenge_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../obj/ui/challenges/notifyChallenge.js */ "./src/obj/ui/challenges/notifyChallenge.js");
 
 
 
@@ -9641,6 +9807,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this._initCandies();
     this._initGameInfor();
     this._initGameOverUI();
+    this._initNotifyChallenge();
   }
   _initPlayer() {
     this.player = new _obj_player_player_js__WEBPACK_IMPORTED_MODULE_7__.Player(this);
@@ -9671,6 +9838,11 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
     this.gameOverUI = new _obj_ui_over_hardModeOverUI_js__WEBPACK_IMPORTED_MODULE_11__.HardModeOverUI();
     this.addChild(this.gameOverUI);
     this.gameOverUI.hideGameOverUI();
+  }
+  _initNotifyChallenge() {
+    this.notifyChallenge = new _obj_ui_challenges_notifyChallenge_js__WEBPACK_IMPORTED_MODULE_13__.NotifyChallenge(this.challengesManager.currentChallenge);
+    this.lastChallenge = this.challengesManager.currentChallenge;
+    this.addChild(this.notifyChallenge);
   }
   _onCollision(obj1, obj2) {
     super._onCollision();
@@ -9728,7 +9900,13 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
       return;
     }
     this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End;
-    this.challengesManager.update(this.id);
+    let addTime = 0;
+    this.lastChallenge = this.challengesManager.currentChallenge;
+    this.completeChallenge = this.challengesManager.update(this.id);
+    if (this.completeChallenge) {
+      this.notifyChallenge.runEffect(this.lastChallenge, this.challengesManager.currentChallenge);
+      addTime = 4500;
+    }
     pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("loseSound").play();
     this.gameInfor.updateGameInfor();
     this.candies.onLose();
@@ -9736,7 +9914,7 @@ class HardModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
       this.gameOverUI.showGameOverUI();
       this.gameInfor.display();
       this.background.hideScore();
-    }, 1e3);
+    }, 1e3 + addTime);
   }
   _onNextLevel(direction) {
     if (this.gameState == _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.End) {
@@ -50907,6 +51085,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 module.exports = JSON.parse('{"alpha":{"start":1,"end":1},"scale":{"start":0.5,"end":0.035,"minimumScaleMultiplier":1},"color":{"start":"#ff3464","end":"#ff3464"},"speed":{"start":0,"end":0,"minimumSpeedMultiplier":2},"acceleration":{"x":0,"y":0},"maxSpeed":20,"startRotation":{"min":0,"max":0},"noRotation":true,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":2,"max":2},"blendMode":"normal","frequency":0.5,"emitterLifetime":2.5,"maxParticles":6,"pos":{"x":0,"y":0},"addAtBack":false,"spawnType":"point"}');
+
+/***/ }),
+
+/***/ "./assets/aim/winParticle.json":
+/*!*************************************!*\
+  !*** ./assets/aim/winParticle.json ***!
+  \*************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"alpha":{"start":1,"end":1},"scale":{"start":1,"end":20,"minimumScaleMultiplier":1},"color":{"start":"#0040ae","end":"#0040ae"},"speed":{"start":0,"end":0,"minimumSpeedMultiplier":1},"acceleration":{"x":0,"y":0},"maxSpeed":0,"startRotation":{"min":0,"max":0},"noRotation":false,"rotationSpeed":{"min":0,"max":0},"lifetime":{"min":3,"max":3},"blendMode":"normal","frequency":1,"emitterLifetime":3,"maxParticles":1,"pos":{"x":0,"y":0},"addAtBack":true,"spawnType":"circle","spawnCircle":{"x":0,"y":0,"r":0}}');
 
 /***/ })
 

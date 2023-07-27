@@ -12,105 +12,101 @@ import { SkinManager } from "../skin/skinManager";
     Gọi method trong player = tất cả method trong các class con
 */
 export class Player extends Container {
-    constructor(parent) {
-        super();
-        this.parent = parent;
-        this._initSprite();
-        this._initEffect();
-        this._initMovement();     
-        this._initProperties();
-        this._initCollider();
+  constructor(parent) {
+    super();
+    this.parent = parent;
+    this._initSprite();
+    this._initEffect();
+    this._initMovement();
+    this._initProperties();
+    this._initCollider();
+  }
+
+  _initCollider() {
+    this.radiousCollider = 40;
+    this.collider = new Collider(this.radiousCollider);
+    this.addChild(this.collider);
+  }
+
+  _initProperties() {
+    this.isPlaying = false;
+    this.isDie = false;
+    this.hardModeEnabled = false;
+    this.dualModeEnabled = false;
+    this.rootPos = { x: 0, y: 0 };
+    this.rootPos = { x: 0, y: 0 };
+    this.victory = false;
+  }
+
+  _initSprite() {
+    this.sprite = new PlayerSprite(this);
+    this.addChild(this.sprite);
+  }
+
+  _initEffect() {
+    this.effect = new PlayerEffect(this, this.parent);
+  }
+
+  _initMovement() {
+    switch (this.parent.id) {
+      case "dualModeScene":
+        this.movement = new PlayerMovementDual(this);
+        break;
+      default:
+        this.movement = new PlayerMovement(this);
     }
+  }
 
-    _initCollider() {
-        this.radiousCollider = 40;
-        this.collider = new Collider(this.radiousCollider);
-        this.addChild(this.collider);
+  onNextLevel() {
+    this.sprite.changeDirection();
+  }
+
+  onPointerDown() {
+    if (!this.isPlaying) {
+      this.movement.onStart();
+      this.isPlaying = true;
     }
+    this.movement.onPointerDown();
+    this.effect.onPointerDown();
+    this.sprite.onPointerDown();
+  }
 
-    _initProperties() {
-        this.isPlaying = false;
-        this.isDie = false;
-        this.hardModeEnabled = false;
-        this.dualModeEnabled = false;
-        this.rootPos = { x: 0, y: 0 };
-        this.rootPos = {x: 0, y: 0};
-        this.victory = false;
+  onCollision(obj) {
+    if (obj instanceof Spike) {
+      this.movement.onCollisionSpike();
+      this._onLose();
     }
+  }
 
-    _initSprite() {
-        this.sprite = new PlayerSprite(this);
-        this.addChild(this.sprite);
-    }
+  updateSkin(skin = SkinManager.instance.currentSkin) {
+    this.sprite.updateSkin(skin);
+    this.effect.updateSkin(skin);
+  }
 
-    _initEffect() {
-        this.effect = new PlayerEffect(this, this.parent);
-    }
+  _onLose() {
+    this.isDie = true;
+    this.sprite.onLose();
+    this.effect.onLose();
+  }
 
-    _initMovement() {
-        switch (this.parent.id) {
-            case 'dualModeScene':
-                this.movement = new PlayerMovementDual(this);
-                break;
-            default:
-                this.movement = new PlayerMovement(this);
-        }
-    }
+  hide() {
+    this.alpha = 0;
+  }
 
-    onNextLevel() {
-        this.sprite.changeDirection();
-    }
+  onReset() {
+    this.isDie = false;
+    this.isPlaying = false;
 
-    onPointerDown() {
-        if (!this.isPlaying) {
-            this.movement.onStart();
-            this.isPlaying = true;
-        }
-        this.movement.onPointerDown();
-        this.effect.onPointerDown();
-        this.sprite.onPointerDown();
-    }
+    this.position = this.rootPos;
 
-    onCollision(obj) {
-        if (obj instanceof Spike) {
-            this.movement.onCollisionSpike();
-            this._onLose();
-        }
+    this.sprite.onReset();
+    this.effect.onReset();
+    this.movement.onReset();
+  }
 
-        if (obj instanceof Player) {
-
-        }
-    }
-
-    updateSkin(skin = SkinManager.instance.currentSkin) {
-        this.sprite.updateSkin(skin);
-        this.effect.updateSkin(skin);
-    }
-
-    _onLose() {
-        this.isDie = true;
-        this.sprite.onLose();
-        this.effect.onLose();
-    }
-
-    hide() {
-        this.alpha = 0;
-    }
-
-    onReset() {
-        this.isDie = false;
-        this.isPlaying = false;
-
-        this.position = this.rootPos;
-
-        this.sprite.onReset();
-        this.effect.onReset();
-        this.movement.onReset();
-    }
-
-    update(dt) {
-        this.movement.update(dt);
-        this.effect.update(dt);
-        this.sprite.update();
-    }
+  update(dt) {
+    this.movement.update(dt);
+    this.effect.update(dt);
+    this.sprite.update();
+  }
 }

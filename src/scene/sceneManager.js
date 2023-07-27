@@ -48,16 +48,20 @@ export class SceneManager extends Container {
     this.scenes.forEach((scene) => {
       if (scene.id === id) {
         this.enabledScene = scene;
-        this.enabledDespawn = true;
-        if (this.enabledSpawn) {
-          this.enabledScene.alpha = 0;
-          this.enabledScene.spawnEffect.start();
-          this.enabledSpawn = false;
-        }
+        this.onSpawnEffect(this.enabledScene);
         this.enabledScene.onResetScene();
         this.addChild(scene);
       }
     });
+  }
+
+  //Scene xuất hiện
+  onSpawnEffect(scene) {
+    if (this.enabledSpawn) {
+      scene.alpha = 0;
+      scene.spawnEffect.start();
+      this.enabledSpawn = false;
+    }
   }
 
   // Reset scene hiện tại rồi loại bỏ nó

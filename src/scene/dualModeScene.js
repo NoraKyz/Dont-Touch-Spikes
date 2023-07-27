@@ -272,20 +272,6 @@ export class DualModeScene extends GameScene {
     else if(this.winPlayer == "player1") this.sceneUI._onPlayer1Win(), this.player1Point++;
     else this.sceneUI._onDraw(), this.player2Point--;
     this._onEndRound();
-
-    if (obj1 === this.player1 && obj2 === this.player2) {
-      //lực player1 > player2
-      if (this.player1.movement.velocity.y < this.player2.movement.velocity.y) {
-        this.player1.onCollision(this.player2);
-
-        //console.log("player2 " + this.player2.movement.velocity.x);
-
-      } else if (-obj1.movement.velocity.y < obj2.movement.velocity.y) {
-        //this.player1.onCollision(obj1);
-      } else {
-        // console.log("draw");
-      }
-    }
   }
 
   update(dt) {
@@ -296,7 +282,6 @@ export class DualModeScene extends GameScene {
     if (this.gameState == GameState.Playing) {
       this.colliderDetector.checkCollider(this.player1, this.spikes.poolSpikes);
       this.colliderDetector.checkCollider(this.player2, this.spikes.poolSpikes);
-      //this.colliderDetector.checkCollider(this.player1, this.player2);
     }
   }
 }

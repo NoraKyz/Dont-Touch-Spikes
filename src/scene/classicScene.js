@@ -12,7 +12,7 @@ import { ClassicOverUI } from "../obj/ui/over/classicOverUI.js";
 import { Spike } from "../obj/trap/spike.js";
 import { LevelController } from "../levelController.js";
 import { SkinsShop } from "../obj/ui/shop/skin/skinsShop.js";
-import { ChallengesManager } from "../obj/challenges/challengesManager.js";
+import { SoundOptionUI } from "../obj/ui/option/soundOptionUI.js";
 
 export class ClassicScene extends GameScene {
     constructor() {
@@ -33,6 +33,7 @@ export class ClassicScene extends GameScene {
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
+        this._initSoundOption();
     }   
 
     // Obj in scene
@@ -79,8 +80,9 @@ export class ClassicScene extends GameScene {
         this.addChild(this.skinsShop);
     }
 
-    _initChallenge() {
-        this.challenge = new Challenge();
+    _initSoundOption() {
+        this.soundOptionUI = new SoundOptionUI();
+        this.addChild(this.soundOptionUI);
     }
 
     _onCollision(obj1, obj2) {
@@ -156,7 +158,7 @@ export class ClassicScene extends GameScene {
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
-            Assets.get("flyingSound").play();
+            this.parent.soundManager.play("flyingSound");
         }
     }
 

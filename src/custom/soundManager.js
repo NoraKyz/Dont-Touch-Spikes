@@ -23,7 +23,7 @@ export class SoundManager extends EventEmitter {
         this.soundMusic = 100;
     }
 
-    playSound(soundName, type = TypeSound.EFFECT) {
+    play(soundName, type = TypeSound.EFFECT) {
         let sound = Assets.get(soundName);
 
         if(type === TypeSound.EFFECT) {

@@ -3,6 +3,7 @@ import { Game } from "../game";
 import { ColliderDetector } from "../obj/physics/colliderDetector";
 import { ChallengesManager } from "../obj/challenges/challengesManager";
 
+
 export const GameState = Object.freeze({
     Ready: "ready",
     Playing: "playing",
@@ -30,6 +31,7 @@ export class GameScene extends Container {
         this.colliderDetector = ColliderDetector.instance;
         this.colliderDetector.on("collision", this._onCollision.bind(this));
     }
+
     // Các hàm có comment abstract bắt buộc viết lại khi kế thừa
 
     // abstract
@@ -44,7 +46,7 @@ export class GameScene extends Container {
     // abstract
     onResetScene() { } // Reset lại scene
 
-    _initChallengesManager(){
+    _initChallengesManager() {
         this.challengesManager = ChallengesManager.instance;
     }
 

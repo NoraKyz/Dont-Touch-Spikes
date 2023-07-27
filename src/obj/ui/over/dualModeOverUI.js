@@ -133,8 +133,8 @@ export class DualModeOverUI extends OverUI {
     }
 
     winTitle(winPlayer){
-      if(winPlayer == "player1") this.gameName.text = "PLAYER1 WIN!";
-      else if(winPlayer == "player2") this.gameName.text = "PLAYER2 WIN!";
+      if(winPlayer == "player1") this.gameName.text = "PLAYER 1 WIN!";
+      else if(winPlayer == "player2") this.gameName.text = "PLAYER 2 WIN!";
       else this.gameName.text = "DRAW !";
     }
 

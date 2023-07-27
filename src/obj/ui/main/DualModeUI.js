@@ -47,12 +47,12 @@ export class DualModeUI extends MainUI {
   }
 
   _initResult(){
-    this.resultTop = new Text("PLAYER1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
+    this.resultTop = new Text("PLAYER 1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
     this.resultTop.anchor.set(0.5);
     this.resultTop.position.set(0, - 300);
     this.resultTop.scale.set(-1);
 
-    this.resultBottom = new Text("PLAYER1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
+    this.resultBottom = new Text("PLAYER 1 WIN!", {...this.styleBig, fill: "#666666", fontSize: 70});
     this.resultBottom.anchor.set(0.5);
     this.resultBottom.position.set(0, 300);
 
@@ -193,12 +193,12 @@ export class DualModeUI extends MainUI {
   }
   _resetResultUI(winPlayer){
     if(winPlayer == "player1") {
-      this.resultTop.text = "PLAYER1 WIN!";
-      this.resultBottom.text = "PLAYER1 WIN!";
+      this.resultTop.text = "PLAYER 1 WIN!";
+      this.resultBottom.text = "PLAYER 1 WIN!";
     }
     else if(winPlayer == "player2") {
-      this.resultTop.text = "PLAYER2 WIN!";
-      this.resultBottom.text = "PLAYER2 WIN!";
+      this.resultTop.text = "PLAYER 2 WIN!";
+      this.resultBottom.text = "PLAYER 2 WIN!";
     } else {
       this.resultTop.text = "Draw!";
       this.resultBottom.text = "Draw!";

@@ -4,7 +4,6 @@ import { HardModeScene } from "./hardModeScene";
 import { DualModeScene } from "./dualModeScene";
 import { ChallengesScene } from "./challengesScene";
 import * as TWEEN from "@tweenjs/tween.js";
-import { SoundManager } from "../custom/soundManager"
 
 export class SceneManager extends Container {
   constructor() {
@@ -13,7 +12,6 @@ export class SceneManager extends Container {
     this._initScenes();
     this.onStartScene("ClassicModeScene");
     this._initEffect();
-    this._initSoundManager();
   }
 
   _initProperties() {
@@ -33,10 +31,6 @@ export class SceneManager extends Container {
 
     this.challengesScene = new ChallengesScene(this);
     this.scenes.push(this.challengesScene);
-  }
-
-  _initSoundManager() {
-    this.soundManager = SoundManager.instance;
   }
 
   _initEffect() {

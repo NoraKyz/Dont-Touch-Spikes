@@ -33,7 +33,6 @@ export class ClassicScene extends GameScene {
         this._initCandies();
         this._initGameInfor();
         this._initGameOverUI();
-        this._initSoundOption();
     }   
 
     // Obj in scene
@@ -78,11 +77,6 @@ export class ClassicScene extends GameScene {
     _initSkinsShop() {
         this.skinsShop = new SkinsShop();
         this.addChild(this.skinsShop);
-    }
-
-    _initSoundOption() {
-        this.soundOptionUI = new SoundOptionUI();
-        this.addChild(this.soundOptionUI);
     }
 
     _onCollision(obj1, obj2) {
@@ -158,7 +152,7 @@ export class ClassicScene extends GameScene {
             }
             this.player.onPointerDown();
             this.gameState = GameState.Playing;
-            this.parent.soundManager.play("flyingSound");
+            Assets.get("flyingSound").play();
         }
     }
 

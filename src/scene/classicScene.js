@@ -219,7 +219,7 @@ export class ClassicScene extends GameScene {
         this.spikes.moveSpikes(direction, limitSpike);
 
         if (Data.currentScore >= 5) {
-            this.spikes.changeColor(this.background.originColor.colorDarker);
+            this.spikes.changeColor(this.background.targetColor.colorDarker);
         }
     }
 

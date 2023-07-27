@@ -60,7 +60,7 @@ export class DualModeScene extends GameScene {
     this.movedSpikes = false;
     this.spikes = new SpikesManager(this.id);
     this.spikes.spikesBottom.forEach(spike => spike.y = 91);
-    this.spikes.changeColor(this.background1.originColor.colorDarker);
+    this.spikes.setColor(this.background1.originColor.colorDarker);
     this.addChild(this.spikes);
   }
 
@@ -104,7 +104,7 @@ export class DualModeScene extends GameScene {
     this.background2.playGroundTop.visible = false;
     this.background2.scoreBgTop.visible = false;
     this.spikes.onReset(); // màu
-    this.spikes.changeColor(this.background1.originColor.colorDarker);  
+    this.spikes.setColor(this.background1.originColor.colorDarker);  
 
     this.sceneOverUI.onReset();
     this.sceneUI.onReset();

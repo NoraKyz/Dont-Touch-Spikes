@@ -6,6 +6,7 @@ import { MovementClassic } from "./movementClassic";
 import { MovementHardMode } from "./movementHardMode";
 import { MovementDuo } from "./movementDuo";
 
+
 export class SpikesManager extends Container {
     constructor(id) {
         super();
@@ -92,12 +93,17 @@ export class SpikesManager extends Container {
 
     changeColor(color) {
         this.poolSpikes.forEach(spike => {
+            spike.sprite.changeColorEffect(color);
+        })
+    }
+
+    setColor(color) {
+        this.poolSpikes.forEach(spike => {
             spike.sprite.changeColor(color);
         })
     }
-    
     onReset() {
-        this.changeColor("FFFFFF");
+        this.setColor("FFFFFF");
         this.movement.onReset();
     }
 }

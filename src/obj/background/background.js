@@ -12,10 +12,10 @@ export class Background extends Container {
     }
 
     _initProperties() {
+        this.alpha = 0.95;
         this.eventMode = 'static';
         this.originColor = { color: 'ebebeb', colorDarker: '808080' };
         this._initTextStyle();
-        this._changeColorEffect();    
     }
 
     _initComponent() {
@@ -29,7 +29,7 @@ export class Background extends Container {
         this.style = new TextStyle({
             fontFamily: "Courier New",
             fontWeight: "bolder",
-            fontSize: 65 ,
+            fontSize: 65,
             fill: `0x${this.originColor.color}`,
         });
     }
@@ -61,7 +61,7 @@ export class Background extends Container {
     _initScore() {
         // score background
         this.scoreBg = new Graphics();
-        this.scoreBg.circleRadius = 200 ;
+        this.scoreBg.circleRadius = 200;
         this.scoreBg.beginFill(0xffffff);
         this.scoreBg.drawCircle(0, -Game.app.view.height / 28, this.scoreBg.circleRadius);
         this.scoreBg.endFill();
@@ -75,7 +75,7 @@ export class Background extends Container {
     }
 
     updateBackground(newScore) {
-        
+
         if (newScore < 10) this.scoreText.text = `0${newScore}`;
         else this.scoreText.text = `${newScore}`;
 
@@ -83,7 +83,7 @@ export class Background extends Container {
     }
 
     _newColor() {
-        this.originColor = CommonUtils.randomColorBackground()
+        return CommonUtils.randomColorBackground();
     }
 
     _resetProperties() {
@@ -102,16 +102,26 @@ export class Background extends Container {
         this.scoreText.text = `0${Data.currentScore}`;
     }
 
-    _changeColorEffect() {
-        this.alpha = 0.95;
-        this.changeColorEffect = new TWEEN.Tween(this)
-            .to({ alpha: 1 }, 2000)
+    _changeColorEffect(targetColor) {
+        this.changeColorEffect = new TWEEN.Tween({ ratio: 0 })
+            .to({ ratio: 1 }, 1500)
+            .onUpdate((val) => {
+                let nextColor = CommonUtils.lerpColor(this.originColor.color, targetColor.color, val.ratio);
+                let nextColorDarker = CommonUtils.lerpColor(this.originColor.colorDarker, targetColor.colorDarker, val.ratio);
+                this.scoreText.style.fill = nextColor;
+                this.playGround.tint = nextColor;
+                this.retangleTop.tint = nextColorDarker;
+                this.retangleBottom.tint = nextColorDarker;
+            })
+            .onComplete(() => {
+                this.originColor = targetColor;
+            })
+            .start();
     }
 
     changeBgColor() {
-        this._newColor();
-        this._resetBgColor();
-        this.changeColorEffect.start();
+        this.targetColor = this._newColor();
+        this._changeColorEffect(this.targetColor);
     }
 
     onReset() {

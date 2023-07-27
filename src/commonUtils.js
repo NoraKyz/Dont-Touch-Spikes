@@ -1,3 +1,5 @@
+import { utils } from "pixi.js";
+
 export class CommonUtils {
 
     static normalizeVector(vector) {
@@ -52,7 +54,7 @@ export class CommonUtils {
                 color += letters[indexColor];
                 colorDarker += letters[indexColor - 2];
             } else {
-                let indexColor =  Math.floor(Math.random() * 3);
+                let indexColor = Math.floor(Math.random() * 3);
                 color += letters[indexColor];
                 colorDarker += letters[0];
             }
@@ -61,23 +63,33 @@ export class CommonUtils {
     }
 
     // luôn luôn có khoảng trống 2 ô trên spikeLine để dễ chơi
-    static randomArray(quantity){
+    static randomArray(quantity) {
         const resultArray = [];
         const makerArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         const num = this.randomInt(1, 7);
         makerArray[num] = 1;
         makerArray[num + 1] = 1;
         const valueArray = [num, num + 1];
-        while(valueArray.length < makerArray.length - quantity){
+        while (valueArray.length < makerArray.length - quantity) {
             let newNum = CommonUtils.randomInt(0, 9);
-            if(!valueArray.includes(newNum)){
+            if (!valueArray.includes(newNum)) {
                 valueArray.push(newNum);
                 makerArray[newNum] = 1;
             }
         }
         makerArray.forEach((value, index) => {
-            if(value == 0) resultArray.push(index);
+            if (value == 0) resultArray.push(index);
         })
         return resultArray;
+    }
+
+    static lerpColor(colorStart, colorEnd, ratio) {
+        const start = utils.string2hex(colorStart);
+        const end = utils.string2hex(colorEnd);
+        const r = (1 - ratio) * ((start >> 16) & 0xff) + ratio * ((end >> 16) & 0xff);
+        const g = (1 - ratio) * ((start >> 8) & 0xff) + ratio * ((end >> 8) & 0xff);
+        const b = (1 - ratio) * (start & 0xff) + ratio * (end & 0xff);
+        const rgb = (r << 16) + (g << 8) + b;
+        return utils.hex2string(rgb);
     }
 }

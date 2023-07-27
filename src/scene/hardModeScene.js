@@ -167,7 +167,7 @@ export class HardModeScene extends GameScene {
         let limitSpike = LevelController.updateLevel();
         this.spikes.moveSpikes(direction, limitSpike);
         if (Data.currentScore >= 5) {
-            this.spikes.changeColor(this.background.originColor.colorDarker);
+            this.spikes.changeColor(this.background.targetColor.colorDarker);
         }
     }
 

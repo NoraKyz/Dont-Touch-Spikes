@@ -4837,7 +4837,7 @@ class Background extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
     this.scoreText.text = `0${_data__WEBPACK_IMPORTED_MODULE_3__.Data.currentScore}`;
   }
   _changeColorEffect(targetColor) {
-    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween({ ratio: 0 }).to({ ratio: 1 }, 1500).onUpdate((val) => {
+    this.changeColorEffect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_4__.Tween({ ratio: 0 }).to({ ratio: 1 }, 800).onUpdate((val) => {
       let nextColor = _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.lerpColor(this.originColor.color, targetColor.color, val.ratio);
       let nextColorDarker = _commonUtils_js__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.lerpColor(this.originColor.colorDarker, targetColor.colorDarker, val.ratio);
       this.scoreText.style.fill = nextColor;
@@ -7114,7 +7114,7 @@ class SpikeSprite extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
   }
   changeColorEffect(targetColor) {
     let startColor = this.sprite.tint;
-    this.effect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween({ ratio: 0 }).to({ ratio: 1 }, 1500).onUpdate((val) => {
+    this.effect = new _tweenjs_tween_js__WEBPACK_IMPORTED_MODULE_1__.Tween({ ratio: 0 }).to({ ratio: 1 }, 800).onUpdate((val) => {
       let nextColor = _commonUtils__WEBPACK_IMPORTED_MODULE_2__.CommonUtils.lerpColor(startColor, targetColor, val.ratio);
       this.sprite.tint = nextColor;
     }).start();

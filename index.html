@@ -4628,6 +4628,9 @@ class Game {
       autoDensity: true
     });
     document.body.appendChild(this.app.view);
+    const viewStyle = this.app.view.style;
+    viewStyle.width = "100%";
+    viewStyle.height = "100%";
     _custom_assetsManager__WEBPACK_IMPORTED_MODULE_3__.AssetsManager._loadAssets().then(() => {
       this._initScene();
       this.app.ticker.add((dt) => Game.update(dt));
@@ -7843,10 +7846,10 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     this._initProperties();
     this._initBackButton();
     this._initGameTutol();
+    this._initLine();
     this._initResult();
     this._initStarTop();
     this._initStarBottom();
-    this._initLine();
     this._initEffect();
     this._UIEffect();
   }
@@ -7914,6 +7917,7 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     this.readyUI.addChild(this.gameTutorial);
   }
   _initLine() {
+    this.lines = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
     const spacing = 76;
     const number = 4;
     for (let i = -number; i <= number; i++) {
@@ -7921,8 +7925,10 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
       this.line.anchor.set(0.5);
       this.line.scale.set(2.3);
       this.line.position.set(i * spacing, 0);
-      this.readyUI.addChild(this.line);
+      this.lines.addChild(this.line);
     }
+    this.resultUI.addChild(this.lines);
+    this.readyUI.addChild(this.lines);
   }
   _initBackButton() {
     this.backButton = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Assets.get("undo"));
@@ -8050,11 +8056,15 @@ class DualModeUI extends _mainUI_js__WEBPACK_IMPORTED_MODULE_1__.MainUI {
     this.resultUI.visible = true;
     this.tweenResult.start();
     this.readyUI.visible = false;
+    this.readyUI.removeChild(this.lines);
+    this.resultUI.addChild(this.lines);
   }
   _showReadyUI() {
     this.resultUI.visible = false;
     this.readyUI.visible = true;
     this.resultUI.alpha = 0;
+    this.readyUI.addChild(this.lines);
+    this.resultUI.removeChild(this.lines);
   }
   update(dt) {
     this.elapsed += dt;
@@ -9666,6 +9676,8 @@ class DualModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
         return;
       }
       this.sceneUI._showResultUI(this.winPlayer);
+      this.background1.onReset();
+      this.background2.onReset();
       this.onResetScene();
       this.player1.visible = false;
       this.player2.visible = false;
@@ -9674,8 +9686,6 @@ class DualModeScene extends _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameScene
         this.sceneUI._showReadyUI();
         this.player1.visible = true;
         this.player2.visible = true;
-        this.background1.onReset();
-        this.background2.onReset();
         this.gameState = _gameScene_js__WEBPACK_IMPORTED_MODULE_1__.GameState.Ready;
       }, 2e3);
     }, 1e3);

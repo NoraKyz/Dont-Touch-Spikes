@@ -104,7 +104,7 @@ export class Background extends Container {
 
     _changeColorEffect(targetColor) {
         this.changeColorEffect = new TWEEN.Tween({ ratio: 0 })
-            .to({ ratio: 1 }, 1500)
+            .to({ ratio: 1 }, 800)
             .onUpdate((val) => {
                 let nextColor = CommonUtils.lerpColor(this.originColor.color, targetColor.color, val.ratio);
                 let nextColorDarker = CommonUtils.lerpColor(this.originColor.colorDarker, targetColor.colorDarker, val.ratio);

@@ -19,7 +19,7 @@ export class SpikeSprite extends Container {
   changeColorEffect(targetColor) {
     let startColor = this.sprite.tint;
     this.effect = new TWEEN.Tween({ ratio: 0 })
-      .to({ ratio: 1 }, 1500)
+      .to({ ratio: 1 }, 800)
       .onUpdate((val) => {
         let nextColor = CommonUtils.lerpColor(startColor, targetColor, val.ratio);
         this.sprite.tint = nextColor;

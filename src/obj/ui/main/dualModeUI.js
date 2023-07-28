@@ -142,6 +142,7 @@ export class DualModeUI extends MainUI {
     this.topStar2 = this._generateStars({ x: 0, y: 138 }, -1);
     this.topStar3 = this._generateStars({ x: 60, y: 140 }, -1);
   }
+  
   _initStarBottom() {
     this.bottomStar1 = this._generateStars({ x: -60, y: 140 }, 1);
     this.bottomStar2 = this._generateStars({ x: 0, y: 138 }, 1);

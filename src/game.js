@@ -14,9 +14,9 @@ export class Game {
             height: GameConstant.GAME_HEIGHT,
             backgroundColor: 0xe0ddd5,
             resolution: 1,
+            autoDensity: true,
         });
         document.body.appendChild(this.app.view);
-
 
         AssetsManager._loadAssets().then(() => {
             this._initScene();

@@ -1,16 +1,17 @@
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Demo</title><style>body {
       margin: 0;
       padding: 0;
+      height: 100%;
       background: black;
       overflow: hidden;
-      width: 100%;
-      height: 100%;
     }
   
     #game {
       margin: 0;
       padding: 0;
       background: black;
+      width: 100%;
+      height: 100%;
     }</style><script defer="defer">/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -4627,9 +4628,6 @@ class Game {
       autoDensity: true
     });
     document.body.appendChild(this.app.view);
-    const viewStyle = this.app.view.style;
-    viewStyle.width = "100%";
-    viewStyle.height = "100%";
     _custom_assetsManager__WEBPACK_IMPORTED_MODULE_3__.AssetsManager._loadAssets().then(() => {
       this._initScene();
       this.app.ticker.add((dt) => Game.update(dt));

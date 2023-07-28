@@ -17,9 +17,6 @@ export class Game {
             autoDensity: true,
         });
         document.body.appendChild(this.app.view);
-        const viewStyle = this.app.view.style;
-        viewStyle.width = "100%";
-        viewStyle.height = "100%";
 
         AssetsManager._loadAssets().then(() => {
             this._initScene();

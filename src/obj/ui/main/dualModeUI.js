@@ -46,23 +46,15 @@ export class DualModeUI extends MainUI {
     };
   }
 
-  _initResult() {
-    this.resultTop = new Text("PLAYER 1 WIN!", {
-      ...this.styleBig,
-      fill: "#666666",
-      fontSize: 70,
-    });
+  _initResult(){
+    this.resultTop = new Text("WIN", {...this.styleBig, fill: "#666666", fontSize: 220, letterSpacing: 20, fontWeight: 700});
     this.resultTop.anchor.set(0.5);
-    this.resultTop.position.set(0, -300);
+    this.resultTop.position.set(0, - 320);
     this.resultTop.scale.set(-1);
 
-    this.resultBottom = new Text("PLAYER 1 WIN!", {
-      ...this.styleBig,
-      fill: "#666666",
-      fontSize: 70,
-    });
+    this.resultBottom = new Text("WIN", {...this.styleBig, fill: "#666666", fontSize: 220, letterSpacing: 20, fontWeight: 700});
     this.resultBottom.anchor.set(0.5);
-    this.resultBottom.position.set(0, 300);
+    this.resultBottom.position.set(0, 320);
 
     this.resultUI.addChild(this.resultTop);
     this.resultUI.addChild(this.resultBottom);
@@ -93,19 +85,8 @@ export class DualModeUI extends MainUI {
 
   _initGameTutol() {
     this.gameTutorial = new Container();
-    this.gameTutorialTop = this._createGameTutoriral(
-      2,
-      { x: 0, y: -280 },
-      { x: 0, y: -330 },
-      -1,
-      "#309cfe"
-    );
-    this.gameTutorialBottom = this._createGameTutoriral(
-      1,
-      { x: 0, y: 280 },
-      { x: 0, y: 330 },
-      1
-    );
+    this.gameTutorialTop = this._createGameTutoriral(2, {x: 0, y: -280}, {x: 0, y: -330}, -1, "#309cfe"); 
+    this.gameTutorialBottom = this._createGameTutoriral(1, {x: 0, y: 280}, {x: 0, y: 330}, 1);
     this.gameTutorial.addChild(this.gameTutorialTop);
     this.gameTutorial.addChild(this.gameTutorialBottom);
     this.readyUI.addChild(this.gameTutorial);
@@ -234,17 +215,25 @@ export class DualModeUI extends MainUI {
       this.tween2.start();
     });
   }
-
-  _resetResultUI(winPlayer) {
-    if (winPlayer == "player1") {
-      this.resultTop.text = "PLAYER 1 WINS!";
-      this.resultBottom.text = "PLAYER 1 WINS!";
-    } else if (winPlayer == "player2") {
-      this.resultTop.text = "PLAYER 2 WINS!";
-      this.resultBottom.text = "PLAYER 2 WINS!";
+  _resetResultUI(winPlayer){ // FF3464 309cfe
+    if(winPlayer == "player1") {
+      this.resultTop.text = "";
+      this.resultBottom.text = "WIN";
+      this.resultBottom.style.fill = 'FF3464';
+      this.resultBottom.style.fontSize = 220;
+    }
+    else if(winPlayer == "player2") {
+      this.resultTop.text = "WIN";
+      this.resultBottom.text = "";
+      this.resultTop.style.fill = '309cfe';
+      this.resultTop.style.fontSize = 220;
     } else {
-      this.resultTop.text = "DRAW!";
-      this.resultBottom.text = "DRAW!";
+      this.resultTop.style.fill = '666666';
+      this.resultBottom.style.fill = '666666';
+      this.resultTop.style.fontSize = 150;
+      this.resultBottom.style.fontSize = 150;
+      this.resultTop.text = "DRAW";
+      this.resultBottom.text = "DRAW";
     }
   }
 

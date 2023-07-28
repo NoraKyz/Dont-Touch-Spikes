@@ -4627,6 +4627,9 @@ class Game {
       autoDensity: true
     });
     document.body.appendChild(this.app.view);
+    const viewStyle = this.app.view.style;
+    viewStyle.width = "100%";
+    viewStyle.height = "100%";
     _custom_assetsManager__WEBPACK_IMPORTED_MODULE_3__.AssetsManager._loadAssets().then(() => {
       this._initScene();
       this.app.ticker.add((dt) => Game.update(dt));

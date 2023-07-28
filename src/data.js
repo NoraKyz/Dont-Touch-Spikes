@@ -27,11 +27,11 @@ export class Data {
             challenge: ChallengesStorage.storage,
             currentChallenge: ChallengesManager.instance.currentChallenge,
         }
-        localStorage.setItem("savedGameData1.1", JSON.stringify(this.data));
+        localStorage.setItem("savedGameData1.2", JSON.stringify(this.data));
     }
 
     static pullData(){
-        const savedGameData = localStorage.getItem("savedGameData1.1");
+        const savedGameData = localStorage.getItem("savedGameData1.2");
         if (savedGameData) {
             this.data = JSON.parse(savedGameData);
             this.currentScore = this.data.currentScore;

@@ -12,10 +12,10 @@ export class DualModeUI extends MainUI {
     this._initProperties();
     this._initBackButton();
     this._initGameTutol();
+    this._initLine();
     this._initResult();
     this._initStarTop();
     this._initStarBottom();
-    this._initLine();
     this._initEffect();
     this._UIEffect();
   }
@@ -93,6 +93,7 @@ export class DualModeUI extends MainUI {
   }
 
   _initLine() {
+    this.lines = new Container();
     const spacing = 76;
     const number = 4;
     for (let i = -number; i <= number; i++) {
@@ -100,8 +101,10 @@ export class DualModeUI extends MainUI {
       this.line.anchor.set(0.5);
       this.line.scale.set(2.3);
       this.line.position.set(i * spacing, 0);
-      this.readyUI.addChild(this.line);
+      this.lines.addChild(this.line);
     }
+    this.resultUI.addChild(this.lines);
+    this.readyUI.addChild(this.lines);
   }
 
   _initBackButton() {
@@ -242,11 +245,15 @@ export class DualModeUI extends MainUI {
     this.resultUI.visible = true;
     this.tweenResult.start();
     this.readyUI.visible = false;
+    this.readyUI.removeChild(this.lines);
+    this.resultUI.addChild(this.lines);
   }
   _showReadyUI() {
     this.resultUI.visible = false;
     this.readyUI.visible = true;
     this.resultUI.alpha = 0;
+    this.readyUI.addChild(this.lines);
+    this.resultUI.removeChild(this.lines);
   }
 
   update(dt) {

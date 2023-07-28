@@ -209,6 +209,8 @@ export class DualModeScene extends GameScene {
           return;
         }
         this.sceneUI._showResultUI(this.winPlayer);
+        this.background1.onReset();
+        this.background2.onReset();
         this.onResetScene(); 
         this.player1.visible = false;
         this.player2.visible = false;
@@ -217,8 +219,6 @@ export class DualModeScene extends GameScene {
           this.sceneUI._showReadyUI();
           this.player1.visible = true;
           this.player2.visible = true;
-          this.background1.onReset();
-          this.background2.onReset();
           this.gameState = GameState.Ready;
         }, 2000);
     }, 1000);

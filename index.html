@@ -3,6 +3,8 @@
       padding: 0;
       background: black;
       overflow: hidden;
+      width: 100%;
+      height: 100%;
     }
   
     #game {
@@ -4621,7 +4623,8 @@ class Game {
       width: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_WIDTH,
       height: _gameConstant__WEBPACK_IMPORTED_MODULE_2__.GameConstant.GAME_HEIGHT,
       backgroundColor: 14736853,
-      resolution: 1
+      resolution: 1,
+      autoDensity: true
     });
     document.body.appendChild(this.app.view);
     _custom_assetsManager__WEBPACK_IMPORTED_MODULE_3__.AssetsManager._loadAssets().then(() => {
